@@ -594,6 +594,507 @@ class AllottedNotStartedPastDueData {
     return data;
   }
 }
+
+class StartedButCompletedPieModel {
+  String? message;
+  bool? success;
+  List<StartedNotCompletedPieList>? startedNotCompletedList;
+
+  StartedButCompletedPieModel({this.message, this.success, this.startedNotCompletedList});
+
+  StartedButCompletedPieModel.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['data'] != null) {
+      startedNotCompletedList = <StartedNotCompletedPieList>[];
+      json['data'].forEach((v) {
+        startedNotCompletedList!.add(StartedNotCompletedPieList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (startedNotCompletedList != null) {
+      data['data'] = startedNotCompletedList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class StartedNotCompletedPieList {
+  String? id;
+  String? clientCode;
+  String? client;
+  String? servicename;
+  String? triggerDate;
+  String? targetDate;
+  String? satDate;
+  String? priority;
+  String? allottedTo;
+  String? tasks;
+  int? completionPercentage;
+  String? status;
+  String? targetDateToShow;
+  String? triggerDateToShow;
+  String? priorityToShow;
+
+
+  StartedNotCompletedPieList(
+      {this.id,
+        this.clientCode,
+        this.client,
+        this.servicename,
+        this.triggerDate,
+        this.targetDate,
+        this.satDate,
+        this.priority,
+        this.allottedTo,
+        this.tasks,
+        this.completionPercentage,
+        this.status,
+        this.targetDateToShow,
+        this.triggerDateToShow,
+        this.priorityToShow});
+
+  StartedNotCompletedPieList.fromJson(Map<String, dynamic> json) {
+    id = json['id']??"";
+    clientCode = json['client_code']??"";
+    client = json['client']??"";
+    servicename = json['servicename']??"";
+    triggerDate = json['trigger_date']??"";
+    targetDate = json['target_date']??"";
+    satDate = json['sat_date']??"";
+    priority = json['priority']??"";
+    allottedTo = json['Allotted To']??"";
+    tasks = json['Tasks']??"";
+    completionPercentage = json['Completion_Percentage']??"";
+    status = json['Status']??"";
+    targetDateToShow = json['target_date'] ==null || json['target_date'] == "" ? "" :
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
+    triggerDateToShow = json['trigger_date'] ==null || json['trigger_date'] == "" ? "" :
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
+    priorityToShow = json['priority']=="1" ? "High" : json['priority'] == "2" ? "Medium": "Low";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['client_code'] = clientCode;
+    data['client'] = client;
+    data['servicename'] = servicename;
+    data['trigger_date'] = triggerDate;
+    data['target_date'] = targetDate;
+    data['sat_date'] = satDate;
+    data['priority'] = priority;
+    data['Allotted To'] = allottedTo;
+    data['Tasks'] = tasks;
+    data['Completion_Percentage'] = completionPercentage;
+    data['Status'] = status;
+    return data;
+  }
+}
+
+class CompletedUdinPendingPieModel {
+  String? message;
+  bool? success;
+  List<CompletedUdinPendingPieList>? completedUdinPendingPieList;
+
+  CompletedUdinPendingPieModel({this.message, this.success, this.completedUdinPendingPieList});
+
+  CompletedUdinPendingPieModel.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['data'] != null) {
+      completedUdinPendingPieList = <CompletedUdinPendingPieList>[];
+      json['data'].forEach((v) {
+        completedUdinPendingPieList!.add(CompletedUdinPendingPieList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (completedUdinPendingPieList != null) {
+      data['data'] = completedUdinPendingPieList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class CompletedUdinPendingPieList {
+  String? id;
+  String? clientCode;
+  String? client;
+  String? servicename;
+  String? allottedTo;
+
+  CompletedUdinPendingPieList(
+      {this.id,
+        this.clientCode,
+        this.client,
+        this.servicename,
+        this.allottedTo});
+
+  CompletedUdinPendingPieList.fromJson(Map<String, dynamic> json) {
+    id = json['id']??"";
+    clientCode = json['client_code']??"";
+    client = json['client']??"";
+    servicename = json['servicename']??"";
+    allottedTo = json['Allotted To']??"";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['client_code'] = clientCode;
+    data['client'] = client;
+    data['servicename'] = servicename;
+    data['Allotted To'] = allottedTo;
+    return data;
+  }
+}
+
+class CompletedNotBilledPieModel {
+  String? message;
+  bool? success;
+  List<CompletedNotBilledPieList>? completedNotBilledPieList;
+
+  CompletedNotBilledPieModel({this.message, this.success, this.completedNotBilledPieList});
+
+  CompletedNotBilledPieModel.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['data'] != null) {
+      completedNotBilledPieList = <CompletedNotBilledPieList>[];
+      json['data'].forEach((v) {
+        completedNotBilledPieList!.add(new CompletedNotBilledPieList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Message'] = this.message;
+    data['Success'] = this.success;
+    if (this.completedNotBilledPieList != null) {
+      data['data'] = this.completedNotBilledPieList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class CompletedNotBilledPieList {
+  String? id;
+  String? clientCode;
+  String? client;
+  String? servicename;
+  String? amountOfServicePeriod;
+  String? claimAmount;
+
+  CompletedNotBilledPieList(
+      {this.id,
+        this.clientCode,
+        this.client,
+        this.servicename,
+        this.amountOfServicePeriod,
+        this.claimAmount});
+
+  CompletedNotBilledPieList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    clientCode = json['client_code'];
+    client = json['client'];
+    servicename = json['servicename'];
+    amountOfServicePeriod = json['Amount of Service Period'];
+    claimAmount = json['Claim Amount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['client_code'] = this.clientCode;
+    data['client'] = this.client;
+    data['servicename'] = this.servicename;
+    data['Amount of Service Period'] = this.amountOfServicePeriod;
+    data['Claim Amount'] = this.claimAmount;
+    return data;
+  }
+}
+
+class SubmittedForCheckingPieModel {
+  String? message;
+  bool? success;
+  List<SubmittedForCheckingPieList>? submittedForCheckingPieList;
+
+  SubmittedForCheckingPieModel({this.message, this.success, this.submittedForCheckingPieList});
+
+  SubmittedForCheckingPieModel.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['data'] != null) {
+      submittedForCheckingPieList = <SubmittedForCheckingPieList>[];
+      json['data'].forEach((v) {
+        submittedForCheckingPieList!.add(new SubmittedForCheckingPieList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Message'] = this.message;
+    data['Success'] = this.success;
+    if (this.submittedForCheckingPieList != null) {
+      data['data'] = this.submittedForCheckingPieList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class SubmittedForCheckingPieList {
+  String? id;
+  String? clientCode;
+  String? client;
+  String? servicename;
+  String? triggerDate;
+  String? targetDate;
+  String? satDate;
+  String? priority;
+  String? allottedTo;
+  String? tasks;
+  int? completionPercentage;
+  String? status;
+
+  SubmittedForCheckingPieList(
+      {this.id,
+        this.clientCode,
+        this.client,
+        this.servicename,
+        this.triggerDate,
+        this.targetDate,
+        this.satDate,
+        this.priority,
+        this.allottedTo,
+        this.tasks,
+        this.completionPercentage,
+        this.status});
+
+  SubmittedForCheckingPieList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    clientCode = json['client_code'];
+    client = json['client'];
+    servicename = json['servicename'];
+    triggerDate = json['trigger_date'];
+    targetDate = json['target_date'];
+    satDate = json['sat_date'];
+    priority = json['priority'];
+    allottedTo = json['Allotted To'];
+    tasks = json['Tasks'];
+    completionPercentage = json['Completion_Percentage'];
+    status = json['Status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['client_code'] = this.clientCode;
+    data['client'] = this.client;
+    data['servicename'] = this.servicename;
+    data['trigger_date'] = this.triggerDate;
+    data['target_date'] = this.targetDate;
+    data['sat_date'] = this.satDate;
+    data['priority'] = this.priority;
+    data['Allotted To'] = this.allottedTo;
+    data['Tasks'] = this.tasks;
+    data['Completion_Percentage'] = this.completionPercentage;
+    data['Status'] = this.status;
+    return data;
+  }
+}
+
+class WorkOnHoldPieModel {
+  String? message;
+  bool? success;
+  List<WorkOnHoldPieList>? workOnHoldPieList;
+
+  WorkOnHoldPieModel({this.message, this.success, this.workOnHoldPieList});
+
+  WorkOnHoldPieModel.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['data'] != null) {
+      workOnHoldPieList = <WorkOnHoldPieList>[];
+      json['data'].forEach((v) {
+        workOnHoldPieList!.add(new WorkOnHoldPieList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Message'] = this.message;
+    data['Success'] = this.success;
+    if (this.workOnHoldPieList != null) {
+      data['data'] = this.workOnHoldPieList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class WorkOnHoldPieList {
+  String? id;
+  String? clientCode;
+  String? client;
+  String? servicename;
+  String? triggerDate;
+  String? targetDate;
+  String? satDate;
+  String? priority;
+  String? allottedTo;
+  String? tasks;
+  int? completionPercentage;
+  String? status;
+
+  WorkOnHoldPieList(
+      {this.id,
+        this.clientCode,
+        this.client,
+        this.servicename,
+        this.triggerDate,
+        this.targetDate,
+        this.satDate,
+        this.priority,
+        this.allottedTo,
+        this.tasks,
+        this.completionPercentage,
+        this.status});
+
+  WorkOnHoldPieList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    clientCode = json['client_code'];
+    client = json['client'];
+    servicename = json['servicename'];
+    triggerDate = json['trigger_date'];
+    targetDate = json['target_date'];
+    satDate = json['sat_date'];
+    priority = json['priority'];
+    allottedTo = json['Allotted To'];
+    tasks = json['Tasks'];
+    completionPercentage = json['Completion_Percentage'];
+    status = json['Status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['client_code'] = this.clientCode;
+    data['client'] = this.client;
+    data['servicename'] = this.servicename;
+    data['trigger_date'] = this.triggerDate;
+    data['target_date'] = this.targetDate;
+    data['sat_date'] = this.satDate;
+    data['priority'] = this.priority;
+    data['Allotted To'] = this.allottedTo;
+    data['Tasks'] = this.tasks;
+    data['Completion_Percentage'] = this.completionPercentage;
+    data['Status'] = this.status;
+    return data;
+  }
+}
+
+class AllTasksPieModel {
+  String? message;
+  bool? success;
+  List<AllTasksPieList>? allTasksPieList;
+
+  AllTasksPieModel({this.message, this.success, this.allTasksPieList});
+
+  AllTasksPieModel.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['data'] != null) {
+      allTasksPieList = <AllTasksPieList>[];
+      json['data'].forEach((v) {
+        allTasksPieList!.add(new AllTasksPieList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Message'] = this.message;
+    data['Success'] = this.success;
+    if (this.allTasksPieList != null) {
+      data['data'] = this.allTasksPieList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class AllTasksPieList {
+  String? id;
+  String? clientCode;
+  String? client;
+  String? servicename;
+  String? triggerDate;
+  String? targetDate;
+  String? satDate;
+  String? priority;
+  String? allottedTo;
+  String? tasks;
+  int? completionPercentage;
+  String? status;
+
+  AllTasksPieList(
+      {this.id,
+        this.clientCode,
+        this.client,
+        this.servicename,
+        this.triggerDate,
+        this.targetDate,
+        this.satDate,
+        this.priority,
+        this.allottedTo,
+        this.tasks,
+        this.completionPercentage,
+        this.status});
+
+  AllTasksPieList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    clientCode = json['client_code'];
+    client = json['client'];
+    servicename = json['servicename'];
+    triggerDate = json['trigger_date'];
+    targetDate = json['target_date'];
+    satDate = json['sat_date'];
+    priority = json['priority'];
+    allottedTo = json['Allotted To'];
+    tasks = json['Tasks'];
+    completionPercentage = json['Completion_Percentage'];
+    status = json['Status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['client_code'] = this.clientCode;
+    data['client'] = this.client;
+    data['servicename'] = this.servicename;
+    data['trigger_date'] = this.triggerDate;
+    data['target_date'] = this.targetDate;
+    data['sat_date'] = this.satDate;
+    data['priority'] = this.priority;
+    data['Allotted To'] = this.allottedTo;
+    data['Tasks'] = this.tasks;
+    data['Completion_Percentage'] = this.completionPercentage;
+    data['Status'] = this.status;
+    return data;
+  }
+}
+
 class LoadAllTaskModel {
   String? message;
   bool? success;

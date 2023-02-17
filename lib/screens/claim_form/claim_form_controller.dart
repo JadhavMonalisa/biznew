@@ -844,7 +844,6 @@ class ClaimFormController extends GetxController {
         claimId:selectedClaimId,
       ));
       response.listen((value) {
-        print(value);
         var responseDecode = json.decode(value);
         if(responseDecode['Success'] == true){
           clearClaimForm();
@@ -867,14 +866,10 @@ class ClaimFormController extends GetxController {
         updateLoader(false);update();
       });
     } on CustomException catch(e){
-      print("in catch");
-      print(e.toString());
       Utils.showErrorSnackBar(e.toString());
       updateLoader(false);
       update();
     } catch (error) {
-      print("in error");
-      print(error.toString());
       Utils.showErrorSnackBar(error.toString());
       updateLoader(false);
       update();

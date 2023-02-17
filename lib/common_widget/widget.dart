@@ -206,10 +206,47 @@ showDashboardDialog(BuildContext context,String title,String subTitle, Dashboard
     },
   );
 }
+showInprocessDialog(BuildContext context){
+  showDialog(barrierDismissible: true,
+    context:context,
+    builder:(BuildContext context){
+      return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))
+        ),
+        content: Container(
+          height: 150.0,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              buildTextBoldWidget("We're coming soon!", blackColor, context, 20,align: TextAlign.center),
+              const Divider(color: primaryColor,),
+              const SizedBox(height: 10.0,),
+              buildTextRegularWidget("Sorry for inconvenience, this page is under construction.", blackColor, context, 16.0,align: TextAlign.left,),
+              const SizedBox(height: 10.0,),
+              GestureDetector(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: buildButtonWidget(context, "Ok",radius: 5.0,width: MediaQuery.of(context).size.width,height: 40.0),
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
 buildDrawerTitle(BuildContext context,IconData icon,String title,String subTitle,String screen){
   return GestureDetector(
       onTap:(){
-        Get.toNamed(screen,arguments: [title]);
+        if(title == "Client Dashboard" || title == "Appointment" || title == "Reports"){
+          showInprocessDialog(context);
+        }
+        else {
+          Get.toNamed(screen,arguments: [title]);
+        }
       },
       child:ListTile(
         leading: CircleAvatar(

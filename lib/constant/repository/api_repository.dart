@@ -239,8 +239,6 @@ class ApiRepository {
       "ndays":noOfDaysLeave, "startdate":startDate, "enddate":endDate,
       "reason":reason, "leavefor":leaveFor,"attempts":"","group":""
     },);
-
-    print("formData.fields");
     print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.leaveAddUrl, body: formData, headers: headers,
@@ -693,6 +691,168 @@ class ApiRepository {
     return AllottedNotStartedPastDueTeam.fromJson(response);
   }
 
+  ///started not completed past due team
+  Future<StartedButCompletedPieModel> getStartedNotCompletedPastDueTeam() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.startedNotCompletedPastDueTeamUrl, body: formData, headers: headers,
+    );
+    return StartedButCompletedPieModel.fromJson(response);
+  }
+  ///started not completed past due own
+  Future<StartedButCompletedPieModel> getStartedNotCompletedPastDueOwn() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.startedNotCompletedPastDueOwnUrl, body: formData, headers: headers,
+    );
+    return StartedButCompletedPieModel.fromJson(response);
+  }
+
+  ///started not completed probable team
+  Future<StartedButCompletedPieModel> getStartedNotCompletedProbableTeam() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.startedNotCompletedProbableTeamUrl, body: formData, headers: headers,
+    );
+    return StartedButCompletedPieModel.fromJson(response);
+  }
+  ///started not completed probable own
+  Future<StartedButCompletedPieModel> getStartedNotCompletedProbableOwn() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.startedNotCompletedProbableOwnUrl, body: formData, headers: headers,
+    );
+    return StartedButCompletedPieModel.fromJson(response);
+  }
+
+  ///started not completed high team
+  Future<StartedButCompletedPieModel> getStartedNotCompletedHighTeam() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.startedNotCompletedHighTeamUrl, body: formData, headers: headers,
+    );
+    return StartedButCompletedPieModel.fromJson(response);
+  }
+  ///started not completed high own
+  Future<StartedButCompletedPieModel> getStartedNotCompletedHighOwn() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.startedNotCompletedHighOwnUrl, body: formData, headers: headers,
+    );
+    return StartedButCompletedPieModel.fromJson(response);
+  }
+
+  ///started not completed medium team
+  Future<StartedButCompletedPieModel> getStartedNotCompletedMediumTeam() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.startedNotCompletedMediumTeamUrl, body: formData, headers: headers,
+    );
+    return StartedButCompletedPieModel.fromJson(response);
+  }
+  ///started not completed medium own
+  Future<StartedButCompletedPieModel> getStartedNotCompletedMediumOwn() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.startedNotCompletedMediumOwnUrl, body: formData, headers: headers,
+    );
+    return StartedButCompletedPieModel.fromJson(response);
+  }
+
+  ///started not completed low team
+  Future<StartedButCompletedPieModel> getStartedNotCompletedLowTeam() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.startedNotCompletedLowTeamUrl, body: formData, headers: headers,
+    );
+    return StartedButCompletedPieModel.fromJson(response);
+  }
+  ///started not completed low own
+  Future<StartedButCompletedPieModel> getStartedNotCompletedLowOwn() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.startedNotCompletedLowOwnUrl, body: formData, headers: headers,
+    );
+    return StartedButCompletedPieModel.fromJson(response);
+  }
+
+  ///completed udin pending team
+  Future<CompletedUdinPendingPieModel> getCompletedUdinPendingTeam() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.completedUdinPendingTeamUrl, body: formData, headers: headers,
+    );
+    return CompletedUdinPendingPieModel.fromJson(response);
+  }
+  ///completed udin pending own
+  Future<CompletedUdinPendingPieModel> getCompletedUdinPendingOwn() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.completedUdinPendingOwnUrl, body: formData, headers: headers,
+    );
+    return CompletedUdinPendingPieModel.fromJson(response);
+  }
+
+  ///completed not billed
+  Future<CompletedNotBilledPieModel> getCompletedNotBilled() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.completedNotBilledOwnUrl, body: formData, headers: headers,
+    );
+    return CompletedNotBilledPieModel.fromJson(response);
+  }
+
+  ///submitted for checking team
+  Future<SubmittedForCheckingPieModel> getSubmittedForCheckingTeam() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.submittedForCheckingTeamUrl, body: formData, headers: headers,
+    );
+    return SubmittedForCheckingPieModel.fromJson(response);
+  }
+  ///submitted for checking own
+  Future<SubmittedForCheckingPieModel> getSubmittedForCheckingOwn() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.submittedForCheckingOwnUrl, body: formData, headers: headers,
+    );
+    return SubmittedForCheckingPieModel.fromJson(response);
+  }
+
+  ///work on hold team
+  Future<WorkOnHoldPieModel> getWorkOnHoldTeam() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.workOnHoldTeamUrl, body: formData, headers: headers,
+    );
+    return WorkOnHoldPieModel.fromJson(response);
+  }
+  ///work on hold own
+  Future<WorkOnHoldPieModel> getWorkOnHoldOwn() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.workOnHoldOwnUrl, body: formData, headers: headers,
+    );
+    return WorkOnHoldPieModel.fromJson(response);
+  }
+
+  ///all tasks team
+  Future<AllTasksPieModel> getAllTasksTeam() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.allTaskCompletedTeamUrl, body: formData, headers: headers,
+    );
+    return AllTasksPieModel.fromJson(response);
+  }
+  ///all tasks own
+  Future<AllTasksPieModel> getAllTasksOwn() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.allTaskCompletedOwnUrl, body: formData, headers: headers,
+    );
+    return AllTasksPieModel.fromJson(response);
+  }
+
   ///start service
   Future<ApiResponse> getStartService(String id) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"cli_id":id},);
@@ -701,6 +861,8 @@ class ApiRepository {
     );
     return ApiResponse.fromJson(response);
   }
+
+
   ///load all tasks
   Future<LoadAllTaskModel> getLoadAllTaskService(String id) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"cli_id":id},);
@@ -729,8 +891,6 @@ class ApiRepository {
   Future<ApiResponse> getCancelCurrentPeriodService(String cliId,String reason,String nextPeriod) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"cli_id":cliId,
     "reason":reason,"next_period":nextPeriod},);
-    print("form_data");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.cancelCurrentPeriodServiceUrl, body: formData, headers: headers,
     );
@@ -740,8 +900,6 @@ class ApiRepository {
   Future<ApiResponse> getConfirmCancelService(String cliId,String reason) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"cli_ids":cliId,
     "reason":reason,"next_period":"2"},);
-    print("form_data");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.confirmCancelServiceUrl, body: formData, headers: headers,
     );

@@ -225,7 +225,7 @@ class LeaveController extends GetxController {
   changeSelectedIndex(v,String leaveName) {
     selectedLeave = v;
     nameOfLeaveFor = leaveName;
-
+    print(nameOfLeaveFor);
     if(selectedStartDateToShow!=selectedEndDateToShow){
 
     }
@@ -386,7 +386,8 @@ class LeaveController extends GetxController {
     try {
       ApiResponse? response = (await repository.getAddLeave(
           selectedLeaveTypeId, days.toString(), selectedStartDateToSend, selectedEndDateToSend,
-          leaveReason.text, selectedLeave??""));
+          leaveReason.text, nameOfLeaveFor??""));
+
       if (response.success!) {
         clearForm();
         Utils.showSuccessSnackBar(response.message);

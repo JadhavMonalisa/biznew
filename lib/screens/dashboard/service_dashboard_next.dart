@@ -1,4 +1,3 @@
-import 'package:biznew/common_widget/error_text.dart';
 import 'package:biznew/common_widget/widget.dart';
 import 'package:biznew/screens/dashboard/dashboard_controller.dart';
 import 'package:biznew/theme/app_colors.dart';
@@ -27,7 +26,14 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
           child:Scaffold(
               appBar: AppBar(
                 elevation: 0, backgroundColor: primaryColor, centerTitle: true,
-                title: buildTextMediumWidget("Allotted but not started", whiteColor,context, 16,align: TextAlign.center),
+                title: buildTextMediumWidget(
+                  cont.selectedMainType == "AllottedNotStarted"? "Allotted but not started" :
+                  cont.selectedMainType == "StartedNotCompleted" ? "Started but not completed" :
+                  cont.selectedMainType == "CompletedUdinPending"? "Completed but UDIN pending" :
+                  cont.selectedMainType == "CompletedNotBilled"? "Completed but not billed" :
+                  cont.selectedMainType == "WorkOnHold"? "Work on hold" :
+                  cont.selectedMainType == "SubmittedForChecking"? "Submitted for checking" : "All Tasks",
+                    whiteColor,context, 16,align: TextAlign.center),
               ),
               body:  cont.loader == true ? Center(child: buildCircularIndicator(),) :
               SizedBox(
@@ -101,7 +107,542 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                           )
                       ),
                       const SizedBox(height: 10.0,),
-                      DefaultTabController(
+
+                      ///completed but udin pending
+                      cont.selectedMainType == "CompletedUdinPending" ?
+                      cont.completedUdinPendingDataList.isEmpty ? Padding(
+                          padding: const EdgeInsets.only(top: 50.0),
+                          child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                      Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
+                          child:SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                              child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: cont.completedUdinPendingDataList.length,
+                          itemBuilder: (context,index){
+                            final item = cont.completedUdinPendingDataList[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Card(
+                                elevation: 1.0,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                    side: const BorderSide(color: grey)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                            height: 40.0,
+                                            decoration: const BoxDecoration(color: primaryColor,
+                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
+                                            child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                  child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
+                                                )
+                                            )
+                                        ),
+                                        Flexible(child: Container(
+                                            width: MediaQuery.of(context).size.width,
+                                            height: 40.0,
+                                            decoration: BoxDecoration(border: Border.all(color: grey),
+                                                borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+                                            child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0),
+                                                  child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
+                                                )
+                                            )
+                                        ),)
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10.0,),
+                                    Padding(
+                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            buildTextBoldWidget("Service - ", blackColor, context, 14.0),
+                                            Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
+                                          ],
+                                        )
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                        child: Row(
+                                          children: [
+                                            buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                            buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0),
+                                          ],
+                                        )
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Row(
+                                          children: [
+                                            Flexible(
+                                                child: GestureDetector(
+                                                  onTap: (){cont.callStartService(item.id!);},
+                                                  child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                )),
+                                            const SizedBox(width: 10.0,),
+                                            Flexible(
+                                              child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                            ),
+                                            const SizedBox(width: 10.0,),
+                                            Flexible(
+                                                child: GestureDetector(
+                                                  onTap: (){
+                                                    cont.selectedCliId = item.id!;
+                                                    cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                  },
+                                                  child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                )  ),
+                                          ],
+                                        )
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          })))
+
+                      ///completed but not billed
+                          : cont.selectedMainType == "CompletedNotBilled"
+                          ? cont.completedNotBilledDataList.isEmpty ? Padding(
+                          padding: const EdgeInsets.only(top: 50.0),
+                          child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                          Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
+                          child:SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                          child:ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.completedNotBilledDataList.length,
+                              itemBuilder: (context,index){
+                                final item = cont.completedNotBilledDataList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Card(
+                                    elevation: 1.0,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                        side: const BorderSide(color: grey)),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                                height: 40.0,
+                                                decoration: const BoxDecoration(color: primaryColor,
+                                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
+                                                child: Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                      child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
+                                                    )
+                                                )
+                                            ),
+                                            Flexible(child: Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                height: 40.0,
+                                                decoration: BoxDecoration(border: Border.all(color: grey),
+                                                    borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+                                                child: Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(left: 10.0),
+                                                      child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
+                                                    )
+                                                )
+                                            ),)
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10.0,),
+                                        Padding(
+                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                buildTextBoldWidget("Service - ", blackColor, context, 14.0),
+                                                Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
+                                              ],
+                                            )
+                                        ),
+                                        // Padding(
+                                        //     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                        //     child: Row(
+                                        //       children: [
+                                        //         buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                        //         buildTextRegularWidget("${item.}", blackColor, context, 14.0),
+                                        //       ],
+                                        //     )
+                                        // ),
+                                        Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Row(
+                                              children: [
+                                                Flexible(
+                                                    child: GestureDetector(
+                                                      onTap: (){cont.callStartService(item.id!);},
+                                                      child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                    )),
+                                                const SizedBox(width: 10.0,),
+                                                Flexible(
+                                                  child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                ),
+                                                const SizedBox(width: 10.0,),
+                                                Flexible(
+                                                    child: GestureDetector(
+                                                      onTap: (){
+                                                        cont.selectedCliId = item.id!;
+                                                        cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                      },
+                                                      child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                    )  ),
+                                              ],
+                                            )
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              })
+                        )
+                      )
+
+                      ///completed but not billed
+                          : cont.selectedMainType == "SubmittedForChecking"
+                          ? cont.submittedForCheckingPieDataList.isEmpty ? Padding(
+                          padding: const EdgeInsets.only(top: 50.0),
+                          child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                      Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
+                          child:SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                              child:ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  itemCount: cont.submittedForCheckingPieDataList.length,
+                                  itemBuilder: (context,index){
+                                    final item = cont.submittedForCheckingPieDataList[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Card(
+                                        elevation: 1.0,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                            side: const BorderSide(color: grey)),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Container(
+                                                    height: 40.0,
+                                                    decoration: const BoxDecoration(color: primaryColor,
+                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
+                                                    child: Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                          child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
+                                                        )
+                                                    )
+                                                ),
+                                                Flexible(child: Container(
+                                                    width: MediaQuery.of(context).size.width,
+                                                    height: 40.0,
+                                                    decoration: BoxDecoration(border: Border.all(color: grey),
+                                                        borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+                                                    child: Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 10.0),
+                                                          child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
+                                                        )
+                                                    )
+                                                ),)
+                                              ],
+                                            ),
+                                            const SizedBox(height: 10.0,),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Service - ", blackColor, context, 14.0),
+                                                    Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
+                                                  ],
+                                                )
+                                            ),
+                                            // Padding(
+                                            //     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                            //     child: Row(
+                                            //       children: [
+                                            //         buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                            //         buildTextRegularWidget("${item.}", blackColor, context, 14.0),
+                                            //       ],
+                                            //     )
+                                            // ),
+                                            Padding(
+                                                padding: const EdgeInsets.all(10.0),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){cont.callStartService(item.id!);},
+                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                        )),
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                      child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                    ),
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){
+                                                            cont.selectedCliId = item.id!;
+                                                            cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                          },
+                                                          child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                        )  ),
+                                                  ],
+                                                )
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  })
+                          )
+                      )
+
+                      ///work on hold
+                          : cont.selectedMainType == "WorkOnHold"
+                          ? cont.workOnHoldPieDataList.isEmpty ? Padding(
+                          padding: const EdgeInsets.only(top: 50.0),
+                          child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                      Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
+                          child:SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                              child:ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  itemCount: cont.workOnHoldPieDataList.length,
+                                  itemBuilder: (context,index){
+                                    final item = cont.workOnHoldPieDataList[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Card(
+                                        elevation: 1.0,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                            side: const BorderSide(color: grey)),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Container(
+                                                    height: 40.0,
+                                                    decoration: const BoxDecoration(color: primaryColor,
+                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
+                                                    child: Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                          child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
+                                                        )
+                                                    )
+                                                ),
+                                                Flexible(child: Container(
+                                                    width: MediaQuery.of(context).size.width,
+                                                    height: 40.0,
+                                                    decoration: BoxDecoration(border: Border.all(color: grey),
+                                                        borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+                                                    child: Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 10.0),
+                                                          child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
+                                                        )
+                                                    )
+                                                ),)
+                                              ],
+                                            ),
+                                            const SizedBox(height: 10.0,),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Service - ", blackColor, context, 14.0),
+                                                    Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
+                                                  ],
+                                                )
+                                            ),
+                                            // Padding(
+                                            //     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                            //     child: Row(
+                                            //       children: [
+                                            //         buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                            //         buildTextRegularWidget("${item.}", blackColor, context, 14.0),
+                                            //       ],
+                                            //     )
+                                            // ),
+                                            Padding(
+                                                padding: const EdgeInsets.all(10.0),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){cont.callStartService(item.id!);},
+                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                        )),
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                      child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                    ),
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){
+                                                            cont.selectedCliId = item.id!;
+                                                            cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                          },
+                                                          child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                        )  ),
+                                                  ],
+                                                )
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  })
+                          )
+                      )
+
+                      ///completed but not billed
+                          : cont.selectedMainType == "AllTasks"
+                          ? cont.allTasksDataList.isEmpty ? Padding(
+                          padding: const EdgeInsets.only(top: 50.0),
+                          child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                      Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
+                          child:SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
+                              child:ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  itemCount: cont.allTasksDataList.length,
+                                  itemBuilder: (context,index){
+                                    final item = cont.allTasksDataList[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Card(
+                                        elevation: 1.0,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                            side: const BorderSide(color: grey)),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Container(
+                                                    height: 40.0,
+                                                    decoration: const BoxDecoration(color: primaryColor,
+                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
+                                                    child: Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                          child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
+                                                        )
+                                                    )
+                                                ),
+                                                Flexible(child: Container(
+                                                    width: MediaQuery.of(context).size.width,
+                                                    height: 40.0,
+                                                    decoration: BoxDecoration(border: Border.all(color: grey),
+                                                        borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+                                                    child: Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 10.0),
+                                                          child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
+                                                        )
+                                                    )
+                                                ),)
+                                              ],
+                                            ),
+                                            const SizedBox(height: 10.0,),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Service - ", blackColor, context, 14.0),
+                                                    Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
+                                                  ],
+                                                )
+                                            ),
+                                            // Padding(
+                                            //     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                            //     child: Row(
+                                            //       children: [
+                                            //         buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                            //         buildTextRegularWidget("${item.}", blackColor, context, 14.0),
+                                            //       ],
+                                            //     )
+                                            // ),
+                                            Padding(
+                                                padding: const EdgeInsets.all(10.0),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){cont.callStartService(item.id!);},
+                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                        )),
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                      child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                    ),
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){
+                                                            cont.selectedCliId = item.id!;
+                                                            cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                          },
+                                                          child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                        )  ),
+                                                  ],
+                                                )
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  })
+                          )
+                      )
+
+                      ///allotted not started,started not completed
+                          : DefaultTabController(
                         length: 5,
                         child: Stack(
                         children: [
@@ -150,7 +691,9 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                               height: MediaQuery.of(context).size.height,
                               width: MediaQuery.of(context).size.width,
                               child:
-                              cont.allottedNotStartedPastDueList.isEmpty ? Padding(
+                                  cont.selectedMainType == "AllottedNotStarted" ?
+                              ///allotted not started
+                                  cont.allottedNotStartedPastDueList.isEmpty ? Padding(
                                   padding: const EdgeInsets.only(top: 50.0),
                                   child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
                               ListView.builder(
@@ -301,7 +844,161 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                         ),
                                       ),
                                     );
-                                  }),
+                                  })
+                             ///started not completed
+                              : cont.startedNotCompletedPastDueList.isEmpty ? Padding(
+                                      padding: const EdgeInsets.only(top: 50.0),
+                                      child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                                  ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const AlwaysScrollableScrollPhysics(),
+                                      itemCount: cont.startedNotCompletedPastDueList.length,
+                                      scrollDirection: Axis.vertical,
+                                      itemBuilder: (context,index){
+                                        final item = cont.startedNotCompletedPastDueList[index];
+                                        return Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Card(
+                                            elevation: 1.0,
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                                side: const BorderSide(color: grey)),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                        height: 40.0,
+                                                        decoration: const BoxDecoration(color: primaryColor,
+                                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
+                                                        child: Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                              child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
+                                                            )
+                                                        )
+                                                    ),
+                                                    Flexible(child: Container(
+                                                        width: MediaQuery.of(context).size.width,
+                                                        height: 40.0,
+                                                        decoration: BoxDecoration(border: Border.all(color: grey),
+                                                            borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+                                                        child: Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 10.0),
+                                                              child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
+                                                            )
+                                                        )
+                                                    ),)
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 10.0,),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
+                                                      style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
+                                                      recognizer: TapGestureRecognizer()..onTap = () {
+                                                        //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
+                                                      },
+                                                      children: <TextSpan>[
+                                                        TextSpan(
+                                                            text: "${
+                                                                cont.addedDateListForCurrent.contains(item.id)
+                                                                    ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                    : item.targetDateToShow}",
+                                                            style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
+                                                                decoration: TextDecoration.underline,decorationThickness: 2.0),
+                                                            recognizer: TapGestureRecognizer()..onTap = () {
+                                                              //cont.selectTargetDateForCurrent(context,item.id!);
+                                                            }
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Flexible(
+                                                        child: Container(
+                                                            height: 40.0,
+                                                            width: MediaQuery.of(context).size.width,
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                              border: Border.all(color: grey),),
+                                                            child: Center(
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                  child: DropdownButton(
+                                                                    hint: buildTextRegularWidget(
+                                                                        cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                        cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
+                                                                        blackColor, context, 15.0),
+                                                                    isExpanded: true,
+                                                                    underline: Container(),
+                                                                    items:
+                                                                    cont.priorityList.map((String value) {
+                                                                      return DropdownMenuItem<String>(
+                                                                        value: value,
+                                                                        child: Text(value),
+                                                                      );
+                                                                    }).toList(),
+                                                                    onChanged: (val) {
+                                                                      cont.updatePriorityForCurrent(val!,item.id!);
+                                                                    },
+                                                                  ),
+                                                                )
+                                                            )
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                    padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                                    child: Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                        Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0)),
+                                                      ],
+                                                    )
+                                                ),
+                                                Padding(
+                                                    padding: const EdgeInsets.all(10.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Flexible(
+                                                            child: GestureDetector(
+                                                              onTap: (){cont.callStartService(item.id!);},
+                                                              child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                            )),
+                                                        const SizedBox(width: 10.0,),
+                                                        Flexible(
+                                                          child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                        ),
+                                                        const SizedBox(width: 10.0,),
+                                                        Flexible(
+                                                            child: GestureDetector(
+                                                              onTap: (){
+                                                                cont.selectedCliId = item.id!;
+                                                                cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                              },
+                                                              child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                            )  ),
+                                                      ],
+                                                    )
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }),
                             ),
                           )
                               : const Opacity(opacity: 0.0),

@@ -34,7 +34,7 @@ class DashboardController extends GetxController {
 
   List chartDetails = ["Triggered In Last 7 Days","More Than 7 Days","Past Due","Probable Overdue","High",];
   //List chartColors = [Colors.blue,Colors.brown,Colors.orangeAccent.shade100,Colors.indigo,Colors.red];
-  List chartColors = [Colors.blue,Colors.brown,Color(0xffFFEE58),Color(0xff0000FF),Color(0xffFF0000)];
+  List chartColors = [Colors.blue,Colors.brown,const Color(0xffFFEE58),const Color(0xff0000FF),const Color(0xffFF0000)];
 
   final allColors = <pie_chart_color.Color>[
     Colors.grey,Colors.brown,Colors.orangeAccent.shade100,Colors.indigo,Colors.red
@@ -50,7 +50,7 @@ class DashboardController extends GetxController {
   };
   final triggerNotAllottedColors = <pie_chart_color.Color>[
     Colors.blue,Colors.brown,
-    Color(0xffFFEE58)
+    const Color(0xffFFEE58)
     //Color(0xffFFFF99),
     //Colors.indigo,
   ];
@@ -84,9 +84,10 @@ class DashboardController extends GetxController {
   // Colors.orangeAccent.shade100,Colors.brown,Colors.red,Colors.orange,Colors.green
   // ];
   final allottedNotStartedColors = <pie_chart_color.Color>[
-    Color(0xffFFEE58),Color(0xff0000FF),Color(0xffFF0000),Color(0xffFFA500),Color(0xff008000)
+    const Color(0xffFFEE58),const Color(0xff0000FF),const Color(0xffFF0000),const Color(0xffFFA500),const Color(0xff008000)
   ];
   List<AllottedNotStartedPastDueData> allottedNotStartedPastDueList = [];
+
   /// 3. started not completed
   List startedNotCompletedDetails = ["Past Due","Probable Overdue","High","Medium","Low"];
   List<int> ownStartedNotCompleted = [];
@@ -103,8 +104,10 @@ class DashboardController extends GetxController {
   final startedNotCompletedColors = <pie_chart_color.Color>[
    // Colors.blue,Colors.brown,Colors.orangeAccent.shade100,Colors.indigo,Colors.red,
    // Colors.orangeAccent.shade100,Colors.brown,Colors.red,Colors.orange,Colors.green
-    Color(0xffFFEE58),Color(0xff0000FF),Color(0xffFF0000),Color(0xffFFA500),Color(0xff008000)
+    const Color(0xffFFEE58),const Color(0xff0000FF),const Color(0xffFF0000),const Color(0xffFFA500),const Color(0xff008000)
   ];
+  List<StartedNotCompletedPieList> startedNotCompletedPastDueList = [];
+
   /// 4. completed UDIN pending
   List<int> ownCompletedUdinPending = [];
   List<int> teamCompletedUdinPending = [];
@@ -117,6 +120,7 @@ class DashboardController extends GetxController {
   //   Colors.grey,
   // ];
   final completedIdPendingColors = <pie_chart_color.Color>[ const Color(0xff6f42c1),];
+  List<CompletedUdinPendingPieList> completedUdinPendingDataList = [];
   /// 5. completed not billed
   List<int> completedNotBilled = [];
   String completedNotBilledTotal = "";
@@ -127,6 +131,8 @@ class DashboardController extends GetxController {
   //   Colors.grey,
   // ];
   final completedNotBilledColors = <pie_chart_color.Color>[ const Color(0xff00c4ff),];
+  List<CompletedNotBilledPieList> completedNotBilledDataList= [];
+
   ///work on hold
   List<int> ownWorkOnHold = [];
   List<int> teamWorkOnHold = [];
@@ -136,6 +142,7 @@ class DashboardController extends GetxController {
     "Own": 0.0,"Team":0.0
   };
   final workOnHoldColors = <pie_chart_color.Color>[Colors.red,Colors.black];
+
   ///submitted for checking
   List<int> ownSubmittedForChecking = [];
   List<int> teamSubmittedForChecking = [];
@@ -145,6 +152,7 @@ class DashboardController extends GetxController {
     "Own": 0.0,"Team":0.0
   };
   final submittedForCheckingColors = <pie_chart_color.Color>[ Colors.orange,Colors.black];
+
   ///all tasks submitted
   List<int> ownAllTaskCompleted = [];
   List<int> teamAllTaskCompleted = [];
@@ -158,6 +166,7 @@ class DashboardController extends GetxController {
   };
   final allTasksCompletedColors = <pie_chart_color.Color>[ Colors.green, Colors.black ];
 
+  String selectedMainType = "";
   bool validateBranchName = false;
   String selectedBranchId = "";
   String selectedBranchName = "";
@@ -598,24 +607,122 @@ class DashboardController extends GetxController {
     updateLoader(true);
     selectedPieChartTitle = title;
     selectedType = type ; selectedCount = count ;
-    if(title == "Past Due"){
-      type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
+    selectedMainType = "AllottedNotStarted";
+    // if(title == "Past Due"){
+    //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
+    // }
+    // else if(title == "Probable Overdue"){
+    //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
+    // }
+    // else if(title == "High"){
+    //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
+    // }
+    // else if(title == "Medium"){
+    //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
+    // }
+    // else if(title == "Low"){
+    //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
+    // }
+
+    if(type == "Own"){
+      callAllottedNotStartedOwn();
     }
-    else if(title == "Probable Overdue"){
-      type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
-    }
-    else if(title == "High"){
-      type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
-    }
-    else if(title == "Medium"){
-      type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
-    }
-    else if(title == "Low"){
-      type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
+    else{
+      callAllottedNotStartedTeam();
     }
 
     update();
   }
+  ///due data started but nor completed
+  callDueDataForStartedNotCompletedApi(String title,String type, String count){
+    updateLoader(true);
+    selectedPieChartTitle = title;
+    selectedType = type ; selectedCount = count ;
+    selectedMainType = "StartedNotCompleted";
+    if(type == "Own"){
+      callStartedNotCompletedOwn();
+    }
+    else{
+      callStartedNotCompletedTeam();
+    }
+
+    update();
+  }
+  ///due data completed but udin pending
+  callDueDataForCompletedUdinPendingApi(String title,String type, String count){
+    updateLoader(true);
+    selectedPieChartTitle = title;
+    selectedType = type ; selectedCount = count ;
+    selectedMainType = "CompletedUdinPending";
+    if(type == "Own"){
+      callCompletedUdinPendingOwn();
+    }
+    else{
+      callCompletedUdinPendingTeam();
+    }
+
+    update();
+  }
+  ///due data completed not billed
+  callDueDataForCompletedNotBilled(String title,String count){
+    updateLoader(true);
+    selectedPieChartTitle = title;
+    selectedCount = count ;
+    selectedMainType = "CompletedNotBilled";
+
+    callCompletedNotBilledDueData();
+
+    update();
+  }
+  ///due data submitted for checking
+  callDueDataForSubmittedForChecking(String title,String type,String count){
+    updateLoader(true);
+    selectedPieChartTitle = title;
+    selectedType = type ; selectedCount = count ;
+    selectedMainType = "SubmittedForChecking";
+
+    if(type == "Own"){
+      callSubmittedForCheckingOwnData();
+    }
+    else{
+      callSubmittedForCheckingTeamData();
+    }
+
+    update();
+  }
+  ///due data work on hold
+  callDueDataForWorkOnHold(String title,String type,String count){
+    updateLoader(true);
+    selectedPieChartTitle = title;
+    selectedType = type ; selectedCount = count ;
+    selectedMainType = "WorkOnHold";
+
+    if(type == "Own"){
+      callWorkOnHoldOwnData();
+    }
+    else{
+      callWorkOnHoldTeamData();
+    }
+
+    update();
+  }
+  ///due data all tasks
+  callDueDataForAllTasks(String title,String type,String count){
+    updateLoader(true);
+    selectedPieChartTitle = title;
+    selectedType = type ; selectedCount = count ;
+    selectedMainType = "AllTasks";
+
+    if(type == "Own"){
+      callAllTasksOwnData();
+    }
+    else{
+      callAllTasksTeamData();
+    }
+
+    update();
+  }
+
   ///cancel service => check password dialog
   String selectedCliId = "";
   showCheckPasswordOrReasonDialog(String serviceName,BuildContext context){
@@ -1045,6 +1152,369 @@ class DashboardController extends GetxController {
     selectedPieChartTitle == "High" ? onHighSelected() :
     selectedPieChartTitle == "Medium" ? onHMediumSelected() :
     onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+
+  ///started not completed team
+  void callStartedNotCompletedTeam() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response =
+      selectedPieChartTitle == "Past Due" ? (await repository.getStartedNotCompletedPastDueTeam()) :
+      selectedPieChartTitle == "Probable Overdue" ? (await repository.getStartedNotCompletedProbableTeam()) :
+      selectedPieChartTitle == "High" ? (await repository.getStartedNotCompletedHighTeam()) :
+      selectedPieChartTitle == "Medium" ? (await repository.getStartedNotCompletedMediumTeam()) :
+      (await repository.getStartedNotCompletedLowTeam());
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
+    selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
+    selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
+    selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
+    selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+
+    selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    selectedPieChartTitle == "High" ? onHighSelected() :
+    selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  ///started not completed own
+  void callStartedNotCompletedOwn() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response =
+      selectedPieChartTitle == "Past Due" ? (await repository.getStartedNotCompletedPastDueOwn()) :
+      selectedPieChartTitle == "Probable Overdue" ? (await repository.getStartedNotCompletedProbableOwn()) :
+      selectedPieChartTitle == "High" ? (await repository.getStartedNotCompletedHighOwn()) :
+      selectedPieChartTitle == "Medium" ? (await repository.getStartedNotCompletedMediumOwn()) :
+      (await repository.getStartedNotCompletedLowOwn());
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
+    selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
+    selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
+    selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
+    selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+
+    selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    selectedPieChartTitle == "High" ? onHighSelected() :
+    selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+
+  /// completed udin pending team
+  void callCompletedUdinPendingTeam() async {
+    completedUdinPendingDataList.clear();
+    try {
+      CompletedUdinPendingPieModel? response = await repository.getCompletedUdinPendingTeam();
+      if (response.success!) {
+        completedUdinPendingDataList.addAll(response.completedUdinPendingPieList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+
+    // selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
+    // selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
+    // selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
+    // selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
+    // selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+    //
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  /// completed udin pending own
+  void callCompletedUdinPendingOwn() async {
+    completedUdinPendingDataList.clear();
+    try {
+      CompletedUdinPendingPieModel? response = await repository.getCompletedUdinPendingOwn();
+
+      if (response.success!) {
+        completedUdinPendingDataList.addAll(response.completedUdinPendingPieList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+
+    // selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
+    // selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
+    // selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
+    // selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
+    // selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+    //
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+
+  ///completed not billed
+  void callCompletedNotBilledDueData() async {
+    completedNotBilledDataList.clear();
+    try {
+      CompletedNotBilledPieModel? response = await repository.getCompletedNotBilled();
+
+      if (response.success!) {
+        completedNotBilledDataList.addAll(response.completedNotBilledPieList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+
+  List<SubmittedForCheckingPieList> submittedForCheckingPieDataList = [];
+  ///submitted for checking team
+  void callSubmittedForCheckingTeamData() async {
+    submittedForCheckingPieDataList.clear();
+    try {
+      SubmittedForCheckingPieModel? response = await repository.getSubmittedForCheckingTeam();
+
+      if (response.success!) {
+        submittedForCheckingPieDataList.addAll(response.submittedForCheckingPieList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  ///submitted for checking own
+  void callSubmittedForCheckingOwnData() async {
+    submittedForCheckingPieDataList.clear();
+    try {
+      SubmittedForCheckingPieModel? response = await repository.getSubmittedForCheckingOwn();
+
+      if (response.success!) {
+        submittedForCheckingPieDataList.addAll(response.submittedForCheckingPieList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+
+  List<WorkOnHoldPieList> workOnHoldPieDataList = [];
+  ///work on hold team
+  void callWorkOnHoldTeamData() async {
+    workOnHoldPieDataList.clear();
+    try {
+      WorkOnHoldPieModel? response = await repository.getWorkOnHoldTeam();
+
+      if (response.success!) {
+        workOnHoldPieDataList.addAll(response.workOnHoldPieList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  ///work on hold own
+  void callWorkOnHoldOwnData() async {
+    workOnHoldPieDataList.clear();
+    try {
+      WorkOnHoldPieModel? response = await repository.getWorkOnHoldOwn();
+
+      if (response.success!) {
+        workOnHoldPieDataList.addAll(response.workOnHoldPieList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+
+  List<AllTasksPieList> allTasksDataList = [];
+  ///all tasks team
+  void callAllTasksTeamData() async {
+    allTasksDataList.clear();
+    try {
+      AllTasksPieModel? response = await repository.getAllTasksTeam();
+
+      if (response.success!) {
+        allTasksDataList.addAll(response.allTasksPieList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  ///all tasks own
+  void callAllTasksOwnData() async {
+    allTasksDataList.clear();
+    try {
+      AllTasksPieModel? response = await repository.getAllTasksOwn();
+
+      if (response.success!) {
+        allTasksDataList.addAll(response.allTasksPieList!);
+        updateLoader(false);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }

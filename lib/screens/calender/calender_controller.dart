@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:math';
 import 'package:biznew/constant/provider/custom_exception.dart';
 import 'package:biznew/constant/repository/api_repository.dart';
@@ -114,8 +113,6 @@ class CalenderViewController extends GetxController {
       if (response.success!) {
         calenderDataList.addAll(response.calenderData!);
         //List<String> result = LinkedHashSet<String>.from(calenderDataList).toList();
-        print("in response");
-        print(selectedYear);
         update();
       } else {
         update();

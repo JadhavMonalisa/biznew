@@ -292,11 +292,16 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                   itemBuilder: (context,index){
                                                     return Padding(
                                                         padding: const EdgeInsets.all(2.0),
-                                                        child: Card(
-                                                          child: Padding(
-                                                            padding:const EdgeInsets.all(10.0),
-                                                            child: buildTextBoldWidget(cont.completedNotBilled[index].toString(), blackColor, context, 16.0,align: TextAlign.center),
-                                                          ),
+                                                        child: GestureDetector(
+                                                          onTap: (){
+                                                            cont.callDueDataForCompletedNotBilled("Total",cont.completedNotBilled[index].toString());
+                                                          },
+                                                          child:Card(
+                                                            child: Padding(
+                                                              padding:const EdgeInsets.all(10.0),
+                                                              child: buildTextBoldWidget(cont.completedNotBilled[index].toString(), blackColor, context, 16.0,align: TextAlign.center),
+                                                            ),
+                                                          )
                                                         )
                                                     );
                                                   })
@@ -410,6 +415,9 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                                   text: cont.ownStartedNotCompleted[index].toString(),
                                                                                   style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
                                                                             ],
+                                                                              recognizer: TapGestureRecognizer()..onTap= () {
+                                                                                cont.callDueDataForStartedNotCompletedApi(cont.startedNotCompletedDetails[index],"Own",cont.ownStartedNotCompleted[index].toString());
+                                                                              }
                                                                           ),
                                                                         ),
                                                                         const VerticalDivider(
@@ -425,6 +433,9 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                                   text: cont.teamStartedNotCompleted[index].toString(),
                                                                                   style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
                                                                             ],
+                                                                              recognizer: TapGestureRecognizer()..onTap= () {
+                                                                                cont.callDueDataForStartedNotCompletedApi(cont.startedNotCompletedDetails[index],"Team",cont.teamStartedNotCompleted[index].toString());
+                                                                              }
                                                                           ),
                                                                         ),
                                                                       ],
@@ -492,21 +503,31 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                                   children: [
-                                                                    Column(
-                                                                      children: [
-                                                                        buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                        buildTextBoldWidget(cont.ownCompletedUdinPending[0].toString(), blackColor, context, 16.0),
-                                                                      ],
+                                                                    GestureDetector(
+                                                                      onTap: (){
+                                                                        cont.callDueDataForCompletedUdinPendingApi("Completed but Udin pending","Own",cont.ownCompletedUdinPending[0].toString());
+                                                                      },
+                                                                      child:Column(
+                                                                        children: [
+                                                                          buildTextRegularWidget("Own", blackColor, context, 16.0),
+                                                                          buildTextBoldWidget(cont.ownCompletedUdinPending[0].toString(), blackColor, context, 16.0),
+                                                                        ],
+                                                                      )
                                                                     ),
                                                                     const VerticalDivider(
                                                                       color: grey,
                                                                       thickness: 2,
                                                                     ),
-                                                                    Column(
-                                                                      children: [
-                                                                        buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                        buildTextBoldWidget(cont.teamCompletedUdinPending[0].toString(), blackColor, context, 16.0),
-                                                                      ],
+                                                                    GestureDetector(
+                                                                      onTap: (){
+                                                                        cont.callDueDataForCompletedUdinPendingApi("Completed but Udin pending","Team",cont.teamCompletedUdinPending[0].toString());
+                                                                      },
+                                                                      child: Column(
+                                                                        children: [
+                                                                          buildTextRegularWidget("Team", blackColor, context, 16.0),
+                                                                          buildTextBoldWidget(cont.teamCompletedUdinPending[0].toString(), blackColor, context, 16.0),
+                                                                        ],
+                                                                      ),
                                                                     ),
                                                                   ],
                                                                 ),
@@ -566,22 +587,31 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             children: [
-                                                              Column(
-                                                                children: [
-                                                                  buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                  buildTextBoldWidget(cont.ownWorkOnHold.isEmpty?"":cont.ownWorkOnHold[0].toString(), blackColor, context, 16.0),
-                                                                ],
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForWorkOnHold("Work On Hold","Own",cont.ownWorkOnHold[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Own", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownWorkOnHold.isEmpty?"":cont.ownWorkOnHold[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),
                                                               ),
                                                               const VerticalDivider(
                                                                 color: grey,
                                                                 thickness: 2,
                                                               ),
-                                                              Column(
+                                                              GestureDetector(
+                                                              onTap: (){
+                                                              cont.callDueDataForWorkOnHold("Work On Hold","team",cont.teamWorkOnHold[0].toString());
+                                                              },
+                                                              child: Column(
                                                                 children: [
                                                                   buildTextRegularWidget("Team", blackColor, context, 16.0),
                                                                   buildTextBoldWidget(cont.teamWorkOnHold.isEmpty?"":cont.teamWorkOnHold[0].toString(), blackColor, context, 16.0),
                                                                 ],
-                                                              ),
+                                                              ),)
                                                             ],
                                                           ),
                                                         ),
@@ -680,21 +710,31 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             children: [
-                                                              Column(
-                                                                children: [
-                                                                  buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                  buildTextBoldWidget(cont.ownSubmittedForChecking.isEmpty?"":cont.ownSubmittedForChecking[0].toString(), blackColor, context, 16.0),
-                                                                ],
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForSubmittedForChecking("Submitted for checking","Own",cont.ownSubmittedForChecking[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Own", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownSubmittedForChecking.isEmpty?"":cont.ownSubmittedForChecking[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),
                                                               ),
                                                               const VerticalDivider(
                                                                 color: grey,
                                                                 thickness: 2,
                                                               ),
-                                                              Column(
-                                                                children: [
-                                                                  buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                  buildTextBoldWidget(cont.teamSubmittedForChecking.isEmpty?"":cont.teamSubmittedForChecking[0].toString(), blackColor, context, 16.0),
-                                                                ],
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForSubmittedForChecking("Submitted for checking","Team",cont.teamSubmittedForChecking[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Team", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.teamSubmittedForChecking.isEmpty?"":cont.teamSubmittedForChecking[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),
                                                               ),
                                                             ],
                                                           ),
@@ -865,21 +905,31 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             children: [
-                                                              Column(
-                                                                children: [
-                                                                  buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                  buildTextBoldWidget(cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[0].toString(), blackColor, context, 16.0),
-                                                                ],
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForAllTasks("All Tasks","Own",cont.ownAllTaskCompleted[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Own", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),
                                                               ),
                                                               const VerticalDivider(
                                                                 color: grey,
                                                                 thickness: 2,
                                                               ),
-                                                              Column(
-                                                                children: [
-                                                                  buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                  buildTextBoldWidget(cont.teamAllTaskCompleted.isEmpty ? "" :cont.teamAllTaskCompleted[0].toString(), blackColor, context, 16.0),
-                                                                ],
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForAllTasks("All Tasks","Team",cont.teamAllTaskCompleted[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Team", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.teamAllTaskCompleted.isEmpty ? "" :cont.teamAllTaskCompleted[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),
                                                               ),
                                                             ],
                                                           ),

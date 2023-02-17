@@ -87,6 +87,42 @@ class ApiEndpoint {
   static const String allottedNotStartedLowTeamUrl = "$baseUrl/ServicesController/allotted_but_not_started_low_teamm";
   static const String allottedNotStartedLowOwnUrl = "$baseUrl/ServicesController/allotted_but_not_started_low_own";
 
+  ///started not completed past due -> team,own
+  static const String startedNotCompletedPastDueTeamUrl = "$baseUrl/ServicesController/started_but_not_completed_pastdue_team";
+  static const String startedNotCompletedPastDueOwnUrl = "$baseUrl/ServicesController/started_but_not_completed_pastdue_own";
+  ///started not completed probable -> team,own
+  static const String startedNotCompletedProbableTeamUrl = "$baseUrl/ServicesController/started_but_not_completed_probabledue_team";
+  static const String startedNotCompletedProbableOwnUrl = "$baseUrl/ServicesController/started_but_not_completed_probable_own";
+  ///started not completed high -> team,own
+  static const String startedNotCompletedHighOwnUrl = "$baseUrl/ServicesController/started_but_not_completed_high_own";
+  static const String startedNotCompletedHighTeamUrl = "$baseUrl/ServicesController/started_but_not_completed_high_team";
+  ///started not completed medium -> team,own
+  static const String startedNotCompletedMediumTeamUrl = "$baseUrl/ServicesController/started_but_not_completed_medium_team";
+  static const String startedNotCompletedMediumOwnUrl = "$baseUrl/ServicesController/started_but_not_completed_medium_own";
+  ///started not completed low -> team,own
+  static const String startedNotCompletedLowTeamUrl = "$baseUrl/ServicesController/started_but_not_completed_low_team";
+  static const String startedNotCompletedLowOwnUrl = "$baseUrl/ServicesController/started_but_not_completed_low_own";
+
+  ///completed udin pending -> team,own
+  static const String completedUdinPendingTeamUrl = "$baseUrl/ServicesController/completed_but_udin_pending_team";
+  static const String completedUdinPendingOwnUrl = "$baseUrl/ServicesController/completed_but_udin_pending_own";
+
+  ///completed not billed
+  static const String completedNotBilledOwnUrl = "$baseUrl/ServicesController/completed_but_not_billed";
+
+  ///submitted for checking -> team,own
+  static const String submittedForCheckingTeamUrl = "$baseUrl/ServicesController/submitted_for_checking_team";
+  static const String submittedForCheckingOwnUrl = "$baseUrl/ServicesController/submitted_for_checking_own";
+
+  ///work on hold -> team,own
+  static const String workOnHoldTeamUrl = "$baseUrl/ServicesController/work_on_hold_team";
+  static const String workOnHoldOwnUrl = "$baseUrl/ServicesController/work_on_hold_own";
+
+  ///all task completed -> team,own
+  static const String allTaskCompletedTeamUrl = "$baseUrl/ServicesController/all_task_completed_team";
+  static const String allTaskCompletedOwnUrl = "$baseUrl/ServicesController/all_task_completed_own";
+
+
   ///service action
   static const String startServiceUrl = "$baseUrl/ServicesController/start_service";
   static const String loadAllTaskUrl = "$baseUrl/ServicesController/load_all_tasks";

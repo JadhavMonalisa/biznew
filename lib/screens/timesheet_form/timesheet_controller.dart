@@ -32,6 +32,8 @@ class TimesheetFormController extends GetxController {
   ///stepper 1
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
+  TimeOfDay selectedStartTime24 = TimeOfDay.now();
+  TimeOfDay selectedEndTime24 = TimeOfDay.now();
   //String selectedDateToShow = "";
   String selectedDateToSend = "";
   String selectedDateToShow = "";
@@ -51,6 +53,7 @@ class TimesheetFormController extends GetxController {
   bool validateWorkAt = false;
   bool validateInTime = false;
   bool validateOutTime = false;
+  bool validateOutTimeFormat = false;
   bool validateTotalTime = false;
 
   ///stepper 2
@@ -73,6 +76,7 @@ class TimesheetFormController extends GetxController {
   bool validateDetailsStepper2 = false;
   bool validateRemarkStepper2 = false;
   bool validateTimeSpentStepper2 = false;
+  bool validateTimeSpentStepper3 = false;
   List<ClientListData> clientNameList = [];
   String selectedClientId = "";
   String clientApplicableServiceId = "";
@@ -80,9 +84,11 @@ class TimesheetFormController extends GetxController {
   String statusStart = "";
   List<TimesheetServicesData> serviceList = [];
   List<TimesheetTaskData> taskList = [];
+  List<String> selectedTaskStatusList = [];
   List<StatusList> statusList = [];
+  List<String> allottedStartedStatusList = ["Inprocess","Awaiting for Client Input","Submitted for Checking","Put on Hold","Completed","Cancel","Sent for rework"];
   DateTime todayDate = DateTime.now();
-  String currentService = "office";
+  String currentService = "allotted";
   List<TypeOfWorkList> workList = [];
 
   ///stepper 3
@@ -99,9 +105,12 @@ class TimesheetFormController extends GetxController {
   TextEditingController details6 = TextEditingController();
   String selectedTimeSpent7ToShow = "";
   TextEditingController details7 = TextEditingController();
+  TextEditingController stepper3TimeSpent = TextEditingController();
+  String selectedTimeOfficeRelatedShow = "";
 
   final List<TextEditingController> detailsStepper3List = [];
   List<TextEditingController> timeStepper3List = [];
+  List<TextEditingController> timeStepper2StatusList = [];
   int numberOfTextFields = 1;
   List<String> workTypeNameList = [];
   List<String> workTypeIdList = [];
@@ -142,7 +151,7 @@ class TimesheetFormController extends GetxController {
   }
 
   onWillPopBackTimesheetList(){
-    clearStepper1();
+    clearStepper1();clearStepper2();clearStepper3();
     Get.toNamed(AppRoutes.timesheetList);
     update();
   }
@@ -165,9 +174,11 @@ class TimesheetFormController extends GetxController {
   clearStepper2(){
     selectedClient = "" ; selectedClientId = "";
     selectedService = "" ;selectedServiceId="";
-    selectedTask = "" ; selectedTaskId="";
+    isStartedSelected = true;
+    selectedTask = "" ; selectedTaskId=""; taskList.clear();selectedTaskStatusList.clear();
     selectedStatus = ""; selectedStatusId="";
-    details.clear(); stepper2TimeSpent.clear(); remark.clear(); update();
+    details.clear(); stepper2TimeSpent.clear(); remark.clear();
+    update();
   }
 
   updateSelectedTimesheetFlag(int val,String flag,BuildContext context){
@@ -228,14 +239,18 @@ class TimesheetFormController extends GetxController {
     selectedTimesheetStatus = val;callTimesheetList(); update();
   }
 
+  clearForm(){
+
+  }
+
   checkStepperValidation(String buttonName){
     if(currentStep==0){
-       updateLoader(true);
-       callTimesheetTotal();
-       checkValidationForStepper1();
+       // updateLoader(true);
+       // callTimesheetTotal();
+       // checkValidationForStepper1();
 
-       // updateLoader(false);
-       //continued();
+       updateLoader(false);
+       continued();
        update();
     }
     else if(currentStep==1){
@@ -248,9 +263,12 @@ class TimesheetFormController extends GetxController {
       //continued();
 
       if(buttonName=="next"){
-        continued();
+        clearStepper2();
+        currentService = "nonAllotted";
+       // continued();
       }
-      else if(buttonName=="save&add" || buttonName=="save&goToNonAllotted"){
+      //else if(buttonName=="save&add" || buttonName=="save&goToNonAllotted"){
+      else if(buttonName=="save&add"){
         checkValidationForStepper2(buttonName);
       }
 
@@ -285,7 +303,7 @@ class TimesheetFormController extends GetxController {
   updateSelectedClientId(String valId){
     if(clientNameList.isNotEmpty){
       selectedClientId = valId;
-      currentService == "office" ? callServiceList() : callNonAllottedServiceList();
+      currentService == "allotted" ? callServiceList() : callNonAllottedServiceList();
       update();
     }
   }
@@ -293,7 +311,7 @@ class TimesheetFormController extends GetxController {
   updateSelectedServiceId(String valId,String id){
     if(serviceList.isNotEmpty){
       selectedServiceId = valId;clientApplicableServiceId=id;
-      currentService == "office" ? callTaskList() : callNonAllottedTaskList(); update();
+      currentService == "allotted" ? callTaskList() : callNonAllottedTaskList(); update();
     }
   }
 
@@ -317,22 +335,59 @@ class TimesheetFormController extends GetxController {
 
   updateSelectedTaskId(String valId){
     if(taskList.isNotEmpty){
-      selectedTaskId = valId;callStatusList();update();
+      selectedTaskId = valId;
+      //callStatusList();
+      update();
+    }
+  }
+
+  addDetails(int index,String value){
+    if(addedIndex.contains(index)){
+      addedIndex.add(index);
+      workTypeDetailsList.insert(index, value);
     }
   }
 
   checkStatusValidation(String value,BuildContext context){
     if(statusList.isNotEmpty){
-      selectedStatus = value;
+     selectedStatus = value;
+
+      //addedIndexForStatus.clear();
+      // addedIndexForStatus.add(index);
+      // if(addedIndexForStatus.contains(index)){
+      //   addedIndexForStatus.remove(index);
+      //   selectedStatus = value;
+      //   update();
+      // }
       if(selectedStatus==""){validateStatusName=true;update();}
       else{validateStatusName=false;update();}
       update();
     }
   }
 
-  updateSelectedStatusId(String valId,){
+  updateSelectedStatusId(String valId){
     if(statusList.isNotEmpty){
-      selectedStatusId = valId; update();
+      selectedStatusId = valId;
+      update();
+    }
+  }
+
+  String selectedOfficeRelatedStatusId = "";
+  String selectedOfficeRelatedStatus = "";
+  bool validateOfficeRelatedStatus = false;
+
+  updateOfficeRelatedStatusId(String valId,){
+    if(workList.isNotEmpty){
+      selectedOfficeRelatedStatusId = valId; update();
+    }
+  }
+
+  checkOfficeRelatedStatusValidation(String value,BuildContext context){
+    if(workList.isNotEmpty){
+      selectedOfficeRelatedStatus = value;
+      if(selectedOfficeRelatedStatus==""){validateOfficeRelatedStatus=true;update();}
+      else{validateOfficeRelatedStatus=false;update();}
+      update();
     }
   }
 
@@ -370,6 +425,10 @@ class TimesheetFormController extends GetxController {
   }
 
 
+  prevFromNonAllottedServices(){
+    currentService = "allotted";
+    update();
+  }
   List<ClaimSubmittedByList> employeeList = [];
 
   ///employee list
@@ -422,6 +481,10 @@ class TimesheetFormController extends GetxController {
   }
   Duration? difference;
   ///time view
+  Future<void> selectInTimeTime(BuildContext context,String timeFor) async {
+
+  }
+
   Future<void> selectTime(BuildContext context,String timeFor) async {
     final TimeOfDay? picked = await showTimePicker(
         context: context,
@@ -435,21 +498,39 @@ class TimesheetFormController extends GetxController {
     );
     update();
     if (picked != null && picked != selectedDate) {
-      selectedTime = picked;update();
-    }
-    if(timeFor == "start"){
-      selectedStartTimeToShow = "${selectedTime.hour}:${selectedTime.minute}";
-      stepper1InTime.text = selectedStartTimeToShow;
-      stepper1InTime.text.isEmpty ? validateInTime = true : validateInTime = false;
+      timeFor == "start" ? selectedStartTime24 = picked :
+      timeFor == "end" ? selectedEndTime24 = picked :
+      selectedTime = picked;
       update();
     }
-    else if(timeFor=="end"){
-      selectedEndTimeToShow = "${selectedTime.hour}:${selectedTime.minute}";
-      stepper1OutTime.text = selectedEndTimeToShow;
-      stepper1OutTime.text.isEmpty ? validateOutTime = true : validateOutTime = false; update();
+    if(timeFor == "start"){
+      //selectedStartTime24 = selectedTime;
+      selectedStartTimeToShow = "${selectedStartTime24.hour}:${selectedStartTime24.minute}";
+      stepper1InTime.text = selectedStartTimeToShow;
+      stepper1InTime.text.isEmpty ? validateInTime = true : validateInTime = false;update();
 
       ///difference
       calculateTotalTime();
+      update();
+    }
+    else if(timeFor=="end"){
+      //selectedEndTime24 = selectedTime;
+      selectedEndTimeToShow = "${selectedEndTime24.hour}:${selectedEndTime24.minute}";
+      stepper1OutTime.text = selectedEndTimeToShow;
+
+      if(selectedEndTime24.hour < selectedStartTime24.hour){
+        validateOutTime = true; update();
+      }
+      else{
+        validateOutTime = false;
+        ///difference
+        calculateTotalTime();
+        update();
+      }
+
+      //stepper1OutTime.text.isEmpty ? validateOutTime = true : validateOutTime = false; update();
+
+
       update();
     }
     else if(timeFor=="timeSpent"){
@@ -466,6 +547,12 @@ class TimesheetFormController extends GetxController {
     //   selectedTimeSpent2ToShow = "${selectedTime.hour}:${selectedTime.minute}";
     //   update();
     // }
+    else if(timeFor=="forOfficeRelated"){
+      selectedTimeSpentToShow = "${selectedTime.hour}:${selectedTime.minute}";
+      stepper3TimeSpent.text = selectedTimeSpentToShow;
+      selectedTimeOfficeRelatedShow == ""? validateTimeSpentStepper3 = true : validateTimeSpentStepper3 = false;
+      update();
+    }
     else{
       selectedTimeSpent1ToShow = "${selectedTime.hour}:${selectedTime.minute}";update();
     }
@@ -479,6 +566,24 @@ class TimesheetFormController extends GetxController {
     difference = two.difference(one);
     totalTimeToShow = "${difference!.inHours}:${difference!.inMinutes.remainder(60)}";
     timesheetTotalTime.text = totalTimeToShow;
+    update();
+  }
+
+  int? selectedIndexOfDropdown;
+  List<int> test1List = [];
+  List<String> test1ListStatus = [];
+
+  navigateToDropDown(int index,String status){
+    selectedIndexOfDropdown = index;
+    test1List.add(index);
+
+    if(test1List.contains(index)){
+      test1ListStatus.add(status);
+    }
+    else{
+
+    }
+
     update();
   }
 
@@ -621,7 +726,7 @@ class TimesheetFormController extends GetxController {
   }
   /// task list
   void callTaskList() async {
-    taskList.clear();
+    taskList.clear();statusList.clear();
     try {
       TimesheetTaskModel? response = (await repository.getTimesheetTaskList(selectedServiceId,clientApplicableServiceId));
 
@@ -630,6 +735,12 @@ class TimesheetFormController extends GetxController {
         }
         else{
           taskList.addAll(response.data!);
+
+          for (var element in taskList) {
+            callStatusList(element.taskId!);
+            timeStepper3List.add(TextEditingController());
+            timeStepper2StatusList.add(TextEditingController());
+          }
         }
         update();
       } else {
@@ -643,7 +754,7 @@ class TimesheetFormController extends GetxController {
   }
   /// task list non allotted
   void callNonAllottedTaskList() async {
-    taskList.clear();
+    taskList.clear();statusList.clear();
     try {
       TimesheetTaskModel? response = (await repository.getTimesheetNonAllottedTaskList(selectedServiceId,clientApplicableServiceId));
 
@@ -652,6 +763,9 @@ class TimesheetFormController extends GetxController {
         }
         else{
           taskList.addAll(response.data!);
+          for (var element in taskList) {
+            callStatusList(element.taskId!);
+          }
         }
         update();
       } else {
@@ -664,10 +778,33 @@ class TimesheetFormController extends GetxController {
     }
   }
   /// status list
-  void callStatusList() async {
-    statusList.clear();
+  // void callStatusList() async {
+  //   statusList.clear();
+  //   try {
+  //     TimesheetStatusModel? response = (await repository.getTimesheetStatusList(clientApplicableServiceId,selectedTaskId));
+  //
+  //     print(clientApplicableServiceId);
+  //     print(selectedTaskId);
+  //     if (response.success!) {
+  //       if (response.list!.isEmpty) {
+  //       }
+  //       else{
+  //         statusStart = response.start!;
+  //         statusList.addAll(response.list!);
+  //       }
+  //       update();
+  //     } else {
+  //       update();
+  //     }
+  //   } on CustomException {
+  //     update();
+  //   } catch (error) {
+  //     update();
+  //   }
+  // }
+  void callStatusList(String taskId) async {
     try {
-      TimesheetStatusModel? response = (await repository.getTimesheetStatusList(clientApplicableServiceId,selectedTaskId));
+      TimesheetStatusModel? response = (await repository.getTimesheetStatusList(clientApplicableServiceId,taskId));
 
       if (response.success!) {
         if (response.list!.isEmpty) {
@@ -675,6 +812,11 @@ class TimesheetFormController extends GetxController {
         else{
           statusStart = response.start!;
           statusList.addAll(response.list!);
+          selectedTaskStatusList.add(response.start!);
+
+          // response.list!.forEach((element) {
+          //   statusToShow.add(element.name!);
+          // });
         }
         update();
       } else {
@@ -686,6 +828,21 @@ class TimesheetFormController extends GetxController {
       update();
     }
   }
+
+  bool isStartedSelected = true ;
+  bool isNonStartedSelected = false ;
+
+  ///click on started
+  onStartedSelected(){
+    isStartedSelected = true; isNonStartedSelected = false;
+    update();
+  }
+  ///click on non started
+  onNonStartedSelected(){
+    isStartedSelected = false; isNonStartedSelected = true;
+    update();
+  }
+
   /// start timesheet
   void callTimesheetStart(BuildContext context) async {
     try {
@@ -764,11 +921,15 @@ class TimesheetFormController extends GetxController {
   }
 
   List<int> addedIndex = [];
-  addDetails(int index,TextEditingController value){
+  List<String> addedIndexTest = [];
+
+  addTestDetails(int index,String value){
     if(addedIndex.contains(index)){
       addedIndex.add(index);
-      workTypeDetailsList.insert(index, value.text);
+      addedIndexTest.add(value);
+      workTypeDetailsList.insert(index, value);
     }
+    update();
   }
 
   List<int> addedTimeIndex = [];
@@ -786,6 +947,20 @@ class TimesheetFormController extends GetxController {
         value,selection: TextSelection.collapsed(offset: value.length),);
         update();
       }
+    }
+    update();
+  }
+
+  addStatus(int index,String text,String value){
+    if(value.isEmpty){}
+    else if (value.isNotEmpty){
+      // if(value.length >= 2 && !value.contains(":")) {
+      //   value = '$value:';
+      //   timeStepper2StatusList[index].value = TextEditingValue(text:
+      //   value,selection: TextSelection.collapsed(offset: value.length),);
+      //   update();
+      // }
+      timeStepper2StatusList[index].text = value;
     }
     update();
   }
@@ -809,6 +984,11 @@ class TimesheetFormController extends GetxController {
     update();
   }
 
+  Future<void> selectStepper2Status(BuildContext context,String status,int index) async{
+    timeStepper2StatusList[index].text = status;
+    update();
+  }
+
   /// add timesheet allotted
   void callTimesheetAddAllotted(String btnName) async {
     try {
@@ -817,9 +997,10 @@ class TimesheetFormController extends GetxController {
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
-        clearStepper2();
-        if(btnName =="save&goToNonAllotted"){
-          currentService == "office" ? currentService = "nonAllotted": currentService ="office";
+        //clearStepper2();
+        //if(btnName =="save&goToNonAllotted"){
+        if(btnName =="next"){
+          currentService == "allotted" ? currentService = "nonAllotted": currentService ="allotted";
           update();
         }
         update();
@@ -1017,6 +1198,24 @@ class TimesheetFormController extends GetxController {
       updateLoader(false);
       update();
     }
+  }
+  /// add more values to office related
+  TextEditingController detailsForStepper3 = TextEditingController();
+  List<String> addedOfficeRelatedWork = [];
+  List<String> addedOfficeRelatedDetails = [];
+  List<String> addedOfficeRelatedTimeSpent = [];
+  addMoreOfficeRelated(String work,String details,String time){
+
+    addedOfficeRelatedWork.add(work);
+    addedOfficeRelatedDetails.add(details);
+    addedOfficeRelatedTimeSpent.add(time);
+
+    detailsForStepper3.clear();
+    selectedTimeSpentToShow = "";
+    selectedOfficeRelatedStatus="";
+    workList.clear();
+
+    update();
   }
   /// timesheet list
   void callTimesheetList() async {

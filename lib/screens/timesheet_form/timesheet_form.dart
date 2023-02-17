@@ -96,7 +96,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                       borderRadius: BorderRadius.only(topRight: Radius.circular(25.0), topLeft: Radius.circular(25.0),),
                       color: whiteColor,
                     ),
-                    padding: const EdgeInsets.all(10.0),
+                    //padding: const EdgeInsets.all(10.0),
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child:Column(
@@ -111,68 +111,81 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                 cont.currentStep==1
                                     ? Padding(
                                   padding: const EdgeInsets.only(top:30.0),
-                                  child: Column(
-                                    children: [
-                                      GestureDetector(
-                                          onTap: (){
-                                            cont.checkStepperValidation("save&add");
-                                            },
-                                          child:buildButtonWidget(context, "Save & Add More")
-                                      ),
-                                      const SizedBox(height: 10.0,),
-                                      GestureDetector(
-                                          onTap: (){
-                                            cont.checkStepperValidation("save&goToNonAllotted");
-                                            },
-                                          child:buildButtonWidget(context,
-                                              cont.currentService == "office"
-                                                  ? "Save & Go to Non Allotted Services"
-                                                  : "Save & Go to Office related services")
-                                      ),
-                                    ],
+                                  // child: Column(
+                                  //   children: [
+                                  //     GestureDetector(
+                                  //         onTap: (){
+                                  //           cont.checkStepperValidation("save&add");
+                                  //           },
+                                  //         child:buildButtonWidget(context, "Save & Add More")
+                                  //     ),
+                                  //     const SizedBox(height: 10.0,),
+                                  //     GestureDetector(
+                                  //         onTap: (){
+                                  //           cont.checkStepperValidation("save&goToNonAllotted");
+                                  //           },
+                                  //         child:buildButtonWidget(context,
+                                  //             cont.currentService == "office"
+                                  //                 ? "Save & Go to Non Allotted Services"
+                                  //                 : "Save & Go to Office related services")
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  child:GestureDetector(
+                                      onTap: (){
+                                        cont.checkStepperValidation("save&add");
+                                      },
+                                      child:buildButtonWidget(context, "Save")
                                   ),
                                 )
-                                    : cont.currentStep==2
-                                      ? Padding(
-                                  padding: const EdgeInsets.only(top:30.0),
-                                  child: Column(
-                                    children: [
-                                      GestureDetector(
-                                          onTap: (){
-                                            cont.checkStepperValidation("save");
-                                          },
-                                          child:buildButtonWidget(context, "Save")
-                                      ),
-                                      const SizedBox(height: 10.0,),
-                                      GestureDetector(
-                                          onTap: (){
-                                            cont.checkStepperValidation("approve");
-                                          },
-                                          child:buildButtonWidget(context, "Submit For Approval")
-                                      ),
-                                    ],
-                                  ),
-                                )
+                                  //  : const Opacity(opacity: 0.0);
+                                    :
+                                cont.currentStep==2
+                                      ? const Opacity(opacity: 0.0,)
+                                // Padding(
+                                //   padding: const EdgeInsets.only(top:30.0),
+                                //   child: Column(
+                                //     children: [
+                                //       GestureDetector(
+                                //           onTap: (){
+                                //             cont.checkStepperValidation("save");
+                                //           },
+                                //           child:buildButtonWidget(context, "Save")
+                                //       ),
+                                //       const SizedBox(height: 10.0,),
+                                //       GestureDetector(
+                                //           onTap: (){
+                                //             cont.checkStepperValidation("approve");
+                                //           },
+                                //           child:buildButtonWidget(context, "Submit For Approval")
+                                //       ),
+                                //     ],
+                                //   ),
+                                // )
                                       : Padding(
                                 padding: const EdgeInsets.only(top:30.0,left: 130.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Flexible(
-                                      child: GestureDetector(
-                                          onTap: (){cont.checkStepperValidation("continue");},
-                                          child:buildButtonWidget(context, "Continue")
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10.0,),
-                                    Flexible(
-                                    child: GestureDetector(
-                                        onTap: (){cont.cancel();},
-                                        child:buildButtonWidget(context, "Cancel")
-                                    ))
-                                  ],
-                                )
+                                // child: Row(
+                                //   crossAxisAlignment: CrossAxisAlignment.end,
+                                //   mainAxisAlignment: MainAxisAlignment.end,
+                                //   children: [
+                                //     Flexible(
+                                //       child: GestureDetector(
+                                //           onTap: (){cont.checkStepperValidation("continue");},
+                                //           child:buildButtonWidget(context, "Continue")
+                                //       ),
+                                //     ),
+                                //     const SizedBox(width: 10.0,),
+                                //     Flexible(
+                                //     child: GestureDetector(
+                                //         onTap: (){cont.cancel();},
+                                //         child:buildButtonWidget(context, "Cancel")
+                                //     ))
+                                //   ],
+                                // )
+                                  child:GestureDetector(
+                                      onTap: (){cont.checkStepperValidation("continue");},
+                                      child:buildButtonWidget(context, "Next")
+                                  ),
                               );
                             },
                             onStepTapped: (step) => cont.tapped(step),
@@ -260,115 +273,115 @@ class _TimesheetFormState extends State<TimesheetForm> {
 
                                     ///start time
                                     buildTimeSheetTitle(context,"In Time"),
-                                    Container(
-                                        height: 40.0,
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                          border: Border.all(color: cont.validateInTime?errorColor:grey),),
-                                        child: Row(
-                                          children: [
-                                            const SizedBox(width: 10.0,),
-                                            GestureDetector(
-                                              onTap: (){cont.selectTime(context,"start");},
-                                              child: Icon(Icons.watch_later_outlined,color: cont.stepper1InTime.text.isEmpty?grey:blackColor,),
-                                            ),
-                                            const SizedBox(width: 10.0,),
-                                            // buildTextRegularWidget(cont.selectedStartTimeToShow==""?"In Time (HH:MM)":cont.selectedStartTimeToShow,
-                                            //     cont.selectedStartTimeToShow==""?grey:blackColor, context, 15.0)
-                                            Flexible(
-                                              child: TextFormField(
-                                                controller: cont.stepper1InTime,
-                                                keyboardType: TextInputType.number,
-                                                textAlign: TextAlign.left,
-                                                textAlignVertical: TextAlignVertical.center,
-                                                textInputAction: TextInputAction.done,
-                                                onTap: () {
-                                                },
-                                                style:const TextStyle(fontSize: 15.0),
-                                                decoration: InputDecoration(
-                                                  hintText: "In Time (HH:MM)",
-                                                  hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
-                                                    color: cont.stepper1InTime.text.isEmpty?grey:blackColor, fontSize: 15,),),
-                                                  border: InputBorder.none,
-                                                ),
-                                                inputFormatters: [LengthLimitingTextInputFormatter(5),],
-                                                onChanged: (value) {
-                                                  if(value.isEmpty){}
-                                                  else if (value.isNotEmpty){
-                                                    cont.validateInTime=false;
-                                                    if(value.length >= 2 && !value.contains(":")) {
-                                                      value = '$value:';
-                                                      cont.stepper1InTime.value = TextEditingValue(text:
-                                                      value,selection: TextSelection.collapsed(offset: value.length),);
-                                                    }
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                    ),
+                                   GestureDetector(
+                                     onTap: (){cont.selectTime(context,"start");},
+                                     child:  Container(
+                                         height: 40.0,
+                                         decoration: BoxDecoration(
+                                           borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                           border: Border.all(color: cont.validateInTime?errorColor:grey),),
+                                         child: Row(
+                                           children: [
+                                             const SizedBox(width: 10.0,),
+                                             Icon(Icons.watch_later_outlined,color: cont.stepper1InTime.text.isEmpty?grey:blackColor,),
+                                             const SizedBox(width: 10.0,),
+                                             buildTextRegularWidget(cont.selectedStartTimeToShow==""?"In Time (HH:MM)":cont.selectedStartTimeToShow,
+                                                 cont.selectedStartTimeToShow==""?grey:blackColor, context, 15.0)
+                                             // Flexible(
+                                             //   child: TextFormField(
+                                             //     controller: cont.stepper1InTime,
+                                             //     keyboardType: TextInputType.number,
+                                             //     textAlign: TextAlign.left,
+                                             //     textAlignVertical: TextAlignVertical.center,
+                                             //     textInputAction: TextInputAction.done,
+                                             //     onTap: () {
+                                             //     },
+                                             //     style:const TextStyle(fontSize: 15.0),
+                                             //     decoration: InputDecoration(
+                                             //       hintText: "In Time (HH:MM)",
+                                             //       hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
+                                             //         color: cont.stepper1InTime.text.isEmpty?grey:blackColor, fontSize: 15,),),
+                                             //       border: InputBorder.none,
+                                             //     ),
+                                             //     inputFormatters: [LengthLimitingTextInputFormatter(5),],
+                                             //     onChanged: (value) {
+                                             //       if(value.isEmpty){}
+                                             //       else if (value.isNotEmpty){
+                                             //         cont.validateInTime=false;
+                                             //         if(value.length >= 2 && !value.contains(":")) {
+                                             //           value = '$value:';
+                                             //           cont.stepper1InTime.value = TextEditingValue(text:
+                                             //           value,selection: TextSelection.collapsed(offset: value.length),);
+                                             //         }
+                                             //       }
+                                             //     },
+                                             //   ),
+                                             // ),
+                                           ],
+                                         )
+                                     ),
+                                   ),
                                     const SizedBox(height: 10,),
                                     buildTextRegularWidget("(24 hours format)", blackColor, context, 14.0),
                                     cont.validateInTime== true
-                                        ? ErrorText(errorMessage: "Please select in time",)
+                                        ? ErrorText(errorMessage: "Please select valid in time (24 format)",)
                                         : const Opacity(opacity: 0.0),
 
                                     ///end time
                                     buildTimeSheetTitle(context,"Out Time"),
-                                    Container(
-                                        height: 40.0,
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                          border: Border.all(color: cont.validateOutTime?errorColor:grey),),
-                                        child: Row(
-                                          children: [
-                                            const SizedBox(width: 10.0,),
-                                            GestureDetector(
-                                              onTap: (){cont.selectTime(context,"end");},
-                                              child: Icon(Icons.watch_later_outlined,color: cont.stepper1OutTime.text.isEmpty?grey:blackColor,),
-                                            ),
-                                            const SizedBox(width: 10.0,),
-                                            // buildTextRegularWidget(cont.selectedEndTimeToShow==""?"Out Time (HH:MM)":cont.selectedEndTimeToShow,
-                                            //     cont.selectedEndTimeToShow==""?grey:blackColor, context, 15.0)
-                                            Flexible(
-                                              child: TextFormField(
-                                                controller: cont.stepper1OutTime,
-                                                keyboardType: TextInputType.number,
-                                                textAlign: TextAlign.left,
-                                                textAlignVertical: TextAlignVertical.center,
-                                                textInputAction: TextInputAction.done,
-                                                onTap: () {
-                                                },
-                                                style:const TextStyle(fontSize: 15.0),
-                                                decoration: InputDecoration(
-                                                  hintText: "Out Time (HH:MM)",
-                                                  hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
-                                                    color: cont.stepper1OutTime.text.isEmpty?grey:blackColor, fontSize: 15,),),
-                                                  border: InputBorder.none,
-                                                ),
-                                                inputFormatters: [LengthLimitingTextInputFormatter(5),],
-                                                onChanged: (value) {
-                                                  if(value.isEmpty){}
-                                                  else if(value.isNotEmpty){
-                                                    cont.validateOutTime = false;
-                                                    if(value.length >= 2 && !value.contains(":")) {
-                                                      value = '$value:';
-                                                      cont.stepper1OutTime.value = TextEditingValue(text:
-                                                      value,selection: TextSelection.collapsed(offset: value.length),);
-                                                    }
-                                                    cont.calculateTotalTime();
-                                                  }
-                                                },
-                                              ),
-                                            )
-                                          ],
-                                        )
+                                    GestureDetector(
+                                      onTap: (){cont.selectTime(context,"end");},
+                                      child: Container(
+                                          height: 40.0,
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                            border: Border.all(color: cont.validateOutTime?errorColor:grey),),
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(width: 10.0,),
+                                              Icon(Icons.watch_later_outlined,color: cont.stepper1OutTime.text.isEmpty?grey:blackColor,),
+                                              const SizedBox(width: 10.0,),
+                                              buildTextRegularWidget(cont.selectedEndTimeToShow==""?"Out Time (HH:MM)":cont.selectedEndTimeToShow,
+                                                  cont.selectedEndTimeToShow==""?grey:blackColor, context, 15.0)
+                                              // Flexible(
+                                              //   child: TextFormField(
+                                              //     controller: cont.stepper1OutTime,
+                                              //     keyboardType: TextInputType.number,
+                                              //     textAlign: TextAlign.left,
+                                              //     textAlignVertical: TextAlignVertical.center,
+                                              //     textInputAction: TextInputAction.done,
+                                              //     onTap: () {
+                                              //     },
+                                              //     style:const TextStyle(fontSize: 15.0),
+                                              //     decoration: InputDecoration(
+                                              //       hintText: "Out Time (HH:MM)",
+                                              //       hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
+                                              //         color: cont.stepper1OutTime.text.isEmpty?grey:blackColor, fontSize: 15,),),
+                                              //       border: InputBorder.none,
+                                              //     ),
+                                              //     inputFormatters: [LengthLimitingTextInputFormatter(5),],
+                                              //     onChanged: (value) {
+                                              //       if(value.isEmpty){}
+                                              //       else if(value.isNotEmpty){
+                                              //         cont.validateOutTime = false;
+                                              //         if(value.length >= 2 && !value.contains(":")) {
+                                              //           value = '$value:';
+                                              //           cont.stepper1OutTime.value = TextEditingValue(text:
+                                              //           value,selection: TextSelection.collapsed(offset: value.length),);
+                                              //         }
+                                              //         cont.calculateTotalTime();
+                                              //       }
+                                              //     },
+                                              //   ),
+                                              // )
+                                            ],
+                                          )
+                                      ),
                                     ),
                                     const SizedBox(height: 10,),
                                     buildTextRegularWidget("(24 hours format)", blackColor, context, 14.0),
                                     cont.validateOutTime== true
-                                        ? ErrorText(errorMessage: "Please select out time",)
+                                        ? ErrorText(errorMessage: "Please select valid out time (24 format)",)
                                         : const Opacity(opacity: 0.0),
 
                                     ///total time
@@ -410,7 +423,9 @@ class _TimesheetFormState extends State<TimesheetForm> {
                               ///stepper 2
                               Step(
                                 title:Container(),
-                                content: Column(
+                                content:
+                                cont.currentService == "allotted" ?
+                                Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Row(
@@ -433,6 +448,21 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                         ),
                                         GestureDetector(
                                           onTap: (){
+                                            cont.clearStepper2();
+                                          },
+                                          child: SizedBox(
+                                              width: 40.0,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  buildTextBoldWidget("Skip", primaryColor, context, 15.0),
+                                                  const Divider(thickness: 2.0,color: primaryColor,),
+                                                ],
+                                              )
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: (){
                                             cont.checkStepperValidation("next");
                                           },
                                           child: SizedBox(
@@ -449,7 +479,628 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                       ],
                                     ),
                                     const SizedBox(height: 10.0,),
-                                    buildTimeSheetTitle(context,"Allotted Services",fontSize:16.0),
+                                    buildTimeSheetTitle(context,"Allotted Services", fontSize:16.0),
+                                    ///client
+                                    buildTimeSheetTitle(context,"Client"),
+                                    Container(
+                                        height: 40.0,width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                          border: Border.all(color: cont.validateClientName?errorColor:grey),),
+                                        child: Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                              child: DropdownButton<String>(
+                                                hint: buildTextRegularWidget(cont.selectedClient==""?"Select Client":cont.selectedClient,
+                                                    cont.selectedClient==""?grey:blackColor, context, 15.0),
+                                                isExpanded: true,
+                                                underline: Container(),
+                                                iconEnabledColor: cont.selectedClient==""?grey:blackColor,
+                                                items:
+                                                cont.clientNameList.isEmpty
+                                                    ?
+                                                cont.noDataList.map((value) {
+                                                  return DropdownMenuItem<String>(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList()
+                                                  :
+                                                cont.clientNameList.map((ClientListData value) {
+                                                  return DropdownMenuItem<String>(
+                                                    value: value.firmClientFirmName,
+                                                    child: Text(value.firmClientFirmName!),
+                                                    onTap: (){
+                                                      cont.updateSelectedClientId(value.firmClientId!);
+                                                    },
+                                                  );
+                                                }).toList(),
+                                                onChanged: (val) {
+                                                  cont.checkClientNameValidation(val!);
+                                                },
+                                              ),
+                                            )
+                                        )
+                                    ),
+                                    cont.validateClientName== true
+                                        ? ErrorText(errorMessage: "Please select client",)
+                                        : const Opacity(opacity: 0.0),
+
+                                    ///service
+                                    buildTimeSheetTitle(context,"Service"),
+                                    Container(
+                                        height: 40.0,width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                          border: Border.all(color: cont.validateServiceName?errorColor:grey),),
+                                        child: Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                              child: DropdownButton<String>(
+                                                hint: buildTextRegularWidget(cont.selectedService==""?"Select Service":cont.selectedService,
+                                                    cont.selectedService==""?grey:blackColor, context, 15.0),
+                                                isExpanded: true,
+                                                underline: Container(),
+                                                iconEnabledColor: cont.selectedService==""?grey:blackColor,
+                                                items:
+                                                cont.serviceList.isEmpty
+                                                    ?
+                                                cont.noDataList.map((value) {
+                                                  return DropdownMenuItem<String>(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList()
+                                                  :
+                                                cont.serviceList.map((TimesheetServicesData value) {
+                                                  return DropdownMenuItem<String>(
+                                                    value: value.serviceName,
+                                                    child: Text(value.serviceName!),
+                                                    onTap: (){
+                                                      cont.updateSelectedServiceId(value.serviceId!,value.id!);
+                                                    },
+                                                  );
+                                                }).toList(),
+                                                onChanged: (val) {
+                                                  cont.checkServiceValidation(val!);
+                                                },
+                                              ),
+                                            )
+                                        )
+                                    ),
+                                    cont.validateServiceName== true
+                                        ? ErrorText(errorMessage: "Please select service",)
+                                        : const Opacity(opacity: 0.0),
+
+                                    ///task
+                                    buildTimeSheetTitle(context,"Task"),
+
+                                    SizedBox(
+                                      height: 40,width: MediaQuery.of(context).size.width,
+                                      child: Row(
+                                        children: [
+                                          Flexible(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                cont.onStartedSelected();
+                                              },
+                                              child: buildTabTitle(context, cont.isStartedSelected, "Started",),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                cont.onNonStartedSelected();
+                                              },
+                                              child:  buildTabTitle(context, cont.isNonStartedSelected, "Non Started",),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+
+                                    cont.isStartedSelected
+                                        ? SingleChildScrollView(
+                                          child:
+
+                                          cont.selectedTaskStatusList.isEmpty?const Text(""):
+
+                                          ListView.builder(
+                                                shrinkWrap: true,
+                                                physics: const NeverScrollableScrollPhysics(),
+                                                itemCount: cont.taskList.length,
+                                                itemBuilder: (context,index){
+                                                  final item = cont.taskList[index];
+                                                  return
+                                                    cont.selectedTaskStatusList[index]=="0"
+                                                        ? const Opacity(opacity: 0.0)
+                                                        : Padding(
+                                                      padding:const EdgeInsets.only(top:5.0),
+                                                      child:
+
+                                                      cont.selectedTaskStatusList.isEmpty?const Text(""):
+                                                      Card(
+                                                        elevation: 1.0,
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                                            side: const BorderSide(color: grey)),
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Padding(
+                                                                padding: const EdgeInsets.all(10.0),
+                                                                child:
+                                                                buildTextRegularWidget("${cont.selectedClient} - ${cont.selectedService}", blackColor, context, 14.0,align: TextAlign.left)),
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:10.0,right: 10.0),
+                                                              child:buildTextRegularWidget(item.taskName!, blackColor, context, 14.0,align: TextAlign.left),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:10.0),
+                                                              child: buildTimeSheetTitle(context,"Details"),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:10.0,right:10.0),
+                                                              child: Container(
+                                                                height: 40.0,
+                                                                decoration: BoxDecoration(
+                                                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                                  border: Border.all(color: cont.validateDetailsStepper2?errorColor:grey),),
+                                                                child: TextFormField(
+                                                                  controller: cont.details,
+                                                                  keyboardType: TextInputType.text,
+                                                                  textAlign: TextAlign.left,
+                                                                  textAlignVertical: TextAlignVertical.center,
+                                                                  textInputAction: TextInputAction.done,
+                                                                  onTap: () {
+                                                                  },
+                                                                  style:const TextStyle(fontSize: 15.0),
+                                                                  decoration: InputDecoration(
+                                                                    contentPadding: const EdgeInsets.all(10),
+                                                                    hintText: "Enter details",
+                                                                    hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                                                      color: grey, fontSize: 15,),),
+                                                                    border: InputBorder.none,
+                                                                  ),
+                                                                  onChanged: (text) {
+                                                                    cont.checkDetailsValidationStepper2();
+                                                                  },
+                                                                ),
+                                                              ),),
+
+                                                            Padding(
+                                                                padding: const EdgeInsets.only(left:10.0),
+                                                                child:
+                                                                buildTimeSheetTitle(context,"Time Spent")),
+
+                                                            Padding(
+                                                                padding: const EdgeInsets.only(left:10.0,right:10.0),
+                                                                child:Container(
+                                                                    height: 40.0,
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                                      border: Border.all(color: grey),),
+                                                                    child: TextFormField(
+                                                                      controller: cont.timeStepper3List[index],
+                                                                      keyboardType: TextInputType.number,
+                                                                      textAlign: TextAlign.left,
+                                                                      textAlignVertical: TextAlignVertical.center,
+                                                                      textInputAction: TextInputAction.done,
+                                                                      onTap: () {
+                                                                      },
+                                                                      style:const TextStyle(fontSize: 15.0),
+                                                                      decoration: InputDecoration(
+                                                                          contentPadding: const EdgeInsets.all(10),
+                                                                          hintText: "HH:MM",
+                                                                          hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                                                            color: grey, fontSize: 15,),),
+                                                                          border: InputBorder.none,
+                                                                          suffixIcon: GestureDetector(
+                                                                              onTap: (){
+                                                                                cont.selectTimeForStepper3(context,cont.timeStepper3List[index].text,index);
+                                                                              },
+                                                                              child:const Icon(Icons.watch_later_outlined,color: grey,)
+                                                                          )
+                                                                      ),
+                                                                      inputFormatters: [LengthLimitingTextInputFormatter(5),],
+                                                                      onChanged: (value) {
+                                                                        cont.addTime(index, cont.timeStepper3List[index],value);
+                                                                      },
+                                                                    )
+                                                                ),),
+
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:10.0),
+                                                              child:
+                                                            buildTimeSheetTitle(context,"Status")),
+                                                            Padding(
+                                                              padding : const EdgeInsets.all(10.0),
+                                                              child:Container(
+                                                                  height: 40.0,
+                                                                  decoration: BoxDecoration(
+                                                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                                    border: Border.all(color: grey),),
+                                                                  child: TextFormField(
+                                                                    controller: cont.timeStepper2StatusList[index],
+                                                                    //keyboardType: TextInputType.number,
+                                                                    textAlign: TextAlign.left,
+                                                                    textAlignVertical: TextAlignVertical.center,
+                                                                    textInputAction: TextInputAction.done,
+                                                                    readOnly: true,
+                                                                    onTap: () {
+                                                                    },
+                                                                    style:const TextStyle(fontSize: 15.0),
+                                                                    decoration: InputDecoration(
+                                                                        contentPadding: const EdgeInsets.all(10),
+                                                                        hintText: "Status",
+                                                                        hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                                                          color: grey, fontSize: 15,),),
+                                                                        border: InputBorder.none,
+                                                                        suffixIcon: GestureDetector(
+                                                                            onTap: (){
+                                                                              //cont.selectTimeForStepper3(context,cont.timeStepper2StatusList[index].text,index);
+                                                                              openPopupForStatus(context, cont, index);
+                                                                            },
+                                                                            child:const Icon(Icons.arrow_drop_down,color: grey,)
+                                                                        )
+                                                                    ),
+                                                                    inputFormatters: [LengthLimitingTextInputFormatter(5),],
+                                                                    onChanged: (value) {
+                                                                      //cont.addTime(index, cont.timeStepper2StatusList[index],value);
+                                                                      cont.addStatus(index, cont.timesheetStatusList[index],value);
+                                                                    },
+                                                                  )
+                                                              )
+                                                            ),
+                                                            cont.validateStatusName== true
+                                                                ? ErrorText(errorMessage: "Please select status",)
+                                                                : const Opacity(opacity: 0.0),
+
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(left:10.0,right:10.0,top: 10.0),
+                                                              child: buildTextRegularWidget("Claim amount - ", blackColor, context, 14.0),
+                                                            ),
+                                                            Padding(
+                                                                padding: const EdgeInsets.all(10.0),
+                                                                child: GestureDetector(
+                                                                  onTap: (){
+
+                                                                  },
+                                                                  child: buildButtonWidget(context, "Add Claim",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                                )
+                                                            ),
+                                                            const SizedBox(height: 10.0,)
+                                                          ],
+                                                        ),
+                                                      )
+                                                  );
+                                                })
+                                        )
+                                        : SingleChildScrollView(
+                                          child:
+                                          cont.selectedTaskStatusList.isEmpty?const Text(""):
+
+                                          ListView.builder(
+                                              shrinkWrap: true,
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              itemCount: cont.taskList.length,
+                                              itemBuilder: (context,index){
+                                                final item = cont.taskList[index];
+                                                return
+                                                  cont.selectedTaskStatusList[index]=="0"
+                                                      ?
+                                                  Padding(
+                                                    padding:const EdgeInsets.only(top:10.0),
+                                                    child:
+
+                                                    cont.selectedTaskStatusList.isEmpty?const Text(""):
+                                                    Card(
+                                                      elevation: 1.0,
+                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                                          side: const BorderSide(color: grey)),
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          // Row(
+                                                          //   children: [
+                                                          //     Container(
+                                                          //         height: 40.0,
+                                                          //         decoration: const BoxDecoration(color: primaryColor,
+                                                          //             borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
+                                                          //         child: Align(
+                                                          //             alignment: Alignment.centerLeft,
+                                                          //             child: Padding(
+                                                          //               padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                          //               child: buildTextBoldWidget(item.taskId!, whiteColor, context, 14.0),
+                                                          //             )
+                                                          //         )
+                                                          //     ),
+                                                          //     Flexible(child: Container(
+                                                          //         width: MediaQuery.of(context).size.width,
+                                                          //         height: 40.0,
+                                                          //         decoration: BoxDecoration(border: Border.all(color: grey),
+                                                          //             borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+                                                          //         child: Align(
+                                                          //             alignment: Alignment.centerLeft,
+                                                          //             child: Padding(
+                                                          //               padding: const EdgeInsets.only(left: 10.0),
+                                                          //               child: buildTextBoldWidget(item.taskName!, primaryColor, context, 14.0,align: TextAlign.left),
+                                                          //             )
+                                                          //         )
+                                                          //     ),)
+                                                          //   ],
+                                                          // ),
+                                                          Padding(
+                                                          padding: const EdgeInsets.all(10.0),
+                                                          child:
+                                                          buildTextRegularWidget("${cont.selectedClient} - ${cont.selectedService}", blackColor, context, 14.0,align: TextAlign.left)),
+                                                          Padding(
+                                                              padding: const EdgeInsets.all(10.0),
+                                                            child:Table(
+                                                              columnWidths: const {
+                                                                0: FlexColumnWidth(2),
+                                                                1: FlexColumnWidth(1),
+                                                              },
+                                                              children: [
+                                                                TableRow(
+                                                                    children:[
+                                                                      buildTextRegularWidget(item.taskName!, blackColor, context, 14.0,align: TextAlign.left),
+                                                                          GestureDetector(
+                                                                            onTap: (){
+
+                                                                            },
+                                                                            child: buildButtonWidget(context, "Start",height: 40.0,buttonColor: Colors.blue,buttonFontSize:14.0,width: 50.0),
+                                                                          ),
+                                                                    ]
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left:10.0,right:10.0),
+                                                            child: buildTextRegularWidget("Claim amount - ", blackColor, context, 14.0),
+                                                          ),
+                                                          Padding(
+                                                              padding: const EdgeInsets.only(left:10.0,right:10.0,top: 5.0,bottom: 10.0),
+                                                              child: GestureDetector(
+                                                                onTap: (){
+
+                                                                },
+                                                                child: buildButtonWidget(context, "Add Claim",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                              )
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                )
+                                                : const Opacity(opacity: 0.0);
+                                              })
+                                        )
+
+                                    ///status
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
+                                    // cont.selectedTask == "" ? const Opacity(opacity: 0.0,):
+                                    // buildTimeSheetTitle(context,"Status"),
+                                    // cont.statusStart == "0"?
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(top: 15.0),
+                                    //   child: GestureDetector(
+                                    //     onTap: (){
+                                    //       cont.callTimesheetStart(context);
+                                    //     },
+                                    //     child: Center(child:buildButtonWidget(context, "Start",height: 40.0,width: 100.0)),
+                                    //   ),
+                                    // )
+                                    //     :
+                                    // cont.selectedTask == "" ? const Opacity(opacity: 0.0,):
+                                    // Container(
+                                    //     height: 40.0,width: MediaQuery.of(context).size.width,
+                                    //     decoration: BoxDecoration(
+                                    //       borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                    //       border: Border.all(color: cont.validateTaskName?errorColor:grey),),
+                                    //     child: Center(
+                                    //         child: Padding(
+                                    //           padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                    //           child: DropdownButton<String>(
+                                    //             hint: buildTextRegularWidget(cont.selectedStatus==""?"Select status":cont.selectedStatus,
+                                    //                 cont.selectedStatus==""?grey:blackColor, context, 15.0),
+                                    //             isExpanded: true,
+                                    //             underline: Container(),
+                                    //             iconEnabledColor: cont.selectedStatus==""?grey:blackColor,
+                                    //             items:
+                                    //             cont.statusList.isEmpty
+                                    //                 ?
+                                    //             cont.noDataList.map((value) {
+                                    //               return DropdownMenuItem<String>(
+                                    //                 value: value,
+                                    //                 child: Text(value),
+                                    //               );
+                                    //             }).toList()
+                                    //                 :
+                                    //             cont.statusList.map((StatusList value) {
+                                    //               return DropdownMenuItem<String>(
+                                    //                 value: value.name,
+                                    //                 child: Text(value.name!),
+                                    //                 onTap: (){
+                                    //                   cont.updateSelectedStatusId(value.id!);
+                                    //                 },
+                                    //               );
+                                    //             }).toList(),
+                                    //             onChanged: (val) {
+                                    //                   //cont.statusStart == "0" ||
+                                    //                   val=="Awaiting for Client Input" ||
+                                    //                   val=="Submitted for Checking" ||
+                                    //                   val=="Put on Hold"
+                                    //                ? openDialog(context,cont,val!)
+                                    //                : cont.checkStatusValidation(val!,context);
+                                    //             },
+                                    //           ),
+                                    //         )
+                                    //     )
+                                    // ),
+                                    // cont.validateStatusName== true
+                                    //     ? ErrorText(errorMessage: "Please enter task",)
+                                    //     : const Opacity(opacity: 0.0),
+
+                                    ///details
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
+                                    // buildTimeSheetTitle(context,"Details"),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
+                                    // Container(
+                                    //   height: 40.0,
+                                    //   decoration: BoxDecoration(
+                                    //     borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                    //     border: Border.all(color: cont.validateDetailsStepper2?errorColor:grey),),
+                                    //   child: TextFormField(
+                                    //     controller: cont.details,
+                                    //     keyboardType: TextInputType.text,
+                                    //     textAlign: TextAlign.left,
+                                    //     textAlignVertical: TextAlignVertical.center,
+                                    //     textInputAction: TextInputAction.done,
+                                    //     onTap: () {
+                                    //     },
+                                    //     style:const TextStyle(fontSize: 15.0),
+                                    //     decoration: InputDecoration(
+                                    //       contentPadding: const EdgeInsets.all(10),
+                                    //       hintText: "Enter details",
+                                    //       hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                    //         color: grey, fontSize: 15,),),
+                                    //       border: InputBorder.none,
+                                    //     ),
+                                    //     onChanged: (text) {
+                                    //       cont.checkDetailsValidationStepper2();
+                                    //     },
+                                    //   ),
+                                    // ),
+                                    // cont.validateDetailsStepper2== true
+                                    //     ? ErrorText(errorMessage: "Please select details",)
+                                    //     : const Opacity(opacity: 0.0),
+
+                                    ///time spent
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
+                                    // buildTimeSheetTitle(context,"Time Spent"),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
+                                    // Container(
+                                    //     height: 40.0,
+                                    //     decoration: BoxDecoration(
+                                    //       borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                    //       border: Border.all(color: cont.validateTimeSpentStepper2?errorColor:grey),),
+                                    //     child: Row(
+                                    //       children: [
+                                    //         const SizedBox(width: 10.0,),
+                                    //         GestureDetector(
+                                    //           onTap: (){cont.selectTime(context,"timeSpent");},
+                                    //           child:Icon(Icons.watch_later_outlined,
+                                    //             color: cont.stepper2TimeSpent.text.isEmpty?grey:blackColor,),
+                                    //         ),
+                                    //         const SizedBox(width: 10.0,),
+                                    //         // buildTextRegularWidget(cont.selectedTimeSpentToShow==""?"HH:MM":cont.selectedTimeSpentToShow,
+                                    //         //     cont.selectedTimeSpentToShow==""?grey:blackColor, context, 15.0)
+                                    //         Flexible(
+                                    //           child: TextFormField(
+                                    //             controller: cont.stepper2TimeSpent,
+                                    //             keyboardType: TextInputType.number,
+                                    //             textAlign: TextAlign.left,
+                                    //             textAlignVertical: TextAlignVertical.center,
+                                    //             textInputAction: TextInputAction.done,
+                                    //             onTap: () {
+                                    //             },
+                                    //             style:const TextStyle(fontSize: 15.0),
+                                    //             decoration: InputDecoration(
+                                    //               contentPadding: const EdgeInsets.all(10),
+                                    //               hintText: "HH:MM",
+                                    //               hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                    //                 color: grey, fontSize: 15,),),
+                                    //               border: InputBorder.none,
+                                    //               // suffixIcon: GestureDetector(
+                                    //               //   onTap: (){cont.stepper2TimeSpent.clear();},
+                                    //               //   child:const Icon(Icons.clear)
+                                    //               // )
+                                    //             ),
+                                    //             inputFormatters: [LengthLimitingTextInputFormatter(5),],
+                                    //             onChanged: (value) {
+                                    //               if(value.isEmpty){}
+                                    //               else if (value.isNotEmpty){
+                                    //                 cont.validateTimeSpentStepper2=false;
+                                    //                 if(value.length >= 2 && !value.contains(":")) {
+                                    //                   value = '$value:';
+                                    //                   cont.stepper2TimeSpent.value = TextEditingValue(text:
+                                    //                   value,selection: TextSelection.collapsed(offset: value.length),);
+                                    //                 }
+                                    //               }
+                                    //             },
+                                    //           ),
+                                    //         ),
+                                    //       ],
+                                    //     )
+                                    // ),
+                                    // cont.validateTimeSpentStepper2== true
+                                    //     ? ErrorText(errorMessage: "Please select time",)
+                                    //     : const Opacity(opacity: 0.0),
+
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) : const SizedBox(height: 10.0,),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
+                                    // buildTextBoldWidget("Total Time ${cont.totalTimeToShow}", blackColor, context, 14.0),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) : const SizedBox(height: 10.0,),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
+                                    // buildTextBoldWidget("Balance Time ${cont.balanceTimeToShow}", blackColor, context, 14.0),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) : const SizedBox(height: 10.0,),
+                                  ],
+                                )
+                                : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: (){
+                                            cont.prevFromNonAllottedServices();
+                                            },
+                                          child:SizedBox(
+                                              width: 80.0,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  buildTextBoldWidget("Previous", primaryColor, context, 15.0),
+                                                  const Divider(thickness: 2.0,color: primaryColor,),
+                                                ],
+                                              )
+                                          )
+                                        ),
+                                        GestureDetector(
+                                          onTap: (){
+                                            cont.clearStepper2();
+                                          },
+                                          child: SizedBox(
+                                              width: 40.0,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  buildTextBoldWidget("Skip", primaryColor, context, 15.0),
+                                                  const Divider(thickness: 2.0,color: primaryColor,),
+                                                ],
+                                              )
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: (){
+                                            cont.continued();
+                                          },
+                                          child: SizedBox(
+                                              width: 40.0,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  buildTextBoldWidget("Next", primaryColor, context, 15.0),
+                                                  const Divider(thickness: 2.0,color: primaryColor,),
+                                                ],
+                                              )
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10.0,),
+                                    buildTimeSheetTitle(context,"Non Allotted Services", fontSize:16.0),
                                     ///client
                                     buildTimeSheetTitle(context,"Client"),
                                     Container(
@@ -553,7 +1204,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                             child: Padding(
                                               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                               child: DropdownButton<String>(
-                                                hint: buildTextRegularWidget(cont.selectedTask==""?"Select task":cont.selectedTask,
+                                                hint: buildTextRegularWidget(cont.selectedTask==""?"Select Service":cont.selectedTask,
                                                     cont.selectedTask==""?grey:blackColor, context, 15.0),
                                                 isExpanded: true,
                                                 underline: Container(),
@@ -567,7 +1218,7 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                                     child: Text(value),
                                                   );
                                                 }).toList()
-                                                  :
+                                                    :
                                                 cont.taskList.map((TimesheetTaskData value) {
                                                   return DropdownMenuItem<String>(
                                                     value: value.taskName,
@@ -578,74 +1229,81 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                                   );
                                                 }).toList(),
                                                 onChanged: (val) {
-                                                  // cont.updateSelectedWorkAt(val!,context);
                                                   cont.checkTaskValidation(val!);
                                                 },
                                               ),
                                             )
                                         )
                                     ),
-                                    cont.validateTaskName== true
-                                        ? ErrorText(errorMessage: "Please enter task",)
-                                        : const Opacity(opacity: 0.0),
-
                                     ///status
-                                    cont.selectedTask == "" ? const Opacity(opacity: 0.0,):
-                                    buildTimeSheetTitle(context,"Status"),
-                                    cont.selectedTask == "" ? const Opacity(opacity: 0.0,):
-                                    Container(
-                                        height: 40.0,width: MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                          border: Border.all(color: cont.validateTaskName?errorColor:grey),),
-                                        child: Center(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                              child: DropdownButton<String>(
-                                                hint: buildTextRegularWidget(cont.selectedStatus==""?"Select status":cont.selectedStatus,
-                                                    cont.selectedStatus==""?grey:blackColor, context, 15.0),
-                                                isExpanded: true,
-                                                underline: Container(),
-                                                iconEnabledColor: cont.selectedStatus==""?grey:blackColor,
-                                                items:
-                                                cont.statusList.isEmpty
-                                                    ?
-                                                cont.noDataList.map((value) {
-                                                  return DropdownMenuItem<String>(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList()
-                                                    :
-                                                cont.statusList.map((StatusList value) {
-                                                  return DropdownMenuItem<String>(
-                                                    value: value.name,
-                                                    child: Text(value.name!),
-                                                    onTap: (){
-                                                      cont.updateSelectedStatusId(value.id!);
-                                                    },
-                                                  );
-                                                }).toList(),
-                                                onChanged: (val) {
-                                                  //cont.checkStatusValidation(val!,context);
-                                                      cont.statusStart == "0" ||
-                                                      val=="Awaiting for Client Input" ||
-                                                      val=="Submitted for Checking" ||
-                                                      val=="Put on Hold"
-                                                   //? cont.showStartTaskModal(context,val!)
-                                                   ? openDialog(context,cont,val!)
-                                                   : cont.checkStatusValidation(val!,context);
-                                                },
-                                              ),
-                                            )
-                                        )
-                                    ),
-                                    cont.validateStatusName== true
-                                        ? ErrorText(errorMessage: "Please enter task",)
-                                        : const Opacity(opacity: 0.0),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
+                                    // cont.selectedTask == "" ? const Opacity(opacity: 0.0,):
+                                    // buildTimeSheetTitle(context,"Status"),
+                                    // cont.statusStart == "0"?
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(top: 15.0),
+                                    //   child: GestureDetector(
+                                    //     onTap: (){
+                                    //       cont.callTimesheetStart(context);
+                                    //     },
+                                    //     child: Center(child:buildButtonWidget(context, "Start",height: 40.0,width: 100.0)),
+                                    //   ),
+                                    // )
+                                    //     :
+                                    // cont.selectedTask == "" ? const Opacity(opacity: 0.0,):
+                                    // Container(
+                                    //     height: 40.0,width: MediaQuery.of(context).size.width,
+                                    //     decoration: BoxDecoration(
+                                    //       borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                    //       border: Border.all(color: cont.validateTaskName?errorColor:grey),),
+                                    //     child: Center(
+                                    //         child: Padding(
+                                    //           padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                    //           child: DropdownButton<String>(
+                                    //             hint: buildTextRegularWidget(cont.selectedStatus==""?"Select status":cont.selectedStatus,
+                                    //                 cont.selectedStatus==""?grey:blackColor, context, 15.0),
+                                    //             isExpanded: true,
+                                    //             underline: Container(),
+                                    //             iconEnabledColor: cont.selectedStatus==""?grey:blackColor,
+                                    //             items:
+                                    //             cont.statusList.isEmpty
+                                    //                 ?
+                                    //             cont.noDataList.map((value) {
+                                    //               return DropdownMenuItem<String>(
+                                    //                 value: value,
+                                    //                 child: Text(value),
+                                    //               );
+                                    //             }).toList()
+                                    //                 :
+                                    //             cont.statusList.map((StatusList value) {
+                                    //               return DropdownMenuItem<String>(
+                                    //                 value: value.name,
+                                    //                 child: Text(value.name!),
+                                    //                 onTap: (){
+                                    //                   cont.updateSelectedStatusId(value.id!);
+                                    //                 },
+                                    //               );
+                                    //             }).toList(),
+                                    //             onChanged: (val) {
+                                    //                   //cont.statusStart == "0" ||
+                                    //                   val=="Awaiting for Client Input" ||
+                                    //                   val=="Submitted for Checking" ||
+                                    //                   val=="Put on Hold"
+                                    //                ? openDialog(context,cont,val!)
+                                    //                : cont.checkStatusValidation(val!,context);
+                                    //             },
+                                    //           ),
+                                    //         )
+                                    //     )
+                                    // ),
+                                    // cont.validateStatusName== true
+                                    //     ? ErrorText(errorMessage: "Please enter task",)
+                                    //     : const Opacity(opacity: 0.0),
 
                                     ///details
+                                    cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
                                     buildTimeSheetTitle(context,"Details"),
+                                    cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
                                     Container(
                                       height: 40.0,
                                       decoration: BoxDecoration(
@@ -677,7 +1335,9 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                         : const Opacity(opacity: 0.0),
 
                                     ///time spent
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
                                     buildTimeSheetTitle(context,"Time Spent"),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
                                     Container(
                                         height: 40.0,
                                         decoration: BoxDecoration(
@@ -736,11 +1396,42 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                         ? ErrorText(errorMessage: "Please select time",)
                                         : const Opacity(opacity: 0.0),
 
-                                    const SizedBox(height: 10.0,),
-                                    buildTextBoldWidget("Total Time ${cont.totalTimeToShow}", blackColor, context, 14.0),
-                                    const SizedBox(height: 10.0,),
-                                    buildTextBoldWidget("Balance Time ${cont.balanceTimeToShow}", blackColor, context, 14.0),
-                                    const SizedBox(height: 10.0,),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left:5.0,right:5.0,top: 10.0),
+                                      child: buildTextRegularWidget("Claim amount - ", blackColor, context, 15),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: GestureDetector(
+                                          onTap: (){
+
+                                          },
+                                          child: buildButtonWidget(context, "Add Claim",height: 40.0,buttonColor: Colors.green,buttonFontSize:15.0),
+                                        )
+                                    ),
+
+                                    Row(
+                                        children: [
+                                          Flexible(child:buildButtonWidget(context, "Add more",height: 40.0,buttonColor: Colors.blue,buttonFontSize:14.0),),
+                                          const SizedBox(width: 5.0,),
+                                          Flexible(child:
+                                          GestureDetector(
+                                              onTap: (){
+                                                cont.continued();
+                                              },
+                                              child:buildButtonWidget(context, "Next",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                          )
+                                          ),
+                                        ],
+                                    )
+
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) : const SizedBox(height: 10.0,),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
+                                    // buildTextBoldWidget("Total Time ${cont.totalTimeToShow}", blackColor, context, 14.0),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) : const SizedBox(height: 10.0,),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) :
+                                    // buildTextBoldWidget("Balance Time ${cont.balanceTimeToShow}", blackColor, context, 14.0),
+                                    // cont.statusStart == "0" ? const Opacity(opacity: 0.0,) : const SizedBox(height: 10.0,),
                                   ],
                                 ),
                                 isActive: cont.currentStep >= 0,
@@ -769,135 +1460,280 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                     ),
                                     buildTimeSheetTitle(context,"Office Related",fontSize: 16.0),
 
-                                    ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        itemCount: cont.workList.length,
-                                        itemBuilder: (context,index){
-                                          return Column(
-                                            children: [
-                                              buildTableWidget(context,
-                                                  Container(
-                                                      height: 40.0,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: Padding(
-                                                          padding: const EdgeInsets.only(right:10.0,left:10.0),
-                                                          child:Row(
-                                                            children: [
-                                                              SizedBox(
-                                                                width: MediaQuery.of(context).size.width/3.5,
-                                                                child: buildTextRegularWidget(cont.workList[index].name!,
-                                                                    cont.selectedTimeSpentToShow==""?grey:blackColor, context, 15.0,align: TextAlign.left),
-                                                              ),
-                                                              const Spacer(),
-                                                              const Icon(Icons.arrow_drop_down,color:grey,),
-                                                            ],
-                                                          )
-                                                      )
-                                                  ),
-                                                  Container(
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                    border: Border.all(color: grey),),
-                                                  child: TextFormField(
-                                                    controller: cont.timeStepper3List[index],
-                                                    keyboardType: TextInputType.number,
-                                                    textAlign: TextAlign.left,
-                                                    textAlignVertical: TextAlignVertical.center,
-                                                    textInputAction: TextInputAction.done,
-                                                    onTap: () {
-                                                    },
-                                                    style:const TextStyle(fontSize: 15.0),
-                                                    decoration: InputDecoration(
-                                                      contentPadding: const EdgeInsets.all(10),
-                                                      hintText: "HH:MM",
-                                                      hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                                        color: grey, fontSize: 15,),),
-                                                      border: InputBorder.none,
-                                                      suffixIcon: GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectTimeForStepper3(context,cont.timeStepper3List[index].text,index);
-                                                        },
-                                                        child:const Icon(Icons.watch_later_outlined,color: grey,)
-                                                      )
-                                                    ),
-                                                    inputFormatters: [LengthLimitingTextInputFormatter(5),],
-                                                    onChanged: (value) {
-                                                      cont.addTime(index, cont.timeStepper3List[index],value);
-                                                    },
-                                                  )
-                                                ),
+                                    // ListView.builder(
+                                    //     shrinkWrap: true,
+                                    //     physics: const NeverScrollableScrollPhysics(),
+                                    //     itemCount: cont.workList.length,
+                                    //     itemBuilder: (context,index){
+                                    //       return Column(
+                                    //         children: [
+                                    //           buildTableWidget(context,
+                                    //               Container(
+                                    //                   height: 40.0,
+                                    //                   decoration: BoxDecoration(
+                                    //                     borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                    //                     border: Border.all(color: grey),),
+                                    //                   child: Padding(
+                                    //                       padding: const EdgeInsets.only(right:10.0,left:10.0),
+                                    //                       child:Row(
+                                    //                         children: [
+                                    //                           SizedBox(
+                                    //                             width: MediaQuery.of(context).size.width/3.5,
+                                    //                             child: buildTextRegularWidget(cont.workList[index].name!,
+                                    //                                 cont.selectedTimeSpentToShow==""?grey:blackColor, context, 15.0,align: TextAlign.left),
+                                    //                           ),
+                                    //                           const Spacer(),
+                                    //                           const Icon(Icons.arrow_drop_down,color:grey,),
+                                    //                         ],
+                                    //                       )
+                                    //                   )
+                                    //               ),
+                                    //               Container(
+                                    //               height: 40.0,
+                                    //               decoration: BoxDecoration(
+                                    //                 borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                    //                 border: Border.all(color: grey),),
+                                    //               child: TextFormField(
+                                    //                 controller: cont.timeStepper3List[index],
+                                    //                 keyboardType: TextInputType.number,
+                                    //                 textAlign: TextAlign.left,
+                                    //                 textAlignVertical: TextAlignVertical.center,
+                                    //                 textInputAction: TextInputAction.done,
+                                    //                 onTap: () {
+                                    //                 },
+                                    //                 style:const TextStyle(fontSize: 15.0),
+                                    //                 decoration: InputDecoration(
+                                    //                   contentPadding: const EdgeInsets.all(10),
+                                    //                   hintText: "HH:MM",
+                                    //                   hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                    //                     color: grey, fontSize: 15,),),
+                                    //                   border: InputBorder.none,
+                                    //                   suffixIcon: GestureDetector(
+                                    //                     onTap: (){
+                                    //                       cont.selectTimeForStepper3(context,cont.timeStepper3List[index].text,index);
+                                    //                     },
+                                    //                     child:const Icon(Icons.watch_later_outlined,color: grey,)
+                                    //                   )
+                                    //                 ),
+                                    //                 inputFormatters: [LengthLimitingTextInputFormatter(5),],
+                                    //                 onChanged: (value) {
+                                    //                   cont.addTime(index, cont.timeStepper3List[index],value);
+                                    //                 },
+                                    //               )
+                                    //             ),
+                                    //
+                                    //             // Container(
+                                    //             //   height: 40.0,
+                                    //             //   decoration: BoxDecoration(
+                                    //             //     borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                    //             //     border: Border.all(color: grey),),
+                                    //             //   child: TextFormField(
+                                    //             //     controller: cont.timeStepper3List[index],
+                                    //             //     keyboardType: TextInputType.text,
+                                    //             //     textAlign: TextAlign.left,
+                                    //             //     textAlignVertical: TextAlignVertical.center,
+                                    //             //     textInputAction: TextInputAction.done,
+                                    //             //     onTap: () {
+                                    //             //     },
+                                    //             //     style:const TextStyle(fontSize: 15.0),
+                                    //             //     decoration: InputDecoration(
+                                    //             //       contentPadding: const EdgeInsets.all(10),
+                                    //             //       hintText: "Enter details $index",
+                                    //             //       hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                    //             //         color: grey, fontSize: 15,),),
+                                    //             //       border: InputBorder.none,
+                                    //             //       suffixIcon: GestureDetector(
+                                    //             //         onTap: (){
+                                    //             //         },
+                                    //             //         child: const Icon(Icons.watch_later_outlined,color: grey),
+                                    //             //       )
+                                    //             //     ),
+                                    //             //     onChanged: (text) {
+                                    //             //       cont.addTime(index,cont.timeStepper3List[index]);
+                                    //             //     },
+                                    //             //   ),
+                                    //             // ),
+                                    //           ),
+                                    //           Container(
+                                    //             height: 40.0,
+                                    //             decoration: BoxDecoration(
+                                    //               borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                    //               border: Border.all(color: grey),),
+                                    //             child: TextFormField(
+                                    //               controller: cont.detailsStepper3List[index],
+                                    //               keyboardType: TextInputType.text,
+                                    //               textAlign: TextAlign.left,
+                                    //               textAlignVertical: TextAlignVertical.center,
+                                    //               textInputAction: TextInputAction.done,
+                                    //               onTap: () {
+                                    //               },
+                                    //               style:const TextStyle(fontSize: 15.0),
+                                    //               decoration: InputDecoration(
+                                    //                 contentPadding: const EdgeInsets.all(10),
+                                    //                 hintText: "Enter details $index",
+                                    //                 hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                    //                   color: grey, fontSize: 15,),),
+                                    //                 border: InputBorder.none,
+                                    //               ),
+                                    //               onChanged: (text) {
+                                    //                 cont.addDetails(index,cont.detailsStepper3List[index]);
+                                    //               },
+                                    //             ),
+                                    //           ),
+                                    //           buildTimeSheetDivider(),
+                                    //         ],
+                                    //       );
+                                    // }),
 
-                                                // Container(
-                                                //   height: 40.0,
-                                                //   decoration: BoxDecoration(
-                                                //     borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                //     border: Border.all(color: grey),),
-                                                //   child: TextFormField(
-                                                //     controller: cont.timeStepper3List[index],
-                                                //     keyboardType: TextInputType.text,
-                                                //     textAlign: TextAlign.left,
-                                                //     textAlignVertical: TextAlignVertical.center,
-                                                //     textInputAction: TextInputAction.done,
-                                                //     onTap: () {
-                                                //     },
-                                                //     style:const TextStyle(fontSize: 15.0),
-                                                //     decoration: InputDecoration(
-                                                //       contentPadding: const EdgeInsets.all(10),
-                                                //       hintText: "Enter details $index",
-                                                //       hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                                //         color: grey, fontSize: 15,),),
-                                                //       border: InputBorder.none,
-                                                //       suffixIcon: GestureDetector(
-                                                //         onTap: (){
-                                                //         },
-                                                //         child: const Icon(Icons.watch_later_outlined,color: grey),
-                                                //       )
-                                                //     ),
-                                                //     onChanged: (text) {
-                                                //       cont.addTime(index,cont.timeStepper3List[index]);
-                                                //     },
-                                                //   ),
-                                                // ),
+                                    Container(
+                                        height: 40.0,width: MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                          border: Border.all(color: cont.validateClientName?errorColor:grey),),
+                                        child: Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                              child: DropdownButton<String>(
+                                                hint: buildTextRegularWidget(cont.selectedOfficeRelatedStatus==""?"Type of work":cont.selectedOfficeRelatedStatus,
+                                                    cont.selectedOfficeRelatedStatus==""?grey:blackColor, context, 15.0),
+                                                isExpanded: true,
+                                                underline: Container(),
+                                                iconEnabledColor: cont.selectedOfficeRelatedStatus==""?grey:blackColor,
+                                                items:
+                                                cont.workList.isEmpty
+                                                    ?
+                                                cont.noDataList.map((value) {
+                                                  return DropdownMenuItem<String>(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList()
+                                                    :
+                                                cont.workList.map((TypeOfWorkList value) {
+                                                  return DropdownMenuItem<String>(
+                                                    value: value.name,
+                                                    child: Text(value.name!),
+                                                    onTap: (){
+                                                      cont.updateOfficeRelatedStatusId(value.id!);
+                                                    },
+                                                  );
+                                                }).toList(),
+                                                onChanged: (val) {
+                                                  cont.checkOfficeRelatedStatusValidation(val!,context);
+                                                },
                                               ),
-                                              Container(
-                                                height: 40.0,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                  border: Border.all(color: grey),),
-                                                child: TextFormField(
-                                                  controller: cont.detailsStepper3List[index],
-                                                  keyboardType: TextInputType.text,
-                                                  textAlign: TextAlign.left,
-                                                  textAlignVertical: TextAlignVertical.center,
-                                                  textInputAction: TextInputAction.done,
-                                                  onTap: () {
-                                                  },
-                                                  style:const TextStyle(fontSize: 15.0),
-                                                  decoration: InputDecoration(
-                                                    contentPadding: const EdgeInsets.all(10),
-                                                    hintText: "Enter details $index",
-                                                    hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                                      color: grey, fontSize: 15,),),
-                                                    border: InputBorder.none,
-                                                  ),
-                                                  onChanged: (text) {
-                                                    cont.addDetails(index,cont.detailsStepper3List[index]);
-                                                  },
-                                                ),
-                                              ),
-                                              buildTimeSheetDivider(),
+                                            )
+                                        )
+                                    ),
+                                    buildTimeSheetTitle(context,"Details"),
+                                    Container(
+                                      height: 40.0,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                        border: Border.all(color: cont.validateDetailsStepper2?errorColor:grey),),
+                                      child: TextFormField(
+                                        controller: cont.detailsForStepper3,
+                                        keyboardType: TextInputType.text,
+                                        textAlign: TextAlign.left,
+                                        textAlignVertical: TextAlignVertical.center,
+                                        textInputAction: TextInputAction.done,
+                                        onTap: () {
+                                        },
+                                        style:const TextStyle(fontSize: 15.0),
+                                        decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.all(10),
+                                          hintText: "Enter details",
+                                          hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                            color: grey, fontSize: 15,),),
+                                          border: InputBorder.none,
+                                        ),
+                                        onChanged: (text) {
+                                          cont.checkDetailsValidationStepper2();
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10.0,),
+                                    buildTimeSheetTitle(context,"Time spent"),
+                                    GestureDetector(
+                                      onTap: (){cont.selectTime(context,"forOfficeRelated");},
+                                      child:  Container(
+                                          height: 40.0,
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                            border: Border.all(color: cont.validateInTime?errorColor:grey),),
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(width: 10.0,),
+                                              Icon(Icons.watch_later_outlined,color: cont.selectedTimeSpentToShow.isEmpty?grey:blackColor,),
+                                              const SizedBox(width: 10.0,),
+                                              buildTextRegularWidget(cont.selectedTimeSpentToShow==""?"In Time (HH:MM)":cont.selectedTimeSpentToShow,
+                                                  cont.selectedTimeSpentToShow==""?grey:blackColor, context, 15.0)
+                                              // Flexible(
+                                              //   child: TextFormField(
+                                              //     controller: cont.stepper1InTime,
+                                              //     keyboardType: TextInputType.number,
+                                              //     textAlign: TextAlign.left,
+                                              //     textAlignVertical: TextAlignVertical.center,
+                                              //     textInputAction: TextInputAction.done,
+                                              //     onTap: () {
+                                              //     },
+                                              //     style:const TextStyle(fontSize: 15.0),
+                                              //     decoration: InputDecoration(
+                                              //       hintText: "In Time (HH:MM)",
+                                              //       hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
+                                              //         color: cont.stepper1InTime.text.isEmpty?grey:blackColor, fontSize: 15,),),
+                                              //       border: InputBorder.none,
+                                              //     ),
+                                              //     inputFormatters: [LengthLimitingTextInputFormatter(5),],
+                                              //     onChanged: (value) {
+                                              //       if(value.isEmpty){}
+                                              //       else if (value.isNotEmpty){
+                                              //         cont.validateInTime=false;
+                                              //         if(value.length >= 2 && !value.contains(":")) {
+                                              //           value = '$value:';
+                                              //           cont.stepper1InTime.value = TextEditingValue(text:
+                                              //           value,selection: TextSelection.collapsed(offset: value.length),);
+                                              //         }
+                                              //       }
+                                              //     },
+                                              //   ),
+                                              // ),
                                             ],
-                                          );
-                                    }),
+                                          )
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10.0,), const SizedBox(height: 10.0,),
+                                    buildTextRegularWidget("Claim amount - ", blackColor, context, 14.0), const SizedBox(height: 10.0,),
+                                    GestureDetector(
+                                      onTap: (){
+
+                                      },
+                                      child: buildButtonWidget(context, "Add Claim",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                    ),
                                     const SizedBox(height: 10.0,),
-                                    buildTextBoldWidget("Total Time ${cont.totalTimeToShow}", blackColor, context, 14.0),
-                                    const SizedBox(height: 10.0,),
-                                    buildTextBoldWidget("Balance Time ${cont.balanceTimeToShow}", blackColor, context, 14.0),
-                                    const SizedBox(height: 10.0,),
+                                    Row(
+                                      children: [
+                                        Flexible(child:GestureDetector(
+                                          onTap: (){
+                                            cont.addMoreOfficeRelated(cont.selectedOfficeRelatedStatus,cont.detailsForStepper3.text,cont.selectedTimeSpentToShow);
+                                          },
+                                            child:buildButtonWidget(context, "Add more",height: 40.0,buttonColor: Colors.blue,buttonFontSize:14.0),
+                                        )),
+                                        const SizedBox(width: 5.0,),
+                                        Flexible(child:
+                                        GestureDetector(
+                                          onTap: (){
+                                            cont.continued();
+                                          },
+                                          child:buildButtonWidget(context, "Next",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                        )
+                                        ),
+                                      ],
+                                    ),
+                                    // buildTextBoldWidget("Total Time ${cont.totalTimeToShow}", blackColor, context, 14.0),
+                                    // const SizedBox(height: 10.0,),
+                                    // buildTextBoldWidget("Balance Time ${cont.balanceTimeToShow}", blackColor, context, 14.0),
+                                    // const SizedBox(height: 10.0,),
                                   ],
                                 ),
                                 isActive:cont.currentStep >= 0,
@@ -931,127 +1767,267 @@ class _TimesheetFormState extends State<TimesheetForm> {
             return Align(
               alignment: Alignment.topCenter,
               child: SafeArea(
-                child: cont.statusStart == "0"
-                  ? Container(
-                  height: 150.0,
-                  color: Colors.transparent,
-                  child: Container(
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(25.0),
-                              topRight: Radius.circular(25.0))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ListView(
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                Navigator.pop(context);
-                              },
-                              child:const Align(
-                                alignment: Alignment.topRight,
-                                child: Icon(Icons.clear),
-                              ),
-                            ),
-                            buildTextBoldWidget("Do you want to start this task?", blackColor, context, 16.0),
-                            const SizedBox(height: 20.0,),
-                            Row(
-                              children: [
-                                Flexible(child:GestureDetector(
-                                  onTap: (){
-                                    cont.callTimesheetStart(context);
-                                  },
-                                  child: buildButtonWidget(context, "Yes",height: 40.0),
-                                )),const SizedBox(width: 10.0,),
-                                Flexible(
-                                  child: GestureDetector(
-                                    onTap: (){Navigator.pop(context);},
-                                    child: buildButtonWidget(context, "No",height: 40.0),
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )),
-                )
-                  : Container(
+                child:
+                // cont.statusStart == "0"
+                //   ? Container(
+                //     height: 250,
+                //     decoration: const BoxDecoration(color: Colors.white,
+                //         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0),bottomRight:Radius.circular(15.0),)),
+                //     child:Scaffold(
+                //         resizeToAvoidBottomInset: false,
+                //         backgroundColor: Colors.transparent,
+                //         body: Padding(
+                //           padding: const EdgeInsets.all(20.0),
+                //           child: Column(
+                //             mainAxisSize: MainAxisSize.max,
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             mainAxisAlignment: MainAxisAlignment.start,
+                //             children: [
+                //               GestureDetector(
+                //                 onTap: (){
+                //                   Navigator.pop(context);
+                //                 },
+                //                 child:const Align(
+                //                   alignment: Alignment.topRight,
+                //                   child: Icon(Icons.clear),
+                //                 ),
+                //               ),
+                //               buildTextBoldWidget("Remark", blackColor, context, 16.0),
+                //               const SizedBox(height: 20.0,),
+                //               Container(
+                //                 height: 40.0,
+                //                 decoration: BoxDecoration(
+                //                   borderRadius: const BorderRadius.all(Radius.circular(5)),
+                //                   border: Border.all(color: cont.validateRemarkStepper2?errorColor:grey),),
+                //                 child: TextFormField(
+                //                   controller: cont.remark,
+                //                   keyboardType: TextInputType.text,
+                //                   textAlign: TextAlign.left,
+                //                   textAlignVertical: TextAlignVertical.center,
+                //                   textInputAction: TextInputAction.done,
+                //                   onTap: () {
+                //                   },
+                //                   style:const TextStyle(fontSize: 15.0),
+                //                   decoration: InputDecoration(
+                //                     contentPadding: const EdgeInsets.all(10),
+                //                     hintText: "Enter Remark",
+                //                     hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                //                       color: grey, fontSize: 15,),),
+                //                     border: InputBorder.none,
+                //                   ),
+                //                   onChanged: (text) {
+                //                     cont.checkRemarkValidationStepper2();
+                //                   },
+                //                 ),
+                //               ),
+                //               cont.validateRemarkStepper2== true
+                //                   ? ErrorText(errorMessage: "Please enter remark",)
+                //                   : const Opacity(opacity: 0.0),
+                //               const SizedBox(height: 20.0,),
+                //               Row(
+                //                 children: [
+                //                   Flexible(child:GestureDetector(
+                //                     onTap: (){
+                //                       cont.callTimesheetUpdate(context);
+                //                     },
+                //                     child: buildButtonWidget(context, "Add",height: 40.0),
+                //                   )),const SizedBox(width: 10.0,),
+                //                   Flexible(
+                //                     child: GestureDetector(
+                //                       onTap: (){Navigator.pop(context);},
+                //                       child: buildButtonWidget(context, "Cancel",height: 40.0),
+                //                     ),
+                //                   )
+                //                 ],
+                //               )
+                //             ],
+                //           ),
+                //         )
+                //     )
+                // )
+                //   : Container(
+                //   height: 150.0,
+                //   color: Colors.transparent,
+                //   child: Container(
+                //       decoration: const BoxDecoration(
+                //           color: Colors.white,
+                //           borderRadius: BorderRadius.only(
+                //               topLeft: Radius.circular(25.0),
+                //               topRight: Radius.circular(25.0))),
+                //       child: Padding(
+                //         padding: const EdgeInsets.all(10.0),
+                //         child: ListView(
+                //           children: [
+                //             GestureDetector(
+                //               onTap: (){
+                //                 Navigator.pop(context);
+                //               },
+                //               child:const Align(
+                //                 alignment: Alignment.topRight,
+                //                 child: Icon(Icons.clear),
+                //               ),
+                //             ),
+                //             buildTextBoldWidget("Do you want to start this task?", blackColor, context, 16.0),
+                //             const SizedBox(height: 20.0,),
+                //             Row(
+                //               children: [
+                //                 Flexible(child:GestureDetector(
+                //                   onTap: (){
+                //                     cont.callTimesheetStart(context);
+                //                   },
+                //                   child: buildButtonWidget(context, "Yes",height: 40.0),
+                //                 )),const SizedBox(width: 10.0,),
+                //                 Flexible(
+                //                   child: GestureDetector(
+                //                     onTap: (){Navigator.pop(context);},
+                //                     child: buildButtonWidget(context, "No",height: 40.0),
+                //                   ),
+                //                 )
+                //               ],
+                //             )
+                //           ],
+                //         ),
+                //       )),
+                // )
+                Container(
                     height: 250,
                     decoration: const BoxDecoration(color: Colors.white,
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0),bottomRight:Radius.circular(15.0),)),
+                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0),bottomRight:Radius.circular(15.0),)),
                     child:Scaffold(
-                      resizeToAvoidBottomInset: false,
-                      backgroundColor: Colors.transparent,
-                      body: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                Navigator.pop(context);
-                              },
-                              child:const Align(
-                                alignment: Alignment.topRight,
-                                child: Icon(Icons.clear),
-                              ),
-                            ),
-                            buildTextBoldWidget("Remark", blackColor, context, 16.0),
-                            const SizedBox(height: 20.0,),
-                            Container(
-                              height: 40.0,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                border: Border.all(color: cont.validateRemarkStepper2?errorColor:grey),),
-                              child: TextFormField(
-                                controller: cont.remark,
-                                keyboardType: TextInputType.text,
-                                textAlign: TextAlign.left,
-                                textAlignVertical: TextAlignVertical.center,
-                                textInputAction: TextInputAction.done,
-                                onTap: () {
+                        resizeToAvoidBottomInset: false,
+                        backgroundColor: Colors.transparent,
+                        body: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.pop(context);
                                 },
-                                style:const TextStyle(fontSize: 15.0),
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.all(10),
-                                  hintText: "Enter Remark",
-                                  hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                    color: grey, fontSize: 15,),),
-                                  border: InputBorder.none,
+                                child:const Align(
+                                  alignment: Alignment.topRight,
+                                  child: Icon(Icons.clear),
                                 ),
-                                onChanged: (text) {
-                                  cont.checkRemarkValidationStepper2();
-                                },
                               ),
-                            ),
-                            cont.validateRemarkStepper2== true
-                                ? ErrorText(errorMessage: "Please enter remark",)
-                                : const Opacity(opacity: 0.0),
-                            const SizedBox(height: 20.0,),
-                            Row(
-                              children: [
-                                Flexible(child:GestureDetector(
-                                  onTap: (){
-                                    cont.callTimesheetUpdate(context);
+                              buildTextBoldWidget("Remark", blackColor, context, 16.0),
+                              const SizedBox(height: 20.0,),
+                              Container(
+                                height: 40.0,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                  border: Border.all(color: cont.validateRemarkStepper2?errorColor:grey),),
+                                child: TextFormField(
+                                  controller: cont.remark,
+                                  keyboardType: TextInputType.text,
+                                  textAlign: TextAlign.left,
+                                  textAlignVertical: TextAlignVertical.center,
+                                  textInputAction: TextInputAction.done,
+                                  onTap: () {
                                   },
-                                  child: buildButtonWidget(context, "Add",height: 40.0),
-                                )),const SizedBox(width: 10.0,),
-                                Flexible(
-                                  child: GestureDetector(
-                                    onTap: (){Navigator.pop(context);},
-                                    child: buildButtonWidget(context, "Cancel",height: 40.0),
+                                  style:const TextStyle(fontSize: 15.0),
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.all(10),
+                                    hintText: "Enter Remark",
+                                    hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                      color: grey, fontSize: 15,),),
+                                    border: InputBorder.none,
                                   ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      )
+                                  onChanged: (text) {
+                                    cont.checkRemarkValidationStepper2();
+                                  },
+                                ),
+                              ),
+                              cont.validateRemarkStepper2== true
+                                  ? ErrorText(errorMessage: "Please enter remark",)
+                                  : const Opacity(opacity: 0.0),
+                              const SizedBox(height: 20.0,),
+                              Row(
+                                children: [
+                                  Flexible(child:GestureDetector(
+                                    onTap: (){
+                                      cont.callTimesheetUpdate(context);
+                                    },
+                                    child: buildButtonWidget(context, "Add",height: 40.0),
+                                  )),const SizedBox(width: 10.0,),
+                                  Flexible(
+                                    child: GestureDetector(
+                                      onTap: (){Navigator.pop(context);},
+                                      child: buildButtonWidget(context, "Cancel",height: 40.0),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        )
                     )
-                ),
+                )
+              ),
+            );
+        }
+        );},
+      transitionBuilder: (context, anim1, anim2, child) {
+        return SlideTransition(
+          position: Tween(begin: const Offset(0, 1), end: const Offset(0, 0)).animate(anim1),
+          child: child,
+        );},
+    );
+  }
+
+  openPopupForStatus(BuildContext context,TimesheetFormController cont,int taskIndex){
+    return showGeneralDialog(
+      barrierLabel: "Label",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionDuration: const Duration(milliseconds: 700),
+      context: context,
+      pageBuilder: (context, anim1, anim2) {
+        return StatefulBuilder(
+            builder: (BuildContext context,StateSetter state){
+            return Align(
+              alignment: Alignment.topCenter,
+              child: SafeArea(
+                child:
+                Container(
+                    height: 400,
+                    decoration: const BoxDecoration(color: Colors.white,
+                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0),bottomRight:Radius.circular(15.0),)),
+                    child:Scaffold(
+                        resizeToAvoidBottomInset: false,
+                        backgroundColor: Colors.transparent,
+                        body: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child:Column(
+                            children: [
+                              buildTextBoldWidget("Please select status", blackColor, context, 16.0),
+                              const Divider(),
+                              const SizedBox(height: 10.0,),
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: cont.allottedStartedStatusList.length,
+                                  itemBuilder: (context,index){
+                                    return Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: GestureDetector(
+                                        onTap: (){
+                                          cont.selectStepper2Status(context,cont.allottedStartedStatusList[index],taskIndex);
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          child: buildTextRegularWidget(
+                                              cont.allottedStartedStatusList[index], blackColor, context, 16.0),
+                                        ),
+                                      ),
+                                    );
+                                  })
+                            ],
+                          ),
+                        )
+                    )
+                )
               ),
             );
         }
