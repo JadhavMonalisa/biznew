@@ -278,15 +278,15 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                               ],
                                             )
                                         ),
-                                        // Padding(
-                                        //     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                        //     child: Row(
-                                        //       children: [
-                                        //         buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                        //         buildTextRegularWidget("${item.}", blackColor, context, 14.0),
-                                        //       ],
-                                        //     )
-                                        // ),
+                                        Padding(
+                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                            child: Row(
+                                              children: [
+                                                buildTextBoldWidget("Claim amount - ", blackColor, context, 14.0),
+                                                buildTextRegularWidget("Rs. ${item.claimAmount}", blackColor, context, 14.0),
+                                              ],
+                                            )
+                                        ),
                                         Padding(
                                             padding: const EdgeInsets.all(10.0),
                                             child: Row(
@@ -385,15 +385,30 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                   ],
                                                 )
                                             ),
-                                            // Padding(
-                                            //     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                            //     child: Row(
-                                            //       children: [
-                                            //         buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                            //         buildTextRegularWidget("${item.}", blackColor, context, 14.0),
-                                            //       ],
-                                            //     )
-                                            // ),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                    Flexible(
+                                                      child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
+                                                    )
+                                                  ],
+                                                )
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                              child: Table(
+                                                children: [
+                                                  buildTableTwoByTwoTitle(context,title1: "Trigger Date",title2: "Target Date",fontSize: 14.0,
+                                                      title1FW: FontWeight.bold,title2FW: FontWeight.bold),
+                                                  buildContentTwoByTwoSubTitle(context,contentTitle1: item.triggerDate!,contentTitle2: item.targetDate!,fontSize: 14.0,
+                                                      title1FW: FontWeight.normal,title2FW: FontWeight.normal),
+                                                  const TableRow(children: [SizedBox(height: 15.0,),SizedBox(height: 15.0,),],),
+                                                ],
+                                              ),
+                                            ),
                                             Padding(
                                                 padding: const EdgeInsets.all(10.0),
                                                 child: Row(
@@ -492,15 +507,30 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                   ],
                                                 )
                                             ),
-                                            // Padding(
-                                            //     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                            //     child: Row(
-                                            //       children: [
-                                            //         buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                            //         buildTextRegularWidget("${item.}", blackColor, context, 14.0),
-                                            //       ],
-                                            //     )
-                                            // ),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                    Flexible(
+                                                      child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
+                                                    )
+                                                  ],
+                                                )
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                              child: Table(
+                                                children: [
+                                                  buildTableTwoByTwoTitle(context,title1: "Trigger Date",title2: "Target Date",fontSize: 14.0,
+                                                      title1FW: FontWeight.bold,title2FW: FontWeight.bold),
+                                                  buildContentTwoByTwoSubTitle(context,contentTitle1: item.triggerDate!,contentTitle2: item.targetDate!,fontSize: 14.0,
+                                                      title1FW: FontWeight.normal,title2FW: FontWeight.normal),
+                                                  const TableRow(children: [SizedBox(height: 15.0,),SizedBox(height: 15.0,),],),
+                                                ],
+                                              ),
+                                            ),
                                             Padding(
                                                 padding: const EdgeInsets.all(10.0),
                                                 child: Row(
@@ -534,7 +564,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                           )
                       )
 
-                      ///completed but not billed
+                      ///all tasks
                           : cont.selectedMainType == "AllTasks"
                           ? cont.allTasksDataList.isEmpty ? Padding(
                           padding: const EdgeInsets.only(top: 50.0),
@@ -599,15 +629,30 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                   ],
                                                 )
                                             ),
-                                            // Padding(
-                                            //     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                            //     child: Row(
-                                            //       children: [
-                                            //         buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                            //         buildTextRegularWidget("${item.}", blackColor, context, 14.0),
-                                            //       ],
-                                            //     )
-                                            // ),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                    Flexible(
+                                                      child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
+                                                    )
+                                                  ],
+                                                )
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                              child: Table(
+                                                children: [
+                                                  buildTableTwoByTwoTitle(context,title1: "Trigger Date",title2: "Target Date",fontSize: 14.0,
+                                                      title1FW: FontWeight.bold,title2FW: FontWeight.bold),
+                                                  buildContentTwoByTwoSubTitle(context,contentTitle1: item.triggerDate!,contentTitle2: item.targetDate!,fontSize: 14.0,
+                                                      title1FW: FontWeight.normal,title2FW: FontWeight.normal),
+                                                  const TableRow(children: [SizedBox(height: 15.0,),SizedBox(height: 15.0,),],),
+                                                ],
+                                              ),
+                                            ),
                                             Padding(
                                                 padding: const EdgeInsets.all(10.0),
                                                 child: Row(

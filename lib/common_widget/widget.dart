@@ -304,31 +304,33 @@ buildContentSubTitle(BuildContext context,{String contentTitle1= "",String conte
   );
 }
 ///table 2 X 2
-buildTableTwoByTwoTitle(BuildContext context,{String title1= "",String title2 ="",double fontSize = 12.0}){
+buildTableTwoByTwoTitle(BuildContext context,{String title1= "",String title2 ="",double fontSize = 12.0,
+FontWeight title1FW = FontWeight.normal,FontWeight title2FW = FontWeight.normal,}){
   return TableRow(
     children: [
       Padding(
         padding: const EdgeInsets.only(left: 1.0,bottom: 2.0),
-        child: buildTextRegularWidget(title1, blackColor, context, fontSize,align: TextAlign.left),
+        child: buildTextRegularWidget(title1, blackColor, context, fontSize,align: TextAlign.left,fontWeight: title1FW),
       ),
       Padding(
         padding: const EdgeInsets.only(left: 1.0,bottom: 2.0),
-        child: buildTextRegularWidget(title2, blackColor, context, fontSize,align: TextAlign.left),
+        child: buildTextRegularWidget(title2, blackColor, context, fontSize,align: TextAlign.left,fontWeight: title2FW),
       ),
     ],
   );
 }
 buildContentTwoByTwoSubTitle(BuildContext context,{String contentTitle1= "",String contentTitle2 ="",double fontSize = 12.0,
-  TextAlign contentTitle1Align = TextAlign.left,TextAlign contentTitle2Align = TextAlign.left}){
+  TextAlign contentTitle1Align = TextAlign.left,TextAlign contentTitle2Align = TextAlign.left,
+  FontWeight title1FW = FontWeight.bold,FontWeight title2FW = FontWeight.bold,}){
   return TableRow(
     children: [
       Padding(
         padding: const EdgeInsets.only(left: 1.0),
-        child: buildTextMediumWidget(contentTitle1, blackColor, context, fontSize,align: contentTitle2Align,),
+        child: buildTextMediumWidget(contentTitle1, blackColor, context, fontSize,align: contentTitle2Align,fontWeight: title1FW),
       ),
       Padding(
         padding: const EdgeInsets.only(left: 1.0),
-        child: buildTextMediumWidget(contentTitle2, blackColor, context, fontSize,align: contentTitle2Align,),
+        child: buildTextMediumWidget(contentTitle2, blackColor, context, fontSize,align: contentTitle2Align,fontWeight: title2FW),
       ),
     ],
   );
