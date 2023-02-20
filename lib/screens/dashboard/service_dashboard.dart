@@ -907,7 +907,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                             children: [
                                                               GestureDetector(
                                                                 onTap: (){
-                                                                  //cont.callDueDataForAllTasks("All Tasks","Own",cont.ownAllTaskCompleted[0].toString());
+                                                                  cont.callDueDataForAllTasks("All Tasks","Own",cont.ownAllTaskCompleted[0].toString());
                                                                 },
                                                                 child: Column(
                                                                   children: [
@@ -922,7 +922,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                               ),
                                                               GestureDetector(
                                                                 onTap: (){
-                                                                  //cont.callDueDataForAllTasks("All Tasks","Team",cont.teamAllTaskCompleted[0].toString());
+                                                                  cont.callDueDataForAllTasks("All Tasks","Team",cont.teamAllTaskCompleted[0].toString());
                                                                 },
                                                                 child: Column(
                                                                   children: [
