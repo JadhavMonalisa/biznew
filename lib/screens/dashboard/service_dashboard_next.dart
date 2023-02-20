@@ -40,7 +40,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   child: ListView(
-                    physics:const NeverScrollableScrollPhysics(),
+                    physics:const AlwaysScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: [
                       Padding(
@@ -320,126 +320,127 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                         )
                       )
 
-                      ///completed but not billed
+                      ///submitted for checking
                           : cont.selectedMainType == "SubmittedForChecking"
-                          ? cont.submittedForCheckingPieDataList.isEmpty ? Padding(
+                          ?  cont.submittedForCheckingPieDataList.isEmpty ? Padding(
                           padding: const EdgeInsets.only(top: 50.0),
                           child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-                      Padding(
-                          padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
-                          child:SizedBox(
-                              height: MediaQuery.of(context).size.height,
-                              width: MediaQuery.of(context).size.width,
-                              child:ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const AlwaysScrollableScrollPhysics(),
-                                  itemCount: cont.submittedForCheckingPieDataList.length,
-                                  itemBuilder: (context,index){
-                                    final item = cont.submittedForCheckingPieDataList[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Card(
-                                        elevation: 1.0,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-                                            side: const BorderSide(color: grey)),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        child:Padding(
+                          padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: cont.submittedForCheckingPieDataList.length,
+                              itemBuilder: (context,index){
+                                final item = cont.submittedForCheckingPieDataList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Card(
+                                    elevation: 1.0,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                        side: const BorderSide(color: grey)),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Row(
                                           children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                    height: 40.0,
-                                                    decoration: const BoxDecoration(color: primaryColor,
-                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                    child: Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                          child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                        )
+                                            Container(
+                                                height: 40.0,
+                                                decoration: const BoxDecoration(color: primaryColor,
+                                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
+                                                child: Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                      child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
                                                     )
-                                                ),
-                                                Flexible(child: Container(
-                                                    width: MediaQuery.of(context).size.width,
-                                                    height: 40.0,
-                                                    decoration: BoxDecoration(border: Border.all(color: grey),
-                                                        borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                    child: Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 10.0),
-                                                          child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                                        )
-                                                    )
-                                                ),)
-                                              ],
-                                            ),
-                                            const SizedBox(height: 10.0,),
-                                            Padding(
-                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                                child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    buildTextBoldWidget("Service - ", blackColor, context, 14.0),
-                                                    Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
-                                                  ],
                                                 )
                                             ),
-                                            Padding(
-                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                                child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                    Flexible(
-                                                      child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
+                                            Flexible(child: Container(
+                                                width: MediaQuery.of(context).size.width,
+                                                height: 40.0,
+                                                decoration: BoxDecoration(border: Border.all(color: grey),
+                                                    borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+                                                child: Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(left: 10.0),
+                                                      child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
                                                     )
-                                                  ],
                                                 )
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Table(
-                                                children: [
-                                                  buildTableTwoByTwoTitle(context,title1: "Trigger Date",title2: "Target Date",fontSize: 14.0,
-                                                      title1FW: FontWeight.bold,title2FW: FontWeight.bold),
-                                                  buildContentTwoByTwoSubTitle(context,contentTitle1: item.triggerDate!,contentTitle2: item.targetDate!,fontSize: 14.0,
-                                                      title1FW: FontWeight.normal,title2FW: FontWeight.normal),
-                                                  const TableRow(children: [SizedBox(height: 15.0,),SizedBox(height: 15.0,),],),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                                padding: const EdgeInsets.all(10.0),
-                                                child: Row(
-                                                  children: [
-                                                    Flexible(
-                                                        child: GestureDetector(
-                                                          onTap: (){cont.callStartService(item.id!);},
-                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                        )),
-                                                    const SizedBox(width: 10.0,),
-                                                    Flexible(
-                                                      child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                    ),
-                                                    const SizedBox(width: 10.0,),
-                                                    Flexible(
-                                                        child: GestureDetector(
-                                                          onTap: (){
-                                                            cont.selectedCliId = item.id!;
-                                                            cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                          },
-                                                          child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                        )  ),
-                                                  ],
-                                                )
-                                            )
+                                            ),)
                                           ],
                                         ),
-                                      ),
-                                    );
-                                  })
-                          )
+                                        const SizedBox(height: 10.0,),
+                                        Padding(
+                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                buildTextBoldWidget("Service - ", blackColor, context, 14.0),
+                                                Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
+                                              ],
+                                            )
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                Flexible(
+                                                  child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
+                                                )
+                                              ],
+                                            )
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                          child: Table(
+                                            children: [
+                                              buildTableTwoByTwoTitle(context,title1: "Trigger Date",title2: "Target Date",fontSize: 14.0,
+                                                  title1FW: FontWeight.bold,title2FW: FontWeight.bold),
+                                              buildContentTwoByTwoSubTitle(context,contentTitle1: item.triggerDate!,contentTitle2: item.targetDate!,fontSize: 14.0,
+                                                  title1FW: FontWeight.normal,title2FW: FontWeight.normal),
+                                              const TableRow(children: [SizedBox(height: 15.0,),SizedBox(height: 15.0,),],),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Row(
+                                              children: [
+                                                Flexible(
+                                                    child: GestureDetector(
+                                                      onTap: (){cont.callStartService(item.id!);},
+                                                      child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                    )),
+                                                const SizedBox(width: 10.0,),
+                                                Flexible(
+                                                  child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                ),
+                                                const SizedBox(width: 10.0,),
+                                                Flexible(
+                                                    child: GestureDetector(
+                                                      onTap: (){
+                                                        cont.selectedCliId = item.id!;
+                                                        cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                      },
+                                                      child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                    )  ),
+                                              ],
+                                            )
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              })
+                        ),
                       )
 
                       ///work on hold
@@ -691,6 +692,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                         length: 5,
                         child: Stack(
                         children: [
+
                           SizedBox(
                             height: 40,
                             child: ListView(
@@ -730,6 +732,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                               ],
                             ),
                           ),
+
                           cont.isPastDueSelected ? Padding(
                             padding: const EdgeInsets.only(top: 50.0,left: 10.0,right: 10.0,bottom: 20.0),
                             child: SizedBox(
@@ -1697,6 +1700,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                               : const Opacity(opacity: 0.0),
                         ],
                       )),
+                      const SizedBox(height: 20.0,)
                     ],
                   )
               )
