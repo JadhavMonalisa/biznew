@@ -44,6 +44,16 @@ class ApiRepository {
 
     return LoginResponse.fromJson(response);
   }
+  ///notification
+  Future<NotificationModel> getNotificationList() async {
+    final FormData formData = FormData.fromMap({
+      "firm_id":firmId,"mast_id":userId
+    },);
+    final response = await apiClient.post(
+      ApiEndpoint.notificationUrl, body: formData, headers: headers,
+    );
+    return NotificationModel.fromJson(response);
+  }
   ///nature of claim
   Future<ClaimTypeModel> getNatureOfClaimList() async {
     final response = await apiClient.post(
@@ -51,6 +61,7 @@ class ApiRepository {
     );
     return ClaimTypeModel.fromJson(response);
   }
+
   ///client name
   Future<ClientNameModel> getClientNameList() async {
     final FormData formData = FormData.fromMap({
@@ -233,12 +244,13 @@ class ApiRepository {
   }
   ///leave add
   Future<ApiResponse> getAddLeave(String leaveTypeId,String noOfDaysLeave,String startDate,String endDate,
-      String reason,String leaveFor) async {
+      String reason,String leaveFor,String noOfAttempt,String group) async {
     final FormData formData = FormData.fromMap({
       "leaveType":leaveTypeId, "mast_id":userId,"firm_id":firmId,
       "ndays":noOfDaysLeave, "startdate":startDate, "enddate":endDate,
-      "reason":reason, "leavefor":leaveFor,"attempts":"","group":""
+      "reason":reason, "leavefor":leaveFor,"attempts":noOfAttempt,"group":group
     },);
+    print("formData.fields");
     print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.leaveAddUrl, body: formData, headers: headers,
@@ -853,6 +865,27 @@ class ApiRepository {
     return AllTasksPieModel.fromJson(response);
   }
 
+  ///update priority
+  Future<ApiResponse> getUpdatePriority(String priority,String id) async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"priority":priority,"id":id},);
+    final response = await apiClient.post(
+      ApiEndpoint.updatePriorityUrl, body: formData, headers: headers,
+    );
+    return ApiResponse.fromJson(response);
+  }
+
+  ///update target date
+  Future<ApiResponse> getUpdateTargetDate(String date,String id) async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"target_date":date,"id":id},);
+
+    print("formData.fields");
+    print(formData.fields);
+    final response = await apiClient.post(
+      ApiEndpoint.updateTargetDateUrl, body: formData, headers: headers,
+    );
+    return ApiResponse.fromJson(response);
+  }
+
   ///start service
   Future<ApiResponse> getStartService(String id) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"cli_id":id},);
@@ -862,13 +895,14 @@ class ApiRepository {
     return ApiResponse.fromJson(response);
   }
 
-
   ///load all tasks
   Future<LoadAllTaskModel> getLoadAllTaskService(String id) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"cli_id":id},);
     final response = await apiClient.post(
       ApiEndpoint.loadAllTaskUrl, body: formData, headers: headers,
     );
+    print("formData.fields");
+    print(formData.fields);
     return LoadAllTaskModel.fromJson(response);
   }
   ///start task
@@ -902,6 +936,28 @@ class ApiRepository {
     "reason":reason,"next_period":"2"},);
     final response = await apiClient.post(
       ApiEndpoint.confirmCancelServiceUrl, body: formData, headers: headers,
+    );
+    return ApiResponse.fromJson(response);
+  }
+  ///check complete task service
+  Future<ApiResponse> getCheckCompletedTaskService(String id,String status) async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"id":id,
+    "status":status},);
+
+    print("formData.fields");
+    print(formData.fields);
+
+    final response = await apiClient.post(
+      ApiEndpoint.checkCompletedTaskServiceUrl, body: formData, headers: headers,
+    );
+    return ApiResponse.fromJson(response);
+  }
+  ///update task service
+  Future<ApiResponse> getUpdateTaskService(String id,String status,String statusName,String remark) async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"id":id,
+    "status":status,"statusname":statusName,"remark":remark},);
+    final response = await apiClient.post(
+      ApiEndpoint.updateServiceStatusUrl, body: formData, headers: headers,
     );
     return ApiResponse.fromJson(response);
   }

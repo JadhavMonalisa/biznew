@@ -6,6 +6,7 @@ class ApiEndpoint {
   ///Basic User
   //static const String loginUrl = "https://dev.bizalys.com/api/login.php";
   static const String loginUrl = "$baseUrl/apiController/login";
+  static const String notificationUrl = "$baseUrl/ApiController/notification";
 
   ///Claim
   static const String claimTypeListUrl = "$baseUrl/ClaimController/claimtype";
@@ -124,14 +125,19 @@ class ApiEndpoint {
 
 
   ///service action
+  static const String updatePriorityUrl = "$baseUrl/ServicesController/update_priority";
+  static const String updateTargetDateUrl = "$baseUrl/ServicesController/update_target_date";
   static const String startServiceUrl = "$baseUrl/ServicesController/start_service";
   static const String loadAllTaskUrl = "$baseUrl/ServicesController/load_all_tasks";
   static const String startTaskUrl = "$baseUrl/ServicesController/start_task";
   static const String checkPasswordUrl = "$baseUrl/ServicesController/check_password";
   static const String cancelCurrentPeriodServiceUrl = "$baseUrl/ServicesController/cancel_service";
   static const String confirmCancelServiceUrl = "$baseUrl/ServicesController/confirm_cancel_service";
+  static const String checkCompletedTaskServiceUrl = "$baseUrl/ServicesController/check_completed_task_service";
+  static const String updateServiceStatusUrl = "$baseUrl/ServicesController/update_service_status";
 
   ///calender
   static const String calenderUrl = "$baseUrl/CalenderController/calender_data";
   static const String calenderDueDateUrl = "$baseUrl/CalenderController/date_detail";
+
 }

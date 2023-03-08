@@ -17,6 +17,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:oktoast/oktoast.dart';
 
 class DashboardController extends GetxController {
   final ApiRepository repository;
@@ -28,6 +29,7 @@ class DashboardController extends GetxController {
   String userId="";
   String userName="";
   String name="";
+  String reportingHead="";
   int selectedFlag = 0;
   bool loader = false;
   int currentPos = 0;
@@ -197,7 +199,11 @@ class DashboardController extends GetxController {
   String selectedDateToShowForCurrent = ""; String selectedDateToSendForCurrent = "";
   String selectedDateToShowForAll = ""; String selectedDateToSendForAll = "";
   String selectedCurrentPriority = "";
+  String selectedServiceStatus = "";
+  String selectedCurrentStatusId = "";
+  String selectedCurrentPriorityId = "";
   String selectedAllPriority = "";
+  List<String> changeStatusList = ["Inprocess","Hold","Complete"];
   List<String> priorityList = ["Low","Medium","High"];
 
   ///check password and reason dialog
@@ -211,6 +217,7 @@ class DashboardController extends GetxController {
   String selectedClientName = "";
   String selectedServiceName = "";
   List<LoadAllTaskData> loadAllTaskList = [];
+  List<String> addedStatusListForCurrent = [];
   List<String> addedPriorityListForCurrent = [];
   List<String> addedDateListForCurrent = [];
   List<String> addedPriorityListForAll = [];
@@ -226,8 +233,10 @@ class DashboardController extends GetxController {
     userId = GetStorage().read("userId")??"";
     userName = GetStorage().read("userName")??"";
     name = GetStorage().read("name")??"";
+    reportingHead = GetStorage().read("reportingHead")??"";
     repository.getData();
 
+    callNotificationList();
     callBranchNameList();
 
     callServiceTriggerNotAllotted();
@@ -265,6 +274,29 @@ class DashboardController extends GetxController {
       update();
     } catch (error) {
       updateLoader(false);
+      update();
+    }
+  }
+  List<NotificationList> notificationListData = [];
+
+  void callNotificationList() async {
+    notificationListData.clear();
+    try {
+      NotificationModel? response = (await repository.getNotificationList());
+
+      if (response.success!) {
+        if (response.notificationList!.isEmpty) {
+        }
+        else{
+          notificationListData.addAll(response.notificationList!);
+        }
+        update();
+      } else {
+        update();
+      }
+    } on CustomException {
+      update();
+    } catch (error) {
       update();
     }
   }
@@ -602,12 +634,14 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///due data api
   callDueDataApi(String title,String type, String count){
     updateLoader(true);
     selectedPieChartTitle = title;
     selectedType = type ; selectedCount = count ;
     selectedMainType = "AllottedNotStarted";
+
     // if(title == "Past Due"){
     //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
     // }
@@ -957,17 +991,20 @@ class DashboardController extends GetxController {
   }
 
   ///change date from current
-  Future<void> selectTargetDateForCurrent(BuildContext context,String id) async {
+  Future<void> selectTargetDateForCurrent(BuildContext context,String id,DateTime firstDate,DateTime targetDate) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: selectedDateForCurrent,
-        firstDate: DateTime(1700, 1),
-        lastDate: DateTime(2100, 1));
+        initialDate: firstDate,
+        firstDate: firstDate,
+        currentDate: targetDate,
+        lastDate: DateTime(2100, 1),
+    );
+
     if (picked != null && picked != selectedDateForCurrent) {
       selectedDateForCurrent = picked;
+      selectedDateToShowForCurrent = "${selectedDateForCurrent.day}-${selectedDateForCurrent.month}-${selectedDateForCurrent.year}";
+      selectedDateToSendForCurrent = "${selectedDateForCurrent.year}-${selectedDateForCurrent.month}-${selectedDateForCurrent.day}";
     }
-    selectedDateToShowForCurrent = "${selectedDateForCurrent.day}-${selectedDateForCurrent.month}-${selectedDateForCurrent.year}";
-    selectedDateToSendForCurrent = "${selectedDateForCurrent.year}-${selectedDateForCurrent.month}-${selectedDateForCurrent.day}";
 
     if(addedDateListForCurrent.contains(id)){
       addedDateListForCurrent.remove(id);
@@ -976,6 +1013,11 @@ class DashboardController extends GetxController {
     else{
       addedDateListForCurrent.add(id);
       update();
+    }
+
+    if(picked==null){}
+    else{
+      callUpdateTargetDate();
     }
     update();
   }
@@ -1006,6 +1048,7 @@ class DashboardController extends GetxController {
   /// priority change for current
   updatePriorityForCurrent(String priority,String id){
     selectedCurrentPriority = priority;
+    selectedCurrentPriorityId = id;
     if(addedPriorityListForCurrent.contains(id)){
       addedPriorityListForCurrent.remove(id);
       update();
@@ -1014,7 +1057,136 @@ class DashboardController extends GetxController {
       addedPriorityListForCurrent.add(id);
       update();
     }
+    callUpdatePriority();
     update();
+  }
+  ///status change for current
+  updateStatusForCurrent(String status,String id,BuildContext context){
+    selectedServiceStatus = status;
+    selectedCurrentStatusId = id;
+
+    if(addedStatusListForCurrent.contains(id)){
+      addedStatusListForCurrent.remove(id);
+      update();
+    }
+    else{
+      addedStatusListForCurrent.add(id);
+      update();
+    }
+    callCheckCompletedTaskService(context);
+    update();
+  }
+
+  TextEditingController remarkController = TextEditingController();
+  bool validateRemark = false;
+  String addedRemark = "";
+
+  showRemarkDialogForHoldStatus(String serviceName,BuildContext context){
+    showDialog(
+      barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return StatefulBuilder(builder: (context,setter){
+          return Dialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Container(
+                height: 300.0,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    buildTextRegularWidget(serviceName, blackColor, context, 16.0,align: TextAlign.left),
+                    const Divider(color: Colors.grey,),
+                    const SizedBox(height: 10.0,),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(4)),
+                        color: textFormBgColor,
+                        border: Border.all(color: textFormBgColor),),
+                      child: TextFormField(
+                        controller: remarkController,
+                        keyboardType: TextInputType.text,
+                        textAlign: TextAlign.left,
+                        textAlignVertical: TextAlignVertical.center,
+                        textInputAction: TextInputAction.done,
+                        onTap: () {},
+                        style:const TextStyle(fontSize: 15.0),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(10),
+                          hintText: "Enter remark",
+                          hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
+                            color: subTitleTextColor, fontSize: 15,),),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                        ),
+                        onChanged: (text) {
+                          setter((){
+                            checkRemarkValidation();
+                          });
+                        },
+                      ),
+                    ),
+                    validateRemark == true
+                        ? ErrorText(errorMessage: "Please enter valid remark",)
+                        : const Opacity(opacity: 0.0),
+
+                    const SizedBox(height: 10.0,),
+
+                    Row(
+                      children: [
+                        Flexible(
+                          child: GestureDetector(
+                            onTap: (){
+                              setter((){
+                                callUpdateTaskServiceStatus(context);
+                              });
+                            },
+                            child: buildButtonWidget(context, "Add",height: 40.0,buttonColor: approveColor),
+                          ),
+                        ),const SizedBox(width: 5.0,),
+                        Flexible(
+                          child: GestureDetector(
+                            onTap: (){
+                              clearRemarkDialog();
+                              Navigator.pop(context);
+                            },
+                            child: buildButtonWidget(context, "Close",height: 40.0,buttonColor: errorColor),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+      },
+    );
+  }
+
+  checkRemarkValidation(){
+    if(remarkController.text.isEmpty){
+      validateRemark = true;update();
+    }
+    else{
+      validateRemark = false;update();
+    }
+  }
+
+  addRemark(){
+    addedRemark = remarkController.text;update();
+  }
+
+  clearRemarkDialog(){
+    remarkController.clear();update();
   }
 
   ///priority change for all
@@ -1058,10 +1230,26 @@ class DashboardController extends GetxController {
   }
 
   navigateToBottom(){
-    currentPos = 1;
-    updateSlider(1);
-    carouselController.jumpToPage(1);
+    //currentPos = 1;
+    // currentPos = position;
+    selectedServiceStatus = ""; selectedCurrentPriority="";
+    //updateSlider(1);
+
+    //carouselController.jumpToPage(1);
     Get.toNamed(AppRoutes.bottomNav);
+
+    selectedMainType == "AllottedNotStarted"? currentPos = 1 :
+    selectedMainType == "StartedNotCompleted" ? currentPos = 2 :
+    selectedMainType == "CompletedUdinPending"? currentPos = 3 :
+    selectedMainType == "CompletedNotBilled"? currentPos = 4 :
+    selectedMainType == "WorkOnHold"? currentPos = 5 :
+    selectedMainType == "SubmittedForChecking"? currentPos = 6 : currentPos = 7;
+
+    updateSlider(currentPos);
+    carouselController.jumpToPage(currentPos);
+
+    print("current pos");
+    print(currentPos);
     update();
   }
   ///allotted not started past due -> own
@@ -1519,6 +1707,64 @@ class DashboardController extends GetxController {
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
 
+  ///update priority
+  void callUpdatePriority() async {
+    updateLoader(true);
+    try {
+      ApiResponse? response = (await repository.getUpdatePriority(
+          selectedCurrentPriority == "High" ? "1" :
+          selectedCurrentPriority == "Medium" ? "2" : "3",
+          selectedCurrentPriorityId));
+
+      if (response.success!) {
+        Utils.showSuccessSnackBar(response.message);
+        callAllottedNotStartedOwn();
+        callAllottedNotStarted();
+        updateLoader(false);
+        update();
+      } else {
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+  }
+
+  ///update target date
+  void callUpdateTargetDate() async {
+    updateLoader(true);
+    try {
+      ApiResponse? response = (await repository.getUpdateTargetDate(selectedDateToSendForCurrent, selectedCurrentPriorityId));
+
+      if (response.success!) {
+        Utils.showSuccessSnackBar(response.message);
+        callAllottedNotStartedOwn();
+        callAllottedNotStarted();
+        updateLoader(false);
+        update();
+      } else {
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+  }
   ///start service
   void callStartService(String id) async {
     updateLoader(true);
@@ -1546,7 +1792,24 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///load all tasks
+  List<TextEditingController> taskNameList = [];
+  List<TextEditingController> completionList = [];
+  List<TextEditingController> daysList = [];
+  List<TextEditingController> hoursList = [];
+  List<TextEditingController> minuteList = [];
+  String selectedEmpFromDashboardNext = "";
+  String selectedEmpIdFromDashboardNext = "";
+  List<String> assignedToFromApi = [];
+  List<String> addedAssignedTo = [];
+  List<Container> buildButtonList = [];
+  BuildContext? context;
+  int totalCompletion = 0;
+  int totalDays = 0;
+  int totalHours = 0;
+  int totalMins = 0;
+
   void callLoadAllTaskService(String cliId) async {
     loadAllTaskList.clear();
     updateLoader(true);
@@ -1555,6 +1818,24 @@ class DashboardController extends GetxController {
 
       if (response.success!) {
         loadAllTaskList.addAll(response.loadAllTaskData!);
+
+        for (var element in loadAllTaskList) {
+
+          taskNameList.add(TextEditingController(text: element.taskName));
+          completionList.add(TextEditingController(text: element.completion));
+          daysList.add(TextEditingController(text: element.days));
+          hoursList.add(TextEditingController(text: element.hours));
+          minuteList.add(TextEditingController(text: element.mins));
+          assignedToFromApi.add(element.firmEmployeeName!);
+          // buildButtonList.add(buildButtonWidget(context!, "Remove",height: 40.0,
+          //     buttonColor: errorColor,buttonFontSize:14.0,width: 100.0),);
+
+          totalCompletion = totalDays + int.parse(element.completion!);
+          totalDays = totalDays + int.parse(element.days!);
+          totalHours = totalDays + int.parse(element.hours!);
+          totalMins = totalDays + int.parse(element.mins!);
+        }
+
         updateLoader(false);
         update();
       } else {
@@ -1573,11 +1854,58 @@ class DashboardController extends GetxController {
     }
   }
 
+  updateAssignedTo(String assignTo,String id){
+    selectedEmpFromDashboardNext = assignTo;
+    selectedEmpIdFromDashboardNext = id;
+
+    if(addedAssignedTo.contains(id)){
+      addedAssignedTo.remove(id);
+      update();
+    }
+    else{
+      addedAssignedTo.add(id);
+      update();
+    }
+    update();
+  }
+
+  printAll(int index){
+    print("index");
+    print(index);
+    for(var element in taskNameList){
+      print(element.text);
+    }
+  }
+
+  addMore(){
+    taskNameList.insert(taskNameList.length, TextEditingController(text: ""));
+    completionList.insert(completionList.length, TextEditingController(text: ""));
+    daysList.insert(daysList.length, TextEditingController(text: ""));
+    hoursList.insert(hoursList.length, TextEditingController(text: ""));
+    minuteList.insert(minuteList.length, TextEditingController(text: ""));
+    loadAllTaskList.insert(loadAllTaskList.length, LoadAllTaskData(
+      completion: "",days: "",firmEmployeeName: "",hours: "",
+      id: "",mins: "",srno: "",start: "",status: "",targetDate: "",
+      taskEmp: "",taskId: "",taskName: ""
+    ));
+    // buildButtonList.insert(buildButtonList.length,buildButtonWidget(context!, "Remove",height: 40.0,
+    //     buttonColor: errorColor,buttonFontSize:14.0,width: 100.0),);
+    showToast("New entry added !");
+    update();
+  }
+
   navigateToDetails(String cliId,String clientName,String serviceName){
     selectedClientName = clientName; selectedServiceName = serviceName;
     update();
     callLoadAllTaskService(cliId);
     Get.toNamed(AppRoutes.serviceDashboardNextDetails);
+  }
+
+  navigateToServiceView(String cliId,String clientName,String serviceName){
+    selectedClientName = clientName; selectedServiceName = serviceName;
+    update();
+    callLoadAllTaskService(cliId);
+    Get.toNamed(AppRoutes.serviceNextViewScreen);
   }
 
   startSelectedTask(String cliId,String id){
@@ -1698,6 +2026,64 @@ class DashboardController extends GetxController {
         Navigator.of(context).pop();
         callAllottedNotStartedOwn();
         callAllottedNotStarted();
+        update();
+      } else {
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+  }
+  ///check complete task service
+  void callCheckCompletedTaskService(BuildContext context) async {
+    updateLoader(true);
+    try {
+      ApiResponse? response = (await repository.getCheckCompletedTaskService(selectedCurrentStatusId,
+          selectedServiceStatus=="Inprocess" ? "1" : selectedServiceStatus == "Hold" ? "2" : "4"));
+      if (response.success!) {
+        Utils.showSuccessSnackBar(response.message);
+        updateLoader(false);
+        // callAllottedNotStartedOwn();
+        // callAllottedNotStarted();
+        if(selectedServiceStatus=="Hold"){
+          showRemarkDialogForHoldStatus(selectedServiceName,context);
+        }
+        update();
+      } else {
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+  }
+  ///update task service
+  void callUpdateTaskServiceStatus(BuildContext context) async {
+    updateLoader(true);
+    try {
+      ApiResponse? response = (await repository.getUpdateTaskService(selectedCurrentStatusId,
+          selectedServiceStatus=="Inprocess" ? "1" : selectedServiceStatus == "Hold" ? "2" : "4",
+          selectedServiceStatus,remarkController.text??""));
+      if (response.success!) {
+        Utils.showSuccessSnackBar(response.message);
+        updateLoader(false);
+        // callAllottedNotStartedOwn();
+        // callAllottedNotStarted();
         update();
       } else {
         Utils.showErrorSnackBar(response.message);

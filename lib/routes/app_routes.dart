@@ -7,8 +7,10 @@ abstract class AppRoutes {
   static const home = '/home-page';
   static const clientDashboard = '/clientDashboard-page';
   static const serviceDashboard = '/serviceDashboard-page';
+  static const notificationScreen = '/notification-page';
   static const serviceDashboardNext = '/serviceDashboardNext-page';
   static const serviceDashboardNextDetails = '/serviceDashboardNextDetails-page';
+  static const serviceNextViewScreen = '/serviceNextViewScreen-page';
   static const serviceCancelAll = '/serviceCancelAll-page';
   static const claimList = '/claimList-page';
   static const claimDetails = '/claimDetails-page';

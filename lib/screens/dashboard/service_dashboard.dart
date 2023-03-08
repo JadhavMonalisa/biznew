@@ -46,7 +46,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
           actions: [
             GestureDetector(
               onTap: (){
-                Utils.showAlertSnackBar("Coming Soon!");
+                //Utils.showAlertSnackBar("Coming Soon!");
+                Get.toNamed(AppRoutes.notificationScreen);
               },
               child:const Padding(
                   padding: EdgeInsets.only(right: 15.0,left: 15.0,bottom: 3.0),
@@ -355,7 +356,9 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                                   style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
                                                                             ],
                                                                             recognizer: TapGestureRecognizer()..onTap= () {
-                                                                              cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Own",cont.ownAllottedNotStarted[index].toString());
+                                                                              cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Own",
+                                                                                  cont.ownAllottedNotStarted[index].toString(),
+                                                                              );
                                                                             }
                                                                         ),
                                                                       ),

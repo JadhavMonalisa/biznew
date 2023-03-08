@@ -6,6 +6,7 @@ import 'package:biznew/constant/repository/api_repository.dart';
 import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/claim_form/claim_model.dart';
 import 'package:biznew/screens/claim_form/export_poc.dart';
+import 'package:biznew/screens/dashboard/dashboard_model.dart';
 import 'package:biznew/utils/custom_response.dart';
 import 'package:biznew/utils/utils.dart';
 import 'package:file_picker/file_picker.dart';
@@ -396,6 +397,7 @@ class ClaimFormController extends GetxController {
       update();
     }
   }
+
   /// client name list
   void callClientNameList() async {
     clientNameList.clear();
@@ -451,7 +453,9 @@ class ClaimFormController extends GetxController {
     //updateLoader(true);
     try {
       ClaimServiceResponse? response = (await repository.getClaimServicesList(clientFirmId,selectedClaimYearId));
-
+      print("Claim service");
+      print(clientFirmId);
+      print(selectedClaimYearId);
       if (response.success!) {
         if (response.serviceList!.isEmpty) {
         }

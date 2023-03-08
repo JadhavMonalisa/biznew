@@ -20,6 +20,7 @@ class LeaveController extends GetxController {
   String userId="";
   String userName="";
   String name="";
+  String reportingHead="";
   ///form
   DateTime selectedDate = DateTime.now();
   DateTime startDate = DateTime.now();
@@ -77,7 +78,9 @@ class LeaveController extends GetxController {
     userId = GetStorage().read("userId")??"";
     userName = GetStorage().read("userName")??"";
     name = GetStorage().read("name")??"";
+    reportingHead = GetStorage().read("reportingHead")??"";
     repository.getData();
+    callEmployeeList();
     callLeaveCountList();
     callLeaveTypeList();
     callLeaveList();
@@ -116,16 +119,21 @@ class LeaveController extends GetxController {
 
   updateSelectedClaimStatus(String val){ selectedEmployee = val;callLeaveList(); update();}
 
-  updateSelectedLeaveStatus(String val){ selectedLeaveStatus = val;callLeaveList(); update();}
+  updateSelectedLeaveStatus(String val){ selectedLeaveStatus = val;
+  updateLoader(true);
+  callLeaveList(); update();}
 
   updateSelectedLeaveFlag(int val,BuildContext context){
-    updateLoader(true); selectedLeaveFlag = val; callLeaveList(); update();}
+    selectedEmployee = "";selectedLeaveStatus="";
+    updateLoader(true); selectedLeaveFlag = val;
+
+    callLeaveList(); update();}
 
   List<ClaimSubmittedByList> employeeList = [];
   ///update emp list
   updateSelectedEmployee(String val){
     if(employeeList.isNotEmpty){
-      selectedEmployee = val; callLeaveList();update();
+      selectedEmployee = val; updateLoader(true); callLeaveList();update();
     }
   }
   ///employee list
@@ -202,7 +210,10 @@ class LeaveController extends GetxController {
       if(endDate.isAfter(startDate)){
         DateDuration duration;
         duration = AgeCalculator.dateDifference(fromDate: startDate, toDate: endDate);
-        year = duration.years; month = duration.months; days = duration.days == 0 ? 1 : duration.days;
+
+        year = duration.years; month = duration.months;
+        days = duration.days == 0 ? 1 :
+               duration.days == 1 ? 2 : duration.days;
       }
       checkStartDateValidation();
       update();
@@ -214,7 +225,10 @@ class LeaveController extends GetxController {
 
       DateDuration duration;
       duration = AgeCalculator.dateDifference(fromDate: startDate, toDate: endDate);
-      year = duration.years; month = duration.months; days = duration.days == 0 ? 1 : duration.days;
+
+      year = duration.years; month = duration.months;
+      days = duration.days == 0 ? 1 :
+             duration.days == 1 ? 2 : duration.days;
 
       checkEndDateValidation();
       update();
@@ -256,6 +270,7 @@ class LeaveController extends GetxController {
         leaveReason.text = "Examination Attempt"; edit = false; update();
       }
       else{
+        leaveReason.clear();
         edit = true; update();
       }
       checkLeaveTypeValidation();
@@ -386,7 +401,7 @@ class LeaveController extends GetxController {
     try {
       ApiResponse? response = (await repository.getAddLeave(
           selectedLeaveTypeId, days.toString(), selectedStartDateToSend, selectedEndDateToSend,
-          leaveReason.text, nameOfLeaveFor??""));
+          leaveReason.text, nameOfLeaveFor??"",noOfAttempt.text??"",nameOfLeaveForExam??""));
 
       if (response.success!) {
         clearForm();
@@ -415,7 +430,7 @@ class LeaveController extends GetxController {
   ///clear all fields
   clearForm(){
     selectedLeaveTypeId = "";
-
+    selectedLeaveFlag = 0; selectedEmployee = "";
     year=0; month=0; days=0; leaveReason.clear(); selectedLeaveType = "";
     nameOfLeaveFor="";selectedLeaveStatus = "";
     selectedStartDateToShow = ""; selectedEndDateToShow = "";

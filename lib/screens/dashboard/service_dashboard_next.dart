@@ -1,4 +1,5 @@
 import 'package:biznew/common_widget/widget.dart';
+import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/dashboard/dashboard_controller.dart';
 import 'package:biznew/theme/app_colors.dart';
 import 'package:biznew/theme/app_text_theme.dart';
@@ -176,12 +177,16 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                     Padding(
                                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
                                         child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                            buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0),
+                                            Flexible(
+                                              child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
+                                            )
                                           ],
                                         )
                                     ),
+                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
                                     Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Row(
@@ -288,19 +293,28 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                             )
                                         ),
                                         Padding(
+                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                            child: Row(
+                                              children: [
+                                                buildTextBoldWidget("Amount of service period - ", blackColor, context, 14.0),
+                                                buildTextRegularWidget(item.amountOfServicePeriod!, blackColor, context, 14.0),
+                                              ],
+                                            )
+                                        ),
+                                        Padding(
                                             padding: const EdgeInsets.all(10.0),
                                             child: Row(
                                               children: [
-                                                Flexible(
-                                                    child: GestureDetector(
-                                                      onTap: (){cont.callStartService(item.id!);},
-                                                      child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                    )),
-                                                const SizedBox(width: 10.0,),
-                                                Flexible(
-                                                  child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                ),
-                                                const SizedBox(width: 10.0,),
+                                                // Flexible(
+                                                //     child: GestureDetector(
+                                                //       onTap: (){cont.callStartService(item.id!);},
+                                                //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                //     )),
+                                                // const SizedBox(width: 10.0,),
+                                                // Flexible(
+                                                //   child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                // ),
+                                                // const SizedBox(width: 10.0,),
                                                 Flexible(
                                                     child: GestureDetector(
                                                       onTap: (){
@@ -386,6 +400,46 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                               ],
                                             )
                                         ),
+                                        ///priority
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: Container(
+                                                    height: 40.0,
+                                                    width: MediaQuery.of(context).size.width,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                      border: Border.all(color: grey),),
+                                                    child: Center(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                          child: DropdownButton(
+                                                            hint: buildTextRegularWidget(
+                                                                cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
+                                                                blackColor, context, 15.0),
+                                                            isExpanded: true,
+                                                            underline: Container(),
+                                                            items:
+                                                            cont.priorityList.map((String value) {
+                                                              return DropdownMenuItem<String>(
+                                                                value: value,
+                                                                child: Text(value),
+                                                              );
+                                                            }).toList(),
+                                                            onChanged: (val) {
+                                                              cont.updatePriorityForCurrent(val!,item.id!);
+                                                            },
+                                                          ),
+                                                        )
+                                                    )
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                         Padding(
                                             padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
                                             child: Row(
@@ -407,6 +461,66 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                               buildContentTwoByTwoSubTitle(context,contentTitle1: item.triggerDate!,contentTitle2: item.targetDate!,fontSize: 14.0,
                                                   title1FW: FontWeight.normal,title2FW: FontWeight.normal),
                                               const TableRow(children: [SizedBox(height: 15.0,),SizedBox(height: 15.0,),],),
+                                            ],
+                                          ),
+                                        ),
+                                        ///task,completion
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
+                                          child: Table(
+                                            children: [
+                                              TableRow(
+                                                  children: [
+                                                    buildTextBoldWidget("Task", blackColor, context, 14.0),
+                                                    buildTextBoldWidget("Completion", blackColor, context, 14.0),
+                                                  ]
+                                              ),
+                                              TableRow(
+                                                  children: [
+                                                    buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
+                                                    buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
+                                                  ]
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        ///status
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: Container(
+                                                    height: 40.0,
+                                                    width: MediaQuery.of(context).size.width,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                      border: Border.all(color: grey),),
+                                                    child: Center(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                          child: DropdownButton(
+                                                            hint: buildTextRegularWidget(
+                                                                cont.addedStatusListForCurrent.contains(item.id) ?
+                                                                cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
+                                                                blackColor, context, 15.0),
+                                                            isExpanded: true,
+                                                            underline: Container(),
+                                                            items:
+                                                            cont.changeStatusList.map((String value) {
+                                                              return DropdownMenuItem<String>(
+                                                                value: value,
+                                                                child: Text(value),
+                                                              );
+                                                            }).toList(),
+                                                            onChanged: (val) {
+                                                              cont.updateStatusForCurrent(val!,item.id!,context);
+                                                            },
+                                                          ),
+                                                        )
+                                                    )
+                                                ),
+                                              )
                                             ],
                                           ),
                                         ),
@@ -536,16 +650,16 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                 padding: const EdgeInsets.all(10.0),
                                                 child: Row(
                                                   children: [
-                                                    Flexible(
-                                                        child: GestureDetector(
-                                                          onTap: (){cont.callStartService(item.id!);},
-                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                        )),
-                                                    const SizedBox(width: 10.0,),
-                                                    Flexible(
-                                                      child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                    ),
-                                                    const SizedBox(width: 10.0,),
+                                                    // Flexible(
+                                                    //     child: GestureDetector(
+                                                    //       onTap: (){cont.callStartService(item.id!);},
+                                                    //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                    //     )),
+                                                    // const SizedBox(width: 10.0,),
+                                                    // Flexible(
+                                                    //   child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                    // ),
+                                                    // const SizedBox(width: 10.0,),
                                                     Flexible(
                                                         child: GestureDetector(
                                                           onTap: (){
@@ -796,29 +910,56 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                 text: TextSpan(
                                                   text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
                                                   style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                  recognizer: TapGestureRecognizer()..onTap = () {
-                                                    cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                  },
+                                                  // recognizer: TapGestureRecognizer()..onTap = () {
+                                                  //   cont.navigateToDetails(item.id!,item.client!,item.servicename!);
+                                                  // },
                                                   children: <TextSpan>[
                                                     TextSpan(
                                                         text: "${
                                                             cont.addedDateListForCurrent.contains(item.id)
                                                                 ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
                                                                 : item.targetDateToShow}",
-                                                        style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                            decoration: TextDecoration.underline,decorationThickness: 2.0),
+                                                        style: TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
+                                                            decoration:
+                                                            cont.reportingHead == "0"
+                                                                ? TextDecoration.none : TextDecoration.underline,
+                                                            decorationThickness: 2.0),
                                                         recognizer: TapGestureRecognizer()..onTap = () {
-                                                          cont.selectTargetDateForCurrent(context,item.id!);
+                                                          if(cont.reportingHead == "1"){
+                                                            cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
+                                                          }
                                                         }
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                             ),
+
                                             Padding(
                                               padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
                                               child: Row(
                                                 children: [
+                                                  // Flexible(
+                                                  //   child: GestureDetector(
+                                                  //     onTap: (){
+                                                  //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
+                                                  //     },
+                                                  //     child: Container(
+                                                  //         height: 40.0,
+                                                  //         width: MediaQuery.of(context).size.width,
+                                                  //         decoration: BoxDecoration(
+                                                  //           borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                  //           border: Border.all(color: grey),),
+                                                  //         child: Center(
+                                                  //             child: Padding(
+                                                  //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                  //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
+                                                  //             )
+                                                  //         )
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // const SizedBox(width: 10.0,),
                                                   Flexible(
                                                     child: Container(
                                                         height: 40.0,
@@ -826,10 +967,19 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                         decoration: BoxDecoration(
                                                           borderRadius: const BorderRadius.all(Radius.circular(5)),
                                                           border: Border.all(color: grey),),
-                                                        child: Center(
+                                                        child: cont.reportingHead == "0"
+                                                            ? Align(
+                                                          alignment: Alignment.centerLeft,
+                                                              child: Padding(
+                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
+                                                          ),
+                                                            )
+                                                            : Center(
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                              child: DropdownButton(
+                                                              child:
+                                                              DropdownButton(
                                                                 hint: buildTextRegularWidget(
                                                                     cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                     cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
@@ -857,26 +1007,46 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                             Padding(
                                                 padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
                                                 child: Row(
+                                                  crossAxisAlignment : CrossAxisAlignment.start,
                                                   children: [
                                                     buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                    buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0),
+                                                    Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),)
                                                   ],
                                                 )
+                                            ),
+                                            ///trigger date,statutory due date
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
+                                              child: Table(
+                                                children: [
+                                                  TableRow(
+                                                      children: [
+                                                        buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
+                                                        buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
+                                                      ]
+                                                  ),
+                                                  TableRow(
+                                                      children: [
+                                                        buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
+                                                        buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
+                                                      ]
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                             Padding(
                                                 padding: const EdgeInsets.all(10.0),
                                                 child: Row(
                                                   children: [
-                                                    Flexible(
+                                                     Flexible(
                                                         child: GestureDetector(
                                                           onTap: (){cont.callStartService(item.id!);},
                                                           child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
                                                         )),
+
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
                                                     const SizedBox(width: 10.0,),
-                                                    Flexible(
-                                                      child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                    ),
-                                                    const SizedBox(width: 10.0,),
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
                                                     Flexible(
                                                         child: GestureDetector(
                                                           onTap: (){
@@ -885,6 +1055,15 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                           },
                                                           child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
                                                         )  ),
+
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    const SizedBox(width: 10.0,),
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                      child: GestureDetector(
+                                                      onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!);},
+                                                      child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                    )),
                                                   ],
                                                 )
                                             )
@@ -968,6 +1147,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                     ),
                                                   ),
                                                 ),
+                                                ///priority
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
                                                   child: Row(
@@ -979,7 +1159,16 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                             decoration: BoxDecoration(
                                                               borderRadius: const BorderRadius.all(Radius.circular(5)),
                                                               border: Border.all(color: grey),),
-                                                            child: Center(
+                                                            child: cont.reportingHead == "0"
+                                                                ? Align(
+                                                              alignment: Alignment.centerLeft,
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
+                                                              ),
+                                                            )
+                                                                :
+                                                            Center(
                                                                 child: Padding(
                                                                   padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                                   child: DropdownButton(
@@ -1007,6 +1196,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                     ],
                                                   ),
                                                 ),
+                                                ///assigned to
                                                 Padding(
                                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
                                                     child: Row(
@@ -1017,19 +1207,112 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                       ],
                                                     )
                                                 ),
+                                                ///trigger date,statutory due date
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
+                                                  child: Table(
+                                                    children: [
+                                                      TableRow(
+                                                          children: [
+                                                            buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
+                                                            buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
+                                                          ]
+                                                      ),
+                                                      TableRow(
+                                                          children: [
+                                                            buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
+                                                            buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
+                                                          ]
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                ///task,completion
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
+                                                  child: Table(
+                                                    children: [
+                                                      TableRow(
+                                                          children: [
+                                                            buildTextBoldWidget("Task", blackColor, context, 14.0),
+                                                            buildTextBoldWidget("Completion", blackColor, context, 14.0),
+                                                          ]
+                                                      ),
+                                                      TableRow(
+                                                          children: [
+                                                            buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
+                                                            buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
+                                                          ]
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                ///status
+                                                Padding(
+                                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Flexible(
+                                                        child: Container(
+                                                            height: 40.0,
+                                                            width: MediaQuery.of(context).size.width,
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                              border: Border.all(color: grey),),
+                                                            child: cont.reportingHead == "0"
+                                                                ? Align(
+                                                              alignment: Alignment.centerLeft,
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
+                                                              ),
+                                                            )
+                                                                :
+                                                            Center(
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                  child: DropdownButton(
+                                                                    hint: buildTextRegularWidget(
+                                                                        cont.addedStatusListForCurrent.contains(item.id) ?
+                                                                        cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
+                                                                        blackColor, context, 15.0),
+                                                                    isExpanded: true,
+                                                                    underline: Container(),
+                                                                    items:
+                                                                    cont.changeStatusList.map((String value) {
+                                                                      return DropdownMenuItem<String>(
+                                                                        value: value,
+                                                                        child: Text(value),
+                                                                      );
+                                                                    }).toList(),
+                                                                    onChanged: (val) {
+                                                                      cont.updateStatusForCurrent(val!,item.id!,context);
+                                                                    },
+                                                                  ),
+                                                                )
+                                                            )
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
                                                 Padding(
                                                     padding: const EdgeInsets.all(10.0),
                                                     child: Row(
                                                       children: [
+                                                        // Flexible(
+                                                        //     child: GestureDetector(
+                                                        //       onTap: (){cont.callStartService(item.id!);},
+                                                        //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                        //     )),
+                                                        // const SizedBox(width: 10.0,),
                                                         Flexible(
-                                                            child: GestureDetector(
-                                                              onTap: (){cont.callStartService(item.id!);},
-                                                              child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                            )),
-                                                        const SizedBox(width: 10.0,),
-                                                        Flexible(
-                                                          child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                        ),
+                                                          child: GestureDetector(
+                                                            onTap:(){
+                                                              cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
+                                                            },
+                                                            child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                          )  ),
                                                         const SizedBox(width: 10.0,),
                                                         Flexible(
                                                             child: GestureDetector(
@@ -1124,7 +1407,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                         style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
                                                             decoration: TextDecoration.underline,decorationThickness: 2.0),
                                                         recognizer: TapGestureRecognizer()..onTap = () {
-                                                          cont.selectTargetDateForCurrent(context,item.id!);
+                                                          cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
                                                         }
                                                     ),
                                                   ],
@@ -1160,7 +1443,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                   );
                                                                 }).toList(),
                                                                 onChanged: (val) {
-                                                                  cont.updatePriorityForCurrent(val!,item.id!);
+                                                                  cont.updatePriorityForCurrent(val!,item.id!,);
                                                                 },
                                                               ),
                                                             )
@@ -1173,22 +1456,25 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                             Padding(
                                                 padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
                                                 child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                    buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0),
-                                                  ],
+                                                    Flexible(
+                                                      child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
+                                                    )
+                                                      ],
                                                 )
                                             ),
                                             Padding(
                                                 padding: const EdgeInsets.all(10.0),
                                                 child: Row(
                                                   children: [
-                                                    Flexible(
-                                                        child: GestureDetector(
-                                                          onTap: (){cont.callStartService(item.id!);},
-                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                        )),
-                                                    const SizedBox(width: 10.0,),
+                                                    // Flexible(
+                                                    //     child: GestureDetector(
+                                                    //       onTap: (){cont.callStartService(item.id!);},
+                                                    //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                    //     )),
+                                                    // const SizedBox(width: 10.0,),
                                                     Flexible(
                                                       child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
                                                     ),
@@ -1286,7 +1572,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                         style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
                                                             decoration: TextDecoration.underline,decorationThickness: 2.0),
                                                         recognizer: TapGestureRecognizer()..onTap = () {
-                                                          cont.selectTargetDateForCurrent(context,item.id!);
+                                                          cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
                                                         }
                                                     ),
                                                   ],
@@ -1335,9 +1621,12 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                             Padding(
                                                 padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
                                                 child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                    buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0),
+                                                    Flexible(
+                                                      child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
+                                                    )
                                                   ],
                                                 )
                                             ),
@@ -1345,12 +1634,12 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                 padding: const EdgeInsets.all(10.0),
                                                 child: Row(
                                                   children: [
-                                                    Flexible(
-                                                        child: GestureDetector(
-                                                          onTap: (){cont.callStartService(item.id!);},
-                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                        )),
-                                                    const SizedBox(width: 10.0,),
+                                                    // Flexible(
+                                                    //     child: GestureDetector(
+                                                    //       onTap: (){cont.callStartService(item.id!);},
+                                                    //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                    //     )),
+                                                    // const SizedBox(width: 10.0,),
                                                     Flexible(
                                                       child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
                                                     ),
@@ -1448,7 +1737,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                         style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
                                                             decoration: TextDecoration.underline,decorationThickness: 2.0),
                                                         recognizer: TapGestureRecognizer()..onTap = () {
-                                                          cont.selectTargetDateForCurrent(context,item.id!);
+                                                          cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
                                                         }
                                                     ),
                                                   ],
@@ -1497,9 +1786,12 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                             Padding(
                                                 padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
                                                 child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                    buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0),
+                                                    Flexible(
+                                                      child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
+                                                    )
                                                   ],
                                                 )
                                             ),
@@ -1507,12 +1799,12 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                 padding: const EdgeInsets.all(10.0),
                                                 child: Row(
                                                   children: [
-                                                    Flexible(
-                                                        child: GestureDetector(
-                                                          onTap: (){cont.callStartService(item.id!);},
-                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                        )),
-                                                    const SizedBox(width: 10.0,),
+                                                    // Flexible(
+                                                    //     child: GestureDetector(
+                                                    //       onTap: (){cont.callStartService(item.id!);},
+                                                    //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                    //     )),
+                                                    // const SizedBox(width: 10.0,),
                                                     Flexible(
                                                       child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
                                                     ),
@@ -1610,7 +1902,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                         style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
                                                             decoration: TextDecoration.underline,decorationThickness: 2.0),
                                                         recognizer: TapGestureRecognizer()..onTap = () {
-                                                          cont.selectTargetDateForCurrent(context,item.id!);
+                                                          cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
                                                         }
                                                     ),
                                                   ],
@@ -1646,7 +1938,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                   );
                                                                 }).toList(),
                                                                 onChanged: (val) {
-                                                                  cont.updatePriorityForCurrent(val!,item.id!);
+                                                                  cont.updatePriorityForCurrent(val!,item.id!,);
                                                                 },
                                                               ),
                                                             )
@@ -1659,9 +1951,12 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                             Padding(
                                                 padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
                                                 child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                    buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0),
+                                                    Flexible(
+                                                      child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
+                                                    )
                                                   ],
                                                 )
                                             ),
@@ -1669,12 +1964,12 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                 padding: const EdgeInsets.all(10.0),
                                                 child: Row(
                                                   children: [
-                                                    Flexible(
-                                                        child: GestureDetector(
-                                                          onTap: (){cont.callStartService(item.id!);},
-                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                        )),
-                                                    const SizedBox(width: 10.0,),
+                                                    // Flexible(
+                                                    //     child: GestureDetector(
+                                                    //       onTap: (){cont.callStartService(item.id!);},
+                                                    //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                    //     )),
+                                                    // const SizedBox(width: 10.0,),
                                                     Flexible(
                                                       child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
                                                     ),

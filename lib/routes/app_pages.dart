@@ -11,11 +11,13 @@ import 'package:biznew/screens/claim_form/claim_list.dart';
 import 'package:biznew/screens/claim_form/export_poc.dart';
 import 'package:biznew/screens/claim_form/webview_screen.dart';
 import 'package:biznew/screens/dashboard/client_dashboard.dart';
+import 'package:biznew/screens/dashboard/notification_list_screen.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_all.dart';
 import 'package:biznew/screens/dashboard/service_dashboard.dart';
 import 'package:biznew/screens/dashboard/dashboard_binding.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_next.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_next_details.dart';
+import 'package:biznew/screens/dashboard/service_dashboard_next_view.dart';
 import 'package:biznew/screens/home/home_binding.dart';
 import 'package:biznew/screens/home/home_screen.dart';
 import 'package:biznew/screens/leave_form/leave_binding.dart';
@@ -61,6 +63,11 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
+      name: AppRoutes.notificationScreen,
+      page: () => const NotificationScreen(),
+      binding: DashboardBinding(),
+    ),
+    GetPage(
       name: AppRoutes.serviceDashboard,
       page: () => const ServiceDashboardScreen(),
       binding: DashboardBinding(),
@@ -78,6 +85,11 @@ class AppPages {
     GetPage(
       name: AppRoutes.serviceDashboardNextDetails,
       page: () => const ServiceDashboardNextDetails(),
+      binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.serviceNextViewScreen,
+      page: () => const ServiceNextViewScreen(),
       binding: DashboardBinding(),
     ),
     GetPage(

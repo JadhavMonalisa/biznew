@@ -1,5 +1,96 @@
 import 'package:intl/intl.dart';
 
+class NotificationModel {
+  String? message;
+  bool? success;
+  List<NotificationList>? notificationList;
+
+  NotificationModel({this.message, this.success, this.notificationList});
+
+  NotificationModel.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['notifications'] != null) {
+      notificationList = <NotificationList>[];
+      json['notifications'].forEach((v) {
+        notificationList!.add(NotificationList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (notificationList != null) {
+      data['notifications'] =
+          notificationList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class NotificationList {
+  String? id;
+  String? empId;
+  String? mtitle;
+  String? message;
+  String? link;
+  String? status;
+  String? firmId;
+  String? mastId;
+  String? type;
+  String? addedBy;
+  String? addedDate;
+  String? notifiAssign;
+
+  NotificationList(
+      {this.id,
+        this.empId,
+        this.mtitle,
+        this.message,
+        this.link,
+        this.status,
+        this.firmId,
+        this.mastId,
+        this.type,
+        this.addedBy,
+        this.addedDate,
+        this.notifiAssign});
+
+  NotificationList.fromJson(Map<String, dynamic> json) {
+    id = json['id']??"";
+    empId = json['emp_id']??'';
+    mtitle = json['mtitle']??"";
+    message = json['message']??"";
+    link = json['link']??'';
+    status = json['status']??'';
+    firmId = json['firm_id']??'';
+    mastId = json['mast_id']??'';
+    type = json['type']??'';
+    addedBy = json['added_by']??'';
+    addedDate = json['added_date']??"";
+    notifiAssign = json['Notifi_assign']??"";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['emp_id'] = empId;
+    data['mtitle'] = mtitle;
+    data['message'] = message;
+    data['link'] = link;
+    data['status'] = status;
+    data['firm_id'] = firmId;
+    data['mast_id'] = mastId;
+    data['type'] = type;
+    data['added_by'] = addedBy;
+    data['added_date'] = addedDate;
+    data['Notifi_assign'] = notifiAssign;
+    return data;
+  }
+}
+
 class OwnChartModel {
   String? message;
   bool? success;
@@ -547,7 +638,10 @@ class AllottedNotStartedPastDueData {
   String? allottedTo;
   String? targetDateToShow;
   String? triggerDateToShow;
+  String? satDateToShow;
   String? priorityToShow;
+  DateTime? triggerDateTimeFormat;
+  DateTime? targetDateTimeFormat;
 
   AllottedNotStartedPastDueData(
       {this.id,
@@ -561,7 +655,10 @@ class AllottedNotStartedPastDueData {
         this.allottedTo,
         this.targetDateToShow,
         this.triggerDateToShow,
-        this.priorityToShow});
+        this.satDateToShow,
+        this.priorityToShow,
+        this.triggerDateTimeFormat,
+        this.targetDateTimeFormat});
 
   AllottedNotStartedPastDueData.fromJson(Map<String, dynamic> json) {
     id = json['id']??"";
@@ -577,7 +674,11 @@ class AllottedNotStartedPastDueData {
     DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
     triggerDateToShow = json['trigger_date'] ==null || json['trigger_date'] == "" ? "" :
     DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
+    satDateToShow = json['sat_date'] ==null || json['sat_date'] == "" ? "" :
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
     priorityToShow = json['priority']=="1" ? "High" : json['priority'] == "2" ? "Medium": "Low";
+    triggerDateTimeFormat = DateTime.parse(json['trigger_date']);
+    targetDateTimeFormat = DateTime.parse(json['target_date']);
   }
 
   Map<String, dynamic> toJson() {
@@ -639,7 +740,9 @@ class StartedNotCompletedPieList {
   String? status;
   String? targetDateToShow;
   String? triggerDateToShow;
+  String? satDateToShow;
   String? priorityToShow;
+  String? statusName;
 
 
   StartedNotCompletedPieList(
@@ -657,7 +760,10 @@ class StartedNotCompletedPieList {
         this.status,
         this.targetDateToShow,
         this.triggerDateToShow,
-        this.priorityToShow});
+        this.satDateToShow,
+        this.priorityToShow,
+        this.statusName
+      });
 
   StartedNotCompletedPieList.fromJson(Map<String, dynamic> json) {
     id = json['id']??"";
@@ -676,7 +782,10 @@ class StartedNotCompletedPieList {
     DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
     triggerDateToShow = json['trigger_date'] ==null || json['trigger_date'] == "" ? "" :
     DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
+    satDateToShow = json['sat_date'] ==null || json['sat_date'] == "" ? "" :
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
     priorityToShow = json['priority']=="1" ? "High" : json['priority'] == "2" ? "Medium": "Low";
+    statusName = json['Status']=="1" ? "Inprocess": json["Status"]=="2" ? "Hold": "Complete";
   }
 
   Map<String, dynamic> toJson() {
@@ -805,12 +914,12 @@ class CompletedNotBilledPieList {
         this.claimAmount});
 
   CompletedNotBilledPieList.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    clientCode = json['client_code'];
-    client = json['client'];
-    servicename = json['servicename'];
-    amountOfServicePeriod = json['Amount of Service Period'];
-    claimAmount = json['Claim Amount'];
+    id = json['id']??"";
+    clientCode = json['client_code']??"";
+    client = json['client']??"";
+    servicename = json['servicename']??"";
+    amountOfServicePeriod = json['Amount of Service Period']??"";
+    claimAmount = json['Claim Amount']??"";
   }
 
   Map<String, dynamic> toJson() {
@@ -863,10 +972,12 @@ class SubmittedForCheckingPieList {
   String? targetDate;
   String? satDate;
   String? priority;
+  String? priorityToShow;
   String? allottedTo;
   String? tasks;
   int? completionPercentage;
   String? status;
+  String? statusName;
 
   SubmittedForCheckingPieList(
       {this.id,
@@ -877,10 +988,12 @@ class SubmittedForCheckingPieList {
         this.targetDate,
         this.satDate,
         this.priority,
+        this.priorityToShow,
         this.allottedTo,
         this.tasks,
         this.completionPercentage,
-        this.status});
+        this.status,
+        this.statusName});
 
   SubmittedForCheckingPieList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -891,10 +1004,12 @@ class SubmittedForCheckingPieList {
     targetDate = json['target_date'];
     satDate = json['sat_date'];
     priority = json['priority'];
+    priorityToShow = json['priority']=="1" ? "High" : json['priority'] == "2" ? "Medium": "Low";
     allottedTo = json['Allotted To'];
     tasks = json['Tasks'];
     completionPercentage = json['Completion_Percentage'];
     status = json['Status'];
+    statusName = json['Status']=="1" ? "Inprocess" : json['Status']=="2" ? "Hold" : "Complete";
   }
 
   Map<String, dynamic> toJson() {

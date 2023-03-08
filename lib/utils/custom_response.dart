@@ -104,8 +104,9 @@ class LoginResponse {
   String? message;
   bool? success;
   List<UserDetails>? userDetails;
+  String? isReportingHead;
 
-  LoginResponse({this.message, this.success, this.userDetails});
+  LoginResponse({this.message, this.success, this.userDetails, this.isReportingHead});
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -116,6 +117,7 @@ class LoginResponse {
         userDetails!.add(UserDetails.fromJson(v));
       });
     }
+    isReportingHead = json["is_reporting_head"];
   }
 
   Map<String, dynamic> toJson() {
@@ -125,6 +127,7 @@ class LoginResponse {
     if (userDetails != null) {
       data['UserDetails'] = userDetails!.map((v) => v.toJson()).toList();
     }
+    data["is_reporting_head"] = isReportingHead;
     return data;
   }
 }
