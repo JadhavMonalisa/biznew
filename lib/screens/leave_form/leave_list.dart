@@ -201,6 +201,7 @@ class _LeaveListState extends State<LeaveList> {
           const SizedBox(height: 20.0,),
           Row(
             children: [
+              cont.reportingHead == "1" ? const Opacity(opacity: 0.0,):
               item.leaveStatus == "Approved" || item.leaveStatus == "Deleted" ? const Opacity(opacity: 0.0,):
               Flexible(child: GestureDetector(
                 onTap: (){
@@ -277,6 +278,7 @@ class _LeaveListState extends State<LeaveList> {
                 },
                 child: buildActionForClaim(errorColor,Icons.clear),
               )),
+              cont.reportingHead == "1" ? const Opacity(opacity: 0.0,):
               item.leaveStatus == "Approved" || item.leaveStatus == "Deleted" ? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
 
@@ -290,11 +292,13 @@ class _LeaveListState extends State<LeaveList> {
               item.leaveStatus == "Approved" || item.leaveStatus == "Deleted"? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
 
+              cont.reportingHead == "1" ? const Opacity(opacity: 0.0,):
               item.leaveStatus == "Approved" || item.leaveStatus == "Deleted"? const Opacity(opacity: 0.0,):
               Flexible(child: GestureDetector(onTap:(){
                 cont.navigateToLeaveEdit(item.id!,"form");
               },
                   child:buildActionForClaim(editColor,Icons.edit))),
+              cont.reportingHead == "1" ? const Opacity(opacity: 0.0,):
               item.leaveStatus == "Approved" || item.leaveStatus == "Deleted"? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
 
