@@ -849,16 +849,20 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
 
                           cont.isPastDueSelected ? Padding(
                             padding: const EdgeInsets.only(top: 50.0,left: 10.0,right: 10.0,bottom: 20.0),
-                            child: SizedBox(
+                            child:
+                            SizedBox(
                               height: MediaQuery.of(context).size.height,
                               width: MediaQuery.of(context).size.width,
                               child:
                                   cont.selectedMainType == "AllottedNotStarted" ?
                               ///allotted not started
-                                  cont.allottedNotStartedPastDueList.isEmpty ? Padding(
+                                  cont.loader ? buildCircularIndicator() :
+                                  cont.allottedNotStartedPastDueList.isEmpty
+                                      ? Padding(
                                   padding: const EdgeInsets.only(top: 50.0),
-                                  child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-                              ListView.builder(
+                                  child:buildTextBoldWidget("No data found", blackColor, context,
+                                      16.0,align: TextAlign.center))
+                                      : ListView.builder(
                                   shrinkWrap: true,
                                   physics: const AlwaysScrollableScrollPhysics(),
                                   itemCount: cont.allottedNotStartedPastDueList.length,
@@ -1073,7 +1077,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                     );
                                   })
                              ///started not completed
-                              : cont.startedNotCompletedPastDueList.isEmpty ? Padding(
+                              :  cont.loader ? buildCircularIndicator() :
+                                  cont.startedNotCompletedPastDueList.isEmpty ? Padding(
                                       padding: const EdgeInsets.only(top: 50.0),
                                       child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
                                   ListView.builder(

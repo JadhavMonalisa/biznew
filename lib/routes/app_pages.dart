@@ -24,6 +24,7 @@ import 'package:biznew/screens/leave_form/leave_binding.dart';
 import 'package:biznew/screens/leave_form/leave_details.dart';
 import 'package:biznew/screens/leave_form/leave_list.dart';
 import 'package:biznew/screens/leave_form/leave_screen.dart';
+import 'package:biznew/screens/login/forgot_password.dart';
 import 'package:biznew/screens/login/login_binding.dart';
 import 'package:biznew/screens/login/login_screen.dart';
 import 'package:biznew/screens/common/splash_screen.dart';
@@ -49,6 +50,11 @@ class AppPages {
     GetPage(
       name: AppRoutes.login,
       page: () => const LoginScreen(),
+      binding: LoginBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.forgotPassword,
+      page: () => const ForgotPasswordScreen(),
       binding: LoginBinding(),
     ),
     GetPage(

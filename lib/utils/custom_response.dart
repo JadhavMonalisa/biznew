@@ -228,3 +228,53 @@ class UserDetails {
     return data;
   }
 }
+
+class AccessRightResponse {
+  String? message;
+  bool? success;
+  List<AccessRightDetails>? accessRightDetails;
+
+  AccessRightResponse({this.message, this.success, this.accessRightDetails});
+
+  AccessRightResponse.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['data'] != null) {
+      accessRightDetails = <AccessRightDetails>[];
+      json['data'].forEach((v) {
+        accessRightDetails!.add(new AccessRightDetails.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Message'] = this.message;
+    data['Success'] = this.success;
+    if (this.accessRightDetails != null) {
+      data['data'] = this.accessRightDetails!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class AccessRightDetails {
+  String? moduleName;
+  String? viewAccess;
+
+  AccessRightDetails({this.moduleName, this.viewAccess});
+
+  AccessRightDetails.fromJson(Map<String, dynamic> json) {
+    moduleName = json['module_name']??"";
+    viewAccess = json['view_access']??"";
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['module_name'] = this.moduleName;
+    data['view_access'] = this.viewAccess;
+    return data;
+  }
+}
+
+

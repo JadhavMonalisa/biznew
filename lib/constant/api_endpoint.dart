@@ -6,6 +6,8 @@ class ApiEndpoint {
   ///Basic User
   //static const String loginUrl = "https://dev.bizalys.com/api/login.php";
   static const String loginUrl = "$baseUrl/apiController/login";
+  static const String forgotPasswordUrl = "$baseUrl/apiController/forgotpassword";
+  static const String accessRightUrl = "$baseUrl/apiController/get_access_rights";
   static const String notificationUrl = "$baseUrl/ApiController/notification";
 
   ///Claim

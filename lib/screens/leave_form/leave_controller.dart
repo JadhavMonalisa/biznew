@@ -430,7 +430,7 @@ class LeaveController extends GetxController {
   ///clear all fields
   clearForm(){
     selectedLeaveTypeId = "";
-    selectedLeaveFlag = 0; selectedEmployee = "";
+    selectedLeaveFlag = 0; selectedEmployee = "";selectedLeave="";
     year=0; month=0; days=0; leaveReason.clear(); selectedLeaveType = "";
     nameOfLeaveFor="";selectedLeaveStatus = "";
     selectedStartDateToShow = ""; selectedEndDateToShow = "";

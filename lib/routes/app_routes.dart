@@ -3,6 +3,7 @@ part of 'app_pages.dart';
 abstract class AppRoutes {
   static const splash = '/splash-page';
   static const login = '/login-page';
+  static const forgotPassword = '/forgotPassword-page';
   static const bottomNav = '/bottomNav-page';
   static const home = '/home-page';
   static const clientDashboard = '/clientDashboard-page';

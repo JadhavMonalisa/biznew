@@ -102,6 +102,8 @@ class ClaimFormController extends GetxController {
   List<ClaimClientListDetails> claimListForExport = <ClaimClientListDetails>[];
   late ClaimDataSource claimDataSource;
 
+  String reportingHead="";
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -112,7 +114,7 @@ class ClaimFormController extends GetxController {
     userName = GetStorage().read("userName")??"";
     name = GetStorage().read("name")??"";
     firmId = GetStorage().read("firmId")??"";
-
+    reportingHead = GetStorage().read("reportingHead")??"";
     repository.getData();
 
     callNatureOfClaimList();

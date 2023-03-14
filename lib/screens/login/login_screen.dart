@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:biznew/common_widget/error_text.dart';
 import 'package:biznew/common_widget/widget.dart';
 import 'package:biznew/constant/assets.dart';
+import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/login/login_controller.dart';
 import 'package:biznew/theme/app_text_theme.dart';
 import 'package:biznew/utils/utils.dart';
@@ -195,7 +196,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   const SizedBox(height: 30,),
                                   GestureDetector(
                                     onTap: () {
-                                      Utils.showAlertSnackBar("Coming Soon!");
+                                      //Utils.showAlertSnackBar("Coming Soon!");
+                                      Get.toNamed(AppRoutes.forgotPassword);
                                     },
                                     child: Align(
                                         alignment: Alignment.topRight,

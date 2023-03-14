@@ -92,7 +92,7 @@ class LoginController extends GetxController {
       forgotEmailController.text.isEmpty ? validateForgetEmail = true : validateForgetEmail = false;
       update();
     }else{
-     // addForgetPasswordApi(context);
+     addForgetPasswordApi(context);
     }
     update();
   }
@@ -115,6 +115,7 @@ class LoginController extends GetxController {
         GetStorage().write('reportingHead', response.isReportingHead);
         Utils.showSuccessSnackBar(response.message);
         loginEmailController.clear();loginPasswordController.clear();
+        addAccessRightApi();
         Get.toNamed(AppRoutes.bottomNav);
         update();
       } else {
@@ -130,4 +131,57 @@ class LoginController extends GetxController {
       Utils.showErrorSnackBar("Invalid username or password"); update();
     }
   }
+  /// add forgot password
+  void addForgetPasswordApi(BuildContext context) async {
+    try {
+      Utils.dismissKeyboard();
+      Utils.showLoadingDialog();
+      ApiResponse? response = (await repository.doForgotPassword(
+          forgotEmailController.text
+      ));
+      Utils.dismissLoadingDialog();
+      if (response.success==true) {
+        Utils.dismissLoadingDialog();
+        Utils.showErrorSnackBar(response.message); update();
+      } else {
+        Utils.dismissLoadingDialog();
+        Utils.showErrorSnackBar(response.message); update();
+      }
+    } on CustomException catch (e) {
+      Utils.dismissLoadingDialog();
+      Utils.showErrorSnackBar(e.getMsg().toString());update();
+    } catch (error) {
+      Utils.dismissLoadingDialog();
+      Utils.showErrorSnackBar("Something went wrong"); update();
+    }
+  }
+  ///access right api
+  void addAccessRightApi() async {
+    try {
+      // Utils.dismissKeyboard();
+      // Utils.showLoadingDialog();
+      AccessRightResponse? response = (await repository.getAccessList());
+
+
+      print("response.accessRightDetails");
+      print(response.accessRightDetails);
+      Utils.dismissLoadingDialog();
+      if (response.success==true) {
+        // Utils.showSuccessSnackBar(response.message);
+        update();
+      } else {
+        //Utils.dismissLoadingDialog();
+        //Utils.showErrorSnackBar("Invalid username or password"); update();
+        //Utils.showErrorSnackBar(response.message); update();
+      }
+    } on CustomException catch (e) {
+      // Utils.dismissLoadingDialog();
+      // Utils.showErrorSnackBar(e.getMsg().toString());update();
+    } catch (error) {
+      // Utils.dismissLoadingDialog();
+      // Utils.showErrorSnackBar("Invalid username or password"); update();
+    }
+  }
+
+
 }

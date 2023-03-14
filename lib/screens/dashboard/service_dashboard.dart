@@ -272,19 +272,24 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                   shrinkWrap: true,
                                                   itemCount: cont.triggerNotAllottedValues.length,
                                                   itemBuilder: (context,index){
-                                                    return Padding(
-                                                        padding: const EdgeInsets.all(2.0),
-                                                        child: Card(
-                                                          child: Padding(
-                                                              padding:const EdgeInsets.all(5.0),
-                                                              child:Column(
-                                                                children: [
-                                                                  buildTextBoldWidget(cont.chartDetails[index], cont.chartColors[index], context, 16.0),
-                                                                  buildTextBoldWidget(cont.triggeredNotAllotted.isEmpty?"":cont.triggeredNotAllotted[index].toString(), blackColor, context, 16.0),
-                                                                ],
-                                                              )
-                                                          ),
-                                                        )
+                                                    return GestureDetector(
+                                                      onTap: (){
+                                                        showInprocessDialog(context);
+                                                      },
+                                                      child: Padding(
+                                                          padding: const EdgeInsets.all(2.0),
+                                                          child: Card(
+                                                            child: Padding(
+                                                                padding:const EdgeInsets.all(5.0),
+                                                                child:Column(
+                                                                  children: [
+                                                                    buildTextBoldWidget(cont.chartDetails[index], cont.chartColors[index], context, 16.0),
+                                                                    buildTextBoldWidget(cont.triggeredNotAllotted.isEmpty?"":cont.triggeredNotAllotted[index].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                )
+                                                            ),
+                                                          )
+                                                      ),
                                                     );
                                                   })
                                                   : ListView.builder(

@@ -206,7 +206,7 @@ class _ClaimListState extends State<ClaimList> {
           Table(
             children: [
               buildTableTitle(context,title1: "Bill Date",title2: "Billable",title3: "Status",fontSize: 14.0),
-              buildContentSubTitle(context,contentTitle1: item.billDate!,contentTitle2: item.cliamBillable!,
+              buildContentSubTitle(context,contentTitle1: item.billDate!,contentTitle2: item.cliamBillable!,contentTitle3: item.claimStatus!,
                   fontSize: 14.0),
               const TableRow(children: [SizedBox(height: 10.0,),SizedBox(height: 10.0,),SizedBox(height: 10.0,)]),
             ],
@@ -228,6 +228,7 @@ class _ClaimListState extends State<ClaimList> {
           const SizedBox(height: 20.0,),
           Row(
             children: [
+              cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
               item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
               Flexible(child: GestureDetector(
                 onTap: (){
@@ -301,11 +302,12 @@ class _ClaimListState extends State<ClaimList> {
                     },
                   );
                   },
-                child: buildActionForClaim(errorColor,Icons.clear),
+                child: buildActionForClaim(editColor,Icons.clear),
               )),
               item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
 
+              cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
               item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
               Flexible(child: GestureDetector(
                   onTap: (){cont.updateStatus("Approved",item.claimId!,context);},
@@ -318,14 +320,23 @@ class _ClaimListState extends State<ClaimList> {
               Flexible(child: GestureDetector(onTap:(){
                 cont.navigateToClaimEdit(item.claimId!,"form");
               },
-                  child:buildActionForClaim(editColor,Icons.edit))),
+                  child:buildActionForClaim(buttonColor,Icons.edit))),
               item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+              const SizedBox(width: 5.0,),
+
+              cont.reportingHead == "0" && item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+              Flexible(child: GestureDetector(onTap:(){
+                cont.updateStatus("Delete",item.claimId!,context);
+              },
+                  child:buildActionForClaim(errorColor,Icons.delete,))),
+              cont.reportingHead == "0" && item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
 
               Flexible(child: GestureDetector(onTap:(){
                 cont.navigateToClaimEdit(item.claimId!,"view");
               },
-                  child:buildActionForClaim(primaryColor,Icons.visibility,))),const SizedBox(width: 5.0,),
+                  child:buildActionForClaim(primaryColor,Icons.visibility,))),
+              const SizedBox(width: 5.0,),
             ],
           )
         ],

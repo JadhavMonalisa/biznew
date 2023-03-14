@@ -176,7 +176,7 @@ class _LeaveListState extends State<LeaveList> {
         //     blackColor, context, 14.0,align: TextAlign.left),
         title: buildRichTextWidget("${item.firmEmployeeName!} applied ${item.leaveType!} from ${item.startDateToShow!} to ${item.endDateToShow!} - ",
             item.leaveStatus!,title1Weight: FontWeight.normal,title2Weight: FontWeight.bold,
-            title2Color: item.leaveStatus == "Pending" ? Colors.orange :
+            title2Color: item.leaveStatus == "Pending" || item.leaveStatus == "Pending for approval" ? Colors.orange :
                          item.leaveStatus == "Rejected" || item.leaveStatus == "Deleted" ? Colors.red :
                          item.leaveStatus == "Approved" ? Colors.green : faintGrey,),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
@@ -201,8 +201,9 @@ class _LeaveListState extends State<LeaveList> {
           const SizedBox(height: 20.0,),
           Row(
             children: [
-              cont.reportingHead == "1" ? const Opacity(opacity: 0.0,):
-              item.leaveStatus == "Approved" || item.leaveStatus == "Deleted" ? const Opacity(opacity: 0.0,):
+              //cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
+              ///cancel
+              item.leaveStatus == "Deleted" ? const Opacity(opacity: 0.0,):
               Flexible(child: GestureDetector(
                 onTap: (){
                   showDialog(barrierDismissible: true,
@@ -276,32 +277,43 @@ class _LeaveListState extends State<LeaveList> {
                     },
                   );
                 },
-                child: buildActionForClaim(errorColor,Icons.clear),
+                child: buildActionForClaim(buttonColor,Icons.clear),
               )),
-              cont.reportingHead == "1" ? const Opacity(opacity: 0.0,):
-              item.leaveStatus == "Approved" || item.leaveStatus == "Deleted" ? const Opacity(opacity: 0.0,):
+              //cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
+              //item.leaveStatus == "Approved" || item.leaveStatus == "Deleted" ? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
 
-              item.leaveStatus == "Approved" || item.leaveStatus == "Deleted"? const Opacity(opacity: 0.0,):
+
+              cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
+              item.leaveStatus == "Pending for approval" ?
               Flexible(child: GestureDetector(
                   onTap: (){
                     cont.updateStatus("Approved",item.id!);
                   },
                   child:buildActionForClaim(approveColor,Icons.check)
-              )),
+              ))
+              :const Opacity(opacity: 0.0,),
+
               item.leaveStatus == "Approved" || item.leaveStatus == "Deleted"? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
 
-              cont.reportingHead == "1" ? const Opacity(opacity: 0.0,):
+              //cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
               item.leaveStatus == "Approved" || item.leaveStatus == "Deleted"? const Opacity(opacity: 0.0,):
               Flexible(child: GestureDetector(onTap:(){
                 cont.navigateToLeaveEdit(item.id!,"form");
               },
                   child:buildActionForClaim(editColor,Icons.edit))),
-              cont.reportingHead == "1" ? const Opacity(opacity: 0.0,):
+              //cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
               item.leaveStatus == "Approved" || item.leaveStatus == "Deleted"? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
 
+              cont.reportingHead == "0" && item.leaveStatus == "Approved"? const Opacity(opacity: 0.0,):
+              cont.reportingHead == "1" && item.leaveStatus == "Deleted" ? const Opacity(opacity: 0.0,):
+              Flexible(child: GestureDetector(onTap:(){
+                cont.updateStatus("Delete",item.id!);
+              },
+                  child:buildActionForClaim(errorColor,Icons.delete,))),
+              const SizedBox(width: 5.0,),
               Flexible(child: GestureDetector(onTap:(){
                 cont.navigateToLeaveEdit(item.id!,"view");
               },

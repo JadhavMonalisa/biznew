@@ -642,29 +642,56 @@ class DashboardController extends GetxController {
     selectedType = type ; selectedCount = count ;
     selectedMainType = "AllottedNotStarted";
 
-    // if(title == "Past Due"){
-    //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
-    // }
-    // else if(title == "Probable Overdue"){
-    //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
-    // }
-    // else if(title == "High"){
-    //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
-    // }
-    // else if(title == "Medium"){
-    //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
-    // }
-    // else if(title == "Low"){
-    //   type == "Own" ?  callAllottedNotStartedOwn() :  callAllottedNotStartedTeam();
-    // }
-
-    if(type == "Own"){
-      callAllottedNotStartedOwn();
+    if(title == "Past Due"){
+      // if(selectedMainType == "AllottedNotStarted")
+      //   {
+      //    type == "Own" ? callAllottedNotStartedPastDueOwn() : callAllottedNotStartedPastDueTeam();
+      //   }
+      // else{
+      //     type == "Own" ? callStartedNotCompletedPastOwn() : callStartedNotCompletedPastTeam();
+      // }
+      onPasDueSelected();
     }
-    else{
-      callAllottedNotStartedTeam();
+    else if(title == "Probable Overdue"){
+      // if(selectedMainType == "AllottedNotStarted")
+      // {
+      //  type == "Own" ?  callAllottedNotStartedProbableOwn() :  callAllottedNotStartedPortableDueTeam();
+      // }
+      // else{
+      //   type == "Own" ? callStartedNotCompletedProbableOwn() : callStartedNotCompletedProbableTeam();
+      // }
+      onPortableOverdueSelected();
     }
-
+    else if(title == "High"){
+      // if(selectedMainType == "AllottedNotStarted")
+      // {
+      //  type == "Own" ?  callAllottedNotStartedHighOwn() :  callAllottedNotStartedHighDueTeam();
+      // }
+      // else{
+      //   type == "Own" ? callStartedNotCompletedHighOwn() : callStartedNotCompletedHighTeam();
+      // }
+      onHighSelected();
+    }
+    else if(title == "Medium"){
+      // if(selectedMainType == "AllottedNotStarted")
+      // {
+      //  type == "Own" ?  callAllottedNotStartedMediumOwn() :  callAllottedNotStartedMediumDueTeam();
+      // }
+      // else{
+      //   type == "Own" ? callStartedNotCompletedMediumOwn() : callStartedNotCompletedMediumTeam();
+      // }
+      onHMediumSelected();
+    }
+    else if(title == "Low"){
+      // if(selectedMainType == "AllottedNotStarted")
+      // {
+      //  type == "Own" ?  callAllottedNotStartedLowOwn() :  callAllottedNotStartedLowDueTeam();
+      // }
+      // else{
+      //   type == "Own" ? callStartedNotCompletedLowOwn() : callStartedNotCompletedLowTeam();
+      // }
+      onLowSelected();
+    }
     update();
   }
   ///due data started but nor completed
@@ -673,12 +700,32 @@ class DashboardController extends GetxController {
     selectedPieChartTitle = title;
     selectedType = type ; selectedCount = count ;
     selectedMainType = "StartedNotCompleted";
-    if(type == "Own"){
-      callStartedNotCompletedOwn();
+    if(title == "Past Due"){
+      //type == "Own" ?  callStartedNotCompletedPastOwn() :  callStartedNotCompletedPastTeam();
+      onPasDueSelected();
     }
-    else{
-      callStartedNotCompletedTeam();
+    else if(title == "Probable Overdue"){
+      //type == "Own" ?  callStartedNotCompletedProbableOwn() :  callStartedNotCompletedProbableTeam();
+      onPortableOverdueSelected();
     }
+    else if(title == "High"){
+      //type == "Own" ?  callStartedNotCompletedHighOwn() :  callStartedNotCompletedHighTeam();
+      onPortableOverdueSelected();
+    }
+    else if(title == "Medium"){
+      //type == "Own" ?  callStartedNotCompletedMediumOwn() :  callStartedNotCompletedMediumTeam();
+      onHMediumSelected();
+    }
+    else if(title == "Low"){
+      //type == "Own" ?  callStartedNotCompletedLowOwn() :  callStartedNotCompletedLowTeam();
+      onLowSelected();
+    }
+    // if(type == "Own"){
+    //   callStartedNotCompletedOwn();
+    // }
+    // else{
+    //   callStartedNotCompletedTeam();
+    // }
 
     update();
   }
@@ -1204,26 +1251,76 @@ class DashboardController extends GetxController {
   }
 
   onPasDueSelected(){
+    selectedPieChartTitle == "Past Due";
+    updateLoader(true);
+    if(selectedMainType == "AllottedNotStarted")
+      {
+        selectedType == "Own" ? callAllottedNotStartedPastDueOwn() : callAllottedNotStartedPastDueTeam();
+      }
+    else{
+        selectedType == "Own" ? callStartedNotCompletedPastOwn() : callStartedNotCompletedPastTeam();
+    }
+
     isPastDueSelected = true; isPortableOverdueSelected = false; isHighSelected = false;
     isMediumSelected = false; isLowSelected = false;
     update();
   }
   onPortableOverdueSelected(){
+    selectedPieChartTitle == "Probable Overdue";
+    updateLoader(true);
+    if(selectedMainType == "AllottedNotStarted")
+    {
+      selectedType == "Own" ? callAllottedNotStartedPortableDueTeam() : callAllottedNotStartedPortableDueTeam();
+    }
+    else{
+      selectedType == "Own" ? callStartedNotCompletedProbableOwn() : callStartedNotCompletedProbableTeam();
+    }
+
     isPastDueSelected = false; isPortableOverdueSelected = true; isHighSelected = false;
     isMediumSelected = false; isLowSelected = false;
     update();
   }
   onHighSelected(){
+    selectedPieChartTitle == "High";
+    updateLoader(true);
+    //callAllottedNotStartedHighDueTeam();
+    if(selectedMainType == "AllottedNotStarted")
+    {
+      selectedType == "Own" ? callAllottedNotStartedHighOwn() : callAllottedNotStartedHighDueTeam();
+    }
+    else{
+      selectedType == "Own" ? callStartedNotCompletedHighOwn() : callStartedNotCompletedHighTeam();
+    }
     isPastDueSelected = false; isPortableOverdueSelected = false; isHighSelected = true;
     isMediumSelected = false; isLowSelected = false;
     update();
   }
   onHMediumSelected(){
+    selectedPieChartTitle == "Medium";
+    updateLoader(true);
+    //callAllottedNotStartedMediumDueTeam();
+    if(selectedMainType == "AllottedNotStarted")
+    {
+      selectedType == "Own" ? callAllottedNotStartedMediumOwn() : callAllottedNotStartedMediumDueTeam();
+    }
+    else{
+      selectedType == "Own" ? callStartedNotCompletedMediumOwn() : callStartedNotCompletedMediumTeam();
+    }
     isPastDueSelected = false; isPortableOverdueSelected = false; isHighSelected = false;
     isMediumSelected = true; isLowSelected = false;
     update();
   }
   onLowSelected(){
+    selectedPieChartTitle == "Low";
+    updateLoader(true);
+    //callAllottedNotStartedLowDueTeam();
+    if(selectedMainType == "AllottedNotStarted")
+    {
+      selectedType == "Own" ? callAllottedNotStartedLowOwn() : callAllottedNotStartedLowDueTeam();
+    }
+    else{
+      selectedType == "Own" ? callStartedNotCompletedLowOwn() : callStartedNotCompletedLowTeam();
+    }
     isPastDueSelected = false; isPortableOverdueSelected = false; isHighSelected = false;
     isMediumSelected = false; isLowSelected = true;
     update();
@@ -1291,16 +1388,241 @@ class DashboardController extends GetxController {
     selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
     selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
 
-    selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    selectedPieChartTitle == "High" ? onHighSelected() :
-    selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    onLowSelected();
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    //onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callAllottedNotStartedPastDueOwn() async {
+    allottedNotStartedPastDueList.clear();
+    try {
+
+      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedPastDueOwn();
+
+      if (response.success!) {
+        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
+        // isPastDueSelected = true;
+        //Get.toNamed(AppRoutes.serviceDashboardNext);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
+    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
+    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
+    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
+    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    //onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callAllottedNotStartedProbableOwn() async {
+    allottedNotStartedPastDueList.clear();
+    try {
+
+      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedProbableOwn();
+
+      if (response.success!) {
+        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
+        // isPastDueSelected = true;
+        //Get.toNamed(AppRoutes.serviceDashboardNext);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
+    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
+    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
+    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
+    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    //onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callAllottedNotStartedHighOwn() async {
+    allottedNotStartedPastDueList.clear();
+    try {
+
+      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedHighOwn();
+
+      if (response.success!) {
+        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
+        // isPastDueSelected = true;
+        //Get.toNamed(AppRoutes.serviceDashboardNext);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
+    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
+    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
+    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
+    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    //onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callAllottedNotStartedMediumOwn() async {
+    allottedNotStartedPastDueList.clear();
+    try {
+
+      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedMediumOwn();
+
+      if (response.success!) {
+        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
+        // isPastDueSelected = true;
+        //Get.toNamed(AppRoutes.serviceDashboardNext);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
+    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
+    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
+    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
+    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    //onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callAllottedNotStartedLowOwn() async {
+    allottedNotStartedPastDueList.clear();
+    try {
+
+      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedLowOwn();
+
+      if (response.success!) {
+        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
+        // isPastDueSelected = true;
+        //Get.toNamed(AppRoutes.serviceDashboardNext);
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
+    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
+    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
+    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
+    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    //onLowSelected();
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   ///allotted not started past due -> team
-  void callAllottedNotStartedTeam() async {
+  void callAllottedNotStartedPastDueTeam() async {
     allottedNotStartedPastDueList.clear();
     try {
       AllottedNotStartedPastDueTeam? response =
@@ -1312,19 +1634,21 @@ class DashboardController extends GetxController {
 
       if (response.success!) {
         allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
-        updateLoader(false);
+        updateLoader(false);  Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
         updateLoader(false);update();
       }
       update();
     } on CustomException catch (e) {
       //Utils.showErrorSnackBar(e.getMsg());
-      updateLoader(false);
+      updateLoader(false);  Utils.dismissLoadingDialog();
       update();
     } catch (error) {
       //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
     }
@@ -1335,41 +1659,249 @@ class DashboardController extends GetxController {
     selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
     selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
 
-    selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    selectedPieChartTitle == "High" ? onHighSelected() :
-    selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    onLowSelected();
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
-
-  ///started not completed team
-  void callStartedNotCompletedTeam() async {
-    startedNotCompletedPastDueList.clear();
+  void callAllottedNotStartedPortableDueTeam() async {
+    allottedNotStartedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response =
-      selectedPieChartTitle == "Past Due" ? (await repository.getStartedNotCompletedPastDueTeam()) :
-      selectedPieChartTitle == "Probable Overdue" ? (await repository.getStartedNotCompletedProbableTeam()) :
-      selectedPieChartTitle == "High" ? (await repository.getStartedNotCompletedHighTeam()) :
-      selectedPieChartTitle == "Medium" ? (await repository.getStartedNotCompletedMediumTeam()) :
-      (await repository.getStartedNotCompletedLowTeam());
+      AllottedNotStartedPastDueTeam? response = (await repository.getAllottedNotStartedProbableTeam()) ;
 
-      if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);
+      if (response!.success!) {
+        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
         updateLoader(false);update();
       }
       update();
     } on CustomException catch (e) {
       //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
     } catch (error) {
       //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[0]}";
+    selectedProbable = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[1]}";
+    selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
+    selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
+    selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callAllottedNotStartedHighDueTeam() async {
+    allottedNotStartedPastDueList.clear();
+    try {
+
+      AllottedNotStartedPastDueTeam? response = (await repository.getAllottedNotStartedHighTeam()) ;
+
+      if (response.success!) {
+        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[0]}";
+    selectedProbable = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[1]}";
+    selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
+    selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
+    selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callAllottedNotStartedMediumDueTeam() async {
+    allottedNotStartedPastDueList.clear();
+    try {
+
+      AllottedNotStartedPastDueTeam? response = (await repository.getAllottedNotStartedMediumTeam()) ;
+
+      if (response.success!) {
+        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[0]}";
+    selectedProbable = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[1]}";
+    selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
+    selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
+    selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callAllottedNotStartedLowDueTeam() async {
+    allottedNotStartedPastDueList.clear();
+    try {
+
+      AllottedNotStartedPastDueTeam? response = (await repository.getAllottedNotStartedLowTeam()) ;
+
+      if (response.success!) {
+        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[0]}";
+    selectedProbable = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[1]}";
+    selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
+    selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
+    selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+
+  ///started not completed team
+  // void callStartedNotCompletedTeam() async {
+  //   startedNotCompletedPastDueList.clear();
+  //   try {
+  //     StartedButCompletedPieModel? response =
+  //     selectedPieChartTitle == "Past Due" ? (await repository.getStartedNotCompletedPastDueTeam()) :
+  //     selectedPieChartTitle == "Probable Overdue" ? (await repository.getStartedNotCompletedProbableTeam()) :
+  //     selectedPieChartTitle == "High" ? (await repository.getStartedNotCompletedHighTeam()) :
+  //     selectedPieChartTitle == "Medium" ? (await repository.getStartedNotCompletedMediumTeam()) :
+  //     (await repository.getStartedNotCompletedLowTeam());
+  //
+  //     if (response.success!) {
+  //       startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+  //       updateLoader(false);
+  //       update();
+  //     } else {
+  //       //Utils.showErrorSnackBar(response.message);
+  //       updateLoader(false);update();
+  //     }
+  //     update();
+  //   } on CustomException catch (e) {
+  //     //Utils.showErrorSnackBar(e.getMsg());
+  //     updateLoader(false);
+  //     update();
+  //   } catch (error) {
+  //     //Utils.showErrorSnackBar(error.toString());
+  //     updateLoader(false);
+  //     update();
+  //   }
+  //
+  //   selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
+  //   selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
+  //   selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
+  //   selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
+  //   selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+  //
+  //   selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+  //   selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+  //   selectedPieChartTitle == "High" ? onHighSelected() :
+  //   selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+  //   onLowSelected();
+  //
+  //   Get.toNamed(AppRoutes.serviceDashboardNext);
+  // }
+  void callStartedNotCompletedPastTeam() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedPastDueTeam();
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
     }
@@ -1380,40 +1912,245 @@ class DashboardController extends GetxController {
     selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
     selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
 
-    selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    selectedPieChartTitle == "High" ? onHighSelected() :
-    selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    onLowSelected();
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
-  ///started not completed own
-  void callStartedNotCompletedOwn() async {
+  void callStartedNotCompletedProbableTeam() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response =
-      selectedPieChartTitle == "Past Due" ? (await repository.getStartedNotCompletedPastDueOwn()) :
-      selectedPieChartTitle == "Probable Overdue" ? (await repository.getStartedNotCompletedProbableOwn()) :
-      selectedPieChartTitle == "High" ? (await repository.getStartedNotCompletedHighOwn()) :
-      selectedPieChartTitle == "Medium" ? (await repository.getStartedNotCompletedMediumOwn()) :
-      (await repository.getStartedNotCompletedLowOwn());
+      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedProbableTeam();
 
       if (response.success!) {
         startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);
+        updateLoader(false);  Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
         updateLoader(false);update();
       }
       update();
     } on CustomException catch (e) {
       //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
     } catch (error) {
       //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
+    selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
+    selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
+    selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
+    selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callStartedNotCompletedHighTeam() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedHighTeam();
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
+    selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
+    selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
+    selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
+    selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callStartedNotCompletedMediumTeam() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedMediumTeam();
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
+    selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
+    selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
+    selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
+    selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callStartedNotCompletedLowTeam() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedLowTeam();
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
+    selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
+    selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
+    selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
+    selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  ///started not completed own
+  // void callStartedNotCompletedOwn() async {
+  //   startedNotCompletedPastDueList.clear();
+  //   try {
+  //     StartedButCompletedPieModel? response =
+  //     selectedPieChartTitle == "Past Due" ? (await repository.getStartedNotCompletedPastDueOwn()) :
+  //     selectedPieChartTitle == "Probable Overdue" ? (await repository.getStartedNotCompletedProbableOwn()) :
+  //     selectedPieChartTitle == "High" ? (await repository.getStartedNotCompletedHighOwn()) :
+  //     selectedPieChartTitle == "Medium" ? (await repository.getStartedNotCompletedMediumOwn()) :
+  //     (await repository.getStartedNotCompletedLowOwn());
+  //
+  //     if (response.success!) {
+  //       startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+  //       updateLoader(false);
+  //       update();
+  //     } else {
+  //       //Utils.showErrorSnackBar(response.message);
+  //       updateLoader(false);update();
+  //     }
+  //     update();
+  //   } on CustomException catch (e) {
+  //     //Utils.showErrorSnackBar(e.getMsg());
+  //     updateLoader(false);
+  //     update();
+  //   } catch (error) {
+  //     //Utils.showErrorSnackBar(error.toString());
+  //     updateLoader(false);
+  //     update();
+  //   }
+  //
+  //   selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
+  //   selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
+  //   selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
+  //   selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
+  //   selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+  //
+  //   selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+  //   selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+  //   selectedPieChartTitle == "High" ? onHighSelected() :
+  //   selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+  //   onLowSelected();
+  //
+  //   Get.toNamed(AppRoutes.serviceDashboardNext);
+  // }
+  void callStartedNotCompletedPastOwn() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedPastDueOwn();
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
     }
@@ -1424,11 +2161,175 @@ class DashboardController extends GetxController {
     selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
     selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
 
-    selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    selectedPieChartTitle == "High" ? onHighSelected() :
-    selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    onLowSelected();
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callStartedNotCompletedProbableOwn() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedProbableOwn();
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
+    selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
+    selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
+    selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
+    selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callStartedNotCompletedHighOwn() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedHighOwn();
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
+    selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
+    selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
+    selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
+    selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callStartedNotCompletedMediumOwn() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedMediumOwn();
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
+    selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
+    selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
+    selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
+    selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
+
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+  void callStartedNotCompletedLowOwn() async {
+    startedNotCompletedPastDueList.clear();
+    try {
+      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedLowOwn();
+
+      if (response.success!) {
+        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        updateLoader(false);  Utils.dismissLoadingDialog();
+        update();
+      } else {
+        //Utils.showErrorSnackBar(response.message);
+        Utils.dismissLoadingDialog();
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      //Utils.showErrorSnackBar(e.getMsg());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    } catch (error) {
+      //Utils.showErrorSnackBar(error.toString());
+      Utils.dismissLoadingDialog();
+      updateLoader(false);
+      update();
+    }
+
+    selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
+    selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
+    selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
+    selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
+    selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+
+    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
+    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
+    // selectedPieChartTitle == "High" ? onHighSelected() :
+    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
+    // onLowSelected();
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }

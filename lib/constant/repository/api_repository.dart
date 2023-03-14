@@ -44,6 +44,27 @@ class ApiRepository {
 
     return LoginResponse.fromJson(response);
   }
+  ///forgot password
+  Future<ApiResponse> doForgotPassword(String email) async {
+    final FormData formData = FormData.fromMap({
+      "email":email,
+    },);
+    final response = await apiClient.post(
+      ApiEndpoint.forgotPasswordUrl, body: formData, headers: headers
+    );
+    return ApiResponse.fromJson(response);
+  }
+  ///access right
+  Future<AccessRightResponse> getAccessList() async {
+    getData();
+    final FormData formData = FormData.fromMap({
+      "firm_id":firmId,"mast_id":userId
+    },);
+    final response = await apiClient.post(
+      ApiEndpoint.accessRightUrl, body: formData, headers: headers
+    );
+    return AccessRightResponse.fromJson(response);
+  }
   ///notification
   Future<NotificationModel> getNotificationList() async {
     final FormData formData = FormData.fromMap({
