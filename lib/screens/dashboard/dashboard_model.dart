@@ -1303,3 +1303,186 @@ class LoadAllTaskData {
     return data;
   }
 }
+
+class TriggeredNotAllottedModel {
+  String? message;
+  bool? success;
+  List<TriggeredNotAllottedPieChartList>? triggeredNotAllottedPieChartList;
+
+  TriggeredNotAllottedModel({this.message, this.success, this.triggeredNotAllottedPieChartList});
+
+  TriggeredNotAllottedModel.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['data'] != null) {
+      triggeredNotAllottedPieChartList = <TriggeredNotAllottedPieChartList>[];
+      json['data'].forEach((v) {
+        triggeredNotAllottedPieChartList!.add(new TriggeredNotAllottedPieChartList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Message'] = this.message;
+    data['Success'] = this.success;
+    if (this.triggeredNotAllottedPieChartList != null) {
+      data['data'] = this.triggeredNotAllottedPieChartList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class TriggeredNotAllottedPieChartList {
+  String? id;
+  String? clientCode;
+  String? client;
+  String? servicename;
+  String? triggerDate;
+  String? targetDate;
+  String? satDate;
+  String? periodicity;
+
+  TriggeredNotAllottedPieChartList(
+      {this.id,
+        this.clientCode,
+        this.client,
+        this.servicename,
+        this.triggerDate,
+        this.targetDate,
+        this.satDate,
+        this.periodicity});
+
+  TriggeredNotAllottedPieChartList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    clientCode = json['client_code'];
+    client = json['client'];
+    servicename = json['servicename'];
+    triggerDate = json['trigger_date'];
+    targetDate = json['target_date'];
+    satDate = json['sat_date'];
+    periodicity = json['periodicity'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['client_code'] = this.clientCode;
+    data['client'] = this.client;
+    data['servicename'] = this.servicename;
+    data['trigger_date'] = this.triggerDate;
+    data['target_date'] = this.targetDate;
+    data['sat_date'] = this.satDate;
+    data['periodicity'] = this.periodicity;
+    return data;
+  }
+}
+
+class TriggeredNotAllottedLoadAllModel {
+  String? message;
+  bool? success;
+  List<TriggeredNotAllottedLoadAllList>? triggeredNotAllottedLoadAllList;
+
+  TriggeredNotAllottedLoadAllModel({this.message, this.success, this.triggeredNotAllottedLoadAllList});
+
+  TriggeredNotAllottedLoadAllModel.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['data'] != null) {
+      triggeredNotAllottedLoadAllList = <TriggeredNotAllottedLoadAllList>[];
+      json['data'].forEach((v) {
+        triggeredNotAllottedLoadAllList!.add(new TriggeredNotAllottedLoadAllList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['Message'] = this.message;
+    data['Success'] = this.success;
+    if (this.triggeredNotAllottedLoadAllList != null) {
+      data['data'] = this.triggeredNotAllottedLoadAllList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class TriggeredNotAllottedLoadAllList {
+  String? taskId;
+  String? sortno;
+  String? taskName;
+  String? taskServiceMainCategoryId;
+  String? taskServiceId;
+  String? completion;
+  String? taskOndate;
+  String? days;
+  String? hours;
+  String? minutes;
+  String? firmId;
+  String? mastId;
+  String? bizAdminId;
+  String? addOnDate;
+  String? addedBy;
+  String? modifiedOnDate;
+  String? modifiedBy;
+
+  TriggeredNotAllottedLoadAllList({this.taskId,
+    this.sortno,
+    this.taskName,
+    this.taskServiceMainCategoryId,
+    this.taskServiceId,
+    this.completion,
+    this.taskOndate,
+    this.days,
+    this.hours,
+    this.minutes,
+    this.firmId,
+    this.mastId,
+    this.bizAdminId,
+    this.addOnDate,
+    this.addedBy,
+    this.modifiedOnDate,
+    this.modifiedBy});
+
+  TriggeredNotAllottedLoadAllList.fromJson(Map<String, dynamic> json) {
+    taskId = json['task_id'];
+    sortno = json['sortno'];
+    taskName = json['task_name'];
+    taskServiceMainCategoryId = json['task_service_main_category_id'];
+    taskServiceId = json['task_service_id'];
+    completion = json['completion'];
+    taskOndate = json['task_ondate'];
+    days = json['days'];
+    hours = json['hours'];
+    minutes = json['minutes'];
+    firmId = json['firm_id'];
+    mastId = json['mast_id'];
+    bizAdminId = json['biz_admin_id'];
+    addOnDate = json['add_on_date'];
+    addedBy = json['added_by'];
+    modifiedOnDate = json['modified_on_date'];
+    modifiedBy = json['modified_by'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['task_id'] = this.taskId;
+    data['sortno'] = this.sortno;
+    data['task_name'] = this.taskName;
+    data['task_service_main_category_id'] = this.taskServiceMainCategoryId;
+    data['task_service_id'] = this.taskServiceId;
+    data['completion'] = this.completion;
+    data['task_ondate'] = this.taskOndate;
+    data['days'] = this.days;
+    data['hours'] = this.hours;
+    data['minutes'] = this.minutes;
+    data['firm_id'] = this.firmId;
+    data['mast_id'] = this.mastId;
+    data['biz_admin_id'] = this.bizAdminId;
+    data['add_on_date'] = this.addOnDate;
+    data['added_by'] = this.addedBy;
+    data['modified_on_date'] = this.modifiedOnDate;
+    data['modified_by'] = this.modifiedBy;
+    return data;
+  }
+}

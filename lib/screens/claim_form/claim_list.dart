@@ -118,6 +118,9 @@ class _ClaimListState extends State<ClaimList> {
                               return DropdownMenuItem<String>(
                                 value: value.firmEmployeeName,
                                 child: Text(value.firmEmployeeName!),
+                                onTap: (){
+                                  cont.showSelectedEmp(value.mastId!);
+                                },
                               );
                             }).toList(),
                             onChanged: (val) {

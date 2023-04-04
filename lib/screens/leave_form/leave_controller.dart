@@ -3,12 +3,14 @@ import 'package:biznew/constant/provider/custom_exception.dart';
 import 'package:biznew/constant/repository/api_repository.dart';
 import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/claim_form/claim_model.dart';
+import 'package:biznew/screens/claim_form/claim_model.dart';
 import 'package:biznew/screens/leave_form/leave_model.dart';
 import 'package:biznew/utils/custom_response.dart';
 import 'package:biznew/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class LeaveController extends GetxController {
   final ApiRepository repository;
@@ -84,6 +86,50 @@ class LeaveController extends GetxController {
     callLeaveCountList();
     callLeaveTypeList();
     callLeaveList();
+
+    print("items");
+    print(items.length);
+  }
+
+  ///employee list
+  static List<ClaimSubmittedByList> item = [];
+  List<ClaimSubmittedByList> selectedEmpList = [];
+  List<String> selectedMultipleEmpIdList = [];
+  List<MultiSelectItem<ClaimSubmittedByList>> items = [];
+  final multiSelectKey = GlobalKey<FormFieldState>();
+  String removeFirstBracket = "";
+  String removeSecondBracket = "";
+
+  // final items = item
+  //     .map((value) => MultiSelectItem<ClaimSubmittedByList>(value, value.firmEmployeeName!))
+  //     .toList();
+
+
+  onSelectionForMultipleEmployee(List<ClaimSubmittedByList> selectedEmpListFromDesign){
+    updateLoader(true);
+    selectedEmpList = selectedEmpListFromDesign;
+    for (var element in selectedEmpListFromDesign) {
+      selectedMultipleEmpIdList.add(element.mastId!);
+      removeFirstBracket = selectedMultipleEmpIdList.toString().replaceAll("[", "");
+      removeSecondBracket = removeFirstBracket.replaceAll("]", "");
+      update();
+    }
+    print("selectedMultipleEmpIdList in add");
+    print(selectedMultipleEmpIdList);
+    callLeaveList();
+    //update();
+  }
+
+  onDeleteMultipleEmployee(ClaimSubmittedByList value){
+    updateLoader(true);
+    selectedEmpList.remove(value);
+    selectedMultipleEmpIdList.remove(value.mastId!);
+    removeFirstBracket = selectedMultipleEmpIdList.toString().replaceAll("[", "");
+    removeSecondBracket = removeFirstBracket.replaceAll("]", "");
+    print("removeSecondBracket in remove");
+    print(removeSecondBracket);
+    callLeaveList();
+    //update();
   }
 
   onWillPopBack(){
@@ -148,6 +194,11 @@ class LeaveController extends GetxController {
         }
         else{
           employeeList.addAll(response.claimSubmittedByListDetails!);
+          items = employeeList
+              .map((value) => MultiSelectItem<ClaimSubmittedByList>(value, value.firmEmployeeName!))
+              .toList();
+
+          update();
         }
         updateLoader(false);
         update();
@@ -167,9 +218,13 @@ class LeaveController extends GetxController {
   /// leave list
   void callLeaveList() async {
     leaveList.clear();
+    //updateLoader(true);
     try {
       LeaveListModel? response = (await repository.getLeaveList(
-        selectedLeaveFlag==0?"own":"team", selectedLeaveStatus,));
+        selectedLeaveFlag==0?"own":"team", selectedLeaveStatus,
+          selectedLeaveFlag == 0 ? "" :
+          selectedMultipleEmpIdList.isEmpty ? "" : removeSecondBracket
+      ));
 
       if (response.success!) {
         if (response.leaveListDetails!.isEmpty) {
@@ -434,6 +489,8 @@ class LeaveController extends GetxController {
     year=0; month=0; days=0; leaveReason.clear(); selectedLeaveType = "";
     nameOfLeaveFor="";selectedLeaveStatus = "";
     selectedStartDateToShow = ""; selectedEndDateToShow = "";
+
+    selectedMultipleEmpIdList.clear(); removeFirstBracket = ""; removeSecondBracket = "";
     update();
   }
   ///leave edit list

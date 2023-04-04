@@ -159,7 +159,541 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
               child:SizedBox(
                   height:MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
-                  child: CarouselSlider.builder(
+                  child:
+                  cont.reportingHead=="0"
+                      ? CarouselSlider.builder(
+                      itemCount: 5,
+                      carouselController: cont.carouselController,
+                      options: CarouselOptions(
+                          autoPlay: false,
+                          aspectRatio: 0.9,
+                          viewportFraction: 0.9,
+                          disableCenter: true,
+                          autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                          enlargeCenterPage: true,
+                          onPageChanged: (index, reason) {
+                            cont.updateSlider(index);
+                          },
+                          initialPage: cont.currentPos
+                      ),
+                      itemBuilder: (context, index, realIdx) {
+                        return Center(
+                          child: ListView(
+                            children: [
+                              ///pie chart
+                              Padding(
+                                padding: const EdgeInsets.only(top: 30.0,bottom: 15.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: (){cont.goToPrevSlider();},
+                                      child: const Icon(Icons.arrow_back_ios,color: primaryColor,),
+                                    ),
+                                    const Spacer(),
+                                    PieChart(
+                                      dataMap:
+                                      index == 0 ? cont.allottedNotStartedValues :
+                                      index == 1 ? cont.startedNotCompletedValues :
+                                      index == 2 ? cont.completedIdPendingValues :
+                                      index == 3 ? cont.workOnHoldValues :
+                                      index == 4 ? cont.submittedForCheckingValues : cont.allTasksCompletedValues ,
+
+                                      animationDuration: const Duration(milliseconds: 800),
+                                      chartLegendSpacing: 32,
+                                      chartRadius: MediaQuery.of(context).size.width / 2.5,
+
+                                      colorList: index == 0 ? cont.allottedNotStartedColors :
+                                      index == 1 ? cont.startedNotCompletedColors :
+                                      index == 2 ? cont.completedIdPendingColors :
+                                      index == 3 ? cont.workOnHoldColors :
+                                      index == 4 ? cont.submittedForCheckingColors :cont.allTasksCompletedColors,
+
+                                      initialAngleInDegree: 0,
+                                      chartType: ChartType.ring,
+                                      ringStrokeWidth: 42,
+
+                                      centerText: index == 0 ? cont.allottedNotStartedTotal :
+                                      index == 1 ? cont.startedNotCompletedTotal :
+                                      index == 2 ? cont.completedIdPendingTotal :
+                                      index == 3 ? cont.workOnHoldTotal :
+                                      index == 4 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
+
+                                      centerTextStyle: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
+                                      legendOptions: const LegendOptions(
+                                        showLegendsInRow: false,
+                                        legendPosition: LegendPosition.bottom,
+                                        showLegends: false,
+                                        legendShape: BoxShape.circle,
+                                        legendTextStyle: TextStyle(fontWeight: FontWeight.bold,height: 2.0),
+                                      ),
+                                      chartValuesOptions: const ChartValuesOptions(
+                                        showChartValueBackground: true,
+                                        showChartValues: false,
+                                        showChartValuesInPercentage: false,
+                                        showChartValuesOutside: true,
+                                        decimalPlaces: 1,
+                                      ),
+                                    ),
+
+                                    const Spacer(),
+                                    GestureDetector(
+                                      onTap: (){cont.goToNextSlider();},
+                                      child: const Icon(Icons.arrow_forward_ios,color: primaryColor,),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20.0,),
+                              buildTextBoldWidget(index == 0 ? "Allotted but not started"  :
+                              index == 1 ? "Started but not completed" :
+                              index == 2 ? "Completed but UDIN pending" :
+                              index == 3 ? "Work On Hold":
+                              index == 4 ? "Submitted for checking" : "All tasks completed",
+                                  primaryColor, context, 18.0,align: TextAlign.center),
+
+                              ///table
+                            Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child:Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ///chart table values
+                                      Flexible(child:
+                                      Padding(
+                                          padding: const EdgeInsets.only(top:5.0),
+                                          child:
+                                          Column(
+                                            children: [
+                                              index == 0
+                                                  ? cont.allottedNotStartedValues.isEmpty ? const Text(""):ListView.builder(
+                                                  shrinkWrap: true,
+                                                  physics: const NeverScrollableScrollPhysics(),
+                                                  itemCount: cont.allottedNotStartedValues.length,
+                                                  itemBuilder: (context,index){
+                                                    return Padding(
+                                                      padding: const EdgeInsets.all(2.0),
+                                                      child:Card(
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(5.0),
+                                                            child: Column(
+                                                              children: [
+                                                                buildTextBoldWidget(cont.allottedNotStartedDetails[index], cont.allottedNotStartedColors[index], context, 16.0),
+                                                                const SizedBox(height: 5.0,),
+                                                                IntrinsicHeight(
+                                                                  child: Row(
+                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                    children: [
+                                                                      RichText(
+                                                                        text: TextSpan(
+                                                                            text: 'Own - ',
+                                                                            style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 16.0),
+                                                                            children: <TextSpan>[
+                                                                              TextSpan(
+                                                                                  text: cont.ownAllottedNotStarted.isEmpty ? "" :cont.ownAllottedNotStarted[index].toString(),
+                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                            ],
+                                                                            recognizer: TapGestureRecognizer()..onTap= () {
+                                                                              cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Own",
+                                                                                cont.ownAllottedNotStarted[index].toString(),
+                                                                              );
+                                                                            }
+                                                                        ),
+                                                                      ),
+                                                                      const VerticalDivider(
+                                                                        color: grey,
+                                                                        thickness: 2,
+                                                                      ),
+                                                                      RichText(
+                                                                        text: TextSpan(
+                                                                            text: 'Team - ',
+                                                                            style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 16.0),
+                                                                            children: <TextSpan>[
+                                                                              TextSpan(
+                                                                                  text: cont.teamAllottedNotStarted.isEmpty ? "" :cont.teamAllottedNotStarted[index].toString(),
+                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                            ],
+                                                                            recognizer: TapGestureRecognizer()..onTap= () {
+                                                                              cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Team",cont.teamAllottedNotStarted[index].toString());
+                                                                            }
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                      ),
+                                                    );
+                                                  }) :
+                                              index == 1
+                                                  ? cont.startedNotCompletedValues.isEmpty ? const Text(""):ListView.builder(
+                                                  shrinkWrap: true,
+                                                  physics: const NeverScrollableScrollPhysics(),
+                                                  itemCount: cont.startedNotCompletedValues.length,
+                                                  itemBuilder: (context,index){
+                                                    return Padding(
+                                                        padding: const EdgeInsets.all(2.0),
+                                                        child:Card(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(5.0),
+                                                              child: Column(
+                                                                children: [
+                                                                  buildTextBoldWidget(cont.startedNotCompletedDetails[index], cont.startedNotCompletedColors[index], context, 16.0),
+                                                                  const SizedBox(height: 5.0,),
+                                                                  IntrinsicHeight(
+                                                                    child: Row(
+                                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                                      children: [
+                                                                        cont.ownStartedNotCompleted.isEmpty ? const Opacity(opacity:0.0):
+                                                                        RichText(
+                                                                          text: TextSpan(
+                                                                              text: 'Own - ',
+                                                                              style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 16.0),
+                                                                              children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                    text: cont.ownStartedNotCompleted[index].toString(),
+                                                                                    style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                              ],
+                                                                              recognizer: TapGestureRecognizer()..onTap= () {
+                                                                                cont.callDueDataForStartedNotCompletedApi(cont.startedNotCompletedDetails[index],"Own",cont.ownStartedNotCompleted[index].toString());
+                                                                              }
+                                                                          ),
+                                                                        ),
+                                                                        const VerticalDivider(
+                                                                          color: grey,
+                                                                          thickness: 2,
+                                                                        ),
+                                                                        cont.teamStartedNotCompleted.isEmpty ? const Opacity(opacity:0.0):
+                                                                        RichText(
+                                                                          text: TextSpan(
+                                                                              text: 'Team - ',
+                                                                              style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 16.0),
+                                                                              children: <TextSpan>[
+                                                                                TextSpan(
+                                                                                    text: cont.teamStartedNotCompleted[index].toString(),
+                                                                                    style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                              ],
+                                                                              recognizer: TapGestureRecognizer()..onTap= () {
+                                                                                cont.callDueDataForStartedNotCompletedApi(cont.startedNotCompletedDetails[index],"Team",cont.teamStartedNotCompleted[index].toString());
+                                                                              }
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  }) :
+                                              index == 2
+                                                  ? cont.completedIdPendingValues.isEmpty ? const Text(""):ListView.builder(
+                                                  shrinkWrap: true,
+                                                  physics: const NeverScrollableScrollPhysics(),
+                                                  itemCount: cont.completedIdPendingValues.length,
+                                                  itemBuilder: (context,index){
+                                                    return Padding(
+                                                        padding: const EdgeInsets.all(2.0),
+                                                        child:Card(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(5.0),
+                                                              // child: Column(
+                                                              //   children: [
+                                                              //     buildTextBoldWidget(cont.chartDetails[index], cont.chartColors[index], context, 14.0),
+                                                              //     const SizedBox(height: 5.0,),
+                                                              //     IntrinsicHeight(
+                                                              //       child: Row(
+                                                              //         crossAxisAlignment: CrossAxisAlignment.center,
+                                                              //         mainAxisAlignment: MainAxisAlignment.center,
+                                                              //         children: [
+                                                              //           RichText(
+                                                              //             text: TextSpan(
+                                                              //               text: 'Own - ',
+                                                              //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
+                                                              //               children: <TextSpan>[
+                                                              //                 TextSpan(
+                                                              //                     text: cont.ownCompletedUdinPending[index].toString(),
+                                                              //                     style: const TextStyle(fontWeight: FontWeight.bold)),
+                                                              //               ],
+                                                              //             ),
+                                                              //           ),
+                                                              //           const VerticalDivider(
+                                                              //             color: grey,
+                                                              //             thickness: 2,
+                                                              //           ),
+                                                              //            RichText(
+                                                              //             text: TextSpan(
+                                                              //               text: 'Team - ',
+                                                              //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
+                                                              //               children: <TextSpan>[
+                                                              //                 TextSpan(
+                                                              //                     text: cont.teamCompletedUdinPending[index].toString(),
+                                                              //                     style: const TextStyle(fontWeight: FontWeight.bold)),
+                                                              //               ],
+                                                              //             ),
+                                                              //           ),
+                                                              //         ],
+                                                              //       ),
+                                                              //     ),
+                                                              //   ],
+                                                              // ),
+                                                              child: IntrinsicHeight(
+                                                                child: Row(
+                                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                  children: [
+                                                                    GestureDetector(
+                                                                        onTap: (){
+                                                                          cont.callDueDataForCompletedUdinPendingApi("Completed but Udin pending","Own",cont.ownCompletedUdinPending[0].toString());
+                                                                        },
+                                                                        child:Column(
+                                                                          children: [
+                                                                            buildTextRegularWidget("Own", blackColor, context, 16.0),
+                                                                            buildTextBoldWidget(cont.ownCompletedUdinPending[0].toString(), blackColor, context, 16.0),
+                                                                          ],
+                                                                        )
+                                                                    ),
+                                                                    const VerticalDivider(
+                                                                      color: grey,
+                                                                      thickness: 2,
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap: (){
+                                                                        cont.callDueDataForCompletedUdinPendingApi("Completed but Udin pending","Team",cont.teamCompletedUdinPending[0].toString());
+                                                                      },
+                                                                      child: Column(
+                                                                        children: [
+                                                                          buildTextRegularWidget("Team", blackColor, context, 16.0),
+                                                                          buildTextBoldWidget(cont.teamCompletedUdinPending[0].toString(), blackColor, context, 16.0),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                        )
+                                                    );
+                                                  }) :
+                                              index == 3
+                                                  ? cont.workOnHoldValues.isEmpty ? const Text(""):
+                                                  Padding(
+                                                  padding: const EdgeInsets.all(2.0),
+                                                  child:Card(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(5.0),
+                                                        child: IntrinsicHeight(
+                                                          child: Row(
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForWorkOnHold("Work On Hold","Own",cont.ownWorkOnHold[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Own", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownWorkOnHold.isEmpty?"":cont.ownWorkOnHold[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const VerticalDivider(
+                                                                color: grey,
+                                                                thickness: 2,
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForWorkOnHold("Work On Hold","Team",cont.teamWorkOnHold[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Team", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.teamWorkOnHold.isEmpty?"":cont.teamWorkOnHold[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),)
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                                  )
+                                              ) :
+                                              index == 4
+                                                  ? cont.submittedForCheckingValues.isEmpty ? const Text(""):
+                                                  Padding(
+                                                  padding: const EdgeInsets.all(2.0),
+                                                  child:Card(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(5.0),
+                                                        child: IntrinsicHeight(
+                                                          child: Row(
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForSubmittedForChecking("Submitted for checking","Own",cont.ownSubmittedForChecking[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Own", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownSubmittedForChecking.isEmpty?"":cont.ownSubmittedForChecking[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const VerticalDivider(
+                                                                color: grey,
+                                                                thickness: 2,
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForSubmittedForChecking("Submitted for checking","Team",cont.teamSubmittedForChecking[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Team", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.teamSubmittedForChecking.isEmpty?"":cont.teamSubmittedForChecking[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                                  )
+                                              ) :
+
+                                              cont.allTasksCompletedValues.isEmpty ? const Text("") :
+                                              Padding(
+                                                  padding: const EdgeInsets.all(2.0),
+                                                  child:Card(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(5.0),
+                                                        ///1
+                                                        // child: Column(
+                                                        //   children: [
+                                                        //     buildTextBoldWidget(cont.chartDetails[index], cont.chartColors[index], context, 14.0),
+                                                        //     const SizedBox(height: 5.0,),
+                                                        //     IntrinsicHeight(
+                                                        //       child: Row(
+                                                        //         crossAxisAlignment: CrossAxisAlignment.center,
+                                                        //         mainAxisAlignment: MainAxisAlignment.center,
+                                                        //         children: [
+                                                        //           RichText(
+                                                        //             text: TextSpan(
+                                                        //               text: 'Own - ',
+                                                        //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
+                                                        //               children: <TextSpan>[
+                                                        //                 TextSpan(
+                                                        //                     text: cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[index].toString(),
+                                                        //                     style: const TextStyle(fontWeight: FontWeight.bold)),
+                                                        //               ],
+                                                        //             ),
+                                                        //           ),
+                                                        //           //buildTextRegularWidget("Own - ${cont.ownAllottedNotStarted[index].toString()}", blackColor, context, 14.0),
+                                                        //           const VerticalDivider(
+                                                        //             color: grey,
+                                                        //             thickness: 2,
+                                                        //           ),
+                                                        //           //buildTextRegularWidget("Team - ${cont.teamAllottedNotStarted[index].toString()}", blackColor, context, 14.0),
+                                                        //           RichText(
+                                                        //             text: TextSpan(
+                                                        //               text: 'Team - ',
+                                                        //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
+                                                        //               children: <TextSpan>[
+                                                        //                 TextSpan(
+                                                        //                     text: cont.teamAllTaskCompleted.isEmpty?"":cont.teamAllTaskCompleted[index].toString(),
+                                                        //                     style: const TextStyle(fontWeight: FontWeight.bold)),
+                                                        //               ],
+                                                        //             ),
+                                                        //           ),
+                                                        //         ],
+                                                        //       ),
+                                                        //     ),
+                                                        //   ],
+                                                        // ),
+                                                        ///2
+                                                        // child: IntrinsicHeight(
+                                                        //   child: Row(
+                                                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                                                        //     mainAxisAlignment: MainAxisAlignment.center,
+                                                        //     children: [
+                                                        //       Column(
+                                                        //         children: [
+                                                        //           buildTextBoldWidget("Own", blackColor, context, 16.0),
+                                                        //           buildTextRegularWidget(cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[0].toString(), blackColor, context, 16.0),
+                                                        //         ],
+                                                        //       ),
+                                                        //       const VerticalDivider(
+                                                        //         color: grey,
+                                                        //         thickness: 2,
+                                                        //       ),
+                                                        //       Column(
+                                                        //         children: [
+                                                        //           buildTextBoldWidget("Team", blackColor, context, 16.0),
+                                                        //           buildTextRegularWidget(cont.teamAllTaskCompleted.isEmpty ? "" :cont.teamAllTaskCompleted[0].toString(), blackColor, context, 16.0),
+                                                        //         ],
+                                                        //       ),
+                                                        //     ],
+                                                        //   ),
+                                                        // ),
+                                                        ///3
+                                                        child: IntrinsicHeight(
+                                                          child: Row(
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForAllTasks("All Tasks","Own",cont.ownAllTaskCompleted[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Own", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              const VerticalDivider(
+                                                                color: grey,
+                                                                thickness: 2,
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap: (){
+                                                                  cont.callDueDataForAllTasks("All Tasks","Team",cont.teamAllTaskCompleted[0].toString());
+                                                                },
+                                                                child: Column(
+                                                                  children: [
+                                                                    buildTextRegularWidget("Team", blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.teamAllTaskCompleted.isEmpty ? "" :cont.teamAllTaskCompleted[0].toString(), blackColor, context, 16.0),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                                  )
+                                              ),
+                                            ],
+                                          )
+                                      )),
+                                    ],
+                                  )
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                  ) :
+
+                  CarouselSlider.builder(
                       itemCount: 8,
                       carouselController: cont.carouselController,
                       options: CarouselOptions(
@@ -191,7 +725,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                     ),
                                     const Spacer(),
                                     PieChart(
-                                      dataMap: index == 0 ? cont.triggerNotAllottedValues :
+                                      dataMap:
+                                      index == 0 ? cont.triggerNotAllottedValues :
                                       index == 1 ? cont.allottedNotStartedValues :
                                       index == 2 ? cont.startedNotCompletedValues :
                                       index == 3 ? cont.completedIdPendingValues :
@@ -260,7 +795,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
 
                               ///table
                               index == 0 || index == 4
-                                  ? Padding(
+                                  ?
+                              Padding(
                                   padding: const EdgeInsets.only(top: 20.0),
                                   child:  Center(
                                     child: Table(
@@ -274,8 +810,9 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                   itemBuilder: (context,index){
                                                     return GestureDetector(
                                                       onTap: (){
-                                                        showInprocessDialog(context);
-                                                      },
+                                                        //showInprocessDialog(context);
+                                                        cont.navigateToTriggeredNotAllottedNext(cont.chartDetails[index],cont.triggeredNotAllotted[index].toString());
+                                                        },
                                                       child: Padding(
                                                           padding: const EdgeInsets.all(2.0),
                                                           child: Card(
@@ -317,6 +854,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                     ),
                                   )
                               )
+
                                   : Padding(
                                   padding: const EdgeInsets.only(top: 10.0),
                                   child:Row(
@@ -545,7 +1083,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                     );
                                                   }) :
                                               index == 5
-                                                  ? cont.workOnHoldValues.isEmpty ? const Text(""):
+                                                  ?
+                                              cont.workOnHoldValues.isEmpty ? const Text(""):
                                               // ListView.builder(
                                               //     shrinkWrap: true,
                                               //     physics: const NeverScrollableScrollPhysics(),

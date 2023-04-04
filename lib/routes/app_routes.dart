@@ -10,9 +10,13 @@ abstract class AppRoutes {
   static const serviceDashboard = '/serviceDashboard-page';
   static const notificationScreen = '/notification-page';
   static const serviceDashboardNext = '/serviceDashboardNext-page';
+  static const serviceDashboardNextOther = '/serviceDashboardNextOther-page';
   static const serviceDashboardNextDetails = '/serviceDashboardNextDetails-page';
   static const serviceNextViewScreen = '/serviceNextViewScreen-page';
+  static const startedNotCompletedViewScreen = '/startedNotCompletedViewScreen-page';
   static const serviceCancelAll = '/serviceCancelAll-page';
+  static const triggeredNotAllottedPieChartList = '/triggeredNotAllottedPieChartList-page';
+  static const triggeredNotAllottedLoadAll = '/triggeredNotAllottedLoadAll-page';
   static const claimList = '/claimList-page';
   static const claimDetails = '/claimDetails-page';
   static const claimForm = '/claimForm-page';

@@ -16,8 +16,13 @@ import 'package:biznew/screens/dashboard/service_dashboard_all.dart';
 import 'package:biznew/screens/dashboard/service_dashboard.dart';
 import 'package:biznew/screens/dashboard/dashboard_binding.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_next.dart';
+import 'package:biznew/screens/dashboard/service_dashboard_next_demo.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_next_details.dart';
+import 'package:biznew/screens/dashboard/service_dashboard_next_other.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_next_view.dart';
+import 'package:biznew/screens/dashboard/started_not_completed_task_view.dart';
+import 'package:biznew/screens/dashboard/triggered_not_allotted_load_all.dart';
+import 'package:biznew/screens/dashboard/triggered_not_allotted_pie_chart_list.dart';
 import 'package:biznew/screens/home/home_binding.dart';
 import 'package:biznew/screens/home/home_screen.dart';
 import 'package:biznew/screens/leave_form/leave_binding.dart';
@@ -89,6 +94,11 @@ class AppPages {
       binding: DashboardBinding(),
     ),
     GetPage(
+      name: AppRoutes.serviceDashboardNextOther,
+      page: () => const ServiceDashboardNextOther(),
+      binding: DashboardBinding(),
+    ),
+    GetPage(
       name: AppRoutes.serviceDashboardNextDetails,
       page: () => const ServiceDashboardNextDetails(),
       binding: DashboardBinding(),
@@ -99,8 +109,23 @@ class AppPages {
       binding: DashboardBinding(),
     ),
     GetPage(
+      name: AppRoutes.startedNotCompletedViewScreen,
+      page: () => const StartedNotCompletedTaskViewScreen(),
+      binding: DashboardBinding(),
+    ),
+    GetPage(
       name: AppRoutes.serviceCancelAll,
       page: () => const ServiceCancelAll(),
+      binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.triggeredNotAllottedPieChartList,
+      page: () => const TriggeredNotAllottedPieChartList(),
+      binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.triggeredNotAllottedLoadAll,
+      page: () => const TriggeredNotAllottedLoadAll(),
       binding: DashboardBinding(),
     ),
     GetPage(

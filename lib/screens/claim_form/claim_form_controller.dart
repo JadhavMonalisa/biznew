@@ -357,25 +357,41 @@ class ClaimFormController extends GetxController {
     }
   }
 
-  // openGallery(BuildContext buildContext) async {
-  //   updateLoader(true);
-  //   selectedClaimImage = (await imagePicker.pickImage(source: ImageSource.gallery))!;
-  //   claimFileName = selectedClaimImage.path.split('/').last;updateLoader(false);validateClaimImage=false; update();
-  // }
-
-  FilePickerResult? result;
-  File? selectedClaimFile;
-
   openGallery(BuildContext buildContext) async {
-     result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'pdf', 'doc'],
-    );
-    selectedClaimFile = File(result!.files.single.path!);
-    claimFileName = selectedClaimFile!.path.split("/").last;
+    updateLoader(true);
+    selectedClaimImage = (await imagePicker.pickImage(source: ImageSource.gallery))!;
+    //selectedClaimFile = File(result!.files.single.path!);
+    //claimFileName = selectedClaimFile!.path.split("/").last;
+    claimFileName = selectedClaimImage.path.split('/').last;
 
-    validateClaimImage=false; updateLoader(false); update();
+    print("selected");
+    print(selectedClaimImage.path);
+    print(claimFileName);
+
+    validateClaimImage=false;
+    updateLoader(false);
+    update();
   }
+
+  // FilePickerResult? result;
+  // File? selectedClaimFile;
+
+  // openGallery(BuildContext buildContext) async {
+  //    result = await FilePicker.platform.pickFiles(
+  //     type: FileType.custom,
+  //     allowedExtensions: ['jpg', 'pdf', 'doc'],
+  //   );
+  //   selectedClaimFile = File(result!.files.single.path!);
+  //   claimFileName = selectedClaimFile!.path.split("/").last;
+  //
+  //   print("selected");
+  //   print(selectedClaimFile);
+  //   print(claimFileName);
+  //selected
+  // File: '/data/user/0/com.biz.biznew/cache/file_picker/IMG-20230328-WA0000.jpeg'
+  // IMG-20230328-WA0000.jpeg
+  //   validateClaimImage=false; updateLoader(false); update();
+  // }
 
   /// nature of claim list
   void callNatureOfClaimList() async {
@@ -554,7 +570,7 @@ class ClaimFormController extends GetxController {
           date:  selectedClaimDateToSend==""? todayDateToShowToSend : selectedClaimDateToSend,
           amount: claimAmount.text??"",
           claimSubmittedBy: claimSubmittedById??"",
-          claimImage: selectedClaimFile!.path==""?"": selectedClaimFile!.path,
+          claimImage: selectedClaimImage.path==""?"": selectedClaimImage.path,
           billable: selectedBillable==0?"Yes":"No",
           travelFrom: claimTravelFrom.text??"",
           travelTo: claimTravelTo.text??"",
@@ -613,6 +629,7 @@ class ClaimFormController extends GetxController {
   List<String> claimStatusList = ["All","Pending","Approved","Rejected","Added to Bill"];
   String selectedEmployee = "";
   String selectedClaimStatus = "Pending";
+  String selectedEmpId = "";
   List<ClaimDetails> claimEditList =[];
   String statusAction = "";
   String idForStatusUpdate = "";
@@ -624,6 +641,13 @@ class ClaimFormController extends GetxController {
       selectedEmployee = val; callClaimList();update();
     }
   }
+  showSelectedEmp(String id){
+    if(claimSubmittedByList.isNotEmpty){
+      selectedEmpId = id;
+      callClaimList();
+      update();
+    }
+  }
   updateSelectedClaimStatus(String val){ selectedClaimStatus = val;callClaimList(); update();}
 
   /// client list
@@ -633,7 +657,8 @@ class ClaimFormController extends GetxController {
     try {
       ClaimClientListResponse? response = (await repository.getClaimList(
         selectedFlag == 0 ? "own" : "team",
-        selectedClaimStatus == "All" ? "" : selectedClaimStatus,));
+        selectedClaimStatus == "All" ? "" : selectedClaimStatus,
+        selectedFlag == 0 ? "" : selectedEmpId==""?"":selectedEmpId,));
 
       if (response.success!) {
         if (response.claimClientListDetails!.isEmpty) {
@@ -677,7 +702,7 @@ class ClaimFormController extends GetxController {
     claimListForExport.clear();
     updateLoader(true);
     try {
-      ClaimClientListResponse? response = (await repository.getClaimList(selectedFlag == 0 ? "own" : "team" ,""));
+      ClaimClientListResponse? response = (await repository.getClaimList(selectedFlag == 0 ? "own" : "team" ,"",""));
 
       if (response.success!) {
         if (response.claimClientListDetails!.isEmpty) {
@@ -839,7 +864,7 @@ class ClaimFormController extends GetxController {
         date:  selectedBillDateToSend==""? todayDateToShowToSend : selectedBillDateToSend,
         amount: claimAmount.text.isEmpty ? "" : claimAmount.text,
         claimSubmittedBy: claimSubmittedById,
-        claimImage: selectedClaimFile==null?claimFileName:selectedClaimFile!.path,
+        claimImage: selectedClaimImage==null?claimFileName:selectedClaimImage.path,
         billable: selectedBillable==0?"Yes":"No",
         travelFrom: claimTravelFrom.text,
         travelTo: claimTravelTo.text,

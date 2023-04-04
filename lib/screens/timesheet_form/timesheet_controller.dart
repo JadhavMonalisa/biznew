@@ -271,6 +271,8 @@ class TimesheetFormController extends GetxController {
       else if(buttonName=="save&add"){
         checkValidationForStepper2(buttonName);
       }
+      print("buttonName");
+      print(buttonName);
 
       update();
     }
@@ -391,20 +393,33 @@ class TimesheetFormController extends GetxController {
     }
   }
 
+  bool validateStatusStepper2 = true;
+
   checkValidationForStepper2(String btnName){
-    if(selectedClient=="" || selectedService=="" || selectedTask==""
-    || details.text.isEmpty || stepper2TimeSpent.text.isEmpty){
+    if(selectedClient=="" || selectedService=="" || selectedTaskStatusList.isEmpty
+    || details.text.isEmpty || timeStepper3List.isEmpty || timeStepper2StatusList.isEmpty){
 
       selectedClient=="" ? validateClientName=true: validateClientName=false;
       selectedService=="" ? validateServiceName=true: validateServiceName=false;
-      selectedTask=="" ? validateTaskName=true: validateTaskName=false;
+      selectedTaskStatusList.isEmpty ? validateTaskName=true: validateTaskName=false;
       details.text.isEmpty ? validateDetailsStepper2=true: validateDetailsStepper2=false;
-      stepper2TimeSpent.text.isEmpty ? validateTimeSpentStepper2=true: validateTimeSpentStepper2=false;
+      timeStepper3List.isEmpty ? validateTimeSpentStepper2=true: validateTimeSpentStepper2=false;
+      timeStepper2StatusList.isEmpty ? validateStatusStepper2=true: validateStatusStepper2=false;
+      print("error caught");
+      print(selectedClient);
+      print(selectedService);
+      print(selectedTaskStatusList);
+      print(details.text);
+      print(timeStepper3List.toString());
+      print(timeStepper2StatusList.toString());
+
+
       update();
     }
     else{
       // currentService == "office" ? callTimesheetAddAllotted(btnName)
       //     : Utils.showSuccessSnackBar("Coming soon");
+      print("allotted api call");
       callTimesheetAddAllotted(btnName);
       update();
     }
@@ -997,6 +1012,8 @@ class TimesheetFormController extends GetxController {
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
+        print("response");
+        print(response);
         //clearStepper2();
         //if(btnName =="save&goToNonAllotted"){
         if(btnName =="next"){

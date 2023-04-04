@@ -7,6 +7,7 @@ import 'package:biznew/constant/repository/api_repository.dart';
 import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/claim_form/claim_model.dart';
 import 'package:biznew/screens/dashboard/dashboard_model.dart';
+import 'package:biznew/screens/dashboard/triggered_not_allotted_load_all.dart';
 import 'package:biznew/screens/petty_task/petty_task_model.dart';
 import 'package:biznew/theme/app_colors.dart';
 import 'package:biznew/theme/app_text_theme.dart';
@@ -30,6 +31,7 @@ class DashboardController extends GetxController {
   String userName="";
   String name="";
   String reportingHead="";
+  String userType="";
   int selectedFlag = 0;
   bool loader = false;
   int currentPos = 0;
@@ -225,6 +227,7 @@ class DashboardController extends GetxController {
 
   ///cancel leave
   int selectedCancelType = 0;
+  int initialIndex = 0;
 
   @override
   void onInit() {
@@ -234,6 +237,7 @@ class DashboardController extends GetxController {
     userName = GetStorage().read("userName")??"";
     name = GetStorage().read("name")??"";
     reportingHead = GetStorage().read("reportingHead")??"";
+    userType = GetStorage().read("userType")??"";
     repository.getData();
 
     callNotificationList();
@@ -405,6 +409,23 @@ class DashboardController extends GetxController {
         for (var element in response.allottedNotStartedData!.team!) {
           teamAllottedNotStarted.add(element);
         }
+
+        print("new selectedType");
+        print(selectedType);
+        if(selectedType == "Own"){
+          selectedPastDue = ownAllottedNotStarted[0].toString();
+          selectedProbable = ownAllottedNotStarted[1].toString();
+          selectedHigh = ownAllottedNotStarted[2].toString();
+          selectedMedium = ownAllottedNotStarted[3].toString();
+          selectedLow = ownAllottedNotStarted[4].toString();
+        }
+        else{
+          selectedPastDue = teamAllottedNotStarted[0].toString();
+          selectedProbable = teamAllottedNotStarted[1].toString();
+          selectedHigh = teamAllottedNotStarted[2].toString();
+          selectedMedium = teamAllottedNotStarted[3].toString();
+          selectedLow = teamAllottedNotStarted[4].toString();
+        }
         updateLoader(false);
         update();
       } else {
@@ -445,6 +466,23 @@ class DashboardController extends GetxController {
         for (var element in response.startedNotCompletedData!.team!) {
           teamStartedNotCompleted.add(element);
         }
+
+
+        if(selectedType == "Own"){
+          selectedPastDue = ownStartedNotCompleted[0].toString();
+          selectedProbable = ownStartedNotCompleted[1].toString();
+          selectedHigh = ownStartedNotCompleted[2].toString();
+          selectedMedium = ownStartedNotCompleted[3].toString();
+          selectedLow = ownStartedNotCompleted[4].toString();
+        }
+        else{
+          selectedPastDue = teamStartedNotCompleted[0].toString();
+          selectedProbable = teamStartedNotCompleted[1].toString();
+          selectedHigh = teamStartedNotCompleted[2].toString();
+          selectedMedium = teamStartedNotCompleted[3].toString();
+          selectedLow = teamStartedNotCompleted[4].toString();
+        }
+
         updateLoader(false);
         update();
       } else {
@@ -637,11 +675,12 @@ class DashboardController extends GetxController {
 
   ///due data api
   callDueDataApi(String title,String type, String count){
+    print("selectedMainType");
+    print(selectedMainType);
     updateLoader(true);
     selectedPieChartTitle = title;
     selectedType = type ; selectedCount = count ;
     selectedMainType = "AllottedNotStarted";
-
     if(title == "Past Due"){
       // if(selectedMainType == "AllottedNotStarted")
       //   {
@@ -710,7 +749,7 @@ class DashboardController extends GetxController {
     }
     else if(title == "High"){
       //type == "Own" ?  callStartedNotCompletedHighOwn() :  callStartedNotCompletedHighTeam();
-      onPortableOverdueSelected();
+      onHighSelected();
     }
     else if(title == "Medium"){
       //type == "Own" ?  callStartedNotCompletedMediumOwn() :  callStartedNotCompletedMediumTeam();
@@ -1250,9 +1289,35 @@ class DashboardController extends GetxController {
     update();
   }
 
+  onTabIndexSelect(int index){
+    print("index");
+    print(index);
+    if(index == 0){
+      onPasDueSelected();
+    }
+    else if(index == 1){
+      onPortableOverdueSelected();
+    }
+    else if(index == 2){
+      onHighSelected();
+    }
+    else if(index == 3){
+      onHMediumSelected();
+    }
+    else if(index == 4){
+      onLowSelected();
+    }
+    update();
+  }
+
   onPasDueSelected(){
     selectedPieChartTitle == "Past Due";
     updateLoader(true);
+    initialIndex = 0;
+    print("selectedType");
+    print(selectedType);
+    print("selectedMainType");
+    print(selectedMainType);
     if(selectedMainType == "AllottedNotStarted")
       {
         selectedType == "Own" ? callAllottedNotStartedPastDueOwn() : callAllottedNotStartedPastDueTeam();
@@ -1266,6 +1331,7 @@ class DashboardController extends GetxController {
     update();
   }
   onPortableOverdueSelected(){
+    initialIndex = 1;
     selectedPieChartTitle == "Probable Overdue";
     updateLoader(true);
     if(selectedMainType == "AllottedNotStarted")
@@ -1281,6 +1347,7 @@ class DashboardController extends GetxController {
     update();
   }
   onHighSelected(){
+    initialIndex = 2;
     selectedPieChartTitle == "High";
     updateLoader(true);
     //callAllottedNotStartedHighDueTeam();
@@ -1296,6 +1363,7 @@ class DashboardController extends GetxController {
     update();
   }
   onHMediumSelected(){
+    initialIndex = 3;
     selectedPieChartTitle == "Medium";
     updateLoader(true);
     //callAllottedNotStartedMediumDueTeam();
@@ -1311,6 +1379,7 @@ class DashboardController extends GetxController {
     update();
   }
   onLowSelected(){
+    initialIndex = 4;
     selectedPieChartTitle == "Low";
     updateLoader(true);
     //callAllottedNotStartedLowDueTeam();
@@ -1335,18 +1404,24 @@ class DashboardController extends GetxController {
     //carouselController.jumpToPage(1);
     Get.toNamed(AppRoutes.bottomNav);
 
+    reportingHead == "0"
+        ?
+    selectedMainType == "AllottedNotStarted"? currentPos = 0 :
+    selectedMainType == "StartedNotCompleted" ? currentPos = 1 :
+    selectedMainType == "CompletedUdinPending"? currentPos = 2 :
+    selectedMainType == "WorkOnHold"? currentPos = 3 : currentPos = 4
+        :
     selectedMainType == "AllottedNotStarted"? currentPos = 1 :
     selectedMainType == "StartedNotCompleted" ? currentPos = 2 :
     selectedMainType == "CompletedUdinPending"? currentPos = 3 :
     selectedMainType == "CompletedNotBilled"? currentPos = 4 :
     selectedMainType == "WorkOnHold"? currentPos = 5 :
-    selectedMainType == "SubmittedForChecking"? currentPos = 6 : currentPos = 7;
+    selectedMainType == "SubmittedForChecking"? currentPos = 6 :
+    selectedMainType == "AllTasks"? currentPos = 7 : currentPos = 0;
 
     updateSlider(currentPos);
     carouselController.jumpToPage(currentPos);
 
-    print("current pos");
-    print(currentPos);
     update();
   }
   ///allotted not started past due -> own
@@ -1388,12 +1463,6 @@ class DashboardController extends GetxController {
     selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
     selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
 
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    //onLowSelected();
-
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callAllottedNotStartedPastDueOwn() async {
@@ -1406,22 +1475,17 @@ class DashboardController extends GetxController {
         allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
         updateLoader(false);
         Utils.dismissLoadingDialog();
-        // isPastDueSelected = true;
-        //Get.toNamed(AppRoutes.serviceDashboardNext);
         update();
       } else {
-        //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
         updateLoader(false);update();
       }
       update();
     } on CustomException catch (e) {
-      //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
     } catch (error) {
-      //Utils.showErrorSnackBar(error.toString());
       Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
@@ -1433,11 +1497,9 @@ class DashboardController extends GetxController {
     selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
     selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
 
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    //onLowSelected();
+    print("selectedPastDue");
+    print(selectedPastDue);
+    update();
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
@@ -1478,12 +1540,7 @@ class DashboardController extends GetxController {
     selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
     selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
 
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    //onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callAllottedNotStartedHighOwn() async {
@@ -1523,11 +1580,7 @@ class DashboardController extends GetxController {
     selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
     selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
 
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    //onLowSelected();
+    update();
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
@@ -1567,13 +1620,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
     selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
     selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    //onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callAllottedNotStartedLowOwn() async {
@@ -1612,25 +1659,19 @@ class DashboardController extends GetxController {
     selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
     selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
     selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    //onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   ///allotted not started past due -> team
   void callAllottedNotStartedPastDueTeam() async {
     allottedNotStartedPastDueList.clear();
     try {
-      AllottedNotStartedPastDueTeam? response =
-      selectedPieChartTitle == "Past Due" ? (await repository.getAllottedNotStartedPastDueTeam()) :
-      selectedPieChartTitle == "Probable Overdue" ? (await repository.getAllottedNotStartedProbableTeam()) :
-      selectedPieChartTitle == "High" ? (await repository.getAllottedNotStartedHighTeam()) :
-      selectedPieChartTitle == "Medium" ? (await repository.getAllottedNotStartedMediumTeam()) :
-      (await repository.getAllottedNotStartedLowTeam());
+      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedPastDueTeam();
+      // selectedPieChartTitle == "Past Due" ? (await repository.getAllottedNotStartedPastDueTeam()) :
+      // selectedPieChartTitle == "Probable Overdue" ? (await repository.getAllottedNotStartedProbableTeam()) :
+      // selectedPieChartTitle == "High" ? (await repository.getAllottedNotStartedHighTeam()) :
+      // selectedPieChartTitle == "Medium" ? (await repository.getAllottedNotStartedMediumTeam()) :
+      // (await repository.getAllottedNotStartedLowTeam());
 
       if (response.success!) {
         allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
@@ -1658,13 +1699,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
     selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
     selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callAllottedNotStartedPortableDueTeam() async {
@@ -1699,13 +1734,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
     selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
     selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callAllottedNotStartedHighDueTeam() async {
@@ -1741,13 +1770,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
     selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
     selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callAllottedNotStartedMediumDueTeam() async {
@@ -1783,13 +1806,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
     selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
     selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callAllottedNotStartedLowDueTeam() async {
@@ -1825,60 +1842,11 @@ class DashboardController extends GetxController {
     selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
     selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
     selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
 
   ///started not completed team
-  // void callStartedNotCompletedTeam() async {
-  //   startedNotCompletedPastDueList.clear();
-  //   try {
-  //     StartedButCompletedPieModel? response =
-  //     selectedPieChartTitle == "Past Due" ? (await repository.getStartedNotCompletedPastDueTeam()) :
-  //     selectedPieChartTitle == "Probable Overdue" ? (await repository.getStartedNotCompletedProbableTeam()) :
-  //     selectedPieChartTitle == "High" ? (await repository.getStartedNotCompletedHighTeam()) :
-  //     selectedPieChartTitle == "Medium" ? (await repository.getStartedNotCompletedMediumTeam()) :
-  //     (await repository.getStartedNotCompletedLowTeam());
-  //
-  //     if (response.success!) {
-  //       startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-  //       updateLoader(false);
-  //       update();
-  //     } else {
-  //       //Utils.showErrorSnackBar(response.message);
-  //       updateLoader(false);update();
-  //     }
-  //     update();
-  //   } on CustomException catch (e) {
-  //     //Utils.showErrorSnackBar(e.getMsg());
-  //     updateLoader(false);
-  //     update();
-  //   } catch (error) {
-  //     //Utils.showErrorSnackBar(error.toString());
-  //     updateLoader(false);
-  //     update();
-  //   }
-  //
-  //   selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
-  //   selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
-  //   selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
-  //   selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
-  //   selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
-  //
-  //   selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-  //   selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-  //   selectedPieChartTitle == "High" ? onHighSelected() :
-  //   selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-  //   onLowSelected();
-  //
-  //   Get.toNamed(AppRoutes.serviceDashboardNext);
-  // }
   void callStartedNotCompletedPastTeam() async {
     startedNotCompletedPastDueList.clear();
     try {
@@ -1911,13 +1879,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
     selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
     selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callStartedNotCompletedProbableTeam() async {
@@ -1952,13 +1914,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
     selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
     selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callStartedNotCompletedHighTeam() async {
@@ -1993,13 +1949,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
     selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
     selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callStartedNotCompletedMediumTeam() async {
@@ -2034,13 +1984,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
     selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
     selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callStartedNotCompletedLowTeam() async {
@@ -2075,59 +2019,10 @@ class DashboardController extends GetxController {
     selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
     selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
     selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   ///started not completed own
-  // void callStartedNotCompletedOwn() async {
-  //   startedNotCompletedPastDueList.clear();
-  //   try {
-  //     StartedButCompletedPieModel? response =
-  //     selectedPieChartTitle == "Past Due" ? (await repository.getStartedNotCompletedPastDueOwn()) :
-  //     selectedPieChartTitle == "Probable Overdue" ? (await repository.getStartedNotCompletedProbableOwn()) :
-  //     selectedPieChartTitle == "High" ? (await repository.getStartedNotCompletedHighOwn()) :
-  //     selectedPieChartTitle == "Medium" ? (await repository.getStartedNotCompletedMediumOwn()) :
-  //     (await repository.getStartedNotCompletedLowOwn());
-  //
-  //     if (response.success!) {
-  //       startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-  //       updateLoader(false);
-  //       update();
-  //     } else {
-  //       //Utils.showErrorSnackBar(response.message);
-  //       updateLoader(false);update();
-  //     }
-  //     update();
-  //   } on CustomException catch (e) {
-  //     //Utils.showErrorSnackBar(e.getMsg());
-  //     updateLoader(false);
-  //     update();
-  //   } catch (error) {
-  //     //Utils.showErrorSnackBar(error.toString());
-  //     updateLoader(false);
-  //     update();
-  //   }
-  //
-  //   selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
-  //   selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
-  //   selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
-  //   selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
-  //   selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
-  //
-  //   selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-  //   selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-  //   selectedPieChartTitle == "High" ? onHighSelected() :
-  //   selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-  //   onLowSelected();
-  //
-  //   Get.toNamed(AppRoutes.serviceDashboardNext);
-  // }
   void callStartedNotCompletedPastOwn() async {
     startedNotCompletedPastDueList.clear();
     try {
@@ -2160,13 +2055,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
     selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
     selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callStartedNotCompletedProbableOwn() async {
@@ -2201,13 +2090,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
     selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
     selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callStartedNotCompletedHighOwn() async {
@@ -2242,13 +2125,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
     selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
     selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callStartedNotCompletedMediumOwn() async {
@@ -2283,13 +2160,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
     selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
     selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
   void callStartedNotCompletedLowOwn() async {
@@ -2324,13 +2195,7 @@ class DashboardController extends GetxController {
     selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
     selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
     selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
-
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
 
@@ -2357,20 +2222,8 @@ class DashboardController extends GetxController {
       updateLoader(false);
       update();
     }
-
-    // selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
-    // selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
-    // selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
-    // selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
-    // selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
-    //
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
-    Get.toNamed(AppRoutes.serviceDashboardNext);
+    update();
+    Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
   /// completed udin pending own
   void callCompletedUdinPendingOwn() async {
@@ -2397,19 +2250,7 @@ class DashboardController extends GetxController {
       update();
     }
 
-    // selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
-    // selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
-    // selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
-    // selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
-    // selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
-    //
-    // selectedPieChartTitle == "Past Due" ? onPasDueSelected() :
-    // selectedPieChartTitle == "Probable Overdue" ? onPortableOverdueSelected() :
-    // selectedPieChartTitle == "High" ? onHighSelected() :
-    // selectedPieChartTitle == "Medium" ? onHMediumSelected() :
-    // onLowSelected();
-
-    Get.toNamed(AppRoutes.serviceDashboardNext);
+    Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
 
   ///completed not billed
@@ -2437,7 +2278,7 @@ class DashboardController extends GetxController {
       update();
     }
 
-    Get.toNamed(AppRoutes.serviceDashboardNext);
+    Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
 
   List<SubmittedForCheckingPieList> submittedForCheckingPieDataList = [];
@@ -2466,7 +2307,7 @@ class DashboardController extends GetxController {
       update();
     }
 
-    Get.toNamed(AppRoutes.serviceDashboardNext);
+    Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
   ///submitted for checking own
   void callSubmittedForCheckingOwnData() async {
@@ -2493,7 +2334,7 @@ class DashboardController extends GetxController {
       update();
     }
 
-    Get.toNamed(AppRoutes.serviceDashboardNext);
+    Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
 
   List<WorkOnHoldPieList> workOnHoldPieDataList = [];
@@ -2522,7 +2363,7 @@ class DashboardController extends GetxController {
       update();
     }
 
-    Get.toNamed(AppRoutes.serviceDashboardNext);
+    Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
   ///work on hold own
   void callWorkOnHoldOwnData() async {
@@ -2549,7 +2390,7 @@ class DashboardController extends GetxController {
       update();
     }
 
-    Get.toNamed(AppRoutes.serviceDashboardNext);
+    Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
 
   List<AllTasksPieList> allTasksDataList = [];
@@ -2578,7 +2419,7 @@ class DashboardController extends GetxController {
       update();
     }
 
-    Get.toNamed(AppRoutes.serviceDashboardNext);
+    Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
   ///all tasks own
   void callAllTasksOwnData() async {
@@ -2605,7 +2446,276 @@ class DashboardController extends GetxController {
       update();
     }
 
-    Get.toNamed(AppRoutes.serviceDashboardNext);
+    Get.toNamed(AppRoutes.serviceDashboardNextOther);
+  }
+
+  navigateToTriggeredNotAllottedNext(String type,String count){
+    updateLoader(true);
+    selectedType = type;
+    selectedCount = count;
+    update();
+    if(selectedType == "Triggered In Last 7 Days"){
+      callTriggeredNotAllottedLast7Days();
+    }
+    else if(selectedType == "More Than 7 Days"){
+      callTriggeredNotAllottedMoreThan7Days();
+    }
+    else{
+      callTriggeredNotAllottedPastDue();
+    }
+    update();
+  }
+
+  List<TriggeredNotAllottedPieChartList> triggeredNotAllottedPieChartDetails = [];
+
+  ///services triggered not allotted past due
+  void callTriggeredNotAllottedPastDue() async {
+    triggeredNotAllottedPieChartDetails.clear();
+    try {
+      TriggeredNotAllottedModel? response = await repository.getTriggeredNotAllottedPastDue();
+
+      if (response.success!) {
+        triggeredNotAllottedPieChartDetails.addAll(response.triggeredNotAllottedPieChartList!);
+        updateLoader(false);
+        update();
+      } else {
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      updateLoader(false);
+      update();
+    } catch (error) {
+      updateLoader(false);
+      update();
+    }
+
+    Get.toNamed(AppRoutes.triggeredNotAllottedPieChartList);
+  }
+  ///services triggered not allotted more than 7 days
+  void callTriggeredNotAllottedMoreThan7Days() async {
+    triggeredNotAllottedPieChartDetails.clear();
+    try {
+      TriggeredNotAllottedModel? response = await repository.getTriggeredNotAllottedMore7Days();
+
+      if (response.success!) {
+        triggeredNotAllottedPieChartDetails.addAll(response.triggeredNotAllottedPieChartList!);
+        updateLoader(false);
+        update();
+      } else {
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      updateLoader(false);
+      update();
+    } catch (error) {
+      updateLoader(false);
+      update();
+    }
+
+    Get.toNamed(AppRoutes.triggeredNotAllottedPieChartList);
+  }
+  ///services triggered not allotted last 7 days
+  void callTriggeredNotAllottedLast7Days() async {
+    triggeredNotAllottedPieChartDetails.clear();
+    try {
+      TriggeredNotAllottedModel? response = await repository.getTriggeredNotAllottedLast7Days();
+
+      if (response.success!) {
+        triggeredNotAllottedPieChartDetails.addAll(response.triggeredNotAllottedPieChartList!);
+        updateLoader(false);
+        update();
+      } else {
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      updateLoader(false);
+      update();
+    } catch (error) {
+      updateLoader(false);
+      update();
+    }
+
+    Get.toNamed(AppRoutes.triggeredNotAllottedPieChartList);
+  }
+  ///services triggered not allotted load all
+  List<TriggeredNotAllottedLoadAllList> triggeredNotAllottedLoadAll= [];
+  void callTriggeredNotAllottedLoadAll(String cliId,String clientName,String serviceName) async {
+    updateLoader(true);
+    selectedCliId = cliId;
+    selectedClientName = clientName; selectedServiceName = serviceName;
+
+    triggeredNotAllottedLoadAll.clear();
+    try {
+      TriggeredNotAllottedLoadAllModel? response = await repository.getTriggeredNotAllottedLoadAll(cliId);
+
+      if (response.success!) {
+        triggeredNotAllottedLoadAll.addAll(response.triggeredNotAllottedLoadAllList!);
+
+        for (var element in triggeredNotAllottedLoadAll) {
+          taskNameList.add(TextEditingController(text: element.taskName));
+          completionList.add(TextEditingController(text: element.completion));
+          daysList.add(TextEditingController(text: element.days));
+          hoursList.add(TextEditingController(text: element.hours));
+          minuteList.add(TextEditingController(text: element.minutes));
+          taskEmp.add(element.mastId!);
+          taskId.add(element.taskId!);
+          srNo.add(element.sortno!);
+          triggerSelectedEmpList.add("");
+
+          totalCompletion = totalCompletion + int.parse(element.completion!);
+          totalDays = totalDays + int.parse(element.days!);
+          totalHours = totalHours + int.parse(element.hours!);
+          totalMins = totalMins + int.parse(element.minutes!);
+
+          forTaskNames.add(element.taskName!);
+          forCompletionCalculation.add(int.parse(element.completion!));
+          forDaysCalculation.add(int.parse(element.days!));
+          forHrCalculation.add(int.parse(element.hours!));
+          forMinCalculation.add(int.parse(element.minutes!));
+          update();
+        }
+        updateLoader(false);
+        update();
+      } else {
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      updateLoader(false);
+      update();
+    } catch (error) {
+      updateLoader(false);
+      update();
+    }
+    Get.toNamed(AppRoutes.triggeredNotAllottedLoadAll);
+  }
+
+  int selectedPeriod = 0;
+  updateSelectedPeriod(int val,BuildContext context){ selectedPeriod = val; update();}
+
+  saveTriggeredNotAllottedLoadAll(){
+    if(selectedEmployee == ""){
+      Utils.showErrorSnackBar("Please select employee");update();
+    }
+    else if(selectedCurrentPriority==""){
+      Utils.showErrorSnackBar("Please select priority");update();
+    }
+    else{
+    for(var element in forTaskNames){
+      taskNameListToSendApi.add(element.toString());
+    }
+    for(var element in forCompletionCalculation){
+      completionListToSendApi.add(element.toString());
+    }
+    for(var element in forDaysCalculation){
+      daysListToSendApi.add(element.toString());
+    }
+    for(var element in forHrCalculation){
+      hoursListToSendApi.add(element.toString());
+    }
+    for(var element in forMinCalculation){
+      minuteListToSendApi.add(element.toString());
+    }
+
+    taskNameFirstBracketRemove =  taskNameListToSendApi.toString().replaceAll("[", "");
+    taskNameSecondBracketRemove = taskNameFirstBracketRemove.toString().replaceAll("]", "");
+    print("task names : $taskNameSecondBracketRemove");
+
+    completionFirstBracketRemove =  completionListToSendApi.toString().replaceAll("[", "");
+    completionSecondBracketRemove = completionFirstBracketRemove.toString().replaceAll("]", "");
+    print("completions : $completionSecondBracketRemove");
+
+    daysFirstBracketRemove =  daysListToSendApi.toString().replaceAll("[", "");
+    daysSecondBracketRemove = daysFirstBracketRemove.toString().replaceAll("]", "");
+    print("days : $daysSecondBracketRemove");
+
+    hoursFirstBracketRemove =  hoursListToSendApi.toString().replaceAll("[", "");
+    hoursSecondBracketRemove = hoursFirstBracketRemove.toString().replaceAll("]", "");
+    print("hours : $hoursSecondBracketRemove");
+
+    minuteFirstBracketRemove =  minuteListToSendApi.toString().replaceAll("[", "");
+    minuteSecondBracketRemove = minuteFirstBracketRemove.toString().replaceAll("]", "");
+    print("minutes : $minuteSecondBracketRemove");
+
+    taskEmpFirstBracketRemove =  taskEmp.toString().replaceAll("[", "");
+    taskEmpSecondBracketRemove = taskEmpFirstBracketRemove.toString().replaceAll("]", "");
+    print("task emp : $taskEmpSecondBracketRemove");
+
+    taskIdFirstBracketRemove =  triggerSelectedEmpIdList.toString().replaceAll("[", "");
+    taskIdSecondBracketRemove = taskIdFirstBracketRemove.toString().replaceAll("]", "");
+    print("task emp id : $taskIdSecondBracketRemove");
+
+    srNoFirstBracketRemove =  srNo.toString().replaceAll("[", "");
+    srNoSecondBracketRemove = srNoFirstBracketRemove.toString().replaceAll("]", "");
+    print("srno : $srNoSecondBracketRemove");
+    callReassignTriggeredNotAllotted();
+    }
+  }
+
+  removeFromSelectedTriggered(int index){
+    totalCompletion = totalCompletion - int.parse(completionList[index].text);
+    totalDays = totalDays - int.parse(daysList[index].text);
+    totalHours = totalHours - int.parse(hoursList[index].text);
+    totalMins = totalMins - int.parse(minuteList[index].text);
+
+    triggeredNotAllottedLoadAll.removeAt(index);
+    taskNameList.removeAt(index);
+    completionList.removeAt(index);
+    daysList.removeAt(index);
+    hoursList.removeAt(index);
+    minuteList.removeAt(index);
+    //addedAssignedTo.removeAt(index);
+    //assignedToFromApi.removeAt(index);
+
+    taskNameListToSendApi.clear();
+    completionListToSendApi.clear();
+    hoursListToSendApi.clear();
+    minuteListToSendApi.clear();
+    daysListToSendApi.clear();
+
+    forTaskNames.removeAt(index);
+    forCompletionCalculation.removeAt(index);
+    forDaysCalculation.removeAt(index);
+    forHrCalculation.removeAt(index);
+    forMinCalculation.removeAt(index);
+    taskEmp.removeAt(index);
+    taskId.removeAt(index);
+    srNo.removeAt(index);
+    update();
+  }
+  removeFromSelectedAllotted(int index){
+    allottedTotalCompletion = allottedTotalCompletion - int.parse(allottedCompletionList[index].text);
+    allottedTotalDays = allottedTotalDays - int.parse(allottedDaysList[index].text);
+    allottedTotalHours = allottedTotalHours - int.parse(allottedHoursList[index].text);
+    allottedTotalMins = allottedTotalMins - int.parse(allottedMinuteList[index].text);
+
+    loadAllTaskList.removeAt(index);
+    allottedTaskNameList.removeAt(index);
+    allottedCompletionList.removeAt(index);
+    allottedDaysList.removeAt(index);
+    allottedHoursList.removeAt(index);
+    allottedMinuteList.removeAt(index);
+    //addedAssignedTo.removeAt(index);
+    //assignedToFromApi.removeAt(index);
+
+    allottedTaskNameListToSendApi.clear();
+    allottedCompletionListToSendApi.clear();
+    allottedHoursListToSendApi.clear();
+    allottedMinuteListToSendApi.clear();
+    allottedDaysListToSendApi.clear();
+
+    forTaskNamesAllotted.removeAt(index);
+    forCompletionCalculationAllotted.removeAt(index);
+    forDaysCalculationAllotted.removeAt(index);
+    forHrCalculationAllotted.removeAt(index);
+    forMinCalculationAllotted.removeAt(index);
+    allottedTaskEmp.removeAt(index);
+    allottedTaskId.removeAt(index);
+    allottedSrNo.removeAt(index);
+    update();
   }
 
   ///update priority
@@ -2667,15 +2777,40 @@ class DashboardController extends GetxController {
     }
   }
   ///start service
-  void callStartService(String id) async {
+  void callStartService(String id,String serviceName) async {
     updateLoader(true);
     try {
       ApiResponse? response = (await repository.getStartService(id));
 
       if (response.success!) {
+
+        print("serviceName");
+        print(serviceName);
+
+        // if(selectedPieChartTitle == "Past Due"){
+        //   onPasDueSelected();
+        // }
+        // else if(selectedPieChartTitle == "Probable Overdue"){
+        //   onPortableOverdueSelected();
+        // }
+        // else if(selectedPieChartTitle == "High"){
+        //   onHighSelected();
+        // }
+        // else if(selectedPieChartTitle == "Medium"){
+        //   onHMediumSelected();
+        // }
+        // else if(selectedPieChartTitle == "Low"){
+        //   onLowSelected();
+        // }
+
+        if(serviceName == "AllottedNotStarted"){
+          callAllottedNotStarted();
+        }
+        else{
+          callStartedNotCompleted();
+        }
+
         Utils.showSuccessSnackBar(response.message);
-        callAllottedNotStartedOwn();
-        callAllottedNotStarted();
         updateLoader(false);
         update();
       } else {
@@ -2693,8 +2828,39 @@ class DashboardController extends GetxController {
       update();
     }
   }
+  List<TextEditingController> allottedTaskNameList = [];
+  List<TextEditingController> allottedCompletionList = [];
+  List<TextEditingController> allottedDaysList = [];
+  List<TextEditingController> allottedHoursList = [];
+  List<TextEditingController> allottedMinuteList = [];
+  List<String> allottedTaskEmp = [];
+  List<String> allottedTaskId = [];
+  List<String> allottedSrNo = [];
 
-  ///load all tasks
+  List<String> allottedTaskNameListToSendApi = [];
+  List<String> allottedCompletionListToSendApi = [];
+  List<String> allottedDaysListToSendApi = [];
+  List<String> allottedHoursListToSendApi = [];
+  List<String> allottedMinuteListToSendApi = [];
+
+  String allottedTaskNameFirstBracketRemove = "";
+  String allottedTaskNameSecondBracketRemove = "";
+  String allottedCompletionFirstBracketRemove = "";
+  String allottedCompletionSecondBracketRemove = "";
+  String allottedDaysFirstBracketRemove = "";
+  String allottedDaysSecondBracketRemove = "";
+  String allottedHoursFirstBracketRemove = "";
+  String allottedHoursSecondBracketRemove = "";
+  String allottedMinuteFirstBracketRemove = "";
+  String allottedMinuteSecondBracketRemove = "";
+  String allottedTaskEmpFirstBracketRemove = "";
+  String allottedTaskEmpSecondBracketRemove = "";
+  String allottedTaskIdFirstBracketRemove = "";
+  String allottedTaskIdSecondBracketRemove = "";
+  String allottedSrNoFirstBracketRemove = "";
+  String allottedSrNoSecondBracketRemove = "";
+
+  ///load all tasks for allotted
   List<TextEditingController> taskNameList = [];
   List<TextEditingController> completionList = [];
   List<TextEditingController> daysList = [];
@@ -2702,14 +2868,25 @@ class DashboardController extends GetxController {
   List<TextEditingController> minuteList = [];
   String selectedEmpFromDashboardNext = "";
   String selectedEmpIdFromDashboardNext = "";
+  String selectedEmpFromDashboardNextAllotted = "";
+  String selectedEmpIdFromDashboardNextAllotted = "";
   List<String> assignedToFromApi = [];
   List<String> addedAssignedTo = [];
+  List<String> addedAssignedToAllotted = [];
+  List<String> taskEmp = [];
+  List<String> taskId = [];
+  List<String> srNo = [];
   List<Container> buildButtonList = [];
   BuildContext? context;
   int totalCompletion = 0;
   int totalDays = 0;
   int totalHours = 0;
   int totalMins = 0;
+  int allottedTotalCompletion = 0;
+  int allottedTotalDays = 0;
+  int allottedTotalHours = 0;
+  int allottedTotalMins = 0;
+  String selectedReassignId = "";
 
   void callLoadAllTaskService(String cliId) async {
     loadAllTaskList.clear();
@@ -2720,23 +2897,31 @@ class DashboardController extends GetxController {
       if (response.success!) {
         loadAllTaskList.addAll(response.loadAllTaskData!);
 
+        selectedReassignId = cliId;
         for (var element in loadAllTaskList) {
+          allottedTaskNameList.add(TextEditingController(text: element.taskName));
+          allottedCompletionList.add(TextEditingController(text: element.completion));
+          allottedDaysList.add(TextEditingController(text: element.days));
+          allottedHoursList.add(TextEditingController(text: element.hours));
+          allottedMinuteList.add(TextEditingController(text: element.mins));
+          //triggerSelectedEmpIdList.add("");
 
-          taskNameList.add(TextEditingController(text: element.taskName));
-          completionList.add(TextEditingController(text: element.completion));
-          daysList.add(TextEditingController(text: element.days));
-          hoursList.add(TextEditingController(text: element.hours));
-          minuteList.add(TextEditingController(text: element.mins));
           assignedToFromApi.add(element.firmEmployeeName!);
-          // buildButtonList.add(buildButtonWidget(context!, "Remove",height: 40.0,
-          //     buttonColor: errorColor,buttonFontSize:14.0,width: 100.0),);
+          allottedSelectedEmpList.add("");
+          allottedSelectedEmpIdList.add(element.taskId!);
+          allottedSrNo.add(element.srno!);
 
-          totalCompletion = totalDays + int.parse(element.completion!);
-          totalDays = totalDays + int.parse(element.days!);
-          totalHours = totalDays + int.parse(element.hours!);
-          totalMins = totalDays + int.parse(element.mins!);
+          forTaskNamesAllotted.add(element.taskName!);
+          forCompletionCalculationAllotted.add(int.parse(element.completion!));
+          forDaysCalculationAllotted.add(int.parse(element.days!));
+          forHrCalculationAllotted.add(int.parse(element.hours!));
+          forMinCalculationAllotted.add(int.parse(element.mins!));
+
+          allottedTotalCompletion = allottedTotalCompletion + int.parse(element.completion!);
+          allottedTotalDays = allottedTotalDays + int.parse(element.days!);
+          allottedTotalHours = allottedTotalHours + int.parse(element.hours!);
+          allottedTotalMins = allottedTotalMins + int.parse(element.mins!);
         }
-
         updateLoader(false);
         update();
       } else {
@@ -2755,44 +2940,682 @@ class DashboardController extends GetxController {
     }
   }
 
-  updateAssignedTo(String assignTo,String id){
-    selectedEmpFromDashboardNext = assignTo;
-    selectedEmpIdFromDashboardNext = id;
+  List<String> triggerSelectedEmpList = [];
+  List<String> triggerSelectedEmpIdList = [];
 
-    if(addedAssignedTo.contains(id)){
-      addedAssignedTo.remove(id);
+  updateAssignedTo(int index,String assignTo,String id,String taskId){
+    selectedEmpFromDashboardNext = assignTo;
+    selectedEmpIdFromDashboardNext = taskId;
+
+    if(addedAssignedTo.contains(taskId)){
+      addedAssignedTo.remove(taskId);
       update();
     }
     else{
-      addedAssignedTo.add(id);
+      addedAssignedTo.add(taskId);
+      update();
+    }
+
+    if(triggerSelectedEmpIdList.asMap().containsKey(index)){
+      triggerSelectedEmpIdList.removeAt(index);
+      triggerSelectedEmpList.removeAt(index);
+      triggerSelectedEmpIdList.insert(index, id);
+      triggerSelectedEmpList.insert(index, assignTo);
+      update();
+    }
+    else{
+      //triggerSelectedEmpIdList.insert(index,id);
+      triggerSelectedEmpIdList.add(id);
+      triggerSelectedEmpList.add(assignTo);
+      //triggerSelectedEmpList.insert(index,assignTo);
       update();
     }
     update();
   }
 
-  printAll(int index){
+  List<String> allottedSelectedEmpIdList = [];
+  List<String> allottedSelectedEmpList = [];
+
+  updateAssignedToAllotted(int index,String assignTo,String id,String taskId){
+    selectedEmpFromDashboardNextAllotted = assignTo;
+    selectedEmpIdFromDashboardNextAllotted = id;
+
+    // if(addedAssignedTo.contains(id)){
+    //   addedAssignedTo.remove(id);
+    //   update();
+    // }
+    // else{
+    //   addedAssignedTo.add(id);
+    //   update();
+    // }
+    //
+    // if(allottedSelectedEmpIdList.asMap().containsKey(index)){
+    //   allottedSelectedEmpIdList.removeAt(index);
+    //   allottedSelectedEmpIdList.insert(index, id);
+    //   update();
+    // }
+    // else{
+    //   allottedSelectedEmpIdList.insert(index,id);
+    //   update();
+    // }
+
+    if(addedAssignedToAllotted.contains(taskId)){
+      addedAssignedToAllotted.remove(taskId);
+      update();
+    }
+    else{
+      addedAssignedToAllotted.add(taskId);
+      update();
+    }
+
     print("index");
     print(index);
-    for(var element in taskNameList){
-      print(element.text);
+
+    if(allottedSelectedEmpIdList.asMap().containsKey(index)){
+      print("contains");
+      allottedSelectedEmpIdList.removeAt(index);
+      allottedSelectedEmpList.removeAt(index);
+      allottedSelectedEmpIdList.insert(index, id);
+      allottedSelectedEmpList.insert(index, assignTo);
+      update();
+    }
+    else{
+      print("not contains");
+      allottedSelectedEmpIdList.add(id);
+      allottedSelectedEmpList.add(assignTo);
+     // allottedSelectedEmpIdList.insert(index,id);
+      //allottedSelectedEmpList.insert(index,assignTo);
+      update();
+    }
+    update();
+  }
+
+  String taskNameFirstBracketRemove = "";
+  String taskNameSecondBracketRemove = "";
+  String completionFirstBracketRemove = "";
+  String completionSecondBracketRemove = "";
+  String daysFirstBracketRemove = "";
+  String daysSecondBracketRemove = "";
+  String hoursFirstBracketRemove = "";
+  String hoursSecondBracketRemove = "";
+  String minuteFirstBracketRemove = "";
+  String minuteSecondBracketRemove = "";
+  String taskEmpFirstBracketRemove = "";
+  String taskEmpSecondBracketRemove = "";
+  String taskIdFirstBracketRemove = "";
+  String taskIdSecondBracketRemove = "";
+  String srNoFirstBracketRemove = "";
+  String srNoSecondBracketRemove = "";
+
+  List<String> taskNameListToSendApi = [];
+  List<String> completionListToSendApi = [];
+  List<String> daysListToSendApi = [];
+  List<String> hoursListToSendApi = [];
+  List<String> minuteListToSendApi = [];
+  List<String> taskEmpListToSendApi = [];
+  List<String> taskIdListToSendApi = [];
+  List<String> srNoListToSendApi = [];
+
+  bool showLoadingText = false;
+
+  checkAll(){
+    // if(totalCompletion != 100) {
+    //   Utils.showErrorSnackBar("Not able to reassign, Task is not 100 % completed.");
+    // }
+    //else{
+      for(var element in allottedTaskNameList){
+        allottedTaskNameListToSendApi.add(element.text);
+      }
+      for(var element in allottedCompletionList){
+        allottedCompletionListToSendApi.add(element.text);
+      }
+      for(var element in allottedDaysList){
+        allottedDaysListToSendApi.add(element.text);
+      }
+      for(var element in allottedHoursList){
+        allottedHoursListToSendApi.add(element.text);
+      }
+      for(var element in allottedMinuteList){
+        allottedMinuteListToSendApi.add(element.text);
+      }
+
+      allottedTaskNameFirstBracketRemove =  allottedTaskNameListToSendApi.toString().replaceAll("[", "");
+      allottedTaskNameSecondBracketRemove = allottedTaskNameFirstBracketRemove.toString().replaceAll("]", "");
+      print("task names : $allottedTaskNameSecondBracketRemove");
+
+      allottedCompletionFirstBracketRemove =  allottedCompletionListToSendApi.toString().replaceAll("[", "");
+      allottedCompletionSecondBracketRemove = allottedCompletionFirstBracketRemove.toString().replaceAll("]", "");
+      print("completions : $allottedCompletionSecondBracketRemove");
+
+      allottedDaysFirstBracketRemove =  allottedDaysListToSendApi.toString().replaceAll("[", "");
+      allottedDaysSecondBracketRemove = allottedDaysFirstBracketRemove.toString().replaceAll("]", "");
+      print("days : $allottedDaysSecondBracketRemove");
+
+      allottedHoursFirstBracketRemove =  allottedHoursListToSendApi.toString().replaceAll("[", "");
+      allottedHoursSecondBracketRemove = allottedHoursFirstBracketRemove.toString().replaceAll("]", "");
+      print("hours : $allottedHoursSecondBracketRemove");
+
+      allottedMinuteFirstBracketRemove =  allottedMinuteListToSendApi.toString().replaceAll("[", "");
+      allottedMinuteSecondBracketRemove = allottedMinuteFirstBracketRemove.toString().replaceAll("]", "");
+      print("minutes : $minuteSecondBracketRemove");
+
+      allottedTaskEmpFirstBracketRemove =  allottedSelectedEmpList.toString().replaceAll("[", "");
+      allottedTaskEmpSecondBracketRemove = allottedTaskEmpFirstBracketRemove.toString().replaceAll("]", "");
+      print("task emp : $allottedTaskEmpSecondBracketRemove");
+
+      allottedTaskIdFirstBracketRemove =  allottedSelectedEmpIdList.toString().replaceAll("[", "");
+      allottedTaskIdSecondBracketRemove = allottedTaskIdFirstBracketRemove.toString().replaceAll("]", "");
+      print("task emp id : $allottedTaskIdSecondBracketRemove");
+
+      allottedSrNoFirstBracketRemove =  allottedSrNo.toString().replaceAll("[", "");
+      allottedSrNoSecondBracketRemove = allottedSrNoFirstBracketRemove.toString().replaceAll("]", "");
+      print("srno : $allottedSrNoSecondBracketRemove");
+
+      callReassignServices();
+    //}
+    //update();
+  }
+
+  addMoreForAllottedNotCompleted(){
+    updateLoader(true);
+    allottedTaskNameList.insert(allottedTaskNameList.length, TextEditingController(text: ""));
+    allottedCompletionList.insert(allottedCompletionList.length, TextEditingController(text: ""));
+    allottedDaysList.insert(allottedDaysList.length, TextEditingController(text: ""));
+    allottedHoursList.insert(allottedHoursList.length, TextEditingController(text: ""));
+    allottedMinuteList.insert(allottedMinuteList.length, TextEditingController(text: ""));
+    allottedTaskEmp.insert(allottedTaskEmp.length, "0");
+    allottedTaskId.insert(allottedTaskId.length, "0");
+    allottedSrNo.insert(allottedSrNo.length, "0");
+    allottedSelectedEmpIdList.insert(allottedSelectedEmpIdList.length, "0");
+
+
+    loadAllTaskList.insert(loadAllTaskList.length, LoadAllTaskData(
+      completion: "",days: "",firmEmployeeName: "",hours: "",
+      id: "",mins: "",srno: "0",start: "0",status: "0",targetDate: "0",
+      taskEmp: "0",taskId: "0",taskName: ""
+    ));
+
+    showToast("New entry added !");
+    updateLoader(false);
+    update();
+  }
+
+  addMoreForTriggeredNotAllotted(int index){
+    updateLoader(true);
+    taskNameList.insert(index, TextEditingController(text: ""));
+    completionList.insert(index, TextEditingController(text: ""));
+    daysList.insert(index, TextEditingController(text: ""));
+    hoursList.insert(index, TextEditingController(text: ""));
+    minuteList.insert(index, TextEditingController(text: ""));
+    taskEmp.insert(index, "0");
+    taskId.insert(index, "0");
+    srNo.insert(index, "0");
+    triggerSelectedEmpIdList.insert(triggerSelectedEmpIdList.length, "0");
+
+    triggeredNotAllottedLoadAll.insert(index, TriggeredNotAllottedLoadAllList(
+     taskName: "",taskId: "",hours: "",days: "",completion: "",addedBy: "",addOnDate: "",bizAdminId: "",
+      firmId: "",mastId: "",minutes: "",modifiedBy: "",modifiedOnDate: "",sortno: "",taskOndate: "",
+      taskServiceId: "",taskServiceMainCategoryId: "",
+    ));
+
+    showToast("New entry added !");
+    updateLoader(false);
+    update();
+  }
+
+  List<String> forTaskNames = [];
+  List<int> forCompletionCalculation = [];
+  List<int> forDaysCalculation = [];
+  List<int> forHrCalculation = [];
+  List<int> forMinCalculation = [];
+
+  List<String> forTaskNamesAllotted = [];
+  List<int> forCompletionCalculationAllotted = [];
+  List<int> forDaysCalculationAllotted = [];
+  List<int> forHrCalculationAllotted = [];
+  List<int> forMinCalculationAllotted = [];
+
+  checkAllAddedValues(int index){
+    if(taskNameList[index].text=="" ||
+        int.parse(completionList[index].text) == 0 ||
+        int.parse(daysList[index].text) == 0 ||
+        int.parse(hoursList[index].text) == 0 ||
+        int.parse(minuteList[index].text) == 0){
+      Utils.showAlertSnackBar("Please enter all details");
+    }
+    else{
+      saveTasks(index,taskNameList[index].text);
+      saveCompletion(index,int.parse(completionList[index].text));
+      saveDays(index,int.parse(daysList[index].text));
+      saveHours(index,int.parse(hoursList[index].text));
+      saveMinute(index,int.parse(minuteList[index].text));
+      showToast("Added !");
+    }
+    update();
+  }
+
+  checkAllAddedValuesForAllotted(int index){
+    if(allottedTaskNameList[index].text=="" ||
+        allottedCompletionList[index].text.isEmpty ||
+        allottedDaysList[index].text.isEmpty ||
+        allottedHoursList[index].text.isEmpty ||
+        allottedMinuteList[index].text.isEmpty)
+    {
+      Utils.showAlertSnackBar("Please enter all details");
+    }
+    else{
+      // allottedSaveTasks(index,allottedTaskNameList[index].text);
+      // allottedSaveCompletion(index,int.parse(allottedCompletionList[index].text));
+      // allottedSaveDays(index,int.parse(allottedDaysList[index].text));
+      // allottedSaveHours(index,int.parse(allottedHoursList[index].text));
+      // allottedSaveMinute(index,int.parse(allottedMinuteList[index].text));
+      showToast("Added !");
+    }
+    update();
+  }
+
+  saveTasks(int index,String minutes){
+    if(forTaskNames.asMap().containsKey(index)){
+      forTaskNames.removeAt(index);
+      forTaskNames.insert(index, minutes);
+      update();
+    }
+    else{
+      forTaskNames.add(minutes);
+      update();
+    }
+    update();
+  }
+  allottedSaveTasks(int index,String minutes){
+    if(forTaskNamesAllotted.asMap().containsKey(index)){
+      forTaskNamesAllotted.removeAt(index);
+      forTaskNamesAllotted.insert(index, minutes);
+      update();
+    }
+    else{
+      forTaskNamesAllotted.add(minutes);
+      update();
+    }
+    update();
+  }
+
+  saveCompletion(int index,int minutes){
+    if(forCompletionCalculation.asMap().containsKey(index)){
+      forCompletionCalculation.removeAt(index);
+      forCompletionCalculation.insert(index, minutes);
+      update();
+    }
+    else{
+      forCompletionCalculation.add(minutes);
+      update();
+    }
+    int sum = forCompletionCalculation.fold(0, (p, c) => p + c);
+    totalCompletion = sum;
+    update();
+  }
+  allottedSaveCompletion(int index,int minutes){
+    if(forCompletionCalculationAllotted.asMap().containsKey(index)){
+      forCompletionCalculationAllotted.removeAt(index);
+      forCompletionCalculationAllotted.insert(index, minutes);
+      update();
+    }
+    else{
+      forCompletionCalculationAllotted.add(minutes);
+      update();
+    }
+    int sum = forCompletionCalculationAllotted.fold(0, (p, c) => p + c);
+    allottedTotalCompletion = sum;
+    update();
+  }
+
+  saveDays(int index,int minutes){
+    if(forDaysCalculation.asMap().containsKey(index)){
+      forDaysCalculation.removeAt(index);
+      forDaysCalculation.insert(index, minutes);
+      update();
+    }
+    else{
+      forDaysCalculation.add(minutes);
+      update();
+    }
+    int sum = forDaysCalculation.fold(0, (p, c) => p + c);
+    totalDays = sum;
+    update();
+  }
+  allottedSaveDays(int index,int minutes){
+    if(forDaysCalculationAllotted.asMap().containsKey(index)){
+      forDaysCalculationAllotted.removeAt(index);
+      forDaysCalculationAllotted.insert(index, minutes);
+      update();
+    }
+    else{
+      forDaysCalculationAllotted.add(minutes);
+      update();
+    }
+    int sum = forDaysCalculationAllotted.fold(0, (p, c) => p + c);
+    allottedTotalDays = sum;
+    update();
+  }
+
+  saveHours(int index,int minutes){
+    if(forHrCalculation.asMap().containsKey(index)){
+      forHrCalculation.removeAt(index);
+      forHrCalculation.insert(index, minutes);
+      update();
+    }
+    else{
+      forHrCalculation.add(minutes);
+      update();
+    }
+    int sum = forHrCalculation.fold(0, (p, c) => p + c);
+    totalHours = sum;
+    update();
+  }
+  allottedSaveHours(int index,int minutes){
+    if(forHrCalculationAllotted.asMap().containsKey(index)){
+      forHrCalculationAllotted.removeAt(index);
+      forHrCalculationAllotted.insert(index, minutes);
+      update();
+    }
+    else{
+      forHrCalculationAllotted.add(minutes);
+      update();
+    }
+    int sum = forHrCalculationAllotted.fold(0, (p, c) => p + c);
+    allottedTotalHours = sum;
+    update();
+  }
+
+  saveMinute(int index,int minutes){
+      if(forMinCalculation.asMap().containsKey(index)){
+        forMinCalculation.removeAt(index);
+        forMinCalculation.insert(index, minutes);
+        update();
+      }
+      else{
+        forMinCalculation.add(minutes);
+        update();
+      }
+      int sum = forMinCalculation.fold(0, (p, c) => p + c);
+      totalMins = sum;
+      update();
+  }
+  allottedSaveMinute(int index,int minutes){
+      if(forMinCalculationAllotted.asMap().containsKey(index)){
+        forMinCalculationAllotted.removeAt(index);
+        forMinCalculationAllotted.insert(index, minutes);
+        update();
+      }
+      else{
+        forMinCalculationAllotted.add(minutes);
+        update();
+      }
+      int sum = forMinCalculationAllotted.fold(0, (p, c) => p + c);
+      allottedTotalMins = sum;
+      update();
+  }
+
+  // addDetailsClickForTriggeredNotAllotted(int index,String taskName, String completion,
+  //     String days, String hours,String minutes,String emp){
+  //   updateLoader(true);
+  //
+  //   //totalCompletion = totalCompletion + int.parse(completion);
+  //   totalDays = totalDays + int.parse(days);
+  //   totalHours = totalHours + int.parse(hours);
+  //   totalMins = totalMins + int.parse(minutes);
+  //
+  //   for(var element in taskNameList){
+  //     taskNameListToSendApi.add(element.text);
+  //   }
+  //   for(var element in completionList){
+  //     completionListToSendApi.add(element.text);
+  //   }
+  //   for(var element in daysList){
+  //     daysListToSendApi.add(element.text);
+  //   }
+  //   for(var element in hoursList){
+  //     hoursListToSendApi.add(element.text);
+  //   }
+  //   for(var element in minuteList){
+  //     minuteListToSendApi.add(element.text);
+  //   }
+  //
+  //   taskNameFirstBracketRemove =  taskNameListToSendApi.toString().replaceAll("[", "");
+  //   taskNameSecondBracketRemove = taskNameFirstBracketRemove.toString().replaceAll("]", "");
+  //
+  //   completionFirstBracketRemove =  completionListToSendApi.toString().replaceAll("[", "");
+  //   completionSecondBracketRemove = completionFirstBracketRemove.toString().replaceAll("]", "");
+  //
+  //   daysFirstBracketRemove =  daysListToSendApi.toString().replaceAll("[", "");
+  //   daysSecondBracketRemove = daysFirstBracketRemove.toString().replaceAll("]", "");
+  //
+  //   hoursFirstBracketRemove =  hoursListToSendApi.toString().replaceAll("[", "");
+  //   hoursSecondBracketRemove = hoursFirstBracketRemove.toString().replaceAll("]", "");
+  //
+  //   minuteFirstBracketRemove =  minuteListToSendApi.toString().replaceAll("[", "");
+  //   minuteSecondBracketRemove = minuteFirstBracketRemove.toString().replaceAll("]", "");
+  //
+  //   taskEmpFirstBracketRemove =  taskEmp.toString().replaceAll("[", "");
+  //   taskEmpSecondBracketRemove = taskEmpFirstBracketRemove.toString().replaceAll("]", "");
+  //
+  //   taskIdFirstBracketRemove =  taskId.toString().replaceAll("[", "");
+  //   taskIdSecondBracketRemove = taskIdFirstBracketRemove.toString().replaceAll("]", "");
+  //
+  //   srNoFirstBracketRemove =  srNo.toString().replaceAll("[", "");
+  //   srNoSecondBracketRemove = srNoFirstBracketRemove.toString().replaceAll("]", "");
+  //
+  //   print("taskNameSecondBracketRemove");
+  //   print(taskNameSecondBracketRemove);
+  //   print("selectedEmployeeId");
+  //   print(selectedEmployeeId);
+  //   print("completionSecondBracketRemove");
+  //   print(completionSecondBracketRemove);
+  //   print("daysSecondBracketRemove");
+  //   print(daysSecondBracketRemove);
+  //   print("hoursSecondBracketRemove");
+  //   print(hoursSecondBracketRemove);
+  //   print("minuteSecondBracketRemove");
+  //   print(minuteSecondBracketRemove);
+  //   print("taskEmpSecondBracketRemove");
+  //   print(taskEmpSecondBracketRemove);
+  //   print("taskIdSecondBracketRemove");
+  //   print(taskIdSecondBracketRemove);
+  //   print("srNoSecondBracketRemove");
+  //   print(srNoSecondBracketRemove);
+  //   print("selectedCurrentPriorityId");
+  //   print(selectedCurrentPriorityId);
+  //   print("selectedPeriod");
+  //   print(selectedPeriod==0?"1":"2");
+  //
+  //   updateLoader(false);
+  //   update();
+  // }
+
+  List<int> addedCompletion = [] ;
+  List<int> addedDays = [] ;
+  List<int> addedHours = [] ;
+  List<int> addedMinute = [] ;
+
+  int addedDaysValue = 0;
+  int addedHoursValue = 0;
+  int addedMinValue = 0;
+
+  addCompletion(int index,String value){
+    if(addedCompletion.contains(index)){
+      addedCompletion.clear();
+      addedCompletion.add(index);
+      completionList.insert(index, TextEditingController(text: value));
+      totalCompletion = totalCompletion + int.parse(value);
+    }
+    else{
+      addedCompletion.add(index);
+    }
+    update();
+  }
+
+  addDays(int index,String value){
+    addedDaysValue = int.parse(value);
+    print("addedDaysValue");
+    print(addedDaysValue);
+    totalDays = totalDays + addedDaysValue;
+    print("totalDays");
+    print(totalDays);
+    update();
+  }
+
+  minusDays(int index,String value){
+    totalDays = totalDays - addedDaysValue;
+    update();
+  }
+
+  addHours(int index,String value){
+    addedHoursValue = int.parse(value);
+    totalHours = totalHours + addedHoursValue;
+    update();
+  }
+
+  addMinutes(int index,String value){
+    addedMinValue = int.parse(value);
+    totalMins = totalMins + addedMinValue;
+    update();
+  }
+
+  clearAllFromReassign(){
+    loadAllTaskList.clear();
+    taskNameList.clear();
+    completionList.clear();
+    daysList.clear();
+    hoursList.clear();
+    minuteList.clear();
+    assignedToFromApi.clear();
+    taskEmp.clear();
+    taskId.clear();
+    srNo.clear();
+
+    addedCompletion.clear();
+    addedDays.clear();
+    addedHours.clear();
+    addedMinute.clear();
+
+    totalCompletion=0;
+    totalDays=0;
+    totalHours=0;
+    totalMins=0;
+    update();
+  }
+
+  clearAllFromTriggeredNotAllottedReassign(){
+    loadAllTaskList.clear();
+    taskNameList.clear();
+    completionList.clear();
+    daysList.clear();
+    hoursList.clear();
+    minuteList.clear();
+    assignedToFromApi.clear();
+    taskEmp.clear();
+    taskId.clear();
+    srNo.clear();
+
+    addedCompletion.clear();
+    addedDays.clear();
+    addedHours.clear();
+    addedMinute.clear();
+
+    totalCompletion=0;
+    totalDays=0;
+    totalHours=0;
+    totalMins=0;
+    selectedCurrentPriority ="";
+    selectedCliId = "";
+    update();
+  }
+
+  navigateFromReassign(){
+    clearAllFromReassign();
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+
+  navigateFromLoadAll(){
+    clearAllFromTriggeredNotAllottedReassign();
+    Get.toNamed(AppRoutes.triggeredNotAllottedPieChartList);
+  }
+
+  ///reassign services
+  void callReassignServices() async {
+    updateLoader(true);
+    try {
+      ApiResponse? response = (await repository.getReassignServices(allottedTaskNameSecondBracketRemove,selectedReassignId,
+          allottedCompletionSecondBracketRemove,allottedDaysSecondBracketRemove,allottedHoursSecondBracketRemove,
+          allottedMinuteSecondBracketRemove, allottedTaskEmpSecondBracketRemove,allottedTaskIdSecondBracketRemove,
+          allottedSrNoSecondBracketRemove));
+
+      if (response.success!) {
+        Utils.showSuccessSnackBar(response.message);
+        clearAllFromReassign();
+        updateLoader(false);
+        update();
+      } else {
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
     }
   }
 
-  addMore(){
-    taskNameList.insert(taskNameList.length, TextEditingController(text: ""));
-    completionList.insert(completionList.length, TextEditingController(text: ""));
-    daysList.insert(daysList.length, TextEditingController(text: ""));
-    hoursList.insert(hoursList.length, TextEditingController(text: ""));
-    minuteList.insert(minuteList.length, TextEditingController(text: ""));
-    loadAllTaskList.insert(loadAllTaskList.length, LoadAllTaskData(
-      completion: "",days: "",firmEmployeeName: "",hours: "",
-      id: "",mins: "",srno: "",start: "",status: "",targetDate: "",
-      taskEmp: "",taskId: "",taskName: ""
-    ));
-    // buildButtonList.insert(buildButtonList.length,buildButtonWidget(context!, "Remove",height: 40.0,
-    //     buttonColor: errorColor,buttonFontSize:14.0,width: 100.0),);
-    showToast("New entry added !");
-    update();
+  String selectedPriority = "";
+
+  ///reassign triggered not allotted services
+  void callReassignTriggeredNotAllotted() async {
+    updateLoader(true);
+    print(taskNameSecondBracketRemove);
+    print(selectedEmployeeId);
+    print(completionSecondBracketRemove);
+    print(daysSecondBracketRemove);
+    print(hoursSecondBracketRemove);
+    print(minuteSecondBracketRemove);
+    print(taskEmpSecondBracketRemove);
+    print(taskIdSecondBracketRemove);
+    print(srNoSecondBracketRemove);
+    print(selectedCurrentPriorityId);
+    print(selectedPeriod==0?"1":"2");
+
+    try {
+      ApiResponse? response = (await repository.getReassignTriggeredNotAllotted(taskNameSecondBracketRemove,
+          selectedEmployeeId, completionSecondBracketRemove,daysSecondBracketRemove,hoursSecondBracketRemove,
+          minuteSecondBracketRemove, taskEmpSecondBracketRemove,taskIdSecondBracketRemove,srNoSecondBracketRemove,
+          selectedCurrentPriorityId, selectedPeriod==0?"1":"2"));
+      print(response);
+      if (response.success!) {
+        Utils.showSuccessSnackBar(response.message);
+        clearAllFromReassign();
+        updateLoader(false);
+        update();
+      } else {
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      update();
+    } on CustomException catch (e) {
+      print("exception error");
+      print(e.getMsg());
+      Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      print("catch error");
+      print(error);
+      Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
   }
 
   navigateToDetails(String cliId,String clientName,String serviceName){
@@ -2804,9 +3627,17 @@ class DashboardController extends GetxController {
 
   navigateToServiceView(String cliId,String clientName,String serviceName){
     selectedClientName = clientName; selectedServiceName = serviceName;
+
+    print("selected");
+    print(selectedClientName);
+    print(selectedServiceName);
+    print(cliId);
     update();
     callLoadAllTaskService(cliId);
-    Get.toNamed(AppRoutes.serviceNextViewScreen);
+
+    selectedMainType == "AllottedNotStarted"
+        ? Get.toNamed(AppRoutes.serviceNextViewScreen)
+        : Get.toNamed(AppRoutes.startedNotCompletedViewScreen);
   }
 
   startSelectedTask(String cliId,String id){
@@ -2854,6 +3685,8 @@ class DashboardController extends GetxController {
         Navigator.of(context).pop();
         hideReasonContent = false;
         showCheckPasswordOrReasonDialog("Reason for cancel",context);
+        callAllottedNotStarted();
+        callStartedNotCompleted();
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
@@ -2943,9 +3776,12 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
+  bool showRemarkDialog = false;
+  bool showAllTaskCompletedDialog = false;
   ///check complete task service
   void callCheckCompletedTaskService(BuildContext context) async {
-    updateLoader(true);
+    //updateLoader(true);
     try {
       ApiResponse? response = (await repository.getCheckCompletedTaskService(selectedCurrentStatusId,
           selectedServiceStatus=="Inprocess" ? "1" : selectedServiceStatus == "Hold" ? "2" : "4"));
@@ -2955,8 +3791,267 @@ class DashboardController extends GetxController {
         // callAllottedNotStartedOwn();
         // callAllottedNotStarted();
         if(selectedServiceStatus=="Hold"){
+          showRemarkDialog = true;
+          showAllTaskCompletedDialog = false;
           showRemarkDialogForHoldStatus(selectedServiceName,context);
         }
+        update();
+      }
+      else {
+        print("in else msg");
+        print(response.message);
+        if(response.message == "All tasks are not marked as completed"){
+          //updateLoader(false);
+          showDialogToCompleteAllTask(context);
+         // update();
+          showRemarkDialog = false;
+          showAllTaskCompletedDialog = true;
+        }
+        else{
+          print("in else");
+          print(response.message);
+          Utils.showErrorSnackBar(response.message);
+          updateLoader(false);
+          update();
+        }
+      }
+     // update();
+    } on CustomException catch (e) {
+      Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+  }
+  //BuildContext? context;
+
+  showDialogToCompleteAllTask(BuildContext context){
+    showDialog(
+      barrierDismissible: false,
+      context:context,
+      builder:(context){
+        return StatefulBuilder(builder: (context,setter){
+          return Dialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Container(
+                height: 150.0,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    // buildTextRegularWidget("Confirm ?", blackColor, context, 16.0,align: TextAlign.left),
+                    // const Divider(color: Colors.grey,),
+                    const SizedBox(height: 10.0,),
+                    buildTextRegularWidget("There are pending tasks and they will be marked complete. Do you want to proceed?",
+                        blackColor, context, 16.0,align: TextAlign.left),
+                    const SizedBox(height: 20.0,),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: GestureDetector(
+                            onTap: (){
+                              setter((){
+                                callUpdateTaskServiceStatus(context);
+                              });
+                            },
+                            child: buildButtonWidget(context, "Confirm",height: 40.0,buttonColor: approveColor),
+                          ),
+                        ),const SizedBox(width: 5.0,),
+                        Flexible(
+                          child: GestureDetector(
+                            onTap: (){
+                              Navigator.pop(context);
+                              updateLoader(false);
+                            },
+                            child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+      },
+    );
+  }
+
+  ///update task service
+  void callUpdateTaskServiceStatus(BuildContext context) async {
+    updateLoader(true);
+    try {
+      ApiResponse? response = (await repository.getUpdateTaskService(selectedCurrentStatusId,
+          selectedServiceStatus=="Inprocess" ? "1" : selectedServiceStatus == "Hold" ? "2" : "4",
+          selectedServiceStatus,remarkController.text??""));
+      print("response");
+      print(response);
+      if (response.success!) {
+        Utils.showSuccessSnackBar(response.message);
+        updateLoader(false);
+        // callAllottedNotStartedOwn();
+        // callAllottedNotStarted();
+        update();
+      } else {
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);update();
+      }
+      Navigator.pop(context);
+      update();
+    } on CustomException catch (e) {
+      Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+  }
+
+  List<String> taskStatusList = ["Inporgress","Awaiting for Client Input","Submitted for complete","Put on Hold","Completed"];
+  List<String> addedTaskStatus = [];
+  String selectedTaskStatus = "";
+  String selectedTaskStatusId = "";
+
+  // checkTaskStatus(BuildContext context,String assignId,String id, String taskName){
+  //
+  // }
+
+  updateTaskStatus(String status,String id,BuildContext context,assignId,String taskName){
+    selectedTaskStatus = status;
+    selectedTaskStatusId = id;
+    if(addedTaskStatus.contains(id)){
+      addedTaskStatus.remove(id);
+      update();
+    }
+    else{
+      addedTaskStatus.add(id);
+      update();
+    }
+
+    if(selectedTaskStatus == "Inprocess" || selectedTaskStatus == "Completed"){
+    }
+    else{
+      showRemarkDialogForTaskStatus(context,assignId,id,selectedTaskStatusId,selectedTaskStatus,taskName);
+    }
+    update();
+  }
+
+  showRemarkDialogForTaskStatus(BuildContext context,String assignId,String id, String statusId, String status,
+      String taskName){
+    showDialog(
+      barrierDismissible: false,
+      context:context,
+      builder:(BuildContext context){
+        return StatefulBuilder(builder: (context,setter){
+          return Dialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Container(
+                height: 200.0,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    buildTextRegularWidget(taskName, blackColor, context, 16.0,align: TextAlign.left),
+                    const Divider(color: Colors.grey,),
+                    const SizedBox(height: 10.0,),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(4)),
+                        color: textFormBgColor,
+                        border: Border.all(color: textFormBgColor),),
+                      child: TextFormField(
+                        controller: remarkController,
+                        keyboardType: TextInputType.text,
+                        textAlign: TextAlign.left,
+                        textAlignVertical: TextAlignVertical.center,
+                        textInputAction: TextInputAction.done,
+                        onTap: () {},
+                        style:const TextStyle(fontSize: 15.0),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(10),
+                          hintText: "Enter remark",
+                          hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
+                            color: subTitleTextColor, fontSize: 15,),),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                        ),
+                        onChanged: (text) {
+                          setter((){
+                            checkRemarkValidation();
+                          });
+                        },
+                      ),
+                    ),
+                    validateRemark == true
+                        ? ErrorText(errorMessage: "Please enter valid remark",)
+                        : const Opacity(opacity: 0.0),
+
+                    const SizedBox(height: 10.0,),
+
+                    Row(
+                      children: [
+                        Flexible(
+                          child: GestureDetector(
+                            onTap: (){
+                              setter((){
+                                //callUpdateTaskStatus(context,assignId,id,taskName);
+                                selectedTaskStatus = status;
+                                Navigator.pop(context);
+                              });
+                            },
+                            child: buildButtonWidget(context, "Add",height: 40.0,buttonColor: approveColor),
+                          ),
+                        ),const SizedBox(width: 5.0,),
+                        Flexible(
+                          child: GestureDetector(
+                            onTap: (){
+                              clearRemarkDialog();
+                              Navigator.pop(context);
+                            },
+                            child: buildButtonWidget(context, "Close",height: 40.0,buttonColor: errorColor),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+      },
+    );
+  }
+
+  ///update task status
+  void callUpdateTaskStatus(BuildContext context,String assignId,String id,String taskName) async {
+    updateLoader(true);
+    try {
+      ApiResponse? response = (await repository.getUpdateTaskStatus(assignId,id,selectedTaskStatusId,selectedTaskStatus,
+          remarkController.text,taskName));
+      print("response");
+      print(response);
+      if (response.success!) {
+        clearRemarkDialog();
+        Utils.showSuccessSnackBar(response.message);
+        updateLoader(false);
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
@@ -2973,33 +4068,23 @@ class DashboardController extends GetxController {
       update();
     }
   }
-  ///update task service
-  void callUpdateTaskServiceStatus(BuildContext context) async {
-    updateLoader(true);
-    try {
-      ApiResponse? response = (await repository.getUpdateTaskService(selectedCurrentStatusId,
-          selectedServiceStatus=="Inprocess" ? "1" : selectedServiceStatus == "Hold" ? "2" : "4",
-          selectedServiceStatus,remarkController.text??""));
-      if (response.success!) {
-        Utils.showSuccessSnackBar(response.message);
-        updateLoader(false);
-        // callAllottedNotStartedOwn();
-        // callAllottedNotStarted();
-        update();
-      } else {
-        Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
-      }
-      update();
-    } on CustomException catch (e) {
-      Utils.showErrorSnackBar(e.getMsg());
-      updateLoader(false);
-      update();
-    } catch (error) {
-      Utils.showErrorSnackBar(error.toString());
-      updateLoader(false);
-      update();
-    }
+
+  /// priority change for current
+  updatePriorityForTriggeredNotAllotted(String priority){
+    selectedCurrentPriority = priority;
+    priority == "Low" ? selectedCurrentPriorityId = "3" : priority == "Medium" ? "2": "1" ;
+    update();
+  }
+
+  String selectedEmployee="";
+  String selectedEmployeeId="";
+
+  updateEmployeeFromTriggered(String priority,String id){
+    selectedEmployee = priority;
+    selectedEmployeeId = id;
+    print(selectedEmployee);
+    print(selectedEmployeeId);
+    update();
   }
 
   callLogout(){

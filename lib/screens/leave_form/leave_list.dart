@@ -8,6 +8,7 @@ import 'package:biznew/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class LeaveList extends StatefulWidget {
   const LeaveList({Key? key}) : super(key: key);
@@ -35,7 +36,6 @@ class _LeaveListState extends State<LeaveList> {
               ),
             ),
             body:
-            cont.loader == true ? Center(child: buildCircularIndicator(),) :
             SizedBox(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
@@ -71,43 +71,78 @@ class _LeaveListState extends State<LeaveList> {
                         )),
                     cont.selectedLeaveFlag == 0  ? const Opacity(opacity: 0.0) :
                     Padding(
-                      padding: const EdgeInsets.only(right: 10.0,left: 10.0,bottom: 10.0),
-                      child: Container(
-                          height: 40.0,width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(5)),
-                            border: Border.all(color: grey),),
-                          child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                child: DropdownButton(
-                                  hint: buildTextRegularWidget(cont.selectedEmployee==""?"Select employee":cont.selectedEmployee, blackColor, context, 15.0),
-                                  isExpanded: true,
-                                  underline: Container(),
-                                  items:
-                                  cont.employeeList.isEmpty
-                                      ? cont.noDataList.map((value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList()
-                                      : cont.employeeList.map((ClaimSubmittedByList value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value.firmEmployeeName,
-                                      child: Text(value.firmEmployeeName!),
-                                    );
-                                  }).toList(),
-                                  onChanged: (val) {
-                                    cont.updateSelectedEmployee(val!);
-                                  },
-                                ),
-                              )
-                          )
+                      padding: EdgeInsets.only(right: 10.0,left: 10.0,bottom: 10.0),
+                      // child: Container(
+                      //     height: 40.0,width: MediaQuery.of(context).size.width,
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      //       border: Border.all(color: grey),),
+                      //     child: Center(
+                      //         child: Padding(
+                      //           padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                      //           child: DropdownButton(
+                      //             hint: buildTextRegularWidget(cont.selectedEmployee==""?"Select employee":cont.selectedEmployee, blackColor, context, 15.0),
+                      //             isExpanded: true,
+                      //             underline: Container(),
+                      //             items:
+                      //             cont.employeeList.isEmpty
+                      //                 ? cont.noDataList.map((value) {
+                      //               return DropdownMenuItem<String>(
+                      //                 value: value,
+                      //                 child: Text(value),
+                      //               );
+                      //             }).toList()
+                      //                 : cont.employeeList.map((ClaimSubmittedByList value) {
+                      //               return DropdownMenuItem<String>(
+                      //                 value: value.firmEmployeeName,
+                      //                 child: Text(value.firmEmployeeName!),
+                      //               );
+                      //             }).toList(),
+                      //             onChanged: (val) {
+                      //               cont.updateSelectedEmployee(val!);
+                      //             },
+                      //           ),
+                      //         )
+                      //     )
+                      // ),
+                      ///2
+                      child: MultiSelectDialogField<ClaimSubmittedByList>(
+                        items: cont.items,
+                        title: const Text("Employee"),
+                        selectedColor: primaryColor,
+                        decoration: BoxDecoration(
+                          color: whiteColor,
+                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                          border: Border.all(color: grey,),
+                        ),
+                        buttonIcon: const Icon(
+                          Icons.person,
+                          color: blackColor,size: 20.0,
+                        ),
+                        buttonText: buildTextRegularWidget("Select employee", blackColor, context, 15.0),
+                        onConfirm: (results) {
+                          cont.onSelectionForMultipleEmployee(results);
+                        },
+                        chipDisplay: MultiSelectChipDisplay(
+                          onTap: (value) {
+                            cont.onDeleteMultipleEmployee(value);
+                          },
+                          icon: const Icon(Icons.clear,color: errorColor,),
+                        ),
                       ),
                     ),
+                    cont.selectedLeaveFlag == 0  ? const Opacity(opacity: 0.0) :
+                    cont.selectedEmpList == null || cont.selectedEmpList.isEmpty
+                        ? Container(
+                        padding: const EdgeInsets.only(left:10),
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          "None employee selected",
+                          style: TextStyle(color: Colors.black54),
+                        ))
+                        : const Opacity(opacity: 0.0),
                     Padding(
-                      padding: const EdgeInsets.only(right: 10.0,left: 10.0,bottom: 10.0),
+                      padding: const EdgeInsets.only(right: 10.0,left: 10.0,bottom: 10.0,),
                       child: Container(
                           height: 40.0,width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
@@ -135,6 +170,8 @@ class _LeaveListState extends State<LeaveList> {
                           )
                       ),
                     ),
+
+                    cont.loader == true ? Center(child: buildCircularIndicator(),) :
                     cont.leaveList.isEmpty ? buildNoDataFound(context):
                     ListView.builder(
                         shrinkWrap:true,

@@ -415,6 +415,19 @@ class _TimesheetFormState extends State<TimesheetForm> {
                                     cont.validateTotalTime== true
                                         ? ErrorText(errorMessage: "Please select start time",)
                                         : const Opacity(opacity: 0.0),
+
+                                    Padding(
+                                        padding : const EdgeInsets.only(top:10.0,bottom:10.0),
+                                      child: GestureDetector(
+                                          onTap: (){
+                                            cont.checkValidationForStepper1();
+                                          },
+                                          child:Align(
+                                            alignment:Alignment.topRight,
+                                              child:buildButtonWidget(context, "Add",buttonColor: approveColor,width: 100.0))
+                                      ),
+                                    ),
+
                                   ],
                                 ),
                                 isActive: cont.currentStep >= 0,
@@ -674,38 +687,44 @@ class _TimesheetFormState extends State<TimesheetForm> {
 
                                                             Padding(
                                                                 padding: const EdgeInsets.only(left:10.0,right:10.0),
-                                                                child:Container(
-                                                                    height: 40.0,
-                                                                    decoration: BoxDecoration(
-                                                                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                                      border: Border.all(color: grey),),
-                                                                    child: TextFormField(
-                                                                      controller: cont.timeStepper3List[index],
-                                                                      keyboardType: TextInputType.number,
-                                                                      textAlign: TextAlign.left,
-                                                                      textAlignVertical: TextAlignVertical.center,
-                                                                      textInputAction: TextInputAction.done,
-                                                                      onTap: () {
-                                                                      },
-                                                                      style:const TextStyle(fontSize: 15.0),
-                                                                      decoration: InputDecoration(
-                                                                          contentPadding: const EdgeInsets.all(10),
-                                                                          hintText: "HH:MM",
-                                                                          hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                                                            color: grey, fontSize: 15,),),
-                                                                          border: InputBorder.none,
-                                                                          suffixIcon: GestureDetector(
-                                                                              onTap: (){
-                                                                                cont.selectTimeForStepper3(context,cont.timeStepper3List[index].text,index);
-                                                                              },
-                                                                              child:const Icon(Icons.watch_later_outlined,color: grey,)
-                                                                          )
-                                                                      ),
-                                                                      inputFormatters: [LengthLimitingTextInputFormatter(5),],
-                                                                      onChanged: (value) {
-                                                                        cont.addTime(index, cont.timeStepper3List[index],value);
-                                                                      },
-                                                                    )
+                                                                child:GestureDetector(
+                                                                  onTap: (){
+                                                                    cont.selectTimeForStepper3(context,cont.timeStepper3List[index].text,index);
+                                                                  },
+                                                                  child: Container(
+                                                                      height: 40.0,
+                                                                      decoration: BoxDecoration(
+                                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                                        border: Border.all(color: grey),),
+                                                                      child: TextFormField(
+                                                                        controller: cont.timeStepper3List[index],
+                                                                        keyboardType: TextInputType.number,
+                                                                        textAlign: TextAlign.left,
+                                                                        textAlignVertical: TextAlignVertical.center,
+                                                                        textInputAction: TextInputAction.done,
+                                                                        enabled: false,
+                                                                        onTap: () {
+                                                                        },
+                                                                        style:const TextStyle(fontSize: 15.0),
+                                                                        decoration: InputDecoration(
+                                                                            contentPadding: const EdgeInsets.all(10),
+                                                                            hintText: "HH:MM",
+                                                                            hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                                                              color: grey, fontSize: 15,),),
+                                                                            border: InputBorder.none,
+                                                                            suffixIcon: GestureDetector(
+                                                                                onTap: (){
+                                                                                  cont.selectTimeForStepper3(context,cont.timeStepper3List[index].text,index);
+                                                                                },
+                                                                                child:const Icon(Icons.watch_later_outlined,color: grey,)
+                                                                            )
+                                                                        ),
+                                                                        inputFormatters: [LengthLimitingTextInputFormatter(5),],
+                                                                        onChanged: (value) {
+                                                                          cont.addTime(index, cont.timeStepper3List[index],value);
+                                                                        },
+                                                                      )
+                                                                  ),
                                                                 ),),
 
                                                             Padding(

@@ -169,13 +169,16 @@ class ApiRepository {
     var multipartFileSign =  http.MultipartFile('claimImage', stream,length, filename: basename(File(claimImage).path));
     request.files.add(multipartFileSign);
 
+
+    print("request.files");
+    print(request.files);
     var response = await request.send();
     return response.stream.transform(utf8.decoder);
   }
   ///claim list
-  Future<ClaimClientListResponse> getClaimList(String flag,String status) async {
+  Future<ClaimClientListResponse> getClaimList(String flag,String status,String empId) async {
     final FormData formData = FormData.fromMap({
-      "firm_id":firmId,"mast_id":userId,"flag":flag,"status":status,
+      "firm_id":firmId,"mast_id":userId,"flag":flag,"status":status,"employee":empId
     },);
     final response = await apiClient.post(
         ApiEndpoint.claimListUrl,body:formData,headers: headers
@@ -279,10 +282,12 @@ class ApiRepository {
     return ApiResponse.fromJson(response);
   }
   ///leave list
-  Future<LeaveListModel> getLeaveList(String flag,String status) async {
+  Future<LeaveListModel> getLeaveList(String flag,String status,String idList) async {
     final FormData formData = FormData.fromMap({
-      "firm_id":firmId,"mast_id":userId,"flag":flag,"status":status,
+      "firm_id":firmId,"mast_id":userId,"flag":flag,"status":status,"emp":idList??""
     },);
+    print("formData");
+    print(formData.fields);
     final response = await apiClient.post(
         ApiEndpoint.leaveListUrl,body:formData,headers: headers
     );
@@ -451,6 +456,8 @@ class ApiRepository {
       "service_id":serviceId,"client_applicable_service_id":clientApplicableServiceId,
       "task_id":taskId, "remark":remark, "nohours":noOfHours,
     },);
+    print("formData");
+    print(formData);
     final response = await apiClient.post(
       ApiEndpoint.timesheetAddAllottedUrl, body: formData, headers: headers,
     );
@@ -886,6 +893,39 @@ class ApiRepository {
     return AllTasksPieModel.fromJson(response);
   }
 
+  ///triggered not allotted past due
+  Future<TriggeredNotAllottedModel> getTriggeredNotAllottedPastDue() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.triggeredNotAllottedPastDueUrl, body: formData, headers: headers,
+    );
+    return TriggeredNotAllottedModel.fromJson(response);
+  }
+  ///triggered not allotted last 7 days
+  Future<TriggeredNotAllottedModel> getTriggeredNotAllottedLast7Days() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.triggeredNotAllottedLast7DaysUrl, body: formData, headers: headers,
+    );
+    return TriggeredNotAllottedModel.fromJson(response);
+  }
+  ///triggered not allotted more 7 days
+  Future<TriggeredNotAllottedModel> getTriggeredNotAllottedMore7Days() async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId},);
+    final response = await apiClient.post(
+      ApiEndpoint.triggeredNotAllottedMoreThan7DaysUrl, body: formData, headers: headers,
+    );
+    return TriggeredNotAllottedModel.fromJson(response);
+  }
+  ///triggered not allotted load all
+  Future<TriggeredNotAllottedLoadAllModel> getTriggeredNotAllottedLoadAll(String cliId) async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"cli_id":cliId},);
+    final response = await apiClient.post(
+      ApiEndpoint.triggeredNotAllottedLoadAllUrl, body: formData, headers: headers,
+    );
+    return TriggeredNotAllottedLoadAllModel.fromJson(response);
+  }
+
   ///update priority
   Future<ApiResponse> getUpdatePriority(String priority,String id) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"priority":priority,"id":id},);
@@ -929,6 +969,8 @@ class ApiRepository {
   ///start task
   Future<ApiResponse> getStartTask(String cliId,String id) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"cli_id":cliId,"id":id},);
+    print("formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.startTaskUrl, body: formData, headers: headers,
     );
@@ -980,6 +1022,48 @@ class ApiRepository {
     final response = await apiClient.post(
       ApiEndpoint.updateServiceStatusUrl, body: formData, headers: headers,
     );
+    return ApiResponse.fromJson(response);
+  }
+
+  ///update task status
+  Future<ApiResponse> getUpdateTaskStatus(String assignId,String id,String statusId,String status,
+  String remark,String taskName) async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId, "assign_id":assignId,
+      "id":id, "status_id":statusId,"status":status,"remark":remark,"task_name":taskName},);
+    print("FormData.fields");
+    print(formData.fields);
+    final response = await apiClient.post(
+      ApiEndpoint.updateServiceTaskStatusUrl, body: formData, headers: headers,
+    );
+    return ApiResponse.fromJson(response);
+  }
+
+  ///reassign services
+  Future<ApiResponse> getReassignServices(String taskName,String id,String completion,String days,String hours,
+      String mins,String emp,String taskID,String srno) async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId, "task_name":taskName,
+      "id":id, "completion":completion,"days":days,"hours":hours,"mins":mins,"emp":emp,
+      "taskID":taskID,"srno":srno},);
+    final response = await apiClient.post(
+      ApiEndpoint.reassignServicesUrl, body: formData, headers: headers,
+    );
+
+    print("formData.fields");
+    print(formData.fields);
+    return ApiResponse.fromJson(response);
+  }
+
+  ///reassign triggered not allotted
+  Future<ApiResponse> getReassignTriggeredNotAllotted(String taskName,String id,String completion,String days,
+      String hours, String mins,String emp,String taskID,String srno,String priority,String applyPeriod) async {
+    final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId, "id":id,
+      "task_name":taskName,"completion":completion,"days":days,"hours":hours,"mins":mins,"emp":emp,
+      "taskID":taskID,"srno":srno,"priority":priority,"apply_period":applyPeriod},);
+    final response = await apiClient.post(
+      ApiEndpoint.reassignTriggeredNotAllottedUrl, body: formData, headers: headers,
+    );
+    print("formData.fields");
+    print(formData.fields);
     return ApiResponse.fromJson(response);
   }
 }

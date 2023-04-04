@@ -112,6 +112,7 @@ class LoginController extends GetxController {
         GetStorage().write('userName', response.userDetails![0].username);
         GetStorage().write('name', response.userDetails![0].name);
         GetStorage().write('firmId', response.userDetails![0].firmId);
+        GetStorage().write('userType', response.userDetails![0].userType);
         GetStorage().write('reportingHead', response.isReportingHead);
         Utils.showSuccessSnackBar(response.message);
         loginEmailController.clear();loginPasswordController.clear();

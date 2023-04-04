@@ -152,8 +152,8 @@ class _TimesheetListState extends State<TimesheetList> {
         padding: const EdgeInsets.only(bottom: 10.0,left: 220.0,right: 20.0),
         child:  GestureDetector(
           onTap: (){
-            Get.toNamed(AppRoutes.timesheetForm);
-            //showInprocessDialog(context);
+            //Get.toNamed(AppRoutes.timesheetForm);
+            showInprocessDialog(context);
           },
           child: buildButtonWidget(context, "+ Add Timesheet",radius: 5.0,height: 40.0),
         ),

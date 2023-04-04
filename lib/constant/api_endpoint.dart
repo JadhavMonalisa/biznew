@@ -1,6 +1,6 @@
 class ApiEndpoint {
-  static const String baseUrl = "https://dev.bizalys.com/api";
-  //static const String baseUrl = "https://bizalys.com/api";
+  //static const String baseUrl = "https://dev.bizalys.com/api";
+  static const String baseUrl = "https://bizalys.com/api";
   static const String imageBaseUrl = "";
 
   ///Basic User
@@ -87,7 +87,7 @@ class ApiEndpoint {
   static const String allottedNotStartedMediumTeamUrl = "$baseUrl/ServicesController/allotted_but_not_started_medium_team";
   static const String allottedNotStartedMediumOwnUrl = "$baseUrl/ServicesController/allotted_but_not_started_medium_own";
   ///allotted not started low -> team,own
-  static const String allottedNotStartedLowTeamUrl = "$baseUrl/ServicesController/allotted_but_not_started_low_teamm";
+  static const String allottedNotStartedLowTeamUrl = "$baseUrl/ServicesController/allotted_but_not_started_low_team";
   static const String allottedNotStartedLowOwnUrl = "$baseUrl/ServicesController/allotted_but_not_started_low_own";
 
   ///started not completed past due -> team,own
@@ -95,7 +95,7 @@ class ApiEndpoint {
   static const String startedNotCompletedPastDueOwnUrl = "$baseUrl/ServicesController/started_but_not_completed_pastdue_own";
   ///started not completed probable -> team,own
   static const String startedNotCompletedProbableTeamUrl = "$baseUrl/ServicesController/started_but_not_completed_probabledue_team";
-  static const String startedNotCompletedProbableOwnUrl = "$baseUrl/ServicesController/started_but_not_completed_probable_own";
+  static const String startedNotCompletedProbableOwnUrl = "$baseUrl/ServicesController/started_but_not_completed_probabledue_own";
   ///started not completed high -> team,own
   static const String startedNotCompletedHighOwnUrl = "$baseUrl/ServicesController/started_but_not_completed_high_own";
   static const String startedNotCompletedHighTeamUrl = "$baseUrl/ServicesController/started_but_not_completed_high_team";
@@ -125,6 +125,12 @@ class ApiEndpoint {
   static const String allTaskCompletedTeamUrl = "$baseUrl/ServicesController/all_task_completed_team";
   static const String allTaskCompletedOwnUrl = "$baseUrl/ServicesController/all_task_completed_own";
 
+  ///triggered not allotted
+  static const String triggeredNotAllottedPastDueUrl = "$baseUrl/ServicesController/service_triggered_but_not_alloted_past_due";
+  static const String triggeredNotAllottedLast7DaysUrl = "$baseUrl/ServicesController/service_triggered_but_not_alloted_past_due_last_seven_days";
+  static const String triggeredNotAllottedMoreThan7DaysUrl = "$baseUrl/ServicesController/service_triggered_but_not_alloted_past_due_more_than_seven_days";
+  static const String triggeredNotAllottedLoadAllUrl = "$baseUrl/ServicesController/load_all_tasks_for_assign";
+  static const String reassignTriggeredNotAllottedUrl = "$baseUrl/ServicesController/save_assign_service";
 
   ///service action
   static const String updatePriorityUrl = "$baseUrl/ServicesController/update_priority";
@@ -137,6 +143,8 @@ class ApiEndpoint {
   static const String confirmCancelServiceUrl = "$baseUrl/ServicesController/confirm_cancel_service";
   static const String checkCompletedTaskServiceUrl = "$baseUrl/ServicesController/check_completed_task_service";
   static const String updateServiceStatusUrl = "$baseUrl/ServicesController/update_service_status";
+  static const String updateServiceTaskStatusUrl = "$baseUrl/ServicesController/update_task_status";
+  static const String reassignServicesUrl = "$baseUrl/ServicesController/reassign_service";
 
   ///calender
   static const String calenderUrl = "$baseUrl/CalenderController/calender_data";
