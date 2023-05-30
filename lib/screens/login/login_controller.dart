@@ -114,8 +114,10 @@ class LoginController extends GetxController {
         GetStorage().write('firmId', response.userDetails![0].firmId);
         GetStorage().write('userType', response.userDetails![0].userType);
         GetStorage().write('reportingHead', response.isReportingHead);
+        GetStorage().write('roleId', response.roleId);
         Utils.showSuccessSnackBar(response.message);
         loginEmailController.clear();loginPasswordController.clear();
+        repository.getData();
         addAccessRightApi();
         Get.toNamed(AppRoutes.bottomNav);
         update();
@@ -159,16 +161,22 @@ class LoginController extends GetxController {
   ///access right api
   void addAccessRightApi() async {
     try {
-      // Utils.dismissKeyboard();
-      // Utils.showLoadingDialog();
       AccessRightResponse? response = (await repository.getAccessList());
 
-
-      print("response.accessRightDetails");
-      print(response.accessRightDetails);
       Utils.dismissLoadingDialog();
       if (response.success==true) {
-        // Utils.showSuccessSnackBar(response.message);
+
+        for (var element in response.accessRightDetails!) {
+          if(element.moduleName == "Own Service Status"){
+            print("element.moduleName");
+            print(element.moduleName);
+            print(element.addAccess);
+
+            //String statusValue = element.addAccess == "Y" ? "Y" : "N";
+            GetStorage().write("OwnServiceStatus", element.addAccess);
+          }
+        }
+
         update();
       } else {
         //Utils.dismissLoadingDialog();

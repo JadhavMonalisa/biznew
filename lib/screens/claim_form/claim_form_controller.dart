@@ -121,7 +121,7 @@ class ClaimFormController extends GetxController {
     callClientNameList();
     callClaimYearList();
     callClaimSubmittedByList();
-    callClaimList();
+    //callClaimList();
 
     claimListForExport = getEmployeeData();
     claimDataSource = ClaimDataSource(claimData: claimListForExport);
@@ -625,10 +625,10 @@ class ClaimFormController extends GetxController {
     update();
   }
 
-  int selectedFlag = 0;
+  int selectedFlag = 2;
   List<String> claimStatusList = ["All","Pending","Approved","Rejected","Added to Bill"];
   String selectedEmployee = "";
-  String selectedClaimStatus = "Pending";
+  String selectedClaimStatus = "None";
   String selectedEmpId = "";
   List<ClaimDetails> claimEditList =[];
   String statusAction = "";
@@ -656,7 +656,7 @@ class ClaimFormController extends GetxController {
     updateLoader(true);
     try {
       ClaimClientListResponse? response = (await repository.getClaimList(
-        selectedFlag == 0 ? "own" : "team",
+        selectedFlag == 0 ? "own" : selectedFlag == 1 ? "team" : "",
         selectedClaimStatus == "All" ? "" : selectedClaimStatus,
         selectedFlag == 0 ? "" : selectedEmpId==""?"":selectedEmpId,));
 
@@ -702,7 +702,9 @@ class ClaimFormController extends GetxController {
     claimListForExport.clear();
     updateLoader(true);
     try {
-      ClaimClientListResponse? response = (await repository.getClaimList(selectedFlag == 0 ? "own" : "team" ,"",""));
+      ClaimClientListResponse? response = (await repository.getClaimList(
+          selectedFlag == 0 || selectedFlag == 2 ? "own" : "team" ,
+          "",""));
 
       if (response.success!) {
         if (response.claimClientListDetails!.isEmpty) {
@@ -774,6 +776,8 @@ class ClaimFormController extends GetxController {
           selectedClientName = claimEditList[0].firmClientName!;
           selectedYear = "${claimEditList[0].startYear!}-${claimEditList[0].endYear!}";
 
+          print("claimFileName");
+          print(claimFileName);
           updateLoader(false);
           update();
         }

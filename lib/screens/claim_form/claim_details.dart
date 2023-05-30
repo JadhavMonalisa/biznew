@@ -104,23 +104,28 @@ class _ClaimDetailsScreenState extends State<ClaimDetailsScreen> {
                                   border: Border.all(color: cont.validateClaimImage?errorColor:grey),),
                                 child: Row(
                                   children: [
-                                    GestureDetector(
-                                      onTap: (){
-                                        cont.openPdf();
-                                       // Get.toNamed(AppRoutes.webViewScreen);
-                                      },
-                                      child: Container(
-                                          height: 50.0,
-                                          color:primaryColor,
-                                          padding:const EdgeInsets.only(left: 10.0,right: 10.0),
-                                          child: Center(child:buildTextRegularWidget("View", whiteColor, context, 15.0),)
-                                      ),
-                                    ),
+                                    // GestureDetector(
+                                    //   onTap: (){
+                                    //     cont.openPdf();
+                                    //    // Get.toNamed(AppRoutes.webViewScreen);
+                                    //   },
+                                    //   child: Container(
+                                    //       height: 50.0,
+                                    //       color:primaryColor,
+                                    //       padding:const EdgeInsets.only(left: 10.0,right: 10.0),
+                                    //       child: Center(child:buildTextRegularWidget("View", whiteColor, context, 15.0),)
+                                    //   ),
+                                    // ),
                                     cont.claimFileName == "" ? const Opacity(opacity: 0.0) :
                                     Flexible(
-                                      child: Container(
-                                        padding:const EdgeInsets.only(left: 10.0,right: 10.0),
-                                        child: buildTextRegularWidget(cont.claimFileName, blackColor, context, 15.0,maxLines: 2),
+                                      child: GestureDetector(
+                                          onTap: (){
+                                            cont.openPdf();
+                                          },
+                                        child: Container(
+                                          padding:const EdgeInsets.only(left: 10.0,right: 10.0),
+                                          child: buildTextRegularWidget(cont.claimFileName, blackColor, context, 15.0,maxLines: 2),
+                                        ),
                                       ),
                                     ),
                                   ],

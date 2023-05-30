@@ -7,6 +7,7 @@ abstract class AppRoutes {
   static const bottomNav = '/bottomNav-page';
   static const home = '/home-page';
   static const clientDashboard = '/clientDashboard-page';
+  static const employeeDashboard = '/employeeDashboard-page';
   static const serviceDashboard = '/serviceDashboard-page';
   static const notificationScreen = '/notification-page';
   static const serviceDashboardNext = '/serviceDashboardNext-page';
@@ -28,8 +29,12 @@ abstract class AppRoutes {
   static const timesheetList = '/timesheetList-page';
   static const timesheetDetails = '/timesheetDetails-page';
   static const timesheetForm = '/timesheetForm-page';
+  static const timesheetNewForm = '/timesheetNewForm-page';
   static const pettyTaskFrom = '/pettyTaskFrom-page';
+  static const pettyTaskClientFrom = '/pettyTaskClientFrom-page';
+  static const manualAssignmentScreen = '/manualAssignmentScreen-page';
   static const calenderScreen = '/calender-page';
+  static const calenderDemoScreen = '/calenderDemo-page';
   static const calenderMeetingData = '/calenderMeetingData-page';
 
   static const defaultRoute = '/';

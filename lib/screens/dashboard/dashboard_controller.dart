@@ -20,6 +20,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
 
+import 'client/client_dashboard_model.dart';
+
 class DashboardController extends GetxController {
   final ApiRepository repository;
 
@@ -31,6 +33,7 @@ class DashboardController extends GetxController {
   String userName="";
   String name="";
   String reportingHead="";
+  String roleId="";
   String userType="";
   int selectedFlag = 0;
   bool loader = false;
@@ -205,7 +208,7 @@ class DashboardController extends GetxController {
   String selectedCurrentStatusId = "";
   String selectedCurrentPriorityId = "";
   String selectedAllPriority = "";
-  List<String> changeStatusList = ["Inprocess","Hold","Complete"];
+  List<String> changeStatusList = ["Inprocess","Hold",];
   List<String> priorityList = ["Low","Medium","High"];
 
   ///check password and reason dialog
@@ -216,6 +219,7 @@ class DashboardController extends GetxController {
   bool validateReason = false;
 
   ///load all task
+  String selectedClientCode = "";
   String selectedClientName = "";
   String selectedServiceName = "";
   List<LoadAllTaskData> loadAllTaskList = [];
@@ -229,6 +233,8 @@ class DashboardController extends GetxController {
   int selectedCancelType = 0;
   int initialIndex = 0;
 
+  String ownServiceStatusValue = "";
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -237,12 +243,14 @@ class DashboardController extends GetxController {
     userName = GetStorage().read("userName")??"";
     name = GetStorage().read("name")??"";
     reportingHead = GetStorage().read("reportingHead")??"";
+    roleId = GetStorage().read("roleId")??"";
     userType = GetStorage().read("userType")??"";
+    ownServiceStatusValue = GetStorage().read("OwnServiceStatus")??"";
+
     repository.getData();
 
     callNotificationList();
     callBranchNameList();
-
     callServiceTriggerNotAllotted();
     callAllottedNotStarted();
     callStartedNotCompleted();
@@ -254,6 +262,24 @@ class DashboardController extends GetxController {
     callEmployeeList();
   }
   List<ClaimSubmittedByList> employeeList = [];
+  List<String> idInEmp = [];
+
+  List<int> addedIndex = [];
+  bool isExpanded = false;
+
+  onExpanded(bool expanded,int index){
+    isExpanded = expanded;
+
+    if(addedIndex.contains(index)){
+      addedIndex.remove(index);
+      update();
+    }
+    else{
+      addedIndex.add(index);
+      update();
+    }
+    update();
+  }
 
   void callEmployeeList() async {
     employeeList.clear();
@@ -266,6 +292,12 @@ class DashboardController extends GetxController {
         }
         else{
           employeeList.addAll(response.claimSubmittedByListDetails!);
+
+          for (var element in employeeList) {
+            idInEmp.add(element.mastId!);
+          }
+          print("idInEmp");
+          print(idInEmp);
         }
         updateLoader(false);
         update();
@@ -285,7 +317,9 @@ class DashboardController extends GetxController {
 
   void callNotificationList() async {
     notificationListData.clear();
+
     try {
+      updateLoader(true);
       NotificationModel? response = (await repository.getNotificationList());
 
       if (response.success!) {
@@ -294,13 +328,67 @@ class DashboardController extends GetxController {
         else{
           notificationListData.addAll(response.notificationList!);
         }
+        updateLoader(false);
         update();
       } else {
+        updateLoader(false);
         update();
       }
     } on CustomException {
+      updateLoader(false);
       update();
     } catch (error) {
+      updateLoader(false);
+      update();
+    }
+  }
+
+  ///mark all read
+  void callNotificationMarkAllRead() async {
+    notificationListData.clear();
+    try {
+      updateLoader(true);
+      ApiResponse? response = (await repository.getNotificationMarkAllRead());
+
+      if (response.success!) {
+        Utils.showSuccessSnackBar(response.message);
+        callNotificationList();
+        updateLoader(false);
+        update();
+      } else {
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);
+        update();
+      }
+    } on CustomException {
+      updateLoader(false);
+      update();
+    } catch (error) {
+      updateLoader(false);
+      update();
+    }
+  }
+  ///mark selected read
+  void callNotificationMarkSelectedRead(String notificationId) async {
+    try {
+      updateLoader(true);
+      ApiResponse? response = (await repository.getNotificationMarkSelectedRead(notificationId));
+
+      if (response.success!) {
+        Utils.showSuccessSnackBar(response.message);
+        callNotificationList();
+        updateLoader(false);
+        update();
+      } else {
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);
+        update();
+      }
+    } on CustomException {
+      updateLoader(false);
+      update();
+    } catch (error) {
+      updateLoader(false);
       update();
     }
   }
@@ -466,7 +554,6 @@ class DashboardController extends GetxController {
         for (var element in response.startedNotCompletedData!.team!) {
           teamStartedNotCompleted.add(element);
         }
-
 
         if(selectedType == "Own"){
           selectedPastDue = ownStartedNotCompleted[0].toString();
@@ -1077,13 +1164,14 @@ class DashboardController extends GetxController {
   }
 
   ///change date from current
-  Future<void> selectTargetDateForCurrent(BuildContext context,String id,DateTime firstDate,DateTime targetDate) async {
-    final DateTime? picked = await showDatePicker(
+  Future<void> selectTargetDateForCurrent(BuildContext context,String id,DateTime firstDate,DateTime targetDate,String apiAfterChangeDate,
+      DateTime endDate) async {
+    DateTime? picked = await showDatePicker(
         context: context,
         initialDate: firstDate,
         firstDate: firstDate,
         currentDate: targetDate,
-        lastDate: DateTime(2100, 1),
+        lastDate: endDate,
     );
 
     if (picked != null && picked != selectedDateForCurrent) {
@@ -1103,7 +1191,9 @@ class DashboardController extends GetxController {
 
     if(picked==null){}
     else{
-      callUpdateTargetDate();
+      callUpdateTargetDate(id,apiAfterChangeDate);
+      print("selectedMainType");
+      print(selectedMainType);
     }
     update();
   }
@@ -1159,8 +1249,21 @@ class DashboardController extends GetxController {
       addedStatusListForCurrent.add(id);
       update();
     }
-    callCheckCompletedTaskService(context);
-    update();
+
+    if(selectedServiceStatus == "Complete"){
+      showDialogToCompleteAllTask(context);
+      showRemarkDialog = false;
+      showAllTaskCompletedDialog = true;
+    }
+    else if(selectedServiceStatus == "Hold"){
+      showRemarkDialog = true;
+      showAllTaskCompletedDialog = false;
+      showRemarkDialogForHoldStatus(selectedServiceName,context);
+    }
+    else{
+      callCheckCompletedTaskService(context);
+      update();
+    }
   }
 
   TextEditingController remarkController = TextEditingController();
@@ -1240,8 +1343,11 @@ class DashboardController extends GetxController {
                         Flexible(
                           child: GestureDetector(
                             onTap: (){
-                              clearRemarkDialog();
-                              Navigator.pop(context);
+                              setter((){
+                                updateLoader(true);
+                                clearRemarkDialog();
+                                Navigator.pop(context);
+                              });
                             },
                             child: buildButtonWidget(context, "Close",height: 40.0,buttonColor: errorColor),
                           ),
@@ -1272,7 +1378,10 @@ class DashboardController extends GetxController {
   }
 
   clearRemarkDialog(){
-    remarkController.clear();update();
+    addedRh1TaskStatus.clear();
+    remarkController.clear(); selectedTaskStatusId=""; selectedTaskStatus = "";
+    updateLoader(false);
+    update();
   }
 
   ///priority change for all
@@ -1292,6 +1401,8 @@ class DashboardController extends GetxController {
   onTabIndexSelect(int index){
     print("index");
     print(index);
+    addedIndex.clear(); isExpanded = false;
+    addedDateListForAll.clear(); selectedDateToShowForCurrent = "";
     if(index == 0){
       onPasDueSelected();
     }
@@ -1320,10 +1431,13 @@ class DashboardController extends GetxController {
     print(selectedMainType);
     if(selectedMainType == "AllottedNotStarted")
       {
+        print("In if");
         selectedType == "Own" ? callAllottedNotStartedPastDueOwn() : callAllottedNotStartedPastDueTeam();
       }
-    else{
+    else if(selectedMainType == "StartedNotCompleted"){
+      print("In else");
         selectedType == "Own" ? callStartedNotCompletedPastOwn() : callStartedNotCompletedPastTeam();
+
     }
 
     isPastDueSelected = true; isPortableOverdueSelected = false; isHighSelected = false;
@@ -1398,8 +1512,11 @@ class DashboardController extends GetxController {
   navigateToBottom(){
     //currentPos = 1;
     // currentPos = position;
+
+    addedIndex.clear(); isExpanded = false;
     selectedServiceStatus = ""; selectedCurrentPriority="";
     //updateSlider(1);
+
 
     //carouselController.jumpToPage(1);
     Get.toNamed(AppRoutes.bottomNav);
@@ -1419,6 +1536,10 @@ class DashboardController extends GetxController {
     selectedMainType == "SubmittedForChecking"? currentPos = 6 :
     selectedMainType == "AllTasks"? currentPos = 7 : currentPos = 0;
 
+
+    if(selectedMainType == "AllottedNotStarted"){
+      callStartedNotCompleted();
+    }
     updateSlider(currentPos);
     carouselController.jumpToPage(currentPos);
 
@@ -1850,25 +1971,40 @@ class DashboardController extends GetxController {
   void callStartedNotCompletedPastTeam() async {
     startedNotCompletedPastDueList.clear();
     try {
+      print("api call");
       StartedButCompletedPieModel? response = await repository.getStartedNotCompletedPastDueTeam();
 
+
+      print("response success");
+      print(response.success);
       if (response.success!) {
         startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+
+        print("in api if");
+        print(response);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
+        print("in api else");
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
+      print("startedNotCompletedPastDueList.length");
+      print(startedNotCompletedPastDueList.length);
       update();
     } on CustomException catch (e) {
       //Utils.showErrorSnackBar(e.getMsg());
+      print("in api exception");
       Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
     } catch (error) {
       //Utils.showErrorSnackBar(error.toString());
+      print("in api catch");
+      print(error);
       Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
@@ -2037,6 +2173,9 @@ class DashboardController extends GetxController {
         Utils.dismissLoadingDialog();
         updateLoader(false);update();
       }
+
+      print("startedNotCompletedPastDueList.length");
+      print(startedNotCompletedPastDueList.length);
       update();
     } on CustomException catch (e) {
       //Utils.showErrorSnackBar(e.getMsg());
@@ -2543,11 +2682,11 @@ class DashboardController extends GetxController {
   ///services triggered not allotted load all
   List<TriggeredNotAllottedLoadAllList> triggeredNotAllottedLoadAll= [];
   void callTriggeredNotAllottedLoadAll(String cliId,String clientName,String serviceName) async {
+    triggeredNotAllottedLoadAll.clear();
     updateLoader(true);
     selectedCliId = cliId;
+    selectedClientCode = "";
     selectedClientName = clientName; selectedServiceName = serviceName;
-
-    triggeredNotAllottedLoadAll.clear();
     try {
       TriggeredNotAllottedLoadAllModel? response = await repository.getTriggeredNotAllottedLoadAll(cliId);
 
@@ -2560,10 +2699,12 @@ class DashboardController extends GetxController {
           daysList.add(TextEditingController(text: element.days));
           hoursList.add(TextEditingController(text: element.hours));
           minuteList.add(TextEditingController(text: element.minutes));
-          taskEmp.add(element.mastId!);
+
+          taskEmp.add("");
           taskId.add(element.taskId!);
           srNo.add(element.sortno!);
           triggerSelectedEmpList.add("");
+          triggerSelectedEmpIdList.add(element.addedBy!);
 
           totalCompletion = totalCompletion + int.parse(element.completion!);
           totalDays = totalDays + int.parse(element.days!);
@@ -2597,7 +2738,10 @@ class DashboardController extends GetxController {
   updateSelectedPeriod(int val,BuildContext context){ selectedPeriod = val; update();}
 
   saveTriggeredNotAllottedLoadAll(){
-    if(selectedEmployee == ""){
+    if(totalCompletion != 100){
+      Utils.showErrorSnackBar("Completion should be 100 %");update();
+    }
+    else if(selectedEmployee == ""){
       Utils.showErrorSnackBar("Please select employee");update();
     }
     else if(selectedCurrentPriority==""){
@@ -2623,6 +2767,7 @@ class DashboardController extends GetxController {
     taskNameFirstBracketRemove =  taskNameListToSendApi.toString().replaceAll("[", "");
     taskNameSecondBracketRemove = taskNameFirstBracketRemove.toString().replaceAll("]", "");
     print("task names : $taskNameSecondBracketRemove");
+    print("task names : ${taskNameSecondBracketRemove.replaceAll(", ", ",")}");
 
     completionFirstBracketRemove =  completionListToSendApi.toString().replaceAll("[", "");
     completionSecondBracketRemove = completionFirstBracketRemove.toString().replaceAll("]", "");
@@ -2640,26 +2785,47 @@ class DashboardController extends GetxController {
     minuteSecondBracketRemove = minuteFirstBracketRemove.toString().replaceAll("]", "");
     print("minutes : $minuteSecondBracketRemove");
 
-    taskEmpFirstBracketRemove =  taskEmp.toString().replaceAll("[", "");
+    taskEmpFirstBracketRemove =  triggerSelectedEmpIdList.toString().replaceAll("[", "");
     taskEmpSecondBracketRemove = taskEmpFirstBracketRemove.toString().replaceAll("]", "");
-    print("task emp : $taskEmpSecondBracketRemove");
+    print("task emp id: $taskEmpSecondBracketRemove");
 
-    taskIdFirstBracketRemove =  triggerSelectedEmpIdList.toString().replaceAll("[", "");
+    taskIdFirstBracketRemove =  taskId.toString().replaceAll("[", "");
     taskIdSecondBracketRemove = taskIdFirstBracketRemove.toString().replaceAll("]", "");
-    print("task emp id : $taskIdSecondBracketRemove");
+    print("task task id : $taskIdSecondBracketRemove");
+    print("task task id : ${taskIdSecondBracketRemove.toString().replaceAll(" ", "")}");
 
     srNoFirstBracketRemove =  srNo.toString().replaceAll("[", "");
     srNoSecondBracketRemove = srNoFirstBracketRemove.toString().replaceAll("]", "");
     print("srno : $srNoSecondBracketRemove");
+    print("selectedCliId : $selectedCliId");
     callReassignTriggeredNotAllotted();
     }
   }
 
   removeFromSelectedTriggered(int index){
-    totalCompletion = totalCompletion - int.parse(completionList[index].text);
-    totalDays = totalDays - int.parse(daysList[index].text);
-    totalHours = totalHours - int.parse(hoursList[index].text);
-    totalMins = totalMins - int.parse(minuteList[index].text);
+    if(completionList[index].text=="0" || completionList[index].text.isEmpty || totalCompletion == 0){
+    }
+    else{
+      totalCompletion = totalCompletion - int.parse(completionList[index].text);
+    }
+
+    if(daysList[index].text=="0" || daysList[index].text.isEmpty || totalDays == 0){
+    }
+    else{
+      totalDays = totalDays - int.parse(daysList[index].text);
+    }
+
+    if(hoursList[index].text=="0" || hoursList[index].text.isEmpty || totalHours == 0){
+    }
+    else{
+      totalHours = totalHours - int.parse(hoursList[index].text);
+    }
+
+    if(minuteList[index].text=="0" || minuteList[index].text.isEmpty || totalMins == 0){
+    }
+    else{
+      totalMins = totalMins - int.parse(minuteList[index].text);
+    }
 
     triggeredNotAllottedLoadAll.removeAt(index);
     taskNameList.removeAt(index);
@@ -2667,8 +2833,8 @@ class DashboardController extends GetxController {
     daysList.removeAt(index);
     hoursList.removeAt(index);
     minuteList.removeAt(index);
-    //addedAssignedTo.removeAt(index);
-    //assignedToFromApi.removeAt(index);
+    triggerSelectedEmpList.removeAt(index);
+    triggerSelectedEmpIdList.removeAt(index);
 
     taskNameListToSendApi.clear();
     completionListToSendApi.clear();
@@ -2686,11 +2852,36 @@ class DashboardController extends GetxController {
     srNo.removeAt(index);
     update();
   }
+
   removeFromSelectedAllotted(int index){
-    allottedTotalCompletion = allottedTotalCompletion - int.parse(allottedCompletionList[index].text);
-    allottedTotalDays = allottedTotalDays - int.parse(allottedDaysList[index].text);
-    allottedTotalHours = allottedTotalHours - int.parse(allottedHoursList[index].text);
-    allottedTotalMins = allottedTotalMins - int.parse(allottedMinuteList[index].text);
+
+    if(allottedCompletionList[index].text=="0" || allottedCompletionList[index].text.isEmpty
+    || allottedTotalCompletion == 0){
+    }
+    else{
+      allottedTotalCompletion = allottedTotalCompletion - int.parse(allottedCompletionList[index].text);
+    }
+
+    if(allottedDaysList[index].text=="0" || allottedDaysList[index].text.isEmpty
+        || allottedTotalDays == 0){
+    }
+    else{
+      allottedTotalDays = allottedTotalDays - int.parse(allottedDaysList[index].text);
+    }
+
+    if(allottedHoursList[index].text=="0" || allottedHoursList[index].text.isEmpty
+        || allottedTotalHours == 0){
+    }
+    else{
+      allottedTotalHours = allottedTotalHours - int.parse(allottedHoursList[index].text);
+    }
+
+    if(allottedMinuteList[index].text=="0" || allottedMinuteList[index].text.isEmpty
+        || allottedTotalMins == 0){
+    }
+    else{
+      allottedTotalMins = allottedTotalMins - int.parse(allottedMinuteList[index].text);
+    }
 
     loadAllTaskList.removeAt(index);
     allottedTaskNameList.removeAt(index);
@@ -2700,6 +2891,8 @@ class DashboardController extends GetxController {
     allottedMinuteList.removeAt(index);
     //addedAssignedTo.removeAt(index);
     //assignedToFromApi.removeAt(index);
+    allottedSelectedEmpList.removeAt(index);
+    allottedSelectedEmpIdList.removeAt(index);
 
     allottedTaskNameListToSendApi.clear();
     allottedCompletionListToSendApi.clear();
@@ -2712,7 +2905,8 @@ class DashboardController extends GetxController {
     forDaysCalculationAllotted.removeAt(index);
     forHrCalculationAllotted.removeAt(index);
     forMinCalculationAllotted.removeAt(index);
-    allottedTaskEmp.removeAt(index);
+    //allottedTaskEmp.removeAt(index);
+
     allottedTaskId.removeAt(index);
     allottedSrNo.removeAt(index);
     update();
@@ -2750,15 +2944,76 @@ class DashboardController extends GetxController {
   }
 
   ///update target date
-  void callUpdateTargetDate() async {
+  void callUpdateTargetDate(String id,String apiAfterChangeDate) async {
     updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getUpdateTargetDate(selectedDateToSendForCurrent, selectedCurrentPriorityId));
+      //ApiResponse? response = (await repository.getUpdateTargetDate(selectedDateToSendForCurrent, selectedCurrentPriorityId));
+      ApiResponse? response = (await repository.getUpdateTargetDate(selectedDateToSendForCurrent, id));
 
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
-        callAllottedNotStartedOwn();
-        callAllottedNotStarted();
+
+        print(apiAfterChangeDate);
+        print(selectedType);
+
+        if(apiAfterChangeDate=="triggerApi"){
+          selectedType == "Triggered in Last 7 Days" ? callTriggeredNotAllottedLast7Days()
+          : selectedType == "More Than 7 Days" ? callTriggeredNotAllottedMoreThan7Days() :  callTriggeredNotAllottedPastDue();
+          update();
+        }
+        else if(apiAfterChangeDate == "allottedApiPastDue"){
+          selectedType == "Team" ? callAllottedNotStartedPastDueTeam() : callAllottedNotStartedPastDueOwn();
+          update();
+        }
+        else if(apiAfterChangeDate == "allottedApiProbable"){
+          selectedType == "Team" ? callAllottedNotStartedPortableDueTeam() : callAllottedNotStartedProbableOwn();
+          update();
+        }
+        else if(apiAfterChangeDate == "allottedApiHigh"){
+          selectedType == "Team" ? callAllottedNotStartedHighDueTeam() : callAllottedNotStartedHighOwn();
+          update();
+        }
+        else if(apiAfterChangeDate == "allottedApiMedium"){
+          selectedType == "Team" ? callAllottedNotStartedMediumDueTeam() : callAllottedNotStartedMediumOwn();
+          update();
+        }
+        else if(apiAfterChangeDate == "allottedApiLow"){
+          selectedType == "Team" ? callAllottedNotStartedLowDueTeam() : callAllottedNotStartedLowOwn();
+          update();
+        }
+        else if(apiAfterChangeDate == "startedNotCompletedApiPastDue"){
+          selectedType == "Team" ? callStartedNotCompletedPastTeam() : callStartedNotCompletedPastOwn();
+          update();
+        }
+        else if(apiAfterChangeDate == "startedNotCompletedApiProbable"){
+          selectedType == "Team" ? callStartedNotCompletedProbableTeam() : callStartedNotCompletedProbableOwn();
+          update();
+        }
+        else if(apiAfterChangeDate == "startedNotCompletedApiHigh"){
+          selectedType == "Team" ? callStartedNotCompletedHighTeam() : callStartedNotCompletedHighOwn();
+          update();
+        }
+        else if(apiAfterChangeDate == "startedNotCompletedApiMedium"){
+          selectedType == "Team" ? callStartedNotCompletedMediumTeam() : callStartedNotCompletedMediumOwn();
+          update();
+        }
+        else if(apiAfterChangeDate == "startedNotCompletedApiLow"){
+          selectedType == "Team" ? callStartedNotCompletedLowTeam() : callStartedNotCompletedLowOwn();
+          update();
+        }
+        else if(apiAfterChangeDate == "workOnHoldApi"){
+          selectedType == "Team" ? callWorkOnHoldTeamData() : callWorkOnHoldOwnData();
+          update();
+        }
+        else if(apiAfterChangeDate == "submittedForCheckingApi"){
+          selectedType == "Team" ? callSubmittedForCheckingTeamData() : callSubmittedForCheckingOwnData();
+          update();
+        }
+        else if(apiAfterChangeDate == "allTasksApi"){
+          selectedType == "Team" ? callAllTasksTeamData() : callAllTasksOwnData();
+          update();
+        }
+
         updateLoader(false);
         update();
       } else {
@@ -2904,11 +3159,11 @@ class DashboardController extends GetxController {
           allottedDaysList.add(TextEditingController(text: element.days));
           allottedHoursList.add(TextEditingController(text: element.hours));
           allottedMinuteList.add(TextEditingController(text: element.mins));
-          //triggerSelectedEmpIdList.add("");
+          allottedTaskId.add(element.taskId!);
 
           assignedToFromApi.add(element.firmEmployeeName!);
-          allottedSelectedEmpList.add("");
-          allottedSelectedEmpIdList.add(element.taskId!);
+          allottedSelectedEmpList.add(element.firmEmployeeName!);
+          allottedSelectedEmpIdList.add(element.taskEmp!);
           allottedSrNo.add(element.srno!);
 
           forTaskNamesAllotted.add(element.taskName!);
@@ -2970,6 +3225,9 @@ class DashboardController extends GetxController {
       //triggerSelectedEmpList.insert(index,assignTo);
       update();
     }
+
+    print("triggerSelectedEmpList");
+    print(triggerSelectedEmpList);
     update();
   }
 
@@ -2980,25 +3238,10 @@ class DashboardController extends GetxController {
     selectedEmpFromDashboardNextAllotted = assignTo;
     selectedEmpIdFromDashboardNextAllotted = id;
 
-    // if(addedAssignedTo.contains(id)){
-    //   addedAssignedTo.remove(id);
-    //   update();
-    // }
-    // else{
-    //   addedAssignedTo.add(id);
-    //   update();
-    // }
-    //
-    // if(allottedSelectedEmpIdList.asMap().containsKey(index)){
-    //   allottedSelectedEmpIdList.removeAt(index);
-    //   allottedSelectedEmpIdList.insert(index, id);
-    //   update();
-    // }
-    // else{
-    //   allottedSelectedEmpIdList.insert(index,id);
-    //   update();
-    // }
-
+    print("value");
+    print(assignTo);
+    print(id);
+    print(taskId);
     if(addedAssignedToAllotted.contains(taskId)){
       addedAssignedToAllotted.remove(taskId);
       update();
@@ -3008,11 +3251,7 @@ class DashboardController extends GetxController {
       update();
     }
 
-    print("index");
-    print(index);
-
     if(allottedSelectedEmpIdList.asMap().containsKey(index)){
-      print("contains");
       allottedSelectedEmpIdList.removeAt(index);
       allottedSelectedEmpList.removeAt(index);
       allottedSelectedEmpIdList.insert(index, id);
@@ -3020,11 +3259,8 @@ class DashboardController extends GetxController {
       update();
     }
     else{
-      print("not contains");
       allottedSelectedEmpIdList.add(id);
       allottedSelectedEmpList.add(assignTo);
-     // allottedSelectedEmpIdList.insert(index,id);
-      //allottedSelectedEmpList.insert(index,assignTo);
       update();
     }
     update();
@@ -3063,55 +3299,64 @@ class DashboardController extends GetxController {
     //   Utils.showErrorSnackBar("Not able to reassign, Task is not 100 % completed.");
     // }
     //else{
-      for(var element in allottedTaskNameList){
+    if(allottedTotalCompletion != 100){
+      Utils.showErrorSnackBar("Completion should be 100 %");update();
+    }
+    else if(selectedEmployee == ""){
+      Utils.showErrorSnackBar("Please select employee");update();
+    }
+    else {
+      for (var element in allottedTaskNameList) {
         allottedTaskNameListToSendApi.add(element.text);
       }
-      for(var element in allottedCompletionList){
+      for (var element in allottedCompletionList) {
         allottedCompletionListToSendApi.add(element.text);
       }
-      for(var element in allottedDaysList){
+      for (var element in allottedDaysList) {
         allottedDaysListToSendApi.add(element.text);
       }
-      for(var element in allottedHoursList){
+      for (var element in allottedHoursList) {
         allottedHoursListToSendApi.add(element.text);
       }
-      for(var element in allottedMinuteList){
+      for (var element in allottedMinuteList) {
         allottedMinuteListToSendApi.add(element.text);
       }
 
-      allottedTaskNameFirstBracketRemove =  allottedTaskNameListToSendApi.toString().replaceAll("[", "");
+      allottedTaskNameFirstBracketRemove = allottedTaskNameListToSendApi.toString().replaceAll("[", "");
       allottedTaskNameSecondBracketRemove = allottedTaskNameFirstBracketRemove.toString().replaceAll("]", "");
       print("task names : $allottedTaskNameSecondBracketRemove");
 
-      allottedCompletionFirstBracketRemove =  allottedCompletionListToSendApi.toString().replaceAll("[", "");
+      allottedCompletionFirstBracketRemove = allottedCompletionListToSendApi.toString().replaceAll("[", "");
       allottedCompletionSecondBracketRemove = allottedCompletionFirstBracketRemove.toString().replaceAll("]", "");
       print("completions : $allottedCompletionSecondBracketRemove");
 
-      allottedDaysFirstBracketRemove =  allottedDaysListToSendApi.toString().replaceAll("[", "");
+      allottedDaysFirstBracketRemove = allottedDaysListToSendApi.toString().replaceAll("[", "");
       allottedDaysSecondBracketRemove = allottedDaysFirstBracketRemove.toString().replaceAll("]", "");
       print("days : $allottedDaysSecondBracketRemove");
 
-      allottedHoursFirstBracketRemove =  allottedHoursListToSendApi.toString().replaceAll("[", "");
+      allottedHoursFirstBracketRemove = allottedHoursListToSendApi.toString().replaceAll("[", "");
       allottedHoursSecondBracketRemove = allottedHoursFirstBracketRemove.toString().replaceAll("]", "");
       print("hours : $allottedHoursSecondBracketRemove");
 
-      allottedMinuteFirstBracketRemove =  allottedMinuteListToSendApi.toString().replaceAll("[", "");
+      allottedMinuteFirstBracketRemove = allottedMinuteListToSendApi.toString().replaceAll("[", "");
       allottedMinuteSecondBracketRemove = allottedMinuteFirstBracketRemove.toString().replaceAll("]", "");
-      print("minutes : $minuteSecondBracketRemove");
+      print("minutes : $allottedMinuteSecondBracketRemove");
 
-      allottedTaskEmpFirstBracketRemove =  allottedSelectedEmpList.toString().replaceAll("[", "");
+      allottedTaskEmpFirstBracketRemove = allottedSelectedEmpIdList.toString().replaceAll("[", "");
       allottedTaskEmpSecondBracketRemove = allottedTaskEmpFirstBracketRemove.toString().replaceAll("]", "");
       print("task emp : $allottedTaskEmpSecondBracketRemove");
 
-      allottedTaskIdFirstBracketRemove =  allottedSelectedEmpIdList.toString().replaceAll("[", "");
+      allottedTaskIdFirstBracketRemove = allottedTaskId.toString().replaceAll("[", "");
       allottedTaskIdSecondBracketRemove = allottedTaskIdFirstBracketRemove.toString().replaceAll("]", "");
       print("task emp id : $allottedTaskIdSecondBracketRemove");
 
-      allottedSrNoFirstBracketRemove =  allottedSrNo.toString().replaceAll("[", "");
+      allottedSrNoFirstBracketRemove = allottedSrNo.toString().replaceAll("[", "");
       allottedSrNoSecondBracketRemove = allottedSrNoFirstBracketRemove.toString().replaceAll("]", "");
       print("srno : $allottedSrNoSecondBracketRemove");
+      print("allottedSelectedReassignId : $allottedSelectedReassignId");
 
       callReassignServices();
+    }
     //}
     //update();
   }
@@ -3127,7 +3372,13 @@ class DashboardController extends GetxController {
     allottedTaskId.insert(allottedTaskId.length, "0");
     allottedSrNo.insert(allottedSrNo.length, "0");
     allottedSelectedEmpIdList.insert(allottedSelectedEmpIdList.length, "0");
+    allottedSelectedEmpList.insert(allottedSelectedEmpList.length, "");
 
+    forTaskNamesAllotted.add("");
+    forCompletionCalculationAllotted.add(0);
+    forDaysCalculationAllotted.add(0);
+    forHrCalculationAllotted.add(0);
+    forMinCalculationAllotted.add(0);
 
     loadAllTaskList.insert(loadAllTaskList.length, LoadAllTaskData(
       completion: "",days: "",firmEmployeeName: "",hours: "",
@@ -3150,7 +3401,15 @@ class DashboardController extends GetxController {
     taskEmp.insert(index, "0");
     taskId.insert(index, "0");
     srNo.insert(index, "0");
+
     triggerSelectedEmpIdList.insert(triggerSelectedEmpIdList.length, "0");
+    triggerSelectedEmpList.insert(triggerSelectedEmpList.length, "");
+
+    forTaskNames.add("");
+    forCompletionCalculation.add(0);
+    forDaysCalculation.add(0);
+    forHrCalculation.add(0);
+    forMinCalculation.add(0);
 
     triggeredNotAllottedLoadAll.insert(index, TriggeredNotAllottedLoadAllList(
      taskName: "",taskId: "",hours: "",days: "",completion: "",addedBy: "",addOnDate: "",bizAdminId: "",
@@ -3177,10 +3436,12 @@ class DashboardController extends GetxController {
 
   checkAllAddedValues(int index){
     if(taskNameList[index].text=="" ||
-        int.parse(completionList[index].text) == 0 ||
-        int.parse(daysList[index].text) == 0 ||
-        int.parse(hoursList[index].text) == 0 ||
-        int.parse(minuteList[index].text) == 0){
+        completionList[index].text.isEmpty ||
+        daysList[index].text.isEmpty ||
+        hoursList[index].text.isEmpty ||
+        minuteList[index].text.isEmpty ||
+        triggerSelectedEmpList[index] == ""
+    ){
       Utils.showAlertSnackBar("Please enter all details");
     }
     else{
@@ -3199,16 +3460,18 @@ class DashboardController extends GetxController {
         allottedCompletionList[index].text.isEmpty ||
         allottedDaysList[index].text.isEmpty ||
         allottedHoursList[index].text.isEmpty ||
-        allottedMinuteList[index].text.isEmpty)
+        allottedMinuteList[index].text.isEmpty ||
+        allottedSelectedEmpList[index] == ""
+    )
     {
       Utils.showAlertSnackBar("Please enter all details");
     }
     else{
-      // allottedSaveTasks(index,allottedTaskNameList[index].text);
-      // allottedSaveCompletion(index,int.parse(allottedCompletionList[index].text));
-      // allottedSaveDays(index,int.parse(allottedDaysList[index].text));
-      // allottedSaveHours(index,int.parse(allottedHoursList[index].text));
-      // allottedSaveMinute(index,int.parse(allottedMinuteList[index].text));
+      allottedSaveTasks(index,allottedTaskNameList[index].text);
+      allottedSaveCompletion(index,int.parse(allottedCompletionList[index].text));
+      allottedSaveDays(index,int.parse(allottedDaysList[index].text));
+      allottedSaveHours(index,int.parse(allottedHoursList[index].text));
+      allottedSaveMinute(index,int.parse(allottedMinuteList[index].text));
       showToast("Added !");
     }
     update();
@@ -3259,12 +3522,17 @@ class DashboardController extends GetxController {
       forCompletionCalculationAllotted.insert(index, minutes);
       update();
     }
+
     else{
       forCompletionCalculationAllotted.add(minutes);
       update();
     }
     int sum = forCompletionCalculationAllotted.fold(0, (p, c) => p + c);
     allottedTotalCompletion = sum;
+
+    print("allottedTotalCompletion");
+    print(allottedTotalCompletion);
+    print(forCompletionCalculationAllotted);
     update();
   }
 
@@ -3480,7 +3748,7 @@ class DashboardController extends GetxController {
     update();
   }
 
-  clearAllFromReassign(){
+  clearAllFromAllottedReassign(){
     loadAllTaskList.clear();
     taskNameList.clear();
     completionList.clear();
@@ -3489,7 +3757,6 @@ class DashboardController extends GetxController {
     minuteList.clear();
     assignedToFromApi.clear();
     taskEmp.clear();
-    taskId.clear();
     srNo.clear();
 
     addedCompletion.clear();
@@ -3497,15 +3764,40 @@ class DashboardController extends GetxController {
     addedHours.clear();
     addedMinute.clear();
 
-    totalCompletion=0;
-    totalDays=0;
-    totalHours=0;
-    totalMins=0;
+    allottedTaskNameListToSendApi.clear();
+    allottedDaysListToSendApi.clear();
+    allottedHoursListToSendApi.clear();
+    allottedMinuteListToSendApi.clear();
+    allottedCompletionListToSendApi.clear();
+    allottedTaskEmp.clear();
+    allottedSelectedEmpList.clear();
+    allottedSelectedEmpIdList.clear();
+
+    allottedTaskNameList.clear();
+    allottedDaysList.clear();
+    allottedHoursList.clear();
+    allottedMinuteList.clear();
+    allottedCompletionList.clear();
+    allottedTaskId.clear();
+    allottedSrNo.clear();
+    allottedTaskEmp.clear();
+
+    allottedTotalCompletion=0;
+    allottedTotalDays=0;
+    allottedTotalHours=0;
+    allottedTotalMins=0;
+    selectedEmployee="";
+    allottedSelectedReassignId = "";
+
+    forCompletionCalculationAllotted.clear();
+    forDaysCalculationAllotted.clear();
+    forHrCalculationAllotted.clear();
+    forMinCalculationAllotted.clear();
     update();
   }
 
   clearAllFromTriggeredNotAllottedReassign(){
-    loadAllTaskList.clear();
+    triggeredNotAllottedLoadAll.clear();
     taskNameList.clear();
     completionList.clear();
     daysList.clear();
@@ -3520,6 +3812,16 @@ class DashboardController extends GetxController {
     addedDays.clear();
     addedHours.clear();
     addedMinute.clear();
+
+    taskNameListToSendApi.clear();
+    completionListToSendApi.clear();
+    daysListToSendApi.clear();
+    hoursListToSendApi.clear();
+    minuteListToSendApi.clear();
+    srNoListToSendApi.clear();
+    taskEmpListToSendApi.clear();
+    triggerSelectedEmpList.clear();
+    triggerSelectedEmpIdList.clear();
 
     totalCompletion=0;
     totalDays=0;
@@ -3527,15 +3829,23 @@ class DashboardController extends GetxController {
     totalMins=0;
     selectedCurrentPriority ="";
     selectedCliId = "";
+    selectedEmployee = "";
+    selectedEmployeeId = "";
+
+    forTaskNames.clear();
+    forCompletionCalculation.clear();
+    forDaysCalculation.clear();
+    forHrCalculation.clear();
+    forMinCalculation.clear();
     update();
   }
 
-  navigateFromReassign(){
-    clearAllFromReassign();
+  navigateFromAllotted(){
+    clearAllFromAllottedReassign();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
 
-  navigateFromLoadAll(){
+  navigateFromTrigger(){
     clearAllFromTriggeredNotAllottedReassign();
     Get.toNamed(AppRoutes.triggeredNotAllottedPieChartList);
   }
@@ -3544,14 +3854,22 @@ class DashboardController extends GetxController {
   void callReassignServices() async {
     updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getReassignServices(allottedTaskNameSecondBracketRemove,selectedReassignId,
-          allottedCompletionSecondBracketRemove,allottedDaysSecondBracketRemove,allottedHoursSecondBracketRemove,
-          allottedMinuteSecondBracketRemove, allottedTaskEmpSecondBracketRemove,allottedTaskIdSecondBracketRemove,
-          allottedSrNoSecondBracketRemove));
+      ApiResponse? response = (await repository.getReassignServices(
+          allottedTaskNameSecondBracketRemove.replaceAll(", ", ","),
+          allottedSelectedReassignId,
+          allottedCompletionSecondBracketRemove.replaceAll(" ", ""),
+          allottedDaysSecondBracketRemove.replaceAll(" ", ""),
+          allottedHoursSecondBracketRemove.replaceAll(" ", ""),
+          allottedMinuteSecondBracketRemove.replaceAll(" ", ""),
+          allottedTaskEmpSecondBracketRemove.replaceAll(" ", ""),
+          allottedTaskIdSecondBracketRemove.replaceAll(" ", ""),
+          allottedSrNoSecondBracketRemove.replaceAll(" ", "")
+      ));
 
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
-        clearAllFromReassign();
+        //clearAllFromAllottedReassign();
+        navigateFromAllotted();
         updateLoader(false);
         update();
       } else {
@@ -3588,14 +3906,25 @@ class DashboardController extends GetxController {
     print(selectedPeriod==0?"1":"2");
 
     try {
-      ApiResponse? response = (await repository.getReassignTriggeredNotAllotted(taskNameSecondBracketRemove,
-          selectedEmployeeId, completionSecondBracketRemove,daysSecondBracketRemove,hoursSecondBracketRemove,
-          minuteSecondBracketRemove, taskEmpSecondBracketRemove,taskIdSecondBracketRemove,srNoSecondBracketRemove,
-          selectedCurrentPriorityId, selectedPeriod==0?"1":"2"));
+      ApiResponse? response = (await repository.getReassignTriggeredNotAllotted(
+          taskNameSecondBracketRemove.replaceAll(", ", ","),
+          selectedCliId,
+          completionSecondBracketRemove.replaceAll(" ", ""),
+          daysSecondBracketRemove.replaceAll(" ", ""),
+          hoursSecondBracketRemove.replaceAll(" ", ""),
+          minuteSecondBracketRemove.replaceAll(" ", ""),
+          taskEmpSecondBracketRemove.replaceAll(" ", ""),
+          taskIdSecondBracketRemove.replaceAll(" ", ""),
+          srNoSecondBracketRemove.replaceAll(" ", ""),
+          selectedCurrentPriorityId,
+          selectedPeriod==0?"1":"2"));
       print(response);
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
-        clearAllFromReassign();
+        //clearAllFromAllottedReassign();
+        callServiceTriggerNotAllotted();
+        callAllottedNotStarted();
+        navigateFromTrigger();
         updateLoader(false);
         update();
       } else {
@@ -3618,16 +3947,22 @@ class DashboardController extends GetxController {
     }
   }
 
-  navigateToDetails(String cliId,String clientName,String serviceName){
+  String allottedSelectedReassignId = "";
+  navigateToDetails(String cliId,String clientName,String serviceName, String assignTo){
+    allottedSelectedReassignId = cliId;
     selectedClientName = clientName; selectedServiceName = serviceName;
+    selectedEmployee = assignTo;
     update();
     callLoadAllTaskService(cliId);
     Get.toNamed(AppRoutes.serviceDashboardNextDetails);
   }
 
-  navigateToServiceView(String cliId,String clientName,String serviceName){
+  String selectedClientIdForOpenLog = "";
+  navigateToServiceView(String cliId,String clientName,String serviceName,String clientCode){
     selectedClientName = clientName; selectedServiceName = serviceName;
+    selectedClientCode = clientCode;
 
+    selectedClientIdForOpenLog = cliId;
     print("selected");
     print(selectedClientName);
     print(selectedServiceName);
@@ -3640,21 +3975,21 @@ class DashboardController extends GetxController {
         : Get.toNamed(AppRoutes.startedNotCompletedViewScreen);
   }
 
-  startSelectedTask(String cliId,String id){
+  startSelectedTask(String id){
     updateLoader(true);
-    callStartTask(cliId, id);
+    callStartTask(id);
     update();
   }
 
   ///start task
-  void callStartTask(String cliId,String id) async {
+  void callStartTask(String id) async {
     updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getStartTask(cliId,id));
+      ApiResponse? response = (await repository.getStartTask(selectedClientIdForOpenLog,id));
 
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
-        callLoadAllTaskService(cliId);
+        callLoadAllTaskService(selectedClientIdForOpenLog);
         updateLoader(false);
         update();
       } else {
@@ -3790,30 +4125,29 @@ class DashboardController extends GetxController {
         updateLoader(false);
         // callAllottedNotStartedOwn();
         // callAllottedNotStarted();
-        if(selectedServiceStatus=="Hold"){
-          showRemarkDialog = true;
-          showAllTaskCompletedDialog = false;
-          showRemarkDialogForHoldStatus(selectedServiceName,context);
-        }
+        // if(selectedServiceStatus=="Hold"){
+        //  showRemarkDialog = true;
+        //           showAllTaskCompletedDialog = false;
+        //           showRemarkDialogForHoldStatus(selectedServiceName,context);
+        // }
         update();
       }
       else {
         print("in else msg");
         print(response.message);
-        if(response.message == "All tasks are not marked as completed"){
-          //updateLoader(false);
-          showDialogToCompleteAllTask(context);
-         // update();
-          showRemarkDialog = false;
-          showAllTaskCompletedDialog = true;
-        }
-        else{
+        // if(response.message == "All tasks are not marked as completed"){
+        //   //updateLoader(false);
+        //   //showDialogToCompleteAllTask(context);
+        //  // update();
+        //
+        // }
+        // else{
           print("in else");
           print(response.message);
           Utils.showErrorSnackBar(response.message);
           updateLoader(false);
           update();
-        }
+      //  }
       }
      // update();
     } on CustomException catch (e) {
@@ -3917,8 +4251,9 @@ class DashboardController extends GetxController {
     }
   }
 
-  List<String> taskStatusList = ["Inporgress","Awaiting for Client Input","Submitted for complete","Put on Hold","Completed"];
-  List<String> addedTaskStatus = [];
+  List<String> rh1taskStatusList = ["Inprocess","Awaiting for Client Input","Submitted for checking","Put on Hold","Completed","Cancel","Sent for Rework"];
+  List<String> rh0taskStatusList = ["Inprocess","Awaiting for Client Input","Submitted for checking","Put on Hold","Completed"];
+  List<String> addedRh1TaskStatus = [];
   String selectedTaskStatus = "";
   String selectedTaskStatusId = "";
 
@@ -3926,23 +4261,59 @@ class DashboardController extends GetxController {
   //
   // }
 
-  updateTaskStatus(String status,String id,BuildContext context,assignId,String taskName){
+  navigateFromStartedNotCompleted(){
+    selectedTaskStatus = ""; update();
+    Get.toNamed(AppRoutes.serviceDashboardNext);
+  }
+
+  updateRh1TaskStatus(String status,String id,BuildContext context,assignId,String taskName){
     selectedTaskStatus = status;
-    selectedTaskStatusId = id;
-    if(addedTaskStatus.contains(id)){
-      addedTaskStatus.remove(id);
+
+    selectedTaskStatusId = (rh1taskStatusList.indexOf(status) + 1).toString();
+
+    if(addedRh1TaskStatus.contains(id)){
+      addedRh1TaskStatus.remove(id);
       update();
     }
     else{
-      addedTaskStatus.add(id);
+      addedRh1TaskStatus.add(id);
       update();
     }
 
     if(selectedTaskStatus == "Inprocess" || selectedTaskStatus == "Completed"){
     }
     else{
-      showRemarkDialogForTaskStatus(context,assignId,id,selectedTaskStatusId,selectedTaskStatus,taskName);
+      showRemarkDialogForTaskStatus(context,id,assignId,selectedTaskStatusId,selectedTaskStatus,taskName);
     }
+
+    print("Selection");
+    print(selectedTaskStatus);
+    print(selectedTaskStatusId);
+    update();
+  }
+
+  List<String> addedRh0TaskStatus = [];
+  updateRh0TaskStatus(String status,String id,BuildContext context,assignId,String taskName){
+    selectedTaskStatus = status;
+    selectedTaskStatusId = (rh0taskStatusList.indexOf(status) + 1).toString();
+    if(addedRh0TaskStatus.contains(id)){
+      addedRh0TaskStatus.remove(id);
+      update();
+    }
+    else{
+      addedRh0TaskStatus.add(id);
+      update();
+    }
+
+    if(selectedTaskStatus == "Inprocess" || selectedTaskStatus == "Completed"){
+    }
+    else{
+      showRemarkDialogForTaskStatus(context,id,assignId,selectedTaskStatusId,selectedTaskStatus,taskName);
+    }
+
+    print("Selection");
+    print(selectedTaskStatus);
+    print(selectedTaskStatusId);
     update();
   }
 
@@ -3960,7 +4331,7 @@ class DashboardController extends GetxController {
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
-                height: 200.0,
+                height: 200.0,width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
@@ -4022,8 +4393,11 @@ class DashboardController extends GetxController {
                         Flexible(
                           child: GestureDetector(
                             onTap: (){
-                              clearRemarkDialog();
-                              Navigator.pop(context);
+                              setter((){
+                                updateLoader(true);
+                                clearRemarkDialog();
+                                Navigator.pop(context);
+                              });
                             },
                             child: buildButtonWidget(context, "Close",height: 40.0,buttonColor: errorColor),
                           ),
@@ -4051,6 +4425,8 @@ class DashboardController extends GetxController {
       if (response.success!) {
         clearRemarkDialog();
         Utils.showSuccessSnackBar(response.message);
+        callAllTasksCompleted();
+        callLoadAllTaskService(selectedClientIdForOpenLog);
         updateLoader(false);
         update();
       } else {
@@ -4072,7 +4448,8 @@ class DashboardController extends GetxController {
   /// priority change for current
   updatePriorityForTriggeredNotAllotted(String priority){
     selectedCurrentPriority = priority;
-    priority == "Low" ? selectedCurrentPriorityId = "3" : priority == "Medium" ? "2": "1" ;
+    priority == "Low" ? selectedCurrentPriorityId = "3" :
+    priority == "Medium" ? selectedCurrentPriorityId = "2": selectedCurrentPriorityId = "1" ;
     update();
   }
 
@@ -4082,8 +4459,33 @@ class DashboardController extends GetxController {
   updateEmployeeFromTriggered(String priority,String id){
     selectedEmployee = priority;
     selectedEmployeeId = id;
+
+    triggerSelectedEmpList.clear();
+    triggerSelectedEmpIdList.clear();
+    for (var element in triggeredNotAllottedLoadAll) {
+      triggerSelectedEmpList.add(priority);
+      triggerSelectedEmpIdList.add(id);
+      update();
+    }
+
+    print("Selected common emp");
     print(selectedEmployee);
     print(selectedEmployeeId);
+
+    update();
+  }
+  updateEmployeeFromAllotted(String priority,String id){
+    selectedEmployee = priority;
+    selectedEmployeeId = id;
+
+    allottedSelectedEmpList.clear();
+    allottedSelectedEmpIdList.clear();
+    for (var element in loadAllTaskList) {
+      allottedSelectedEmpList.add(priority);
+      allottedSelectedEmpIdList.add(id);
+      update();
+    }
+
     update();
   }
 

@@ -96,7 +96,7 @@ class _ServiceCancelAllState extends State<ServiceCancelAll> {
                                             text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
                                             style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
                                             recognizer: TapGestureRecognizer()..onTap = () {
-                                              cont.navigateToDetails(item.id!,item.client!,item.servicename!);
+                                              cont.navigateToDetails(item.id!,item.client!,item.servicename!,item.allottedTo!);
                                             },
                                             children: <TextSpan>[
                                               TextSpan(

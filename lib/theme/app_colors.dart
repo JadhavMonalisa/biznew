@@ -6,6 +6,7 @@ const Color titleTextColor = Color(0xff343434);
 Color subTitleTextColor = const Color(0xff343434).withOpacity(0.5);
 const Color buttonColor = Colors.indigoAccent;
 const Color whiteColor = Color(0xFFFFFFFF);
+const Color notificationCardColor = Color(0xFFefe8e8);
 const Color blackColor = Color(0xFF000000);
 Color textFormBgColor = const Color(0xFFDDDDDD).withOpacity(0.5);
 const Color errorColor = Color(0xFFDB0412);

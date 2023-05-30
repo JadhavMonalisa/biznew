@@ -4,10 +4,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:biznew/screens/calender/calender_model.dart';
 import 'package:biznew/screens/claim_form/claim_model.dart';
+import 'package:biznew/screens/dashboard/client/client_dashboard_model.dart';
 import 'package:biznew/screens/dashboard/dashboard_model.dart';
+import 'package:biznew/screens/dashboard/employee/employee_model.dart';
 import 'package:biznew/screens/leave_form/leave_model.dart';
+import 'package:biznew/screens/manual_assignment/manual_assignment_model.dart';
 import 'package:biznew/screens/petty_task/petty_task_model.dart';
 import 'package:biznew/screens/timesheet_form/timesheet_model.dart';
+import 'package:biznew/screens/timesheet_new/timesheet_new_model.dart';
 import 'package:biznew/utils/custom_response.dart';
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
@@ -65,6 +69,27 @@ class ApiRepository {
     );
     return AccessRightResponse.fromJson(response);
   }
+  ///client dashboard
+  Future<ClientDashboardModel> getClientDashboardList() async {
+    final FormData formData = FormData.fromMap({
+      "firm_id":firmId,"mast_id":userId,"branchid":""
+    },);
+    final response = await apiClient.post(
+      ApiEndpoint.clientDashboardUrl, body: formData, headers: headers,
+    );
+    print("rep api call");
+    return ClientDashboardModel.fromJson(response);
+  }
+  ///employee dashboard
+  Future<EmployeeDashboardModel> getEmployeeDashboardList() async {
+    final FormData formData = FormData.fromMap({
+      "firm_id":firmId,"mast_id":userId,
+    },);
+    final response = await apiClient.post(
+      ApiEndpoint.employeeDashboardUrl, body: formData, headers: headers,
+    );
+    return EmployeeDashboardModel.fromJson(response);
+  }
   ///notification
   Future<NotificationModel> getNotificationList() async {
     final FormData formData = FormData.fromMap({
@@ -74,6 +99,26 @@ class ApiRepository {
       ApiEndpoint.notificationUrl, body: formData, headers: headers,
     );
     return NotificationModel.fromJson(response);
+  }
+  ///notification read for mark all
+  Future<ApiResponse> getNotificationMarkAllRead() async {
+    final FormData formData = FormData.fromMap({
+      "firm_id":firmId,"mast_id":userId
+    },);
+    final response = await apiClient.post(
+      ApiEndpoint.notificationMarkAllReadUrl, body: formData, headers: headers,
+    );
+    return ApiResponse.fromJson(response);
+  }
+  ///notification read selected
+  Future<ApiResponse> getNotificationMarkSelectedRead(String notificationId) async {
+    final FormData formData = FormData.fromMap({
+      "firm_id":firmId,"mast_id":userId,"notification_id":notificationId
+    },);
+    final response = await apiClient.post(
+      ApiEndpoint.notificationMarkSelectedReadUrl, body: formData, headers: headers,
+    );
+    return ApiResponse.fromJson(response);
   }
   ///nature of claim
   Future<ClaimTypeModel> getNatureOfClaimList() async {
@@ -108,6 +153,8 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "firm_id":firmId,"client_id":selectedClientId,"year_id":selectedClaimYearId
     },);
+    print("formData.fields for services");
+    print(formData.fields);
     final response = await apiClient.post(
         ApiEndpoint.claimServicesListUrl,body:formData,headers: headers
     );
@@ -180,6 +227,8 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "firm_id":firmId,"mast_id":userId,"flag":flag,"status":status,"employee":empId
     },);
+    print("formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
         ApiEndpoint.claimListUrl,body:formData,headers: headers
     );
@@ -386,6 +435,8 @@ class ApiRepository {
     final response = await apiClient.post(
       ApiEndpoint.timesheetServicesListUrl, body: formData, headers: headers,
     );
+
+    print(formData.fields);
     return TimesheetServiceListModel.fromJson(response);
   }
   Future<TimesheetServiceListModel> getTimesheetNonAllottedServicesList(String clientId) async {
@@ -407,6 +458,15 @@ class ApiRepository {
     );
     return TimesheetTaskModel.fromJson(response);
   }
+  Future<TimesheetTaskListData> getTimesheetNewTaskList(String serviceId,String clientApplicableServiceId) async {
+    final FormData formData = FormData.fromMap({
+      "mast_id":userId,"service_id":serviceId,"client_applicable_service_id":clientApplicableServiceId
+    },);
+    final response = await apiClient.post(
+      ApiEndpoint.timesheetTaskListUrl, body: formData, headers: headers,
+    );
+    return TimesheetTaskListData.fromJson(response);
+  }
   ///timesheet non allotted task
   Future<TimesheetTaskModel> getTimesheetNonAllottedTaskList(String serviceId,String clientApplicableServiceId) async {
     final FormData formData = FormData.fromMap({
@@ -416,6 +476,15 @@ class ApiRepository {
       ApiEndpoint.timesheetGetNonAllottedTaskUrl, body: formData, headers: headers,
     );
     return TimesheetTaskModel.fromJson(response);
+  }
+  Future<TimesheetTaskListData> getTimesheetNonAllottedNewTaskList(String serviceId,String clientApplicableServiceId) async {
+    final FormData formData = FormData.fromMap({
+      "mast_id":userId,"service_id":serviceId,"client_applicable_service_id":clientApplicableServiceId
+    },);
+    final response = await apiClient.post(
+      ApiEndpoint.timesheetGetNonAllottedTaskUrl, body: formData, headers: headers,
+    );
+    return TimesheetTaskListData.fromJson(response);
   }
   ///timesheet status
   Future<TimesheetStatusModel> getTimesheetStatusList(String clientServiceId,String taskId) async {
@@ -550,9 +619,13 @@ class ApiRepository {
     return BranchEmpModel.fromJson(response);
   }
   ///add petty task
-  Future<ApiResponse> getAddPettyTask(String branchId,String clientId,String empId,String targetDate,String triggerDate,String task) async {
+  Future<ApiResponse> getAddPettyTask(String branchId,String clientId,String empId,String targetDate,
+      String triggerDate,String task,String fees, String hrs, String min) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"branch_id":branchId,
-    "client_id":clientId,"employee_id":empId,"target_date":targetDate,"trigger_date":triggerDate,"tasks":task},);
+    "client_id":clientId,"employee_id":empId,"target_date":targetDate,"trigger_date":triggerDate,"tasks":task,
+    "fees": fees,"estimated_hrs":hrs,"estimated_mins":min},);
+    print("formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.addPettyTaskUrl, body: formData, headers: headers,
     );
@@ -923,6 +996,8 @@ class ApiRepository {
     final response = await apiClient.post(
       ApiEndpoint.triggeredNotAllottedLoadAllUrl, body: formData, headers: headers,
     );
+    print("formData.fields");
+    print(formData.fields);
     return TriggeredNotAllottedLoadAllModel.fromJson(response);
   }
 
@@ -1065,5 +1140,15 @@ class ApiRepository {
     print("formData.fields");
     print(formData.fields);
     return ApiResponse.fromJson(response);
+  }
+  ///main category list
+  Future<MainCategoryModel> getMainCategoryList() async {
+    final FormData formData = FormData.fromMap({
+      "firm_id":firmId,
+    },);
+    final response = await apiClient.post(
+        ApiEndpoint.mainCategoryUrl,body:formData,headers: headers
+    );
+    return MainCategoryModel.fromJson(response);
   }
 }

@@ -109,128 +109,136 @@ class _TriggeredNotAllottedPieChartListState extends State<TriggeredNotAllottedP
               SizedBox(
                 height:MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
-                  child: cont.triggeredNotAllottedPieChartDetails.isEmpty ? Padding(
-                      padding: const EdgeInsets.only(top: 50.0),
-                      child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center))
-                      : ListView.builder(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: cont.triggeredNotAllottedPieChartDetails.length,
-                      itemBuilder: (context,index){
-                        final item = cont.triggeredNotAllottedPieChartDetails[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Card(
-                            elevation: 1.0,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-                                side: const BorderSide(color: grey)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                child: cont.triggeredNotAllottedPieChartDetails.isEmpty ? Padding(
+                    padding: const EdgeInsets.only(top: 50.0),
+                    child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center))
+                    : ListView.builder(
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: cont.triggeredNotAllottedPieChartDetails.length,
+                    itemBuilder: (context,index){
+                      final item = cont.triggeredNotAllottedPieChartDetails[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(left:5.0,right:5.0),
+                        child: Card(
+                          elevation: 1.0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                          side: const BorderSide(color: grey)
+                          ),
+                          child: ExpansionTile(
+                            tilePadding: const EdgeInsets.all(0.0),
+                            trailing: Padding(
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: Icon(
+                                cont.addedIndex.contains(index) ?
+                                Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                size: 25.0,
+                              ),
+                            ),
+                            onExpansionChanged: (value){
+                              cont.onExpanded(value,index);
+                            },
+                            title: Column(
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                        height: 40.0,
-                                        decoration: const BoxDecoration(color: primaryColor,
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                        child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                              child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                            )
-                                        )
-                                    ),
-                                    Flexible(child: Container(
-                                        width: MediaQuery.of(context).size.width,
-                                        height: 40.0,
-                                        decoration: BoxDecoration(border: Border.all(color: grey),
-                                            borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                        child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(left: 10.0),
-                                              child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                            )
-                                        )
-                                    ),)
-                                  ],
-                                ),
-                                const SizedBox(height: 10.0,),
+                                buildClientCodeWidget(item.clientCode!,item.client!,context),
                                 Padding(
-                                    padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        buildTextBoldWidget("Service - ", blackColor, context, 14.0),
-                                        Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
-                                      ],
-                                    )
+                                    padding: const EdgeInsets.only(left: 10.0),
+                                  child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
                                 ),
-                                Padding(
-                                    padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        buildTextBoldWidget("Periodicity - ", blackColor, context, 14.0),
-                                        Flexible(
-                                          child:buildTextRegularWidget("${item.periodicity}", blackColor, context, 14.0,align: TextAlign.left),
-                                        )
-                                      ],
-                                    )
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                  child: Table(
-                                    children: [
-                                      TableRow(
-                                          children: [
-                                            buildTextBoldWidget("Target Date", blackColor, context, 14.0),
-                                            buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                          ]
-                                      ),
-                                      TableRow(
-                                          children: [
-                                            buildTextRegularWidget(item.targetDate!, blackColor, context, 14.0),
-                                            buildTextRegularWidget(item.satDate!.toString(), blackColor, context, 14.0),
-                                          ]
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Row(
-                                      children: [
-                                        Flexible(
-                                            child: GestureDetector(
-                                              onTap: (){
-                                                cont.callTriggeredNotAllottedLoadAll(item.id!,item.client!,item.servicename!);
-                                                },
-                                              child: buildButtonWidget(context, "Assign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                            )),
-                                        const SizedBox(width: 10.0,),
-                                        Flexible(
-                                            child: GestureDetector(
-                                              onTap: (){
-                                                // cont.selectedCliId = item.id!;
-                                                // cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                showInprocessDialog(context);
-                                              },
-                                              child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                            )),
-                                      ],
-                                    )
-                                )
                               ],
                             ),
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Padding(
+                                  //     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
+                                  //     child: Row(
+                                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                                  //       children: [
+                                  //         buildTextBoldWidget("Trigger Date - ", blackColor, context, 14.0),
+                                  //         Flexible(
+                                  //           child:buildTextRegularWidget("${item.triggerDateToShow}", blackColor, context, 14.0,align: TextAlign.left),
+                                  //         )
+                                  //       ],
+                                  //     )
+                                  // ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10.0,right: 10.0,),
+                                    child: Table(
+                                      children: [
+                                        TableRow(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 3.0),
+                                                child: buildTextBoldWidget("Triggered\nDate", blackColor,
+                                                    context, 14.0,align: TextAlign.center),
+                                              ),
+                                              GestureDetector(
+                                                  onTap: (){
+                                                    if(cont.reportingHead == "1"){
+                                                      cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!,'triggerApi',item.staDateTimeFormat!);
+                                                    }
+                                                  },
+                                                child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                              ),
+                                              buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                            ]
+                                        ),
+                                        TableRow(
+                                            children: [
+                                              buildTextRegularWidget(item.triggerDateToShow!,
+                                                  blackColor, context, 14.0,align: TextAlign.center),
+                                              GestureDetector(
+                                                onTap: (){
+                                                  if(cont.reportingHead == "1"){
+                                                    cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!,'triggerApi',item.staDateTimeFormat!);
+                                                  }
+                                                },
+                                                child:buildTextRegularWidget("${
+                                                    cont.addedDateListForAll.contains(item.id)
+                                                        ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                        : item.targetDateToShow}",
+                                                    blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                              ),
+                                              buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                            ]
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                  Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Row(
+                                        children: [
+                                          Flexible(
+                                              child: GestureDetector(
+                                                onTap: (){
+                                                  // cont.selectedCliId = item.id!;
+                                                  // cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                  showInprocessDialog(context);
+                                                },
+                                                child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                              )),
+                                          const SizedBox(width: 10.0,),
+                                          Flexible(
+                                              child: GestureDetector(
+                                                onTap: (){
+                                                  cont.callTriggeredNotAllottedLoadAll(item.id!,item.client!,item.servicename!);
+                                                },
+                                                child: buildButtonWidget(context, "Assign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                              )),
+                                        ],
+                                      )
+                                  )
+                                ],
+                              )
+                            ],
                           ),
-                        );
-                      }),
-                )
+                        ),
+                      );
+                    })
               ),
             ),
           )

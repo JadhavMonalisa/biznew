@@ -1,5 +1,6 @@
 import 'package:biznew/common_widget/error_text.dart';
 import 'package:biznew/common_widget/widget.dart';
+import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/petty_task/petty_task_controller.dart';
 import 'package:biznew/screens/petty_task/petty_task_model.dart';
 import 'package:biznew/theme/app_colors.dart';
@@ -34,38 +35,42 @@ class _PettyTaskFormState extends State<PettyTaskForm> {
                 child: SizedBox(
                     height: double.infinity,
                     child: ListView(
+                      physics:const NeverScrollableScrollPhysics(),
                       children: [
                         Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              buildDrawer(context,cont.name),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 30.0,right: 10.0),
-                                child: Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: (){
-                                        showWarningOnPettyTaskDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
-                                      },
-                                      child: const Icon(Icons.logout),
-                                    ),
-                                    const SizedBox(width: 7.0,),
-                                    GestureDetector(
-                                        onTap:(){
+                          child: Container(
+                            height: MediaQuery.of(context).size.height/1.1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                buildDrawer(context,cont.name),Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: (){
                                           showWarningOnPettyTaskDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
                                         },
-                                        child:buildTextBoldWidget("Logout", blackColor, context, 15.0)
-                                    ),const Spacer(),
-                                    GestureDetector(
-                                      onTap:(){
-                                      },
-                                      child: buildTextRegularWidget("App Version 1.0", grey, context, 14.0),
-                                    )
-                                  ],
+                                        child: const Icon(Icons.logout),
+                                      ),
+                                      const SizedBox(width: 7.0,),
+                                      GestureDetector(
+                                          onTap:(){
+                                            showWarningOnPettyTaskDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
+                                          },
+                                          child:buildTextBoldWidget("Logout", blackColor, context, 15.0)
+                                      ),const Spacer(),
+                                      GestureDetector(
+                                        onTap:(){
+                                        },
+                                        child: buildTextRegularWidget("App Version 1.0", grey, context, 14.0),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -148,45 +153,58 @@ class _PettyTaskFormState extends State<PettyTaskForm> {
 
                             ///client name
                             buildTimeSheetTitle(context,"Client name"),
-                            Container(
-                                height: 40.0,width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                  border: Border.all(color: cont.validateClientName?errorColor:grey),),
-                                child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                      child: DropdownButton(
-                                        hint: buildTextRegularWidget(cont.selectedClientName==""?"Client name":cont.selectedClientName,
-                                            cont.selectedClientName==""?grey:blackColor, context, 15.0),
-                                        isExpanded: true,
-                                        underline: Container(),
-                                        iconEnabledColor: cont.selectedClientName==""?grey:blackColor,
-                                        items:
-                                        cont.clientNameList.isEmpty
-                                            ?
-                                        cont.noDataList.map((value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList()
-                                            : cont.clientNameList.map((Clientslist value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value.firmClientFirmName,
-                                            child: Text(value.firmClientFirmName!),
-                                            onTap: (){
-                                              cont.updateSelectedClientId(value.firmClientId!,context);
-                                            },
-                                          );
-                                        }).toList(),
-                                        onChanged: (val) {
-                                          //cont.updateSelectedClientName(val!,context);
-                                          cont.checkClientNameValidation(val!,context);
-                                        },
-                                      ),
-                                    )
-                                )
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: Container(
+                                      height: 40.0,width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                        border: Border.all(color: cont.validateClientName?errorColor:grey),),
+                                      child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                            child: DropdownButton(
+                                              hint: buildTextRegularWidget(cont.selectedClientName==""?"Client name":cont.selectedClientName,
+                                                  cont.selectedClientName==""?grey:blackColor, context, 15.0),
+                                              isExpanded: true,
+                                              underline: Container(),
+                                              iconEnabledColor: cont.selectedClientName==""?grey:blackColor,
+                                              items:
+                                              cont.clientNameList.isEmpty
+                                                  ?
+                                              cont.noDataList.map((value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value),
+                                                );
+                                              }).toList()
+                                                  : cont.clientNameList.map((Clientslist value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value.firmClientFirmName,
+                                                  child: Text(value.firmClientFirmName!),
+                                                  onTap: (){
+                                                    cont.updateSelectedClientId(value.firmClientId!,context);
+                                                  },
+                                                );
+                                              }).toList(),
+                                              onChanged: (val) {
+                                                //cont.updateSelectedClientName(val!,context);
+                                                cont.checkClientNameValidation(val!,context);
+                                              },
+                                            ),
+                                          )
+                                      )
+                                  ),
+                                ),
+                                // const SizedBox(width: 10.0,),
+                                // GestureDetector(
+                                //   onTap: (){
+                                //     Get.toNamed(AppRoutes.pettyTaskClientFrom);
+                                //   },
+                                //   child:const Icon(Icons.add,size: 30.0,color: blackColor,)
+                                // ),
+                              ],
                             ),
                             cont.validateClientName == true
                                 ? ErrorText(errorMessage: "Please select client name",)
@@ -239,55 +257,198 @@ class _PettyTaskFormState extends State<PettyTaskForm> {
                                 : const Opacity(opacity: 0.0),
                             const SizedBox(height:10.0,),
 
-                            ///trigger date
-                            buildTimeSheetTitle(context,"Trigger date"),
-                            GestureDetector(
-                              onTap: (){cont.selectDate(context,"triggerDate");},
-                              child: Container(
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                    border: Border.all(color:  cont.validateTriggerDate?errorColor:grey),),
-                                  child: Row(
+                            ///target,trigger
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ///trigger date
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(width: 10.0,),
-                                      Icon(Icons.calendar_today,color: cont.selectedTriggerDate==""?grey:blackColor,),
-                                      const SizedBox(width: 10.0,),
-                                      buildTextRegularWidget(cont.selectedTriggerDate==""?"Select Date":cont.selectedTriggerDate,
-                                          cont.selectedTriggerDate==""?grey:blackColor, context, 15.0)
+                                      buildTimeSheetTitle(context,"Trigger date"),
+                                      GestureDetector(
+                                        onTap: (){cont.selectDate(context,"triggerDate");},
+                                        child: Container(
+                                            height: 40.0,
+                                            decoration: BoxDecoration(
+                                              borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                              border: Border.all(color:  cont.validateTriggerDate?errorColor:grey),),
+                                            child: Row(
+                                              children: [
+                                                const SizedBox(width: 10.0,),
+                                                Icon(Icons.calendar_today,color: cont.selectedTriggerDate==""?grey:blackColor,),
+                                                const SizedBox(width: 10.0,),
+                                                buildTextRegularWidget(cont.selectedTriggerDate==""?"Select Date":cont.selectedTriggerDate,
+                                                    cont.selectedTriggerDate==""?grey:blackColor, context, 15.0)
+                                              ],
+                                            )
+                                        ),
+                                      ),
+                                      cont.validateTriggerDate == true
+                                          ? ErrorText(errorMessage: "Please select trigger date",)
+                                          : const Opacity(opacity: 0.0),
                                     ],
-                                  )
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0,),
+                                ///target date
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      buildTimeSheetTitle(context,"Target date"),
+                                      GestureDetector(
+                                        onTap: (){},
+                                        child: Container(
+                                            height: 40.0,
+                                            decoration: BoxDecoration(
+                                              color: grey.withOpacity(0.2),
+                                              borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                              border: Border.all(color:  cont.validateTargetDate?errorColor:grey),),
+                                            child: Row(
+                                              children: [
+                                                const SizedBox(width: 10.0,),
+                                                Icon(Icons.calendar_today,color: cont.selectedTargetDate==""?grey:blackColor,),
+                                                const SizedBox(width: 10.0,),
+                                                buildTextRegularWidget(cont.selectedTargetDate==""?"Select Date":cont.selectedTargetDate,
+                                                    cont.selectedTargetDate==""?grey:blackColor, context, 15.0)
+                                              ],
+                                            )
+                                        ),
+                                      ),
+                                      cont.validateTargetDate == true
+                                          ? ErrorText(errorMessage: "Please select target date",)
+                                          : const Opacity(opacity: 0.0),
+                                      const SizedBox(height:10.0,),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+
+                            ///fees
+                            buildTimeSheetTitle(context,"Fees"),
+                            Container(
+                              height: 40.0,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                border: Border.all(color: cont.validateFees?errorColor:grey),),
+                              child: TextFormField(
+                                controller: cont.fees,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.left,
+                                textCapitalization: TextCapitalization.words,
+                                textAlignVertical: TextAlignVertical.center,
+                                textInputAction: TextInputAction.done,
+                                onTap: () {},
+                                style:const TextStyle(fontSize: 15.0),
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(10),
+                                  hintText: "Enter fees",
+                                  hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
+                                    color: cont.validateFees?blackColor:grey, fontSize: 15,),),
+                                  border: InputBorder.none,
+                                ),
+                                onChanged: (text) {
+                                  cont.checkFeesValidation(context);
+                                },
                               ),
                             ),
-                            cont.validateTriggerDate == true
-                                ? ErrorText(errorMessage: "Please select trigger date",)
+                            cont.validateFees == true
+                                ? ErrorText(errorMessage: "Please enter fees",)
                                 : const Opacity(opacity: 0.0),
                             const SizedBox(height:10.0,),
 
-                            ///target date
-                            buildTimeSheetTitle(context,"Target date"),
-                            GestureDetector(
-                              onTap: (){cont.selectDate(context,"targetDate");},
-                              child: Container(
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                    border: Border.all(color:  cont.validateTargetDate?errorColor:grey),),
-                                  child: Row(
+                            ///estimated hours and minutes
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        buildTimeSheetTitle(context,"Estimated Hours"),
+                                        GestureDetector(
+                                          onTap: (){},
+                                          child: Container(
+                                            height: 40.0,
+                                            decoration: BoxDecoration(
+                                              borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                              border: Border.all(color: cont.validateEstimatedHr?errorColor:grey),),
+                                            child: TextFormField(
+                                              controller: cont.estimatedHours,
+                                              keyboardType: TextInputType.number,
+                                              textAlign: TextAlign.left,
+                                              textAlignVertical: TextAlignVertical.center,
+                                              textInputAction: TextInputAction.done,
+                                              textCapitalization: TextCapitalization.sentences,
+                                              onTap: () {
+                                              },
+                                              style:const TextStyle(fontSize: 15.0),
+                                              decoration: InputDecoration(
+                                                contentPadding: const EdgeInsets.all(10),
+                                                hintText: "0",
+                                                hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
+                                                  color: cont.validateEstimatedHr?blackColor:grey, fontSize: 15,),),
+                                                border: InputBorder.none,
+                                              ),
+                                              onChanged: (text) {
+                                                cont.checkEstimatedHoursValidation(context);
+                                              },
+                                            ),
+                                          )
+                                        ),
+                                        cont.validateEstimatedHr == true
+                                            ? ErrorText(errorMessage: "Please enter hours",)
+                                            : const Opacity(opacity: 0.0),
+                                      ],
+                                    ),
+                                  ),
+                                const SizedBox(width: 5.0,),
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(width: 10.0,),
-                                      Icon(Icons.calendar_today,color: cont.selectedTargetDate==""?grey:blackColor,),
-                                      const SizedBox(width: 10.0,),
-                                      buildTextRegularWidget(cont.selectedTargetDate==""?"Select Date":cont.selectedTargetDate,
-                                          cont.selectedTargetDate==""?grey:blackColor, context, 15.0)
+                                      buildTimeSheetTitle(context,"Estimated Minutes"),
+                                      GestureDetector(
+                                          onTap: (){},
+                                          child: Container(
+                                            height: 40.0,
+                                            decoration: BoxDecoration(
+                                              borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                              border: Border.all(color: cont.validateEstimatedM?errorColor:grey),),
+                                            child: TextFormField(
+                                              controller: cont.estimatedMinutes,
+                                              keyboardType: TextInputType.number,
+                                              textAlign: TextAlign.left,
+                                              textAlignVertical: TextAlignVertical.center,
+                                              textInputAction: TextInputAction.done,
+                                              textCapitalization: TextCapitalization.sentences,
+                                              onTap: () {
+                                              },
+                                              style:const TextStyle(fontSize: 15.0),
+                                              decoration: InputDecoration(
+                                                contentPadding: const EdgeInsets.all(10),
+                                                hintText: "0",
+                                                hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
+                                                  color: cont.validateEstimatedM?blackColor:grey, fontSize: 15,),),
+                                                border: InputBorder.none,
+                                              ),
+                                              onChanged: (text) {
+                                                cont.checkEstimatedMinutesValidation(context);
+                                              },
+                                            ),
+                                          )
+                                      ),
+                                      cont.validateEstimatedM == true
+                                          ? ErrorText(errorMessage: "Please enter minutes",)
+                                          : const Opacity(opacity: 0.0),
                                     ],
-                                  )
-                              ),
+                                  ),
+                                )
+                              ],
                             ),
-                            cont.validateTargetDate == true
-                                ? ErrorText(errorMessage: "Please select target date",)
-                                : const Opacity(opacity: 0.0),
-                            const SizedBox(height:10.0,),
 
                             ///task
                             buildTimeSheetTitle(context,"Task"),

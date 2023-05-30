@@ -1,6 +1,11 @@
+import 'package:biznew/constant/strings.dart';
+import 'package:biznew/routes/app_pages.dart';
+import 'package:biznew/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../common_widget/widget.dart';
 import '../../theme/app_colors.dart';
 import 'bottom_nav_controller.dart';
 
@@ -12,6 +17,8 @@ class BottomNavigationScreen extends StatefulWidget {
 }
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
+
+  final _key = GlobalKey<ExpandableFabState>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +32,66 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           body: SafeArea(
             child: cont.buildWidget(),
           ),
+            floatingActionButtonLocation: ExpandableFab.location,
+            floatingActionButton: Padding(
+              padding : const EdgeInsets.only(bottom:10.0),
+              child: ExpandableFab(
+                  key: _key,type: ExpandableFabType.up,
+                  distance: 70.0,
+
+                  children : [
+                    SizedBox(
+                      width: 130.0,
+                      child: FloatingActionButton.extended(
+                        onPressed: (){
+                          Get.toNamed(AppRoutes.leaveList,arguments: ["Leaves"]);
+                        },
+                        icon: Icon(Icons.calendar_today),
+
+                        backgroundColor: primaryColor, label: buildTextBoldWidget("Leaves", whiteColor, context, 12.0),
+
+                        //child:buildTextRegularWidget("Petty Task", whiteColor, context, 11.0)
+                      ),
+                    ),
+                    SizedBox(
+                      width: 130.0,height: 45.0,
+                      child: FloatingActionButton(
+                        onPressed: (){
+                          Get.toNamed(AppRoutes.claimList,arguments: ["Claim"]);
+                        },
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+                        backgroundColor: primaryColor,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            buildTextBoldWidget("${Strings.rupees}", whiteColor, context, 16.0),
+                            buildTextBoldWidget("Claims", whiteColor, context, 12.0),
+                          ],
+                        ),
+                        //label: buildRichTextWidget("${Strings.rupees}","Claim",
+                        // title1Size: 16.0,title2Size: 13.0,
+                        //   title1Weight: FontWeight.bold,title2Weight: FontWeight.w900,
+                        //   title1Color: whiteColor,title2Color: whiteColor
+                        // ),
+                        //label: buildTextBoldWidget("${Strings.rupees} Claim", whiteColor, context, 12.0),
+                        //child:buildTextRegularWidget("Petty Task", whiteColor, context, 11.0)
+                      ),
+                    ),
+                    SizedBox(
+                      width: 130.0,
+                      child: FloatingActionButton.extended(
+                          onPressed: (){
+                            Get.toNamed(AppRoutes.pettyTaskFrom,arguments: ["Petty Task"]);
+                          },
+                        icon: Icon(Icons.task),
+                          backgroundColor: primaryColor, label: buildTextBoldWidget("Petty Task", whiteColor, context, 12.0),
+                          //child:buildTextRegularWidget("Petty Task", whiteColor, context, 11.0)
+                      ),
+                    )
+                  ]
+              ),
+            ),
           bottomNavigationBar: bottomNavigationBar(cont),
         )
         );
@@ -49,9 +116,11 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           elevation: 0,
           items: <BottomNavigationBarItem>[
             buildItem(Icons.dashboard, "Dashboard",0,cont),
-            buildItem(Icons.timer, "Timesheet",1,cont),
-            buildItem(Icons.filter_frames, "Claim",2,cont),
-            buildItem(Icons.calendar_today, "Leaves",3,cont),
+            buildItem(Icons.dashboard, "Employee",1,cont),
+            buildItem(Icons.dashboard, "Client",2,cont),
+            buildItem(Icons.timer, "Timesheet",3,cont),
+            // buildClaimItem(Strings.rupees, "Claim",2,cont),
+            // buildItem(Icons.calendar_today, "Leaves",3,cont),
           ],
           selectedItemColor: primaryColor,
           unselectedItemColor: subTitleTextColor,
@@ -72,6 +141,22 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             radius: 20.0,
             backgroundColor: whiteColor,
             child:Center(child:Icon(image,color: cont.selectedTabIndex == index ? primaryColor : subTitleTextColor,))
+        ),
+      ),
+      label: title,
+    );
+  }
+
+  buildClaimItem(String image, String title,int index, BottomNavController cont,){
+    return BottomNavigationBarItem(
+      icon: Padding(
+        padding: const EdgeInsets.only(bottom: 3.0),
+        child: CircleAvatar(
+            radius: 20.0,
+            backgroundColor: whiteColor,
+            child:Center(child:buildTextBoldWidget(image,
+                cont.selectedTabIndex == index ? primaryColor : subTitleTextColor,
+                context, 22.0,align: TextAlign.center))
         ),
       ),
       label: title,

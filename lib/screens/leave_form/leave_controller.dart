@@ -60,12 +60,12 @@ class LeaveController extends GetxController {
   bool validateNoOfAttempt = false;
   bool validateLeaveForExam = false;
   ///leave list
-  int selectedLeaveFlag = 0;
+  int selectedLeaveFlag = 2;
   List<LeaveListData> leaveList = [];
   String selectedLeaveId = "";
   String selectedEmployee = "";
-  String selectedLeaveStatus = "";
-  List<String> leaveStatusList = ["Approved","Pending for approval","Cancelled","Apply For Cancel"];
+  String selectedLeaveStatus = "None";
+  List<String> leaveStatusList = ["All","Approved","Pending for approval","Cancelled","Apply For Cancel"];
   ///leave edit
   String selectedLeaveIdForEdit = "";
   List<LeaveEditDetails> leaveEditList = [];
@@ -85,7 +85,7 @@ class LeaveController extends GetxController {
     callEmployeeList();
     callLeaveCountList();
     callLeaveTypeList();
-    callLeaveList();
+    //callLeaveList();
 
     print("items");
     print(items.length);
@@ -165,15 +165,25 @@ class LeaveController extends GetxController {
 
   updateSelectedClaimStatus(String val){ selectedEmployee = val;callLeaveList(); update();}
 
-  updateSelectedLeaveStatus(String val){ selectedLeaveStatus = val;
+  updateSelectedLeaveStatus(String val){
+
+    selectedLeaveStatus = val=="All" ? "All" : val;
   updateLoader(true);
   callLeaveList(); update();}
 
   updateSelectedLeaveFlag(int val,BuildContext context){
     selectedEmployee = "";selectedLeaveStatus="";
-    updateLoader(true); selectedLeaveFlag = val;
-
-    callLeaveList(); update();}
+    updateLoader(true);
+    print("b4 selectedLeaveStatus");
+    print(selectedLeaveStatus);
+    selectedLeaveFlag = val;
+    if(selectedLeaveFlag != 2 && selectedLeaveStatus == ""){
+      selectedLeaveStatus = "All"; update();
+    }
+    print("selectedLeaveStatus");
+    print(selectedLeaveStatus);
+    callLeaveList(); update();
+  }
 
   List<ClaimSubmittedByList> employeeList = [];
   ///update emp list
@@ -221,7 +231,8 @@ class LeaveController extends GetxController {
     //updateLoader(true);
     try {
       LeaveListModel? response = (await repository.getLeaveList(
-        selectedLeaveFlag==0?"own":"team", selectedLeaveStatus,
+        selectedLeaveFlag==0 ? "own" : selectedLeaveFlag==1 ? "team" :"",
+          selectedLeaveStatus=="All" ? "":selectedLeaveStatus,
           selectedLeaveFlag == 0 ? "" :
           selectedMultipleEmpIdList.isEmpty ? "" : removeSecondBracket
       ));
@@ -251,7 +262,8 @@ class LeaveController extends GetxController {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: DateTime(1700, 1),
+        firstDate: forWhat=="start" ? DateTime.now() :
+                   forWhat=="end" ? startDate : DateTime(1700, 1),
         lastDate: DateTime(2100, 1));
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
@@ -308,6 +320,8 @@ class LeaveController extends GetxController {
   changeSelectedIndexForExam(v,String nameForExam) {
     selectedLeaveForExam = v;
     nameOfLeaveForExam = nameForExam;
+
+    print(nameOfLeaveForExam);
     if(selectedLeaveType=="Exam Leave"){
       checkLeaveForExamValidation();
       update();

@@ -35,38 +35,42 @@ class _LeaveFormState extends State<LeaveForm> {
             child: SizedBox(
                 height: double.infinity,
                 child: ListView(
+                  physics:const NeverScrollableScrollPhysics(),
                   children: [
                     Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          buildDrawer(context,cont.name),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 30.0,right: 10.0),
-                            child: Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: (){
-                                    showWarningOnLeaveDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
-                                  },
-                                  child: const Icon(Icons.logout),
-                                ),
-                                const SizedBox(width: 7.0,),
-                                GestureDetector(
-                                    onTap:(){
+                      child: Container(
+                        height: MediaQuery.of(context).size.height/1.1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildDrawer(context,cont.name),Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: (){
                                       showWarningOnLeaveDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
                                     },
-                                    child:buildTextBoldWidget("Logout", blackColor, context, 15.0)
-                                ),const Spacer(),
-                                GestureDetector(
-                                  onTap:(){
-                                  },
-                                  child: buildTextRegularWidget("App Version 1.0", grey, context, 14.0),
-                                )
-                              ],
+                                    child: const Icon(Icons.logout),
+                                  ),
+                                  const SizedBox(width: 7.0,),
+                                  GestureDetector(
+                                      onTap:(){
+                                        showWarningOnLeaveDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
+                                      },
+                                      child:buildTextBoldWidget("Logout", blackColor, context, 15.0)
+                                  ),const Spacer(),
+                                  GestureDetector(
+                                    onTap:(){
+                                    },
+                                    child: buildTextRegularWidget("App Version 1.0", grey, context, 14.0),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -229,41 +233,179 @@ class _LeaveFormState extends State<LeaveForm> {
 
                         ///no of leaves
                         const SizedBox(height: 15,),
-                        const Divider(color: grey,thickness: 2.0),const SizedBox(height: 15,),
-                        buildTextRegularWidget("No. of days leave  ${cont.days} days "
-                            "${cont.month==0?"":cont.month}" " ${cont.month==0?"":"month"}"
-                            "${cont.year==0?"":cont.year}" " ${cont.year==0?"":"year"}",
-                            blackColor, context, 15.0),
-                        const SizedBox(height: 15,),
 
-                        ///total leaves
-                        buildTextRegularWidget("Total leaves in this year ${cont.totalDays}", blackColor, context, 15.0),
-                        const SizedBox(height: 15,),
+                        const Divider(color: grey,thickness: 2.0),
+                        IntrinsicHeight(
+                          child: Row(
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width/2,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height:40.0,
+                                        child:buildTextBoldWidget("No. of days leave",
+                                            blackColor, context, 15.0),
+                                      ),
+                                      buildTextRegularWidget("${cont.days} days "
+                                          "${cont.month==0?"":cont.month}" " ${cont.month==0?"":"month"}"
+                                          "${cont.year==0?"":cont.year}" " ${cont.year==0?"":"year"}",
+                                          blackColor, context, 15.0),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const VerticalDivider(
+                                color: grey,
+                                thickness: 2,
+                              ),
+                              Flexible(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width/2,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 40.0,
+                                        child:buildTextBoldWidget("Total leaves in this year",
+                                            blackColor, context, 15.0,align: TextAlign.center),
+                                      ),
+                                      buildTextRegularWidget("${cont.totalDays} days",
+                                          blackColor, context, 15.0),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // buildRichTextWidget("No. of days leave  ${cont.days} days "
+                        //     "${cont.month==0?"":cont.month}" " ${cont.month==0?"":"month"}"
+                        //     "${cont.year==0?"":cont.year}" " ${cont.year==0?"":"year"}",
+                        // "Total leaves in this year ${cont.totalDays}"),
                         const Divider(color: grey,thickness: 2.0),
                         const SizedBox(height: 15,),
+                        // buildTextRegularWidget("No. of days leave  ${cont.days} days "
+                        //     "${cont.month==0?"":cont.month}" " ${cont.month==0?"":"month"}"
+                        //     "${cont.year==0?"":cont.year}" " ${cont.year==0?"":"year"}",
+                        //     blackColor, context, 15.0),
+                        //const SizedBox(height: 15,),
+
+                        ///total leaves
+                        // buildTextRegularWidget("Total leaves in this year ${cont.totalDays}", blackColor, context, 15.0),
+                        // const SizedBox(height: 15,),
+                        // const Divider(color: grey,thickness: 2.0),
+                        // const SizedBox(height: 15,),
 
                         ///leave for 1
                         cont.selectedStartDateToShow == cont.selectedEndDateToShow ?
                         buildTextRegularWidget("Leave For ", blackColor, context, 15.0)
                             :const Opacity(opacity: 0.0),
                         cont.selectedStartDateToShow == cont.selectedEndDateToShow ?
-                        ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: cont.leaveForList.length,
-                        itemBuilder: (context, index) {
-                          return RadioListTile(
-                          value: cont.leaveForList[index],
-                          groupValue: cont.selectedLeave,
-                          selected: cont.leaveForList[index] == cont.selectedLeaveIndex,
-                          onChanged: (dynamic v){
-                            cont.changeSelectedIndex(v,cont.leaveForList[cont.selectedLeaveIndex]);
-                          },
-                          title: Align(
-                            child: buildTextRegularWidget(cont.leaveForList[index], blackColor, context, 15.0),
-                            alignment: const Alignment(-1,20),
+                        // ListView.builder(
+                        // shrinkWrap: true,
+                        // itemCount: cont.leaveForList.length,
+                        // itemBuilder: (context, index) {
+                        //   return RadioListTile(
+                        //   value: cont.leaveForList[index],
+                        //   groupValue: cont.selectedLeave,
+                        //   selected: cont.leaveForList[index] == cont.selectedLeaveIndex,
+                        //   onChanged: (dynamic v){
+                        //     cont.changeSelectedIndex(v,cont.leaveForList[cont.selectedLeaveIndex]);
+                        //   },
+                        //   title: Align(
+                        //     child: buildTextRegularWidget(cont.leaveForList[index], blackColor, context, 15.0),
+                        //     alignment: const Alignment(-1,20),
+                        //   ),
+                        //   contentPadding: EdgeInsets.zero,dense: true,
+                        //   );},)
+
+                        SizedBox(
+                          width: double.infinity,height: 50.0,
+                          child: ListView(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              // Flexible(
+                              //   child: RadioListTile(
+                              //     title: const Text('Full Day',style: TextStyle(fontSize: 14.0),),
+                              //     value: cont.leaveForList[0],
+                              //     groupValue: cont.selectedLeave,
+                              //     onChanged: (dynamic v) {
+                              //       cont.changeSelectedIndex(v,cont.leaveForList[cont.selectedLeaveIndex]);
+                              //     },
+                              //   ),
+                              // ),
+                              // Flexible(
+                              //   child: RadioListTile(
+                              //     title: const Text('First Half',style: TextStyle(fontSize: 14.0),),
+                              //     value: cont.leaveForList[1],
+                              //     groupValue: cont.selectedLeave,
+                              //     onChanged: (dynamic v) {
+                              //       cont.changeSelectedIndex(v,cont.leaveForList[cont.selectedLeaveIndex]);
+                              //     },
+                              //   ),
+                              // ),
+                              // Flexible(
+                              //   child: RadioListTile(
+                              //     title: const Text('Second Half',style: TextStyle(fontSize: 14.0),),
+                              //     value: cont.leaveForList[2],
+                              //     groupValue: cont.selectedLeave,
+                              //     onChanged: (dynamic v) {
+                              //       cont.changeSelectedIndex(v,cont.leaveForList[cont.selectedLeaveIndex]);
+                              //     },
+                              //   ),
+                              // ),
+
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Radio(
+                                  activeColor: Colors.green,
+                                  value: cont.leaveForList[0],
+                                  visualDensity: const VisualDensity(horizontal: -4.0),
+                                  groupValue: cont.selectedLeave,
+                                  onChanged: (dynamic v) {
+                                    cont.changeSelectedIndex(v,cont.leaveForList[0]);
+                                  },
+                                ),
+                                buildTextRegularWidget("Full Day", blackColor, context, 14.0),
+                              ],
+                            ),
+                             Row(
+                               crossAxisAlignment: CrossAxisAlignment.center,
+                               children: [
+                                 Radio(
+                                   activeColor: Colors.green,
+                                   value: cont.leaveForList[1],
+                                   groupValue: cont.selectedLeave,
+                                   visualDensity: const VisualDensity(horizontal: -4.0),
+                                   onChanged: (dynamic v) {
+                                     cont.changeSelectedIndex(v,cont.leaveForList[1]);
+                                   },
+                                 ),
+                                 buildTextRegularWidget("First Half", blackColor, context, 14.0),
+                               ],
+                             ),
+
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Radio(
+                                    activeColor: Colors.green,
+                                    value: cont.leaveForList[2],
+                                    groupValue: cont.selectedLeave,
+                                    visualDensity: const VisualDensity(horizontal: -4.0),
+                                    onChanged: (dynamic v) {
+                                      cont.changeSelectedIndex(v,cont.leaveForList[2]);
+                                    },
+                                  ),
+                                  buildTextRegularWidget("Second Half", blackColor, context, 14.0)
+                                ],
+                              )
+                            ],
                           ),
-                          contentPadding: EdgeInsets.zero,dense: true,
-                          );},)
+                        )
                             : const Opacity(opacity: 0.0),
                         cont.validateLeaveFor == true
                             ? ErrorText(errorMessage: "Please select leave for",)
@@ -315,24 +457,52 @@ class _LeaveFormState extends State<LeaveForm> {
                             ? buildTextRegularWidget("Leave For ", blackColor, context, 15.0)
                             : const Opacity(opacity: 0.0,),
                         cont.selectedLeaveType == "Exam Leave"
-                            ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: cont.leaveForExamList.length,
-                          itemBuilder: (context, index) {
-                            return RadioListTile(
-                              value: cont.leaveForExamList[index],
-                              groupValue: cont.selectedLeaveForExam,
-                              selected: cont.leaveForExamList[index] == cont.selectedLeaveForExamIndex,
-                              onChanged: (dynamic v){
-                                cont.changeSelectedIndexForExam(v,cont.leaveForExamList[cont.selectedLeaveForExamIndex]);
-                              },
-                              title:Align(
-                                child: buildTextRegularWidget(cont.leaveForExamList[index], blackColor, context, 15.0),
-                                alignment: const Alignment(-1,20),
-                              ),
-                              contentPadding: const EdgeInsets.all(0.0),dense: true,
-                            );
-                          },
+                            ?
+                        // ListView.builder(
+                        //   shrinkWrap: true,
+                        //   itemCount: cont.leaveForExamList.length,
+                        //   itemBuilder: (context, index) {
+                        //     return RadioListTile(
+                        //       value: cont.leaveForExamList[index],
+                        //       groupValue: cont.selectedLeaveForExam,
+                        //       selected: cont.leaveForExamList[index] == cont.selectedLeaveForExamIndex,
+                        //       onChanged: (dynamic v){
+                        //         cont.changeSelectedIndexForExam(v,cont.leaveForExamList[cont.selectedLeaveForExamIndex]);
+                        //       },
+                        //       title:Align(
+                        //         child: buildTextRegularWidget(cont.leaveForExamList[index], blackColor, context, 14.0),
+                        //         alignment: const Alignment(-1,20),
+                        //       ),
+                        //       contentPadding: const EdgeInsets.all(0.0),dense: true,
+                        //     );
+                        //   },
+                        // )
+                        SizedBox(
+                          width: double.infinity,height: 50.0,
+                          child:
+                          ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: cont.leaveForExamList.length,
+                            itemBuilder: (context, index) {
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Radio(
+                                    activeColor: Colors.green,
+                                    value: cont.leaveForExamList[index],
+                                    groupValue: cont.selectedLeaveForExam,
+                                    visualDensity: const VisualDensity(horizontal: -4.0),
+                                    //selected: cont.leaveForExamList[index] == cont.selectedLeaveForExamIndex,
+                                    onChanged: (dynamic v){
+                                      cont.changeSelectedIndexForExam(v,cont.leaveForExamList[index]);
+                                    },
+                                  ),
+                                  buildTextRegularWidget(cont.leaveForExamList[index], blackColor, context, 14.0),
+                                ],
+                              );
+                            },
+                          )
                         )
                             : const Opacity(opacity: 0.0,),
                         cont.validateLeaveForExam == true

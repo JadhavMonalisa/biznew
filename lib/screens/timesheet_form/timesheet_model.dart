@@ -160,14 +160,15 @@ class TimesheetTaskModel {
 class TimesheetTaskData {
   String? taskId;
   String? taskName;
+  String? selectedServiceId;
   List<String>? testTaskStatusList;
 
-
-  TimesheetTaskData({this.taskId, this.taskName,this.testTaskStatusList});
+  TimesheetTaskData({this.taskId, this.taskName,this.selectedServiceId,this.testTaskStatusList});
 
   TimesheetTaskData.fromJson(Map<String, dynamic> json) {
     taskId = json['task_id']??"";
     taskName = json['task_name']??"";
+    selectedServiceId = "";
     testTaskStatusList = [""];
   }
 

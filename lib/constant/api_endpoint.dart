@@ -9,6 +9,10 @@ class ApiEndpoint {
   static const String forgotPasswordUrl = "$baseUrl/apiController/forgotpassword";
   static const String accessRightUrl = "$baseUrl/apiController/get_access_rights";
   static const String notificationUrl = "$baseUrl/ApiController/notification";
+  static const String notificationMarkAllReadUrl = "$baseUrl/ApiController/notification_mark_all_read";
+  static const String notificationMarkSelectedReadUrl = "$baseUrl/ApiController/notification_mark_read";
+  static const String clientDashboardUrl = "$baseUrl/DashboardController/client_dashboard";
+  static const String employeeDashboardUrl = "$baseUrl/DashboardController/employee_dashboard";
 
   ///Claim
   static const String claimTypeListUrl = "$baseUrl/ClaimController/claimtype";
@@ -149,5 +153,8 @@ class ApiEndpoint {
   ///calender
   static const String calenderUrl = "$baseUrl/CalenderController/calender_data";
   static const String calenderDueDateUrl = "$baseUrl/CalenderController/date_detail";
+
+  ///manual assignment
+  static const String mainCategoryUrl = "$baseUrl/ApiController/service_main_category";
 
 }

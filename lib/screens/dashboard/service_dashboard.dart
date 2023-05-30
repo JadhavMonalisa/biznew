@@ -10,6 +10,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 class ServiceDashboardScreen extends StatefulWidget {
   const ServiceDashboardScreen({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class ServiceDashboardScreen extends StatefulWidget {
 
 class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>(debugLabel: 'GlobalKey');
+  //final _key = GlobalKey<ExpandableFabState>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
         key: scaffoldKey,
         appBar: AppBar(
           elevation: 0, backgroundColor: primaryColor, centerTitle: true,
-          title: buildTextMediumWidget("Employee Dashboard", whiteColor,context, 16,align: TextAlign.center),
+          title: buildTextMediumWidget("Dashboard", whiteColor,context, 16,),
           leading: Padding(
             padding: const EdgeInsets.only(left: 20.0),
             child: GestureDetector(
@@ -70,80 +72,87 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
         child: SizedBox(
             height: double.infinity,width: MediaQuery.of(context).size.width,
             child: ListView(
+              physics:const NeverScrollableScrollPhysics(),
               children: [
                 Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      buildDrawer(context,cont.name,branchWidget:
-                      Padding(
-                          padding: const EdgeInsets.only(top:5.0,right: 10.0,),
-                          child: Container(
-                              height: 40.0,width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                border: Border.all(color: cont.selectedBranchName==""?grey:whiteColor),),
-                              child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                    child: DropdownButton(
-                                      hint: buildTextRegularWidget(cont.selectedBranchName==""?"Branch name":cont.selectedBranchName,
-                                          cont.selectedBranchName==""?grey:whiteColor, context, 15.0),
-                                      isExpanded: true,
-                                      underline: Container(),
-                                      iconEnabledColor: cont.selectedBranchName==""?grey:whiteColor,
-                                      items:
-                                      cont.branchNameList.isEmpty
-                                          ?
-                                      cont.noDataList.map((value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList()
-                                          : cont.branchNameList.map((Branchlist value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value.name,
-                                          child: Text(value.name!),
-                                          onTap: (){
-                                            cont.updateSelectedBranchId(value.id!);
-                                          },
-                                        );
-                                      }).toList(),
-                                      onChanged: (val) {
-                                        cont.checkBranchNameValidation(val!);
-                                      },
-                                    ),
-                                  )
-                              )
-                          ),
-                        ),),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 30.0,right: 10.0),
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                showDashboardDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
-                              },
-                              child: const Icon(Icons.logout),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height/1.1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        buildDrawer(context,cont.name,branchWidget:
+                        Padding(
+                            padding: const EdgeInsets.only(top:5.0,right: 10.0,),
+                            child: Container(
+                                height: 40.0,width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                  border: Border.all(color: cont.selectedBranchName==""?grey:whiteColor),),
+                                child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                      child: DropdownButton(
+                                        hint: buildTextRegularWidget(cont.selectedBranchName==""?"Branch name":cont.selectedBranchName,
+                                            cont.selectedBranchName==""?grey:whiteColor, context, 15.0),
+                                        isExpanded: true,
+                                        underline: Container(),
+                                        iconEnabledColor: cont.selectedBranchName==""?grey:whiteColor,
+                                        items:
+                                        cont.branchNameList.isEmpty
+                                            ?
+                                        cont.noDataList.map((value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList()
+                                            : cont.branchNameList.map((Branchlist value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value.name,
+                                            child: Text(value.name!),
+                                            onTap: (){
+                                              cont.updateSelectedBranchId(value.id!);
+                                            },
+                                          );
+                                        }).toList(),
+                                        onChanged: (val) {
+                                          cont.checkBranchNameValidation(val!);
+                                        },
+                                      ),
+                                    )
+                                )
                             ),
-                            const SizedBox(width: 7.0,),
-                            GestureDetector(
-                                onTap:(){
+                          ),),
+
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                onTap: (){
                                   showDashboardDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
                                 },
-                                child:buildTextBoldWidget("Logout", blackColor, context, 15.0)
-                            ),const Spacer(),
-                            GestureDetector(
-                              onTap:(){
-                              },
-                              child: buildTextRegularWidget("App Version 1.0", grey, context, 14.0),
-                            )
-                          ],
+                                child: const Icon(Icons.logout),
+                              ),
+                              const SizedBox(width: 7.0,),
+                              GestureDetector(
+                                  onTap:(){
+                                    showDashboardDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
+                                  },
+                                  child:buildTextBoldWidget("Logout", blackColor, context, 15.0)
+                              ),const Spacer(),
+                              GestureDetector(
+                                onTap:(){
+                                },
+                                child: buildTextRegularWidget("App Version 1.0", grey, context, 14.0),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -724,55 +733,72 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                       child: const Icon(Icons.arrow_back_ios,color: primaryColor,),
                                     ),
                                     const Spacer(),
-                                    PieChart(
-                                      dataMap:
-                                      index == 0 ? cont.triggerNotAllottedValues :
-                                      index == 1 ? cont.allottedNotStartedValues :
-                                      index == 2 ? cont.startedNotCompletedValues :
-                                      index == 3 ? cont.completedIdPendingValues :
-                                      index == 4 ? cont.completedNotBilledValues :
-                                      index == 5 ? cont.workOnHoldValues :
-                                      index == 6 ? cont.submittedForCheckingValues : cont.allTasksCompletedValues,
+                                    Stack(
+                                      alignment: Alignment.center,
+                                        children: [
+                                          PieChart(
+                                            dataMap:
+                                            index == 0 ? cont.triggerNotAllottedValues :
+                                            index == 1 ? cont.allottedNotStartedValues :
+                                            index == 2 ? cont.startedNotCompletedValues :
+                                            index == 3 ? cont.completedIdPendingValues :
+                                            index == 4 ? cont.completedNotBilledValues :
+                                            index == 5 ? cont.workOnHoldValues :
+                                            index == 6 ? cont.submittedForCheckingValues : cont.allTasksCompletedValues,
 
-                                      animationDuration: const Duration(milliseconds: 800),
-                                      chartLegendSpacing: 32,
-                                      chartRadius: MediaQuery.of(context).size.width / 2.5,
+                                            animationDuration: const Duration(milliseconds: 800),
+                                            chartLegendSpacing: 32,
+                                            chartRadius: MediaQuery.of(context).size.width / 2.5,
 
-                                      colorList: index == 0 ? cont.triggerNotAllottedColors :
-                                      index == 1 ? cont.allottedNotStartedColors :
-                                      index == 2 ? cont.startedNotCompletedColors :
-                                      index == 3 ? cont.completedIdPendingColors :
-                                      index == 4 ? cont.completedNotBilledColors :
-                                      index == 5 ? cont.workOnHoldColors:
-                                      index == 6 ? cont.submittedForCheckingColors :cont.allTasksCompletedColors,
+                                            colorList: index == 0 ? cont.triggerNotAllottedColors :
+                                            index == 1 ? cont.allottedNotStartedColors :
+                                            index == 2 ? cont.startedNotCompletedColors :
+                                            index == 3 ? cont.completedIdPendingColors :
+                                            index == 4 ? cont.completedNotBilledColors :
+                                            index == 5 ? cont.workOnHoldColors:
+                                            index == 6 ? cont.submittedForCheckingColors :cont.allTasksCompletedColors,
 
-                                      initialAngleInDegree: 0,
-                                      chartType: ChartType.ring,
-                                      ringStrokeWidth: 42,
+                                            initialAngleInDegree: 0,
+                                            chartType: ChartType.ring,
+                                            ringStrokeWidth: 42,
 
-                                      centerText: index == 0 ? cont.triggerNotAllottedTotal :
-                                      index == 1 ? cont.allottedNotStartedTotal :
-                                      index == 2 ? cont.startedNotCompletedTotal :
-                                      index == 3 ? cont.completedIdPendingTotal :
-                                      index == 4 ? cont.completedNotBilledTotal :
-                                      index == 5 ? cont.workOnHoldTotal :
-                                      index == 6 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
+                                            // centerText: index == 0 ? cont.triggerNotAllottedTotal :
+                                            // index == 1 ? cont.allottedNotStartedTotal :
+                                            // index == 2 ? cont.startedNotCompletedTotal :
+                                            // index == 3 ? cont.completedIdPendingTotal :
+                                            // index == 4 ? cont.completedNotBilledTotal :
+                                            // index == 5 ? cont.workOnHoldTotal :
+                                            // index == 6 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
 
-                                      centerTextStyle: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
-                                      legendOptions: const LegendOptions(
-                                        showLegendsInRow: false,
-                                        legendPosition: LegendPosition.bottom,
-                                        showLegends: false,
-                                        legendShape: BoxShape.circle,
-                                        legendTextStyle: TextStyle(fontWeight: FontWeight.bold,height: 2.0),
-                                      ),
-                                      chartValuesOptions: const ChartValuesOptions(
-                                        showChartValueBackground: true,
-                                        showChartValues: false,
-                                        showChartValuesInPercentage: false,
-                                        showChartValuesOutside: true,
-                                        decimalPlaces: 1,
-                                      ),
+                                            //centerTextStyle: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
+                                            legendOptions: const LegendOptions(
+                                              showLegendsInRow: false,
+                                              legendPosition: LegendPosition.bottom,
+                                              showLegends: false,
+                                              legendShape: BoxShape.circle,
+                                              legendTextStyle: TextStyle(fontWeight: FontWeight.bold,height: 2.0),
+                                            ),
+                                            chartValuesOptions: const ChartValuesOptions(
+                                              showChartValueBackground: true,
+                                              showChartValues: false,
+                                              showChartValuesInPercentage: false,
+                                              showChartValuesOutside: true,
+                                              decimalPlaces: 1,
+                                            ),
+                                          ),
+                                          Center(
+                                            child: Text(
+                                                index == 0 ? cont.triggerNotAllottedTotal :
+                                                index == 1 ? cont.allottedNotStartedTotal :
+                                                index == 2 ? cont.startedNotCompletedTotal :
+                                                index == 3 ? cont.completedIdPendingTotal :
+                                                index == 4 ? cont.completedNotBilledTotal :
+                                                index == 5 ? cont.workOnHoldTotal :
+                                                index == 6 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
+                                              style: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
+                                            ),
+                                          )
+                                        ],
                                     ),
 
                                     const Spacer(),
@@ -895,6 +921,11 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                             style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 16.0),
                                                                             children: <TextSpan>[
                                                                               TextSpan(
+                                                                                  recognizer: TapGestureRecognizer()..onTap= () {
+                                                                                    cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Own",
+                                                                                      cont.ownAllottedNotStarted[index].toString(),
+                                                                                    );
+                                                                                  },
                                                                                   text: cont.ownAllottedNotStarted.isEmpty ? "" :cont.ownAllottedNotStarted[index].toString(),
                                                                                   style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
                                                                             ],
@@ -915,6 +946,9 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                           style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 16.0),
                                                                           children: <TextSpan>[
                                                                             TextSpan(
+                                                                              recognizer: TapGestureRecognizer()..onTap= () {
+                                                                                cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Team",cont.teamAllottedNotStarted[index].toString());
+                                                                              },
                                                                                 text: cont.teamAllottedNotStarted.isEmpty ? "" :cont.teamAllottedNotStarted[index].toString(),
                                                                                 style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
                                                                           ],
@@ -958,11 +992,16 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                             style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 16.0),
                                                                             children: <TextSpan>[
                                                                               TextSpan(
-                                                                                  text: cont.ownStartedNotCompleted[index].toString(),
+                                                                                  recognizer: TapGestureRecognizer()..onTap= () {
+                                                                                    cont.callDueDataForStartedNotCompletedApi(
+                                                                                        cont.startedNotCompletedDetails[index],"Own",cont.ownStartedNotCompleted[index].toString());
+                                                                                  },
+                                                                                  text: cont.ownStartedNotCompleted.isEmpty ? "" :cont.ownStartedNotCompleted[index].toString(),
                                                                                   style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
                                                                             ],
                                                                               recognizer: TapGestureRecognizer()..onTap= () {
-                                                                                cont.callDueDataForStartedNotCompletedApi(cont.startedNotCompletedDetails[index],"Own",cont.ownStartedNotCompleted[index].toString());
+                                                                                cont.callDueDataForStartedNotCompletedApi(
+                                                                                    cont.startedNotCompletedDetails[index],"Own",cont.ownStartedNotCompleted[index].toString());
                                                                               }
                                                                           ),
                                                                         ),
@@ -976,6 +1015,9 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                             style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 16.0),
                                                                             children: <TextSpan>[
                                                                               TextSpan(
+                                                                          recognizer: TapGestureRecognizer()..onTap= () {
+                                                                            cont.callDueDataForStartedNotCompletedApi(cont.startedNotCompletedDetails[index],"Team",cont.teamStartedNotCompleted[index].toString());
+                                                                          },
                                                                                   text: cont.teamStartedNotCompleted[index].toString(),
                                                                                   style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
                                                                             ],
@@ -1553,12 +1595,39 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                     ],
                                   )
                               ),
+
+                              // Padding(
+                              //   padding : const EdgeInsets.only(bottom:150.0),
+                              //   child: ExpandableFab(
+                              //       key: _key,
+                              //       children : [
+                              //         FloatingActionButton.small(
+                              //             onPressed: (){},heroTag: null,
+                              //             backgroundColor: Colors.red,
+                              //             child:buildTextRegularWidget("Petty Task", blackColor, context, 12.0)
+                              //         )
+                              //       ]
+                              //   ),
+                              // ),
                             ],
                           ),
                         );
                       }
                   )
               ))),
+      // floatingActionButton: Padding(
+      //     padding : const EdgeInsets.only(bottom:150.0),
+      //   child: ExpandableFab(
+      //     key: _key,
+      //     children : [
+      //       FloatingActionButton.small(
+      //           onPressed: (){},
+      //           backgroundColor: Colors.red,
+      //       child:buildTextRegularWidget("Petty Task", blackColor, context, 12.0)
+      //       )
+      //     ]
+      //   ),
+      // )
         ));
     });
   }

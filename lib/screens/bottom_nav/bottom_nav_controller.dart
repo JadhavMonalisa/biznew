@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:biznew/common_widget/widget.dart';
 import 'package:biznew/screens/claim_form/claim_list.dart';
+import 'package:biznew/screens/dashboard/client/client_dashboard.dart';
+import 'package:biznew/screens/dashboard/employee/employee_dashboard.dart';
 import 'package:biznew/screens/dashboard/service_dashboard.dart';
 import 'package:biznew/screens/leave_form/leave_list.dart';
 import 'package:biznew/screens/timesheet_form/timesheet_list.dart';
@@ -10,6 +12,7 @@ import 'package:biznew/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../constant/repository/api_repository.dart';
 import '../../routes/app_pages.dart';
 
@@ -40,9 +43,9 @@ class BottomNavController extends GetxController {
   ///set pages in body
   buildWidget(){
     return selectedTabIndex == 0 ? const ServiceDashboardScreen() :
-    selectedTabIndex == 1 ? const TimesheetList() :
-    selectedTabIndex == 2 ?  const ClaimList() :
-    selectedTabIndex == 3 ? const LeaveList() : const ServiceDashboardScreen();
+    selectedTabIndex == 1 ? const EmployeeDashboardScreen() :
+    selectedTabIndex == 2 ?  const ClientDashboard() :
+    selectedTabIndex == 3 ? const TimesheetList() : const ServiceDashboardScreen();
   }
 
   ///on tap index change

@@ -21,8 +21,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
       return Scaffold(
         appBar: AppBar(
           title: buildTextRegularWidget("Notification", whiteColor, context, 16.0),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: GestureDetector(
+                onTap: (){
+                  cont.callNotificationMarkAllRead();
+                },
+                child: buildButtonWidget(context, "Mark All Read",width: 150.0,buttonColor: whiteColor,textColor: primaryColor),
+              ),
+            )
+          ],
         ),
-        body: SizedBox(
+        body: cont.loader == true ? Center(child: buildCircularIndicator(),)
+            :
+        SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child:
@@ -36,20 +49,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   itemBuilder: (context,index){
                     final item = cont.notificationListData[index];
                   return Card(
+                    color:(index % 2 == 0) ? notificationCardColor : whiteColor,
                     child: Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Align(
-                            alignment: Alignment.topRight,
-                            child:buildTextRegularWidget(item.addedDate!, approveColor, context, 15.0),
+                          const SizedBox(height:5.0),
+                          GestureDetector(
+                            onTap: (){
+                              cont.callNotificationMarkSelectedRead(item.id!);
+                            },
+                            child: const Align(
+                                alignment: Alignment.topRight,
+                                child: Icon(Icons.clear)),
                           ),
                           const SizedBox(height:5.0),
-                          buildRichTextWidget("Title : ", item.mtitle!),
+                          buildRichTextWidget("${item.type} : ", item.message!),
                           const SizedBox(height:5.0),
-                          buildRichTextWidget("Message : ", item.message!),
                         ],
                       ),
                     ),

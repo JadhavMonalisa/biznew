@@ -1,5 +1,6 @@
 import 'package:biznew/common_widget/error_text.dart';
 import 'package:biznew/common_widget/widget.dart';
+import 'package:biznew/constant/strings.dart';
 import 'package:biznew/screens/claim_form/claim_form_controller.dart';
 import 'package:biznew/screens/claim_form/claim_model.dart';
 import 'package:biznew/theme/app_colors.dart';
@@ -35,38 +36,43 @@ class _ClaimFormState extends State<ClaimForm> {
             child: SizedBox(
                 height: double.infinity,
                 child: ListView(
+                  physics:const NeverScrollableScrollPhysics(),
                   children: [
                     Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          buildDrawer(context,cont.name),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 30.0,right: 10.0),
-                            child: Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: (){
-                                    showWarningOnClaimFormDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
-                                  },
-                                  child: const Icon(Icons.logout),
-                                ),
-                                const SizedBox(width: 7.0,),
-                                GestureDetector(
-                                    onTap:(){
+                      child: Container(
+                        height: MediaQuery.of(context).size.height/1.1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildDrawer(context,cont.name),
+                            Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: (){
                                       showWarningOnClaimFormDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
                                     },
-                                    child:buildTextBoldWidget("Logout", blackColor, context, 15.0)
-                                ),const Spacer(),
-                                GestureDetector(
-                                  onTap:(){
-                                  },
-                                  child: buildTextRegularWidget("App Version 1.0", grey, context, 14.0),
-                                )
-                              ],
+                                    child: const Icon(Icons.logout),
+                                  ),
+                                  const SizedBox(width: 7.0,),
+                                  GestureDetector(
+                                      onTap:(){
+                                        showWarningOnClaimFormDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
+                                      },
+                                      child:buildTextBoldWidget("Logout", blackColor, context, 15.0)
+                                  ),const Spacer(),
+                                  GestureDetector(
+                                    onTap:(){
+                                    },
+                                    child: buildTextRegularWidget("App Version 1.0", grey, context, 14.0),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -79,11 +85,12 @@ class _ClaimFormState extends State<ClaimForm> {
               Container(
                 color:primaryColor,
                 height: MediaQuery.of(context).size.height * 0.128,width: MediaQuery.of(context).size.width,
-                child: const Center(
+                child: Center(
                   child: CircleAvatar(
                       radius: 40.0,
                       backgroundColor: whiteColor,
-                      child:Center(child:Icon(Icons.filter_frames,color: primaryColor,size: 50.0,))
+                      child:Center(child:buildTextBoldWidget(Strings.rupees,
+                          primaryColor, context, 50.0,align: TextAlign.center))
                   ),
                 ),
               ),

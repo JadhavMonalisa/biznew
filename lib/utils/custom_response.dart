@@ -105,8 +105,9 @@ class LoginResponse {
   bool? success;
   List<UserDetails>? userDetails;
   String? isReportingHead;
+  String? roleId;
 
-  LoginResponse({this.message, this.success, this.userDetails, this.isReportingHead});
+  LoginResponse({this.message, this.success, this.userDetails, this.isReportingHead, this.roleId});
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -118,6 +119,7 @@ class LoginResponse {
       });
     }
     isReportingHead = json["is_reporting_head"];
+    roleId = json["role_id"];
   }
 
   Map<String, dynamic> toJson() {
@@ -128,6 +130,7 @@ class LoginResponse {
       data['UserDetails'] = userDetails!.map((v) => v.toJson()).toList();
     }
     data["is_reporting_head"] = isReportingHead;
+    data["role_id"] = roleId;
     return data;
   }
 }
@@ -260,19 +263,19 @@ class AccessRightResponse {
 
 class AccessRightDetails {
   String? moduleName;
-  String? viewAccess;
+  String? addAccess;
 
-  AccessRightDetails({this.moduleName, this.viewAccess});
+  AccessRightDetails({this.moduleName, this.addAccess});
 
   AccessRightDetails.fromJson(Map<String, dynamic> json) {
-    moduleName = json['module_name']??"";
-    viewAccess = json['view_access']??"";
+    moduleName = json['module_name'];
+    addAccess = json['add_access'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['module_name'] = this.moduleName;
-    data['view_access'] = this.viewAccess;
+    data['add_access'] = this.addAccess;
     return data;
   }
 }

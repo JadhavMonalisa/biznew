@@ -1,11 +1,16 @@
 import 'dart:io';
+import 'package:biznew/constant/strings.dart';
 import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/calender/calender_controller.dart';
 import 'package:biznew/screens/claim_form/claim_form_controller.dart';
+import 'package:biznew/screens/dashboard/client/client_controller.dart';
 import 'package:biznew/screens/dashboard/dashboard_controller.dart';
+import 'package:biznew/screens/dashboard/employee/employee_controller.dart';
 import 'package:biznew/screens/leave_form/leave_controller.dart';
+import 'package:biznew/screens/manual_assignment/manual_assignment_controller.dart';
 import 'package:biznew/screens/petty_task/petty_task_controller.dart';
 import 'package:biznew/screens/timesheet_form/timesheet_controller.dart';
+import 'package:biznew/screens/timesheet_new/timesheet_new_controller.dart';
 import 'package:biznew/theme/app_text_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,14 +58,15 @@ buildTitleWidget(BuildContext context,String title){
 }
 
 buildButtonWidget(BuildContext context,String title,{double height = 50,double buttonFontSize = 16.0,double width= double.infinity,
-  bool withIcon =false,Color buttonColor = buttonColor,double radius = 10.0,TextAlign textAlign = TextAlign.center}){
+  bool withIcon =false,Color buttonColor = buttonColor,double radius = 10.0,TextAlign textAlign = TextAlign.center,
+  Color textColor = whiteColor}){
   return Container(
     height: height, width: width,
     decoration: BoxDecoration(
       color: buttonColor, borderRadius: BorderRadius.circular(radius),
     ),
     child: Center(
-      child: buildTextRegularWidget(title, whiteColor, context, buttonFontSize, fontWeight: FontWeight.w600,align: textAlign)
+      child: buildTextRegularWidget(title, textColor, context, buttonFontSize, fontWeight: FontWeight.w600,align: textAlign)
     ),
   );
 }
@@ -206,6 +212,92 @@ showDashboardDialog(BuildContext context,String title,String subTitle, Dashboard
     },
   );
 }
+showClientDashboardDialog(BuildContext context,String title,String subTitle, ClientDashboardController cont,{bool logoutFeature = false,}){
+  showDialog(barrierDismissible: true,
+    context:context,
+    builder:(BuildContext context){
+      return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))
+        ),
+        content: Container(
+          height: 150.0,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              buildTextRegularWidget(title, blackColor, context, 20,align: TextAlign.left),const SizedBox(height: 10.0,),
+              buildTextRegularWidget(subTitle, blackColor, context, 16.0,align: TextAlign.left,),
+              const SizedBox(height: 20.0,),
+              Row(
+                children: [
+                  Flexible(child:
+                  GestureDetector(
+                    onTap: (){
+                      logoutFeature ? cont.callLogout() : exit(0);
+                    },
+                    child: buildButtonWidget(context, "Yes",radius: 5.0,width: MediaQuery.of(context).size.width),
+                  )
+                  ),
+                  const SizedBox(width: 3.0,),
+                  Flexible(child:GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: buildButtonWidget(context, "No",radius: 5.0,width: MediaQuery.of(context).size.width),
+                  )),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+showEmployeeDashboardDialog(BuildContext context,String title,String subTitle, EmployeeDashboardController cont,{bool logoutFeature = false,}){
+  showDialog(barrierDismissible: true,
+    context:context,
+    builder:(BuildContext context){
+      return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))
+        ),
+        content: Container(
+          height: 150.0,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              buildTextRegularWidget(title, blackColor, context, 20,align: TextAlign.left),const SizedBox(height: 10.0,),
+              buildTextRegularWidget(subTitle, blackColor, context, 16.0,align: TextAlign.left,),
+              const SizedBox(height: 20.0,),
+              Row(
+                children: [
+                  Flexible(child:
+                  GestureDetector(
+                    onTap: (){
+                      logoutFeature ? cont.callLogout() : exit(0);
+                    },
+                    child: buildButtonWidget(context, "Yes",radius: 5.0,width: MediaQuery.of(context).size.width),
+                  )
+                  ),
+                  const SizedBox(width: 3.0,),
+                  Flexible(child:GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: buildButtonWidget(context, "No",radius: 5.0,width: MediaQuery.of(context).size.width),
+                  )),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
 showInprocessDialog(BuildContext context){
   showDialog(barrierDismissible: true,
     context:context,
@@ -238,33 +330,6 @@ showInprocessDialog(BuildContext context){
     },
   );
 }
-buildDrawerTitle(BuildContext context,IconData icon,String title,String subTitle,String screen){
-  return GestureDetector(
-      onTap:(){
-        if(title == "Client Dashboard" || title == "Appointment" || title == "Reports"){
-          showInprocessDialog(context);
-        }
-        else {
-          Get.toNamed(screen,arguments: [title]);
-        }
-      },
-      child:ListTile(
-        leading: CircleAvatar(
-          radius: 18.0,
-          backgroundColor: whiteColor,
-          child: Icon(icon),
-        ),
-        title: buildTextBoldWidget(title, blackColor, context, 14.0),
-        subtitle: buildTextRegularWidget(subTitle, descriptionTextColor, context, 12.0),
-      )
-  );
-}
-buildDrawerDivider({double rightPadding = 30.0,double leftPadding = 30.0,Color color = whiteColor}){
-  return Padding(
-    padding: EdgeInsets.only(right: rightPadding,left: leftPadding),
-    child: Divider(color: color,thickness: 2.0,),
-  );
-}
 ///table content widget
 buildTableTitle(BuildContext context,{String title1= "",String title2 ="",String title3="",double fontSize = 12.0}){
   return TableRow(
@@ -285,19 +350,20 @@ buildTableTitle(BuildContext context,{String title1= "",String title2 ="",String
   );
 }
 buildContentSubTitle(BuildContext context,{String contentTitle1= "",String contentTitle2 ="",String contentTitle3 ="",
-  Color contentTitle3Color = blackColor, double fontSize = 12.0}){
+  Color contentTitle3Color = blackColor, double fontSize = 12.0,
+  double padding1 = 1.0,double padding2 = 1.0,double padding3 = 1.0,}){
   return TableRow(
     children: [
       Padding(
-        padding: const EdgeInsets.only(left: 1.0),
+        padding: EdgeInsets.only(left: padding1),
         child: buildTextMediumWidget(contentTitle1, blackColor, context, fontSize,align: TextAlign.left),
       ),
       Padding(
-        padding: const EdgeInsets.only(left: 1.0),
+        padding: EdgeInsets.only(left: padding2),
         child: buildTextMediumWidget(contentTitle2, blackColor, context, fontSize,align: TextAlign.left),
       ),
       Padding(
-        padding: const EdgeInsets.only(left: 1.0),
+        padding: EdgeInsets.only(left: padding3),
         child: buildTextMediumWidget(contentTitle3, contentTitle3Color, context, fontSize,align: TextAlign.left),
       ),
     ],
@@ -536,7 +602,94 @@ showWarningOnTimesheetFormDialog(BuildContext context,String title,String subTit
     },
   );
 }
+showWarningOnTimesheetNewFormDialog(BuildContext context,String title,String subTitle,
+    TimesheetNewFormController cont,{bool logoutFeature = false,}){
+  showDialog(barrierDismissible: true,
+    context:context,
+    builder:(BuildContext context){
+      return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))
+        ),
+        content: Container(
+          height: 150.0,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              buildTextRegularWidget(title, blackColor, context, 20,align: TextAlign.left),const SizedBox(height: 10.0,),
+              buildTextRegularWidget(subTitle, blackColor, context, 16.0,align: TextAlign.left,),
+              const SizedBox(height: 20.0,),
+              Row(
+                children: [
+                  Flexible(child:
+                  GestureDetector(
+                    onTap: (){
+                      logoutFeature ? cont.callLogout() : exit(0);
+                    },
+                    child: buildButtonWidget(context, "Yes",radius: 5.0,width: MediaQuery.of(context).size.width),
+                  )
+                  ),
+                  const SizedBox(width: 3.0,),
+                  Flexible(child:GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: buildButtonWidget(context, "No",radius: 5.0,width: MediaQuery.of(context).size.width),
+                  )),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
 showWarningOnPettyTaskDialog(BuildContext context,String title,String subTitle, PettyTaskController cont,{bool logoutFeature = false,}){
+  showDialog(barrierDismissible: true,
+    context:context,
+    builder:(BuildContext context){
+      return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))
+        ),
+        content: Container(
+          height: 150.0,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              buildTextRegularWidget(title, blackColor, context, 20,align: TextAlign.left),const SizedBox(height: 10.0,),
+              buildTextRegularWidget(subTitle, blackColor, context, 16.0,align: TextAlign.left,),
+              const SizedBox(height: 20.0,),
+              Row(
+                children: [
+                  Flexible(child:
+                  GestureDetector(
+                    onTap: (){
+                      logoutFeature ? cont.callLogout() : exit(0);
+                    },
+                    child: buildButtonWidget(context, "Yes",radius: 5.0,width: MediaQuery.of(context).size.width),
+                  )
+                  ),
+                  const SizedBox(width: 3.0,),
+                  Flexible(child:GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: buildButtonWidget(context, "No",radius: 5.0,width: MediaQuery.of(context).size.width),
+                  )),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+showWarningOnManualAssignmentDialog(BuildContext context,String title,String subTitle, ManualAssignmentController cont,{bool logoutFeature = false,}){
   showDialog(barrierDismissible: true,
     context:context,
     builder:(BuildContext context){
@@ -609,30 +762,6 @@ buildDrawerWelcome(BuildContext context,String name){
   );
 }
 
-buildDrawerNavigation(BuildContext context){
-  return Padding(
-    padding:const EdgeInsets.all(10.0),
-    child: Container(
-      height: 580.0,width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0),color: grey.withOpacity(0.2)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0,left: 10.0),
-            child: buildTextBoldWidget("Menu", primaryColor, context, 14.0),
-          ),
-          buildDrawerTitle(context,Icons.dashboard,"Dashboard","Show recent activities",AppRoutes.serviceDashboard),buildDrawerDivider(),
-          buildDrawerTitle(context,Icons.calendar_today,"Leaves","Manage your leaves",AppRoutes.leaveList),buildDrawerDivider(),
-          buildDrawerTitle(context,Icons.filter_frames,"Claim","Manage your claims",AppRoutes.claimList),buildDrawerDivider(),
-          buildDrawerTitle(context,Icons.timer,"Timesheet","Manage your timesheet",AppRoutes.timesheetList),buildDrawerDivider(),
-          buildDrawerTitle(context,Icons.edit,"Appointment","Book your appointment",AppRoutes.serviceDashboard),buildDrawerDivider(),
-          buildDrawerTitle(context,Icons.file_copy_outlined,"Reports","Display all reports",AppRoutes.serviceDashboard),buildDrawerDivider(),
-        ],
-      ),
-    ),
-  );
-}
 
 buildDrawer(BuildContext context,String name, {Widget? branchWidget}){
   return Column(
@@ -665,7 +794,7 @@ buildDrawer(BuildContext context,String name, {Widget? branchWidget}){
       Padding(
         padding:const EdgeInsets.all(10.0),
         child: Container(
-          height: 850.0,width: MediaQuery.of(context).size.width,
+          height: 360.0,width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0),color: grey.withOpacity(0.2)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -674,21 +803,94 @@ buildDrawer(BuildContext context,String name, {Widget? branchWidget}){
                 padding: const EdgeInsets.only(top: 10.0,left: 10.0),
                 child: buildTextBoldWidget("Menu", primaryColor, context, 14.0),
               ),
-              buildDrawerTitle(context,Icons.dashboard,"Client Dashboard","Show client activities",AppRoutes.clientDashboard),buildDrawerDivider(),
-              buildDrawerTitle(context,Icons.dashboard,"Employee Dashboard","Show service activities",AppRoutes.serviceDashboard),buildDrawerDivider(),
-              buildDrawerTitle(context,Icons.calendar_today,"Leaves","Manage your leaves",AppRoutes.leaveList),buildDrawerDivider(),
-              buildDrawerTitle(context,Icons.filter_frames,"Claim","Manage your claims",AppRoutes.claimList),buildDrawerDivider(),
+              // buildDrawerTitle(context,Icons.dashboard,"Dashboard","Show service activities",AppRoutes.serviceDashboard),buildDrawerDivider(),
+              // buildDrawerTitle(context,Icons.dashboard,"Employee Dashboard","Show employee activities",AppRoutes.employeeDashboard),buildDrawerDivider(),
+              // buildDrawerTitle(context,Icons.dashboard,"Client Dashboard","Show client activities",AppRoutes.clientDashboard),buildDrawerDivider(),
+              //buildDrawerTitle(context,Icons.calendar_today,"Leaves","Manage your leaves",AppRoutes.leaveList),buildDrawerDivider(),
+              //buildDrawerTitle(context,Icons.filter_frames,"Claim","Manage your claims",AppRoutes.claimList),buildDrawerDivider(),
               buildDrawerTitle(context,Icons.timer,"Timesheet","Manage your timesheet",AppRoutes.timesheetList),buildDrawerDivider(),
               buildDrawerTitle(context,Icons.edit,"Appointment","Book your appointment",AppRoutes.serviceDashboard),buildDrawerDivider(),
               buildDrawerTitle(context,Icons.file_copy_outlined,"Reports","Display all reports",AppRoutes.serviceDashboard),buildDrawerDivider(),
-              buildDrawerTitle(context,Icons.task,"Petty Task","Add petty task",AppRoutes.pettyTaskFrom),buildDrawerDivider(),
-              buildDrawerTitle(context,Icons.calendar_today_outlined,"Calender","Check your meetings",AppRoutes.calenderScreen),buildDrawerDivider(),
-              //buildDrawerTitle(context,Icons.picture_as_pdf,"Export","dummy data",AppRoutes.exportScreen),buildDrawerDivider(),
+              //buildDrawerTitle(context,Icons.task,"Petty Task","Add petty task",AppRoutes.pettyTaskFrom),buildDrawerDivider(),
+              buildDrawerTitle(context,Icons.calendar_today_outlined,"Calendar","Check your meetings",AppRoutes.calenderScreen),buildDrawerDivider(),
+              buildDrawerTitle(context,Icons.add,"Manual Assignment","Check your meetings",AppRoutes.manualAssignmentScreen),buildDrawerDivider(),
             ],
           ),
         ),
-      )
+      ),
     ],
+  );
+}
+
+buildDrawerTitle(BuildContext context,IconData icon,String title,String subTitle,String screen){
+  return GestureDetector(
+      onTap:(){
+        if(title == "Appointment" || title == "Reports"){
+          //showInprocessDialog(context);
+        }
+        else if(title == "Calendar" || title == "Timesheet"){
+          //showInprocessDialog(context);
+        }
+        // else if(title == "Timesheet"){
+        //   //showInprocessDialog(context);
+        // }
+        else {
+          Get.toNamed(screen,arguments: [title]);
+        }
+        //Get.toNamed(screen,arguments: [title]);
+      },
+      // child:ListTile(
+      //   leading: CircleAvatar(
+      //     radius: 15.0,
+      //     backgroundColor: whiteColor,
+      //     child: Icon(icon,size: 18.0,),
+      //   ),
+      //   title: buildTextBoldWidget(title, blackColor, context, 14.0),
+      //   //subtitle: buildTextRegularWidget(subTitle, descriptionTextColor, context, 12.0),
+      // )
+      child: Column(
+        children: [
+          const SizedBox(height: 10.0,),
+          Row(
+            children: [
+              const SizedBox(width: 10.0,),
+              CircleAvatar(
+                radius: 15.0,
+                backgroundColor: whiteColor,
+                child: title == "Claim"
+                    ? buildTextBoldWidget(Strings.rupees, primaryColor, context, 18.0,align: TextAlign.center)
+                    : Icon(icon,size: 18.0,),
+              ),
+              const SizedBox(width: 20.0,),
+              buildTextBoldWidget(title, blackColor, context, 14.0),
+              //Spacer(),
+              title == "Appointment" || title == "Reports" || title == "Calendar" || title == "Timesheet"
+              ?
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: errorColor,
+                    borderRadius: BorderRadius.circular(2.0)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: buildTextBoldWidget("Coming soon", whiteColor, context, 12.0),
+                  ),
+                ),
+              )
+              : const Opacity(opacity: 0.0)
+            ],
+          ),
+          const SizedBox(height: 10.0,),
+        ],
+      )
+  );
+}
+buildDrawerDivider({double rightPadding = 30.0,double leftPadding = 30.0,Color color = whiteColor}){
+  return Padding(
+    padding: EdgeInsets.only(right: rightPadding,left: leftPadding),
+    child: Divider(color: color,thickness: 2.0,),
   );
 }
 buildRichTextWidget(String title1,String title2, {FontWeight title1Weight = FontWeight.bold,
@@ -715,6 +917,81 @@ buildTabTitle(BuildContext context,bool selected,String title,{Color color = Col
     child: Center(
       child: buildTextBoldWidget(title, selected ? whiteColor : blackColor, context, 14),
     ),
+  );
+}
+
+buildClientCodeWidget(String clientCode,String clientName, BuildContext context,
+    {double h1 = 40.0, double h2 = 40.0})
+{
+  return Transform(
+    transform: Matrix4.translationValues(0.0, -4.0, 0.0),
+    child: Row(
+      children: [
+        Container(
+            height: h1,
+            decoration: const BoxDecoration(color: primaryColor,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                  child: buildTextBoldWidget(clientCode, whiteColor, context, 14.0),
+                )
+            )
+        ),
+        Flexible(
+          child: Container(
+              height: h2,
+              decoration: BoxDecoration(
+                  //border: Border.all(color: grey),
+                  borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: buildTextBoldWidget(clientName, primaryColor, context, 14.0,align: TextAlign.left),
+                  )
+              )
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+buildClientCodeWidgetForOther(String clientCode,String clientName, BuildContext context,
+    {double h1 = 40.0, double h2 = 40.0})
+{
+  return Row(
+    children: [
+      Container(
+          height: h1,
+          decoration: const BoxDecoration(color: primaryColor,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                child: buildTextBoldWidget(clientCode, whiteColor, context, 14.0),
+              )
+          )
+      ),
+      Flexible(
+        child: Container(
+            height: h2,
+            decoration: BoxDecoration(
+              //border: Border.all(color: grey),
+                borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: buildTextBoldWidget(clientName, primaryColor, context, 14.0,align: TextAlign.left),
+                )
+            )
+        ),
+      ),
+    ],
   );
 }
 

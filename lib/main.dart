@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       duration: const Duration(seconds: 3),
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: "Right Choice",
+        title: "Bizalys",
         theme: ThemeData(
           pageTransitionsTheme: const PageTransitionsTheme(
             builders: <TargetPlatform, PageTransitionsBuilder>{

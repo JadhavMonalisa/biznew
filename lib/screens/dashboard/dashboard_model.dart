@@ -642,6 +642,7 @@ class AllottedNotStartedPastDueData {
   String? priorityToShow;
   DateTime? triggerDateTimeFormat;
   DateTime? targetDateTimeFormat;
+  DateTime? staDateTimeFormat;
 
   AllottedNotStartedPastDueData(
       {this.id,
@@ -658,7 +659,9 @@ class AllottedNotStartedPastDueData {
         this.satDateToShow,
         this.priorityToShow,
         this.triggerDateTimeFormat,
-        this.targetDateTimeFormat});
+        this.targetDateTimeFormat,
+        this.staDateTimeFormat,
+      });
 
   AllottedNotStartedPastDueData.fromJson(Map<String, dynamic> json) {
     id = json['id']??"";
@@ -679,6 +682,7 @@ class AllottedNotStartedPastDueData {
     priorityToShow = json['priority']=="1" ? "High" : json['priority'] == "2" ? "Medium": "Low";
     triggerDateTimeFormat = DateTime.parse(json['trigger_date']);
     targetDateTimeFormat = DateTime.parse(json['target_date']);
+    staDateTimeFormat = DateTime.parse(json['sat_date']);
   }
 
   Map<String, dynamic> toJson() {
@@ -736,13 +740,16 @@ class StartedNotCompletedPieList {
   String? priority;
   String? allottedTo;
   String? tasks;
-  int? completionPercentage;
+  String? completionPercentage;
   String? status;
   String? targetDateToShow;
   String? triggerDateToShow;
   String? satDateToShow;
   String? priorityToShow;
   String? statusName;
+  DateTime? triggerDateTimeFormat;
+  DateTime? targetDateTimeFormat;
+  DateTime? staDateTimeFormat;
 
 
   StartedNotCompletedPieList(
@@ -762,7 +769,10 @@ class StartedNotCompletedPieList {
         this.triggerDateToShow,
         this.satDateToShow,
         this.priorityToShow,
-        this.statusName
+        this.statusName,
+        this.triggerDateTimeFormat,
+        this.targetDateTimeFormat,
+        this.staDateTimeFormat,
       });
 
   StartedNotCompletedPieList.fromJson(Map<String, dynamic> json) {
@@ -776,7 +786,7 @@ class StartedNotCompletedPieList {
     priority = json['priority']??"";
     allottedTo = json['Allotted To']??"";
     tasks = json['Tasks']??"";
-    completionPercentage = json['Completion_Percentage']??"";
+    completionPercentage = json['Completion_Percentage'].toString()??"";
     status = json['Status']??"";
     targetDateToShow = json['target_date'] ==null || json['target_date'] == "" ? "" :
     DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
@@ -786,6 +796,10 @@ class StartedNotCompletedPieList {
     DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
     priorityToShow = json['priority']=="1" ? "High" : json['priority'] == "2" ? "Medium": "Low";
     statusName = json['Status']=="1" ? "Inprocess": json["Status"]=="2" ? "Hold": "Complete";
+
+    triggerDateTimeFormat = DateTime.parse(json["trigger_date"]);
+    targetDateTimeFormat = DateTime.parse(json["target_date"]);
+    staDateTimeFormat = DateTime.parse(json["sat_date"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -978,6 +992,11 @@ class SubmittedForCheckingPieList {
   int? completionPercentage;
   String? status;
   String? statusName;
+  String? targetDateToShow;
+  String? triggerDateToShow;
+  String? satDateToShow;
+  DateTime? triggerDateTimeFormat;
+  DateTime? targetDateTimeFormat;
 
   SubmittedForCheckingPieList(
       {this.id,
@@ -993,7 +1012,13 @@ class SubmittedForCheckingPieList {
         this.tasks,
         this.completionPercentage,
         this.status,
-        this.statusName});
+        this.statusName,
+        this.targetDateToShow,
+        this.triggerDateToShow,
+        this.satDateToShow,
+        this.triggerDateTimeFormat,
+        this.targetDateTimeFormat,
+      });
 
   SubmittedForCheckingPieList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1010,6 +1035,16 @@ class SubmittedForCheckingPieList {
     completionPercentage = json['Completion_Percentage'];
     status = json['Status'];
     statusName = json['Status']=="1" ? "Inprocess" : json['Status']=="2" ? "Hold" : "Complete";
+
+    targetDateToShow = json['target_date'] ==null || json['target_date'] == "" ? "" :
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
+    triggerDateToShow = json['trigger_date'] ==null || json['trigger_date'] == "" ? "" :
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
+    satDateToShow = json['sat_date'] ==null || json['sat_date'] == "" ? "" :
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
+
+    triggerDateTimeFormat = DateTime.parse(json["trigger_date"]);
+    targetDateTimeFormat = DateTime.parse(json["target_date"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -1072,6 +1107,8 @@ class WorkOnHoldPieList {
   String? tasks;
   int? completionPercentage;
   String? status;
+  DateTime? triggerDateTimeFormat;
+  DateTime? targetDateTimeFormat;
 
   WorkOnHoldPieList(
       {this.id,
@@ -1085,7 +1122,10 @@ class WorkOnHoldPieList {
         this.allottedTo,
         this.tasks,
         this.completionPercentage,
-        this.status});
+        this.status,
+        this.triggerDateTimeFormat,
+        this.targetDateTimeFormat,
+      });
 
   WorkOnHoldPieList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1100,6 +1140,8 @@ class WorkOnHoldPieList {
     tasks = json['Tasks'];
     completionPercentage = json['Completion_Percentage'];
     status = json['Status'];
+    triggerDateTimeFormat = DateTime.parse(json["trigger_date"]);
+    targetDateTimeFormat = DateTime.parse(json["target_date"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -1162,6 +1204,9 @@ class AllTasksPieList {
   String? tasks;
   int? completionPercentage;
   String? status;
+  DateTime? triggerDateTimeFormat;
+  DateTime? targetDateTimeFormat;
+  DateTime? staDateTimeFormat;
 
   AllTasksPieList(
       {this.id,
@@ -1175,7 +1220,11 @@ class AllTasksPieList {
         this.allottedTo,
         this.tasks,
         this.completionPercentage,
-        this.status});
+        this.status,
+        this.triggerDateTimeFormat,
+        this.targetDateTimeFormat,
+        this.staDateTimeFormat,
+      });
 
   AllTasksPieList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1190,6 +1239,9 @@ class AllTasksPieList {
     tasks = json['Tasks'];
     completionPercentage = json['Completion_Percentage'];
     status = json['Status'];
+    triggerDateTimeFormat = DateTime.parse(json["trigger_date"]);
+    targetDateTimeFormat = DateTime.parse(json["target_date"]);
+    staDateTimeFormat = DateTime.parse(json["sat_date"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -1339,9 +1391,15 @@ class TriggeredNotAllottedPieChartList {
   String? client;
   String? servicename;
   String? triggerDate;
+  String? triggerDateToShow;
   String? targetDate;
+  String? targetDateToShow;
   String? satDate;
+  String? satDateToShow;
   String? periodicity;
+  DateTime? triggerDateTimeFormat;
+  DateTime? targetDateTimeFormat;
+  DateTime? staDateTimeFormat;
 
   TriggeredNotAllottedPieChartList(
       {this.id,
@@ -1349,9 +1407,16 @@ class TriggeredNotAllottedPieChartList {
         this.client,
         this.servicename,
         this.triggerDate,
+        this.triggerDateToShow,
         this.targetDate,
+        this.targetDateToShow,
         this.satDate,
-        this.periodicity});
+        this.satDateToShow,
+        this.periodicity,
+        this.triggerDateTimeFormat,
+        this.targetDateTimeFormat,
+        this.staDateTimeFormat,
+      });
 
   TriggeredNotAllottedPieChartList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1359,9 +1424,23 @@ class TriggeredNotAllottedPieChartList {
     client = json['client'];
     servicename = json['servicename'];
     triggerDate = json['trigger_date'];
+
+    triggerDateToShow = json['trigger_date'] ==null || json['trigger_date'] == "" ? "" :
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
+
     targetDate = json['target_date'];
+    targetDateToShow = json['target_date'] ==null || json['target_date'] == "" ? "" :
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
+
     satDate = json['sat_date'];
+    satDateToShow = json['sat_date'] ==null || json['sat_date'] == "" ? "" :
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
+
     periodicity = json['periodicity'];
+
+    triggerDateTimeFormat = DateTime.parse(json['trigger_date']);
+    targetDateTimeFormat = DateTime.parse(json['target_date']);
+    staDateTimeFormat = DateTime.parse(json['sat_date']);
   }
 
   Map<String, dynamic> toJson() {

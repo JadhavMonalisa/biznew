@@ -1,8 +1,11 @@
+import 'dart:collection';
 import 'dart:math';
 import 'package:biznew/constant/provider/custom_exception.dart';
 import 'package:biznew/constant/repository/api_repository.dart';
 import 'package:biznew/routes/app_pages.dart';
+import 'package:biznew/screens/calender/appointment_data_source.dart';
 import 'package:biznew/screens/calender/calender_model.dart';
+import 'package:biznew/screens/calender/event_model.dart';
 import 'package:biznew/theme/app_colors.dart';
 import 'package:biznew/theme/app_text_theme.dart';
 import 'package:biznew/utils/utils.dart';
@@ -12,12 +15,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/material.dart';
-
-class AppointmentDataSource extends CalendarDataSource {
-  AppointmentDataSource(List<Appointment> source){
-    appointments = source;
-  }
-}
+import 'package:table_calendar/table_calendar.dart';
 
 class CalenderViewController extends GetxController {
   final ApiRepository repository;
@@ -40,10 +38,24 @@ class CalenderViewController extends GetxController {
   String typeToSendApi = "";
   List<Appointment> appointments = <Appointment>[];
 
+  List<Event> events = <Event>[];
+  final kToday = DateTime.now();
+  final kFirstDay = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  final kLastDay = DateTime(DateTime.now().year+100, DateTime.now().month, DateTime.now().day);
+  late final ValueNotifier<List<Event>> selectedEvents;
+  CalendarFormat calendarFormat = CalendarFormat.month;
+  RangeSelectionMode rangeSelectionMode = RangeSelectionMode
+      .toggledOff; // Can be toggled on/off by longpressing a date
+  DateTime focusedDay = DateTime.now();
+  DateTime? selectedDay;
+  DateTime? rangeStart;
+  DateTime? rangeEnd;
+
   @override
   void onInit() {
     super.onInit();
 
+    print("call calender onit");
     selectedYear = "";
     typeToSendApi = "";
     calenderDataList.clear();
@@ -51,15 +63,19 @@ class CalenderViewController extends GetxController {
     userId = GetStorage().read("userId")??"";
     userName = GetStorage().read("userName")??"";
     name = GetStorage().read("name")??"";
+
     repository.getData();
     selectedYear = todayDate.year.toString();
+
+    selectedDay = focusedDay;
+    selectedEvents = ValueNotifier(getEventsForDay(selectedDay!));
+
     callCalender();
+
+    update();
   }
 
   viewChanged(ViewChangedDetails viewChangedDetails){
-    //calenderDataList = [];
-    //calenderDataList.clear();
-
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       calenderDataList.clear();
       appointments.clear();
@@ -96,9 +112,33 @@ class CalenderViewController extends GetxController {
         location: calenderDataList[i].start,
       ));
      }
-
     return AppointmentDataSource(appointments);
   }
+
+  // final kEvents = LinkedHashMap<DateTime, List<Event>>(
+  //   equals: isSameDay,
+  //   hashCode: getHashCode,
+  // )..addAll(_kEventSource);
+
+  // final _kEventSource = { for (var item in List.generate(calenderDataList.length, (index) => index))
+  //   DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5) : List.generate(
+  //       item , (index) => Event('Event $item | ${index + 1}')) }
+  //   ..addAll({
+  //     kToday: [
+  //       Event('Today\'s Event 1'),
+  //       Event('Today\'s Event 2'),
+  //     ],
+  //   });
+
+  /// Returns a list of [DateTime] objects from [first] to [last], inclusive.
+  List<DateTime> daysInRange(DateTime first, DateTime last) {
+    final dayCount = last.difference(first).inDays + 1;
+    return List.generate(
+      dayCount,
+          (index) => DateTime.utc(first.year, first.month, first.day + index),
+    );
+  }
+
 
   ///calender
   void callCalender() async {
@@ -107,12 +147,17 @@ class CalenderViewController extends GetxController {
     AppointmentDataSource(appointments).appointments!.clear();
     update();
 
+    print("calender api");
     try {
       CalenderModel? response = (await repository.getCalender(selectedYear));
 
       if (response.success!) {
         calenderDataList.addAll(response.calenderData!);
-        //List<String> result = LinkedHashSet<String>.from(calenderDataList).toList();
+
+        for(int i = 0; i< calenderDataList.length; i++) {
+          events.add(Event(calenderDataList[i].start!));
+        }
+
         update();
       } else {
         update();
@@ -171,10 +216,16 @@ class CalenderViewController extends GetxController {
 
   addParameter(String dateToSend, String type){
     updateLoader(true);
-    dateOfAppointment = dateToSend;
-    dateOnDueDataScreen = DateTime.parse(dateOfAppointment);
-    typeToSendApi = type;
-    callCalenderDueDate();
+    if(type == "holiday"){
+      Utils.showAlertSnackBar("Holiday on this day");
+      updateLoader(false);
+    }
+    else{
+      dateOfAppointment = dateToSend;
+      dateOnDueDataScreen = DateTime.parse(dateOfAppointment);
+      typeToSendApi = type;
+      callCalenderDueDate();
+    }
     update();
   }
   ///show dialog calendar due date
@@ -226,8 +277,10 @@ class CalenderViewController extends GetxController {
     appointments.clear();
     dueDateList.clear();
     calenderDataList.clear();
-    update();
+    selectedYear = todayDate.year.toString();
     Get.toNamed(AppRoutes.bottomNav);
+    callCalender();
+    update();
   }
 
   navigateToCalenderScreen(){
@@ -252,4 +305,80 @@ class CalenderViewController extends GetxController {
     Get.offNamedUntil(AppRoutes.login, (route) => false);
     update();
   }
+
+    // @override
+    // void initState() {
+    //   super.initState();
+    // _selectedDay = _focusedDay;
+    //     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+    //
+    // }
+
+    @override
+    void dispose() {
+      selectedEvents.dispose();
+      super.dispose();
+    }
+
+  int getHashCode(DateTime key) {
+    return key.day * 1000000 + key.month * 10000 + key.year;
+  }
+
+  // final kEvents = LinkedHashMap<DateTime, List<Event>>(
+  //   equals: isSameDay,
+  //   hashCode: getHashCode,
+  // )..addAll(_kEventSource);
+
+    List<Event> getEventsForDay(DateTime day) {
+      // Implementation example
+      return events ?? [];
+    }
+
+List<Event> getEventsForRange(DateTime start, DateTime end) {
+  // Implementation example
+  final days = daysInRange(start, end);
+
+  return [
+    for (final d in days) ...getEventsForDay(d),
+  ];
 }
+
+void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+  if (!isSameDay(selectedDay, selectedDay)) {
+
+      selectedDay = selectedDay;
+      focusedDay = focusedDay;
+      rangeStart = null; // Important to clean those
+      rangeEnd = null;
+      rangeSelectionMode = RangeSelectionMode.toggledOff;
+
+    selectedEvents.value = getEventsForDay(selectedDay);
+  }
+}
+
+void onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
+    selectedDay = null;
+    focusedDay = focusedDay;
+    rangeStart = start;
+    rangeEnd = end;
+    rangeSelectionMode = RangeSelectionMode.toggledOn;
+
+
+  // `start` or `end` could be null
+  if (start != null && end != null) {
+    selectedEvents.value = getEventsForRange(start, end);
+  } else if (start != null) {
+    selectedEvents.value = getEventsForDay(start);
+  } else if (end != null) {
+    selectedEvents.value = getEventsForDay(end);
+  }
+}
+}
+
+
+/// Example event class.
+
+
+/// Example events.
+///
+/// Using a [LinkedHashMap] is highly recommended if you decide to use a map.

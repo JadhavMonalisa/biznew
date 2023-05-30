@@ -1,4 +1,5 @@
 import 'package:biznew/common_widget/widget.dart';
+import 'package:biznew/constant/strings.dart';
 import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/claim_form/claim_form_controller.dart';
 import 'package:biznew/screens/claim_form/claim_model.dart';
@@ -142,7 +143,7 @@ class _ClaimListState extends State<ClaimList> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                           child: DropdownButton(
-                            hint: buildTextRegularWidget(cont.selectedClaimStatus==""?"Select claim status":cont.selectedClaimStatus, blackColor, context, 15.0),
+                            hint: buildTextRegularWidget(cont.selectedClaimStatus=="None"?"Select claim status":cont.selectedClaimStatus, blackColor, context, 15.0),
                             isExpanded: true,
                             underline: Container(),
                             items:
@@ -168,23 +169,211 @@ class _ClaimListState extends State<ClaimList> {
                   itemBuilder: (context,index){
                     return Padding(
                         padding: const EdgeInsets.only(top: 5.0),
-                      child:buildClaimList(cont.claimClientList[index],cont)
+                      child:buildNewClaimList(cont.claimClientList[index],cont)
                     );
                   })
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 10.0,left: 270.0,right: 20.0),
-        child:  GestureDetector(
-          onTap: (){Get.toNamed(AppRoutes.claimForm,arguments: ["add"]);},
-          child: buildButtonWidget(context, "+ Add Claim",radius: 5.0,height: 40.0),
-        ),
-      ),
+      floatingActionButton: FloatingActionButton(
+        elevation: 1.0,
+        onPressed: (){
+          Get.toNamed(AppRoutes.claimForm,arguments: ["add"]);
+        },
+        backgroundColor: buttonColor,
+        child: const Center(child:Icon(Icons.add,color: whiteColor,size: 40.0,)),
+      )
     )
     );
     });
+  }
+
+
+  Widget buildNewClaimList(ClaimClientListDetails item,ClaimFormController cont) {
+    return Card(
+      color: faintGrey,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+          side: const BorderSide(color: grey)),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: <Widget>[
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: Container(
+                    // child: Row(
+                    //   children: [
+                    //     item.office=="0"
+                    //         ? buildTextRegularWidget("${item.firmEmployeeName!} submitted claim against ${item.firmClientFirmName!} on ${item.claimDate!}.",
+                    //         blackColor, context, 14.0,align: TextAlign.left)
+                    //         : buildTextRegularWidget("${item.firmEmployeeName!} submitted claim on ${item.claimDate!}.",
+                    //         blackColor, context, 14.0,align: TextAlign.left),
+                    //     buildTextRegularWidget(item.claimStatus!,
+                    //         item.claimStatus == "Pending" || item.claimStatus == "Pending for approval" ? Colors.orange :
+                    //         item.claimStatus == "Rejected" || item.claimStatus == "Deleted" ? Colors.red :
+                    //         item.claimStatus == "Approved" ? Colors.green : faintGrey,
+                    //         context, 14.0,align: TextAlign.left),
+                    //   ],
+                    // ),
+                    child:buildRichTextWidget(
+                      item.office=="0"
+                          ? "${item.firmEmployeeName!} submitted claim against ${item.firmClientFirmName!} on ${item.claimDate!}. - "
+                          : "${item.firmEmployeeName!} submitted claim on ${item.claimDate!}. - ",
+                      item.claimStatus!,
+                      title1Weight: FontWeight.normal,title2Weight: FontWeight.bold,
+                      title2Color: item.claimStatus == "Pending" || item.claimStatus == "Pending for approval" ? Colors.orange :
+                      item.claimStatus == "Rejected" || item.claimStatus == "Deleted" ? Colors.red :
+                      item.claimStatus == "Approved" ? Colors.green : faintGrey,)
+                  ),
+                ),
+                const SizedBox(width: 5.0,),
+                Container(
+                  height: 30.0,width: 55.0,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),
+                      color: buttonColor),
+                  child: Center(child:buildTextRegularWidget("${Strings.rupees} ${item.claimAmount!}",
+                      whiteColor, context, 14.0)),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20.0,),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0,right: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+
+                  cont.reportingHead == "0" && item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+                  Flexible(child: GestureDetector(onTap:(){
+                    cont.updateStatus("Delete",item.claimId!,context);
+                  },
+                      //child:buildActionForClaim(errorColor,Icons.delete,)
+                      child:Icon(Icons.delete,color: errorColor,size: 30.0,)
+                  )),
+                  cont.reportingHead == "0" && item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+                  const SizedBox(width: 30.0,),
+
+                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
+                  item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+                  Flexible(child: GestureDetector(
+                    onTap: (){
+                      showDialog(barrierDismissible: true,
+                        context:context,
+                        builder:(BuildContext context){
+                          return AlertDialog(
+                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                            content: Container(
+                              height: 301.0,
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 10.0,),
+                                  buildTextRegularWidget("Do you want to reject this claim?", blackColor, context, 20,align: TextAlign.left),
+                                  const SizedBox(height: 10.0,),
+                                  const Divider(color: primaryColor,),
+                                  const SizedBox(height: 10.0,),
+                                  buildTextRegularWidget("Add remark for rejection", blackColor, context, 16.0,align: TextAlign.left,),
+                                  const SizedBox(height: 20.0,),
+                                  Container(
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                      border: Border.all(color: grey),),
+                                    child: TextFormField(
+                                      controller: cont.remark,
+                                      keyboardType: TextInputType.text,
+                                      textAlign: TextAlign.left,
+                                      textAlignVertical: TextAlignVertical.center,
+                                      textInputAction: TextInputAction.done,
+                                      textCapitalization: TextCapitalization.sentences,
+                                      onTap: () {
+                                      },
+                                      style:const TextStyle(fontSize: 15.0),
+                                      decoration: InputDecoration(
+                                        contentPadding: const EdgeInsets.all(10),
+                                        hintText: "Remark",
+                                        hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                          color: blackColor, fontSize: 15,),),
+                                        border: InputBorder.none,
+                                      ),
+                                      onChanged: (text) {
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20.0,),
+                                  Row(
+                                    children: [
+                                      Flexible(child: GestureDetector(
+                                        onTap: (){
+                                          cont.updateStatus("Reject",item.claimId!,context);
+                                        },
+                                        child: buildButtonWidget(context, "Yes",buttonColor:approveColor),
+                                      )),
+                                      const SizedBox(width:5.0),
+                                      Flexible(child: GestureDetector(
+                                        onTap: (){
+                                          Navigator.pop(context);
+                                        },
+                                        child: buildButtonWidget(context, "No",buttonColor: errorColor,),
+                                      ))
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    //child: buildActionForClaim(editColor,Icons.clear),
+                    child: Icon(Icons.clear,color: editColor,size: 30.0,),
+                  )),
+                  item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+                  const SizedBox(width: 30.0,),
+
+
+                  Flexible(child: GestureDetector(onTap:(){
+                    cont.navigateToClaimEdit(item.claimId!,"view");
+                  },
+                      //    child:buildActionForClaim(primaryColor,Icons.visibility,)
+                      child:Icon(Icons.visibility,color: primaryColor,size: 30.0,)
+                  )),
+                  const SizedBox(width: 30.0,),
+
+                  item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+                  Flexible(child: GestureDetector(onTap:(){
+                    cont.navigateToClaimEdit(item.claimId!,"form");
+                  },
+                      //child:buildActionForClaim(buttonColor,Icons.edit))
+                      child:Icon(Icons.edit,color: buttonColor,size: 30.0,))
+                  ),
+                  item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+                  const SizedBox(width: 30.0,),
+
+                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
+                  item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+                  Flexible(child: GestureDetector(
+                      onTap: (){cont.updateStatus("Approved",item.claimId!,context);},
+                      //child:buildActionForClaim(approveColor,Icons.check)
+                      child:Icon(Icons.check,color: approveColor,size: 30.0,)
+                  )),
+                  item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+                  const SizedBox(width: 5.0,),
+
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildClaimList(ClaimClientListDetails item,ClaimFormController cont) {
@@ -231,6 +420,13 @@ class _ClaimListState extends State<ClaimList> {
           const SizedBox(height: 20.0,),
           Row(
             children: [
+
+              Flexible(child: GestureDetector(onTap:(){
+                cont.navigateToClaimEdit(item.claimId!,"view");
+              },
+                  child:buildActionForClaim(primaryColor,Icons.visibility,))),
+              const SizedBox(width: 5.0,),
+
               cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
               item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
               Flexible(child: GestureDetector(
@@ -310,15 +506,6 @@ class _ClaimListState extends State<ClaimList> {
               item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
 
-              cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
-              item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
-              Flexible(child: GestureDetector(
-                  onTap: (){cont.updateStatus("Approved",item.claimId!,context);},
-                  child:buildActionForClaim(approveColor,Icons.check)
-              )),
-              item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
-              const SizedBox(width: 5.0,),
-
               item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
               Flexible(child: GestureDetector(onTap:(){
                 cont.navigateToClaimEdit(item.claimId!,"form");
@@ -335,10 +522,14 @@ class _ClaimListState extends State<ClaimList> {
               cont.reportingHead == "0" && item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
 
-              Flexible(child: GestureDetector(onTap:(){
-                cont.navigateToClaimEdit(item.claimId!,"view");
-              },
-                  child:buildActionForClaim(primaryColor,Icons.visibility,))),
+
+              cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
+              item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
+              Flexible(child: GestureDetector(
+                  onTap: (){cont.updateStatus("Approved",item.claimId!,context);},
+                  child:buildActionForClaim(approveColor,Icons.check)
+              )),
+              item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
               const SizedBox(width: 5.0,),
             ],
           )

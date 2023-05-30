@@ -2,6 +2,7 @@
 import 'package:biznew/screens/bottom_nav/bottom_nav_binding.dart';
 import 'package:biznew/screens/bottom_nav/bottom_navigation_screen.dart';
 import 'package:biznew/screens/calender/caledner_binding.dart';
+import 'package:biznew/screens/calender/calendar_demo.dart';
 import 'package:biznew/screens/calender/calender_meeting_data.dart';
 import 'package:biznew/screens/calender/calender_screen.dart';
 import 'package:biznew/screens/claim_form/claim_binding.dart';
@@ -10,7 +11,10 @@ import 'package:biznew/screens/claim_form/claim_form.dart';
 import 'package:biznew/screens/claim_form/claim_list.dart';
 import 'package:biznew/screens/claim_form/export_poc.dart';
 import 'package:biznew/screens/claim_form/webview_screen.dart';
-import 'package:biznew/screens/dashboard/client_dashboard.dart';
+import 'package:biznew/screens/dashboard/client/client_binding.dart';
+import 'package:biznew/screens/dashboard/client/client_dashboard.dart';
+import 'package:biznew/screens/dashboard/employee/employee_binding.dart';
+import 'package:biznew/screens/dashboard/employee/employee_dashboard.dart';
 import 'package:biznew/screens/dashboard/notification_list_screen.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_all.dart';
 import 'package:biznew/screens/dashboard/service_dashboard.dart';
@@ -33,12 +37,17 @@ import 'package:biznew/screens/login/forgot_password.dart';
 import 'package:biznew/screens/login/login_binding.dart';
 import 'package:biznew/screens/login/login_screen.dart';
 import 'package:biznew/screens/common/splash_screen.dart';
+import 'package:biznew/screens/manual_assignment/manual_assignment_binding.dart';
+import 'package:biznew/screens/manual_assignment/manual_assignment_screen.dart';
 import 'package:biznew/screens/petty_task/petty_task_binding.dart';
+import 'package:biznew/screens/petty_task/petty_task_client_form.dart';
 import 'package:biznew/screens/petty_task/petty_task_form.dart';
 import 'package:biznew/screens/timesheet_form/timesheet_binding.dart';
 import 'package:biznew/screens/timesheet_form/timesheet_details.dart';
 import 'package:biznew/screens/timesheet_form/timesheet_form.dart';
 import 'package:biznew/screens/timesheet_form/timesheet_list.dart';
+import 'package:biznew/screens/timesheet_new/timesheet_new.dart';
+import 'package:biznew/screens/timesheet_new/timesheet_new_binding.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 part 'app_routes.dart';
 
@@ -65,7 +74,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.bottomNav,
       page: () => const BottomNavigationScreen(),
-      bindings: [BottomNavBinding(),TimesheetFormBinding(),ClaimFormBinding(),LeaveBinding(),DashboardBinding(),HomeBinding()],
+      // bindings: [BottomNavBinding(),TimesheetFormBinding(),ClaimFormBinding(),
+      //   LeaveBinding(),DashboardBinding(),HomeBinding()],
+      bindings: [BottomNavBinding(),TimesheetFormBinding(),ClaimFormBinding(),
+        LeaveBinding(),DashboardBinding(),HomeBinding(),EmployeeBinding(),ClientBinding()],
     ),
     ///home module
     GetPage(
@@ -184,13 +196,33 @@ class AppPages {
       binding: TimesheetFormBinding(),
     ),
     GetPage(
+      name: AppRoutes.timesheetNewForm,
+      page: () => const TimesheetNewForm(),
+      binding: TimesheetNewFormBinding(),
+    ),
+    GetPage(
       name: AppRoutes.pettyTaskFrom,
       page: () => const PettyTaskForm(),
       binding: PettyTaskBinding(),
     ),
     GetPage(
+      name: AppRoutes.pettyTaskClientFrom,
+      page: () => const PettyTaskClientForm(),
+      binding: PettyTaskBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.manualAssignmentScreen,
+      page: () => const ManualAssignmentScreen(),
+      binding: ManualAssignmentBinding(),
+    ),
+    GetPage(
       name: AppRoutes.calenderScreen,
       page: () => const CalenderScreen(),
+      binding: CalenderBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.calenderDemoScreen,
+      page: () => TableEventsExample(),
       binding: CalenderBinding(),
     ),
     GetPage(
@@ -201,7 +233,12 @@ class AppPages {
     GetPage(
       name: AppRoutes.clientDashboard,
       page: () => const ClientDashboard(),
-      binding: CalenderBinding(),
+      binding: ClientBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.employeeDashboard,
+      page: () => const EmployeeDashboardScreen(),
+      binding: EmployeeBinding(),
     ),
   ];
 }

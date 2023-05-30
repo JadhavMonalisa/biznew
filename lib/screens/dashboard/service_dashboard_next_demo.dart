@@ -26,41 +26,41 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
           },
           child:SafeArea(
             child: Scaffold(
-                resizeToAvoidBottomInset: true,
-                body:  DefaultTabController(
-                  length: 5,initialIndex: cont.initialIndex,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: Scaffold(
-                      // appBar: AppBar(
-                      //   elevation: 0, backgroundColor: primaryColor, centerTitle: true,
-                      //   title: buildTextMediumWidget(
-                      //       cont.selectedMainType == "AllottedNotStarted"? "Allotted but not started" :
-                      //       cont.selectedMainType == "StartedNotCompleted" ? "Started but not completed" :
-                      //       cont.selectedMainType == "CompletedUdinPending"? "Completed but UDIN pending" :
-                      //       cont.selectedMainType == "CompletedNotBilled"? "Completed but not billed" :
-                      //       cont.selectedMainType == "WorkOnHold"? "Work on hold" :
-                      //       cont.selectedMainType == "SubmittedForChecking"? "Submitted for checking" : "All Tasks",
-                      //       whiteColor,context, 16,align: TextAlign.center),
-                      //   bottom: Column(
-                      //     children: [
-                      //       TabBar(
-                      //         onTap: (index){
-                      //           print(index);
-                      //         },
-                      //         tabs: [
-                      //           Tab(text: "Past Due"),
-                      //           Tab(text: "High")
-                      //         ],
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      appBar: PreferredSize(
+              resizeToAvoidBottomInset: true,
+              body:  DefaultTabController(
+                length: 5,initialIndex: cont.initialIndex,
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Scaffold(
+                    // appBar: AppBar(
+                    //   elevation: 0, backgroundColor: primaryColor, centerTitle: true,
+                    //   title: buildTextMediumWidget(
+                    //       cont.selectedMainType == "AllottedNotStarted"? "Allotted but not started" :
+                    //       cont.selectedMainType == "StartedNotCompleted" ? "Started but not completed" :
+                    //       cont.selectedMainType == "CompletedUdinPending"? "Completed but UDIN pending" :
+                    //       cont.selectedMainType == "CompletedNotBilled"? "Completed but not billed" :
+                    //       cont.selectedMainType == "WorkOnHold"? "Work on hold" :
+                    //       cont.selectedMainType == "SubmittedForChecking"? "Submitted for checking" : "All Tasks",
+                    //       whiteColor,context, 16,align: TextAlign.center),
+                    //   bottom: Column(
+                    //     children: [
+                    //       TabBar(
+                    //         onTap: (index){
+                    //           print(index);
+                    //         },
+                    //         tabs: [
+                    //           Tab(text: "Past Due"),
+                    //           Tab(text: "High")
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    appBar: PreferredSize(
                         preferredSize: const Size.fromHeight(220),
                         child: Container(
-                            color : primaryColor,
+                          color : primaryColor,
                           child: Column(
                             children: [
                               const SizedBox(height: 20.0,),
@@ -159,5381 +159,2360 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                             ],
                           ),
                         )
-                      ),
-                      body: TabBarView(
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                            child:
-                            cont.selectedMainType == "AllottedNotStarted" ?
-                            ///allotted not started
-                            cont.loader ? buildCircularIndicator() :
-                            cont.allottedNotStartedPastDueList.isEmpty
-                                ? Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child:buildTextBoldWidget("No data found", blackColor, context,
-                                    16.0,align: TextAlign.center))
-                                : ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: cont.allottedNotStartedPastDueList.length,
-                                itemBuilder: (context,index){
-                                  final item = cont.allottedNotStartedPastDueList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Card(
-                                      elevation: 1.0,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-                                          side: const BorderSide(color: grey)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                    body: TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+
+                        ///past due
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          child:
+                          cont.selectedMainType == "AllottedNotStarted" ?
+                          ///allotted not started
+                          cont.loader ? buildCircularIndicator() :
+                          cont.allottedNotStartedPastDueList.isEmpty
+                              ? Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child:buildTextBoldWidget("No data found", blackColor, context,
+                                  16.0,align: TextAlign.center))
+                              : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.allottedNotStartedPastDueList.length,
+                              itemBuilder: (context,index){
+                                final item = cont.allottedNotStartedPastDueList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left:5.0,right:5.0),
+                                  child: Card(
+                                    elevation: 1.0,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                        side: const BorderSide(color: grey)),
+                                    child: ExpansionTile(
+                                      tilePadding: const EdgeInsets.all(0.0),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.only(right: 10.0),
+                                        child: Icon(
+                                          cont.addedIndex.contains(index) ?
+                                          Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                          size: 25.0,
+                                        ),
+                                      ),
+                                      onExpansionChanged: (value){
+                                        cont.onExpanded(value,index);
+                                      },
+                                      title: Column(
                                         children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  height: 40.0,
-                                                  decoration: const BoxDecoration(color: primaryColor,
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                        child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                      )
-                                                  )
-                                              ),
-                                              Flexible(child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(border: Border.all(color: grey),
-                                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0),
-                                                        child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                                      )
-                                                  )
-                                              ),)
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10.0,),
+                                          buildClientCodeWidget(item.clientCode!,item.client!,context),
                                           Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-                                                style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                // recognizer: TapGestureRecognizer()..onTap = () {
-                                                //   cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                // },
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "${
-                                                          cont.addedDateListForCurrent.contains(item.id)
-                                                              ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-                                                              : item.targetDateToShow}",
-                                                      style: TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                          decoration:
-                                                          cont.reportingHead == "0"
-                                                              ? TextDecoration.none : TextDecoration.underline,
-                                                          decorationThickness: 2.0),
-                                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                                        if(cont.reportingHead == "1"){
-                                                          cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
-                                                        }
-                                                      }
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                              padding: const EdgeInsets.only(left: 10.0),
+                                              child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
                                           ),
-
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                // Flexible(
-                                                //   child: GestureDetector(
-                                                //     onTap: (){
-                                                //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                //     },
-                                                //     child: Container(
-                                                //         height: 40.0,
-                                                //         width: MediaQuery.of(context).size.width,
-                                                //         decoration: BoxDecoration(
-                                                //           borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                //           border: Border.all(color: grey),),
-                                                //         child: Center(
-                                                //             child: Padding(
-                                                //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
-                                                //             )
-                                                //         )
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                // const SizedBox(width: 10.0,),
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          : Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child:
-                                                            DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedPriorityListForCurrent.contains(item.id) ?
-                                                                  cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.priorityList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updatePriorityForCurrent(val!,item.id!);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Row(
-                                                crossAxisAlignment : CrossAxisAlignment.start,
-                                                children: [
-                                                  buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                  Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),)
-                                                ],
-                                              )
-                                          ),
-                                          ///trigger date,statutory due date
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.all(10.0),
-                                              child: Row(
-                                                children: [
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){cont.callStartService(item.id!,cont.selectedMainType);},
-                                                        child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                      )),
-
-                                                  //cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  const SizedBox(width: 10.0,),
-                                                  //cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){
-                                                          // cont.selectedCliId = item.id!;
-                                                          // cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-
-                                                          cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                        },
-                                                        child: buildButtonWidget(context, "View",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                      )  ),
-
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  const SizedBox(width: 10.0,),
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!);},
-                                                        child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                      )),
-                                                ],
-                                              )
-                                          )
                                         ],
                                       ),
-                                    ),
-                                  );
-                                })
-                            ///started not completed
-                                :  cont.loader ? buildCircularIndicator() :
-                            cont.startedNotCompletedPastDueList.isEmpty ? Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: cont.startedNotCompletedPastDueList.length,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context,index){
-                                  final item = cont.startedNotCompletedPastDueList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Card(
-                                      elevation: 1.0,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-                                          side: const BorderSide(color: grey)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  height: 40.0,
-                                                  decoration: const BoxDecoration(color: primaryColor,
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                        child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                      )
-                                                  )
-                                              ),
-                                              Flexible(child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(border: Border.all(color: grey),
-                                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0),
-                                                        child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                                      )
-                                                  )
-                                              ),)
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10.0,),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-                                                style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                recognizer: TapGestureRecognizer()..onTap = () {
-                                                  //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                },
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "${
-                                                          cont.addedDateListForCurrent.contains(item.id)
-                                                              ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-                                                              : item.targetDateToShow}",
-                                                      style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                          decoration: TextDecoration.underline,decorationThickness: 2.0),
-                                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                                        //cont.selectTargetDateForCurrent(context,item.id!);
-                                                      }
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          ///priority
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          :
-                                                      Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child: DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedPriorityListForCurrent.contains(item.id) ?
-                                                                  cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.priorityList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updatePriorityForCurrent(val!,item.id!);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
-                                                  ),
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                child: Row(
+                                                  crossAxisAlignment : CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                    Flexible(child:buildTextBoldWidget("${item.allottedTo}", primaryColor, context, 14.0,align: TextAlign.left),)
+                                                  ],
                                                 )
-                                              ],
                                             ),
-                                          ),
-                                          ///assigned to
-                                          Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                  Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left)),
-                                                ],
-                                              )
-                                          ),
-                                          ///trigger date,statutory due date
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ///task,completion
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Task", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Completion", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ///status
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          :
-                                                      Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child: DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedStatusListForCurrent.contains(item.id) ?
-                                                                  cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.changeStatusList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updateStatusForCurrent(val!,item.id!,context);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.all(10.0),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top:5.0),
                                               child: Row(
                                                 children: [
                                                   // Flexible(
-                                                  //     child: GestureDetector(
-                                                  //       onTap: (){cont.callStartService(item.id!,"StartedNotCompleted");},
-                                                  //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                  //     )),
+                                                  //   child: GestureDetector(
+                                                  //     onTap: (){
+                                                  //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
+                                                  //     },
+                                                  //     child: Container(
+                                                  //         height: 40.0,
+                                                  //         width: MediaQuery.of(context).size.width,
+                                                  //         decoration: BoxDecoration(
+                                                  //           borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                  //           border: Border.all(color: grey),),
+                                                  //         child: Center(
+                                                  //             child: Padding(
+                                                  //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                  //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
+                                                  //             )
+                                                  //         )
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
                                                   // const SizedBox(width: 10.0,),
                                                   Flexible(
-                                                      child: GestureDetector(
-                                                        onTap:(){
-                                                          cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                        },
-                                                        child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                      )),
-                                                  const SizedBox(width: 10.0,),
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectedCliId = item.id!;
-                                                          cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                        },
-                                                        child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                      )  ),
+                                                    child: Container(
+                                                        height: 40.0,
+                                                        width: MediaQuery.of(context).size.width,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                          border: Border.all(color: grey),),
+                                                        child: cont.reportingHead == "0"
+                                                            ? Align(
+                                                          alignment: Alignment.centerLeft,
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                            child: buildTextRegularWidget(item.priorityToShow!,
+                                                                item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                context, 15.0,align: TextAlign.left),
+                                                          ),
+                                                        )
+                                                            : Center(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child:
+                                                              DropdownButton(
+                                                                hint: buildTextRegularWidget(
+                                                                    cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                    cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
+                                                                    item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                    item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                    context, 15.0),
+                                                                isExpanded: true,
+                                                                underline: Container(),
+                                                                items:
+                                                                cont.priorityList.map((String value) {
+                                                                  return DropdownMenuItem<String>(
+                                                                    value: value,
+                                                                    child: Text(value),
+                                                                  );
+                                                                }).toList(),
+                                                                onChanged: (val) {
+                                                                  cont.updatePriorityForCurrent(val!,item.id!);
+                                                                },
+                                                              ),
+                                                            )
+                                                        )
+                                                    ),
+                                                  )
                                                 ],
-                                              )
-                                          )
-                                        ],
-                                      ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                              child: Table(
+                                                children: [
+                                                  TableRow(
+                                                      children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(right: 3.0),
+                                                          child: buildTextBoldWidget("Triggered\nDate", blackColor, context, 14.0,align: TextAlign.center),
+                                                        ),
+                                                        GestureDetector(
+                                                            onTap: (){
+                                                              if(cont.reportingHead == "1"){
+                                                                cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                    item.targetDateTimeFormat!,"allottedApiPastDue",item.staDateTimeFormat!);
+                                                              }
+                                                            },
+                                                            child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                                        ),
+                                                        buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                                      ]
+                                                  ),
+                                                  TableRow(
+                                                      children: [
+                                                        buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                        GestureDetector(
+                                                          onTap: (){
+                                                            if(cont.reportingHead == "1"){
+                                                              cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                  item.targetDateTimeFormat!,"allottedApiPastDue",item.staDateTimeFormat!);
+                                                            }
+                                                          },
+                                                          child:buildTextRegularWidget("${
+                                                              cont.addedDateListForAll.contains(item.id)
+                                                                  ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                  : item.targetDateToShow}",
+                                                              blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                                        ),
+                                                        buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                      ]
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                                padding: const EdgeInsets.all(10.0),
+                                                child: Row(
+                                                  children: [
+                                                    ///view
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){
+                                                            cont.navigateToServiceView(item.id!,item.client!,item.servicename!,item.clientCode!);
+                                                          },
+                                                          child: buildButtonWidget(context, "View",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                        )  ),
+
+                                                    ///reassign
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    const SizedBox(width: 10.0,),
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!,item.allottedTo!);},
+                                                          child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                        )),
+                                                    ///start service
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){cont.callStartService(item.id!,cont.selectedMainType);},
+                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                        )),
+                                                  ],
+                                                )
+                                            )
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                }),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                            child:
-                            cont.selectedMainType == "AllottedNotStarted" ?
-                            ///allotted not started
-                            cont.loader ? buildCircularIndicator() :
-                            cont.allottedNotStartedPastDueList.isEmpty
-                                ? Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child:buildTextBoldWidget("No data found", blackColor, context,
-                                    16.0,align: TextAlign.center))
-                                : ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: cont.allottedNotStartedPastDueList.length,
-                                itemBuilder: (context,index){
-                                  final item = cont.allottedNotStartedPastDueList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Card(
+                                  ),
+                                );
+                              })
+                          ///started not completed
+                              :
+
+                          cont.loader ? buildCircularIndicator() :
+                          cont.startedNotCompletedPastDueList.isEmpty ? Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.startedNotCompletedPastDueList.length,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context,index){
+                                final item = cont.startedNotCompletedPastDueList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left:5.0,right:5.0),
+                                  child: Card(
                                       elevation: 1.0,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
                                           side: const BorderSide(color: grey)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  height: 40.0,
-                                                  decoration: const BoxDecoration(color: primaryColor,
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                        child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                      )
-                                                  )
-                                              ),
-                                              Flexible(child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(border: Border.all(color: grey),
-                                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0),
-                                                        child: buildTextBoldWidget(item.client!+"$index", primaryColor, context, 14.0,align: TextAlign.left),
-                                                      )
-                                                  )
-                                              ),)
-                                            ],
+                                      child: ExpansionTile(
+                                        tilePadding: const EdgeInsets.all(0.0),
+                                        trailing: Padding(
+                                          padding: const EdgeInsets.only(right: 10.0),
+                                          child: Icon(
+                                            cont.addedIndex.contains(index) ?
+                                            Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                            size: 25.0,
                                           ),
-                                          const SizedBox(height: 10.0,),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-                                                style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                // recognizer: TapGestureRecognizer()..onTap = () {
-                                                //   cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                // },
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "${
-                                                          cont.addedDateListForCurrent.contains(item.id)
-                                                              ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-                                                              : item.targetDateToShow}",
-                                                      style: TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                          decoration:
-                                                          cont.reportingHead == "0"
-                                                              ? TextDecoration.none : TextDecoration.underline,
-                                                          decorationThickness: 2.0),
-                                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                                        if(cont.reportingHead == "1"){
-                                                          cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
-                                                        }
-                                                      }
-                                                  ),
-                                                ],
-                                              ),
+                                        ),
+                                        onExpansionChanged: (value){
+                                          cont.onExpanded(value,index);
+                                        },
+                                        title: Column(
+                                          children: [
+                                            buildClientCodeWidget(item.clientCode!,item.client!,context),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0),
+                                                child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
                                             ),
-                                          ),
+                                          ],
+                                        ),
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              ///assigned to
+                                              Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,),
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.allottedTo}", primaryColor, context, 14.0,align: TextAlign.left)),
+                                                    ],
+                                                  )
+                                              ),
+                                              Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                  child: Row(
+                                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                                    children: [
+                                                      buildTextBoldWidget("Task - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
+                                                      SizedBox(width:20.0),
+                                                      buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.completionPercentage}", primaryColor, context, 14.0,align: TextAlign.left),)
 
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                // Flexible(
-                                                //   child: GestureDetector(
-                                                //     onTap: (){
-                                                //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                //     },
-                                                //     child: Container(
-                                                //         height: 40.0,
-                                                //         width: MediaQuery.of(context).size.width,
-                                                //         decoration: BoxDecoration(
-                                                //           borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                //           border: Border.all(color: grey),),
-                                                //         child: Center(
-                                                //             child: Padding(
-                                                //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
-                                                //             )
-                                                //         )
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                // const SizedBox(width: 10.0,),
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          : Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child:
-                                                            DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedPriorityListForCurrent.contains(item.id) ?
-                                                                  cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.priorityList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updatePriorityForCurrent(val!,item.id!);
-                                                              },
+                                                    ],
+                                                  )
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: Container(
+                                                          height: 40.0,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                            border: Border.all(color: grey),),
+                                                          child: cont.reportingHead == "0"
+                                                              ? Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: buildTextRegularWidget(item.priorityToShow!,
+                                                                  item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                  item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                  context, 15.0,align: TextAlign.left),
                                                             ),
                                                           )
-                                                      )
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Row(
-                                                crossAxisAlignment : CrossAxisAlignment.start,
-                                                children: [
-                                                  buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                  Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),)
-                                                ],
-                                              )
-                                          ),
-                                          ///trigger date,statutory due date
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.all(10.0),
-                                              child: Row(
-                                                children: [
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){cont.callStartService(item.id!,cont.selectedMainType);},
-                                                        child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                      )),
+                                                              :
+                                                          Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: DropdownButton(
+                                                                  hint: buildTextRegularWidget(
+                                                                      cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                      cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
 
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  const SizedBox(width: 10.0,),
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectedCliId = item.id!;
-                                                          cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                        },
-                                                        child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                      )  ),
+                                                                      item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                      item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
 
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  const SizedBox(width: 10.0,),
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!);},
-                                                        child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                      )),
-                                                ],
+                                                                      context, 15.0),
+                                                                  isExpanded: true,
+                                                                  underline: Container(),
+                                                                  items:
+                                                                  cont.priorityList.map((String value) {
+                                                                    return DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged: (val) {
+                                                                    cont.updatePriorityForCurrent(val!,item.id!);
+                                                                  },
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width:10.0),
+                                                    Flexible(
+                                                      child: Container(
+                                                          height: 40.0,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                            border: Border.all(color: grey),),
+                                                          child: cont.reportingHead == "0"
+                                                              ? Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
+                                                            ),
+                                                          )
+                                                              :
+                                                          Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: DropdownButton(
+                                                                  hint: buildTextRegularWidget(
+                                                                      cont.addedStatusListForCurrent.contains(item.id) ?
+                                                                      cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
+                                                                      blackColor, context, 15.0),
+                                                                  isExpanded: true,
+                                                                  underline: Container(),
+                                                                  items:
+                                                                  cont.changeStatusList.map((String value) {
+                                                                    return DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged: (val) {
+                                                                    cont.updateStatusForCurrent(val!,item.id!,context);
+                                                                  },
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                                child: Table(
+                                                  children: [
+                                                    TableRow(
+                                                        children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 3.0),
+                                                            child: buildTextBoldWidget("Triggered\nDate", blackColor, context, 14.0,align: TextAlign.center),
+                                                          ),
+                                                          GestureDetector(
+                                                              onTap: (){
+                                                                if(cont.reportingHead == "1"){
+                                                                  cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                      item.targetDateTimeFormat!,"startedNotCompletedApiPastDue",item.staDateTimeFormat!);
+                                                                }
+                                                              },
+                                                              child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                                          ),
+                                                          buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                                        ]
+                                                    ),
+                                                    TableRow(
+                                                        children: [
+                                                          buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                          GestureDetector(
+                                                            onTap: (){
+                                                              if(cont.reportingHead == "1"){
+                                                                cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                    item.targetDateTimeFormat!,"startedNotCompletedApiPastDue",item.staDateTimeFormat!);
+                                                              }
+                                                            },
+                                                            child:buildTextRegularWidget("${
+                                                                cont.addedDateListForAll.contains(item.id)
+                                                                    ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                    : item.targetDateToShow}",
+                                                                blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                                          ),
+                                                          buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                        ]
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap: (){
+                                                              cont.selectedCliId = item.id!;
+                                                              cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                            },
+                                                            child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                          )  ),
+                                                      const SizedBox(width: 10.0,),
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap:(){
+                                                              cont.navigateToServiceView(item.id!,item.client!,item.servicename!,item.clientCode!);
+                                                            },
+                                                            child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                          )),
+                                                      const SizedBox(width: 10.0,),
+
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap: (){
+                                                              cont.updateStatusForCurrent("Complete",item.id!,context);
+                                                            },
+                                                            child: buildButtonWidget(context, "Complete",height: 40.0,buttonColor: approveColor,buttonFontSize:14.0),
+                                                          )  ),
+                                                    ],
+                                                  )
                                               )
-                                          )
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                  ),
+                                );
+                              }),
+                        ),
+                        ///probable overdue
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          child:
+                          cont.selectedMainType == "AllottedNotStarted" ?
+                          ///allotted not started
+                          cont.loader ? buildCircularIndicator() :
+                          cont.allottedNotStartedPastDueList.isEmpty
+                              ? Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child:buildTextBoldWidget("No data found", blackColor, context,
+                                  16.0,align: TextAlign.center))
+                              : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.allottedNotStartedPastDueList.length,
+                              itemBuilder: (context,index){
+                                final item = cont.allottedNotStartedPastDueList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left:5.0,right:5.0),
+                                  child: Card(
+                                    elevation: 1.0,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                        side: const BorderSide(color: grey)),
+                                    child: ExpansionTile(
+                                      tilePadding: const EdgeInsets.all(0.0),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.only(right: 10.0),
+                                        child: Icon(
+                                          cont.addedIndex.contains(index) ?
+                                          Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                          size: 25.0,
+                                        ),
+                                      ),
+                                      onExpansionChanged: (value){
+                                        cont.onExpanded(value,index);
+                                      },
+                                      title: Column(
+                                        children: [
+                                          buildClientCodeWidget(item.clientCode!,item.client!,context),
+                                          Padding(
+                                              padding: const EdgeInsets.only(left: 10.0),
+                                              child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                  );
-                                })
-                            ///started not completed
-                                :  cont.loader ? buildCircularIndicator() :
-                            cont.startedNotCompletedPastDueList.isEmpty ? Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: cont.startedNotCompletedPastDueList.length,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context,index){
-                                  final item = cont.startedNotCompletedPastDueList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Card(
-                                      elevation: 1.0,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-                                          side: const BorderSide(color: grey)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  height: 40.0,
-                                                  decoration: const BoxDecoration(color: primaryColor,
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                        child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                      )
-                                                  )
-                                              ),
-                                              Flexible(child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(border: Border.all(color: grey),
-                                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0),
-                                                        child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                                      )
-                                                  )
-                                              ),)
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10.0,),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-                                                style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                recognizer: TapGestureRecognizer()..onTap = () {
-                                                  //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                },
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "${
-                                                          cont.addedDateListForCurrent.contains(item.id)
-                                                              ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-                                                              : item.targetDateToShow}",
-                                                      style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                          decoration: TextDecoration.underline,decorationThickness: 2.0),
-                                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                                        //cont.selectTargetDateForCurrent(context,item.id!);
-                                                      }
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          ///priority
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          :
-                                                      Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child: DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedPriorityListForCurrent.contains(item.id) ?
-                                                                  cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.priorityList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updatePriorityForCurrent(val!,item.id!);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
-                                                  ),
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                child: Row(
+                                                  crossAxisAlignment : CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                    Flexible(child:buildTextBoldWidget("${item.allottedTo}", primaryColor, context, 14.0,align: TextAlign.left),)
+                                                  ],
                                                 )
-                                              ],
                                             ),
-                                          ),
-                                          ///assigned to
-                                          Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,),
+                                              child: Table(
                                                 children: [
-                                                  buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                  Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0)),
-                                                ],
-                                              )
-                                          ),
-                                          ///trigger date,statutory due date
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ///task,completion
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Task", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Completion", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ///status
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
+                                                  TableRow(
+                                                      children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(right: 3.0),
+                                                          child: buildTextBoldWidget("Triggered\nDate", blackColor, context, 14.0,align: TextAlign.center),
                                                         ),
-                                                      )
-                                                          :
-                                                      Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child: DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedStatusListForCurrent.contains(item.id) ?
-                                                                  cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.changeStatusList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updateStatusForCurrent(val!,item.id!,context);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
+                                                        GestureDetector(
+                                                            onTap: (){
+                                                              if(cont.reportingHead == "1"){
+                                                                cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                    item.targetDateTimeFormat!,"allottedApiProbable",item.staDateTimeFormat!);
+                                                              }
+                                                            },
+                                                            child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                                        ),
+                                                        buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                                      ]
                                                   ),
-                                                )
-                                              ],
+                                                  TableRow(
+                                                      children: [
+                                                        buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                        GestureDetector(
+                                                          onTap: (){
+                                                            if(cont.reportingHead == "1"){
+                                                              cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                  item.targetDateTimeFormat!,"allottedApiProbable",item.staDateTimeFormat!);
+                                                            }
+                                                          },
+                                                          child:buildTextRegularWidget("${
+                                                              cont.addedDateListForAll.contains(item.id)
+                                                                  ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                  : item.targetDateToShow}",
+                                                              blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                                        ),
+                                                        buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                      ]
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.all(10.0),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top:5.0),
                                               child: Row(
                                                 children: [
                                                   // Flexible(
-                                                  //     child: GestureDetector(
-                                                  //       onTap: (){cont.callStartService(item.id!);},
-                                                  //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                  //     )),
+                                                  //   child: GestureDetector(
+                                                  //     onTap: (){
+                                                  //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
+                                                  //     },
+                                                  //     child: Container(
+                                                  //         height: 40.0,
+                                                  //         width: MediaQuery.of(context).size.width,
+                                                  //         decoration: BoxDecoration(
+                                                  //           borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                  //           border: Border.all(color: grey),),
+                                                  //         child: Center(
+                                                  //             child: Padding(
+                                                  //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                  //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
+                                                  //             )
+                                                  //         )
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
                                                   // const SizedBox(width: 10.0,),
                                                   Flexible(
-                                                      child: GestureDetector(
-                                                        onTap:(){
-                                                          cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                        },
-                                                        child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                      )  ),
-                                                  const SizedBox(width: 10.0,),
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectedCliId = item.id!;
-                                                          cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                        },
-                                                        child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                      )  ),
+                                                    child: Container(
+                                                        height: 40.0,
+                                                        width: MediaQuery.of(context).size.width,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                          border: Border.all(color: grey),),
+                                                        child: cont.reportingHead == "0"
+                                                            ? Align(
+                                                          alignment: Alignment.centerLeft,
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                            child: buildTextRegularWidget(item.priorityToShow!,
+                                                                item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                context, 15.0,align: TextAlign.left),
+                                                          ),
+                                                        )
+                                                            : Center(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child:
+                                                              DropdownButton(
+                                                                hint: buildTextRegularWidget(
+                                                                    cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                    cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
+                                                                    item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                    item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                    context, 15.0),
+                                                                isExpanded: true,
+                                                                underline: Container(),
+                                                                items:
+                                                                cont.priorityList.map((String value) {
+                                                                  return DropdownMenuItem<String>(
+                                                                    value: value,
+                                                                    child: Text(value),
+                                                                  );
+                                                                }).toList(),
+                                                                onChanged: (val) {
+                                                                  cont.updatePriorityForCurrent(val!,item.id!);
+                                                                },
+                                                              ),
+                                                            )
+                                                        )
+                                                    ),
+                                                  )
                                                 ],
-                                              )
-                                          )
-                                        ],
-                                      ),
+                                              ),
+                                            ),
+                                            Padding(
+                                                padding: const EdgeInsets.all(10.0),
+                                                child: Row(
+                                                  children: [
+                                                    ///view
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){
+                                                            cont.navigateToServiceView(item.id!,item.client!,item.servicename!,item.clientCode!);
+                                                          },
+                                                          child: buildButtonWidget(context, "View",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                        )  ),
+
+                                                    ///reassign
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    const SizedBox(width: 10.0,),
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!,item.allottedTo!);},
+                                                          child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                        )),
+                                                    ///start service
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){cont.callStartService(item.id!,cont.selectedMainType);},
+                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                        )),
+                                                  ],
+                                                )
+                                            )
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                }),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                            child:
-                            cont.selectedMainType == "AllottedNotStarted" ?
-                            ///allotted not started
-                            cont.loader ? buildCircularIndicator() :
-                            cont.allottedNotStartedPastDueList.isEmpty
-                                ? Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child:buildTextBoldWidget("No data found", blackColor, context,
-                                    16.0,align: TextAlign.center))
-                                : ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: cont.allottedNotStartedPastDueList.length,
-                                itemBuilder: (context,index){
-                                  final item = cont.allottedNotStartedPastDueList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Card(
+                                  ),
+                                );
+                              })
+                          ///started not completed
+                              :  cont.loader ? buildCircularIndicator() :
+                          cont.startedNotCompletedPastDueList.isEmpty ? Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.startedNotCompletedPastDueList.length,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context,index){
+                                final item = cont.startedNotCompletedPastDueList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left:5.0,right:5.0),
+                                  child: Card(
                                       elevation: 1.0,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
                                           side: const BorderSide(color: grey)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  height: 40.0,
-                                                  decoration: const BoxDecoration(color: primaryColor,
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                        child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                      )
-                                                  )
-                                              ),
-                                              Flexible(child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(border: Border.all(color: grey),
-                                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0),
-                                                        child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                                      )
-                                                  )
-                                              ),)
-                                            ],
+                                      child: ExpansionTile(
+                                        tilePadding: const EdgeInsets.all(0.0),
+                                        trailing: Padding(
+                                          padding: const EdgeInsets.only(right: 10.0),
+                                          child: Icon(
+                                            cont.addedIndex.contains(index) ?
+                                            Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                            size: 25.0,
                                           ),
-                                          const SizedBox(height: 10.0,),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-                                                style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                // recognizer: TapGestureRecognizer()..onTap = () {
-                                                //   cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                // },
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "${
-                                                          cont.addedDateListForCurrent.contains(item.id)
-                                                              ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-                                                              : item.targetDateToShow}",
-                                                      style: TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                          decoration:
-                                                          cont.reportingHead == "0"
-                                                              ? TextDecoration.none : TextDecoration.underline,
-                                                          decorationThickness: 2.0),
-                                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                                        if(cont.reportingHead == "1"){
-                                                          cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
-                                                        }
-                                                      }
-                                                  ),
-                                                ],
-                                              ),
+                                        ),
+                                        onExpansionChanged: (value){
+                                          cont.onExpanded(value,index);
+                                        },
+                                        title: Column(
+                                          children: [
+                                            buildClientCodeWidget(item.clientCode!,item.client!,context),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0),
+                                                child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
                                             ),
-                                          ),
+                                          ],
+                                        ),
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              ///assigned to
+                                              Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,),
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.allottedTo}", primaryColor, context, 14.0,align: TextAlign.left)),
+                                                    ],
+                                                  )
+                                              ),
+                                              Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                  child: Row(
+                                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                                    children: [
+                                                      buildTextBoldWidget("Task - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
+                                                      SizedBox(width:20.0),
+                                                      buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.completionPercentage}", primaryColor, context, 14.0,align: TextAlign.left),)
 
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                // Flexible(
-                                                //   child: GestureDetector(
-                                                //     onTap: (){
-                                                //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                //     },
-                                                //     child: Container(
-                                                //         height: 40.0,
-                                                //         width: MediaQuery.of(context).size.width,
-                                                //         decoration: BoxDecoration(
-                                                //           borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                //           border: Border.all(color: grey),),
-                                                //         child: Center(
-                                                //             child: Padding(
-                                                //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
-                                                //             )
-                                                //         )
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                // const SizedBox(width: 10.0,),
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          : Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child:
-                                                            DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedPriorityListForCurrent.contains(item.id) ?
-                                                                  cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.priorityList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updatePriorityForCurrent(val!,item.id!);
-                                                              },
+                                                    ],
+                                                  )
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: Container(
+                                                          height: 40.0,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                            border: Border.all(color: grey),),
+                                                          child: cont.reportingHead == "0"
+                                                              ? Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: buildTextRegularWidget(item.priorityToShow!,
+                                                                  item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                  item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                  context, 15.0,align: TextAlign.left),
                                                             ),
                                                           )
-                                                      )
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Row(
-                                                crossAxisAlignment : CrossAxisAlignment.start,
-                                                children: [
-                                                  buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                  Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),)
-                                                ],
-                                              )
-                                          ),
-                                          ///trigger date,statutory due date
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.all(10.0),
-                                              child: Row(
-                                                children: [
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){cont.callStartService(item.id!,cont.selectedMainType);},
-                                                        child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                      )),
+                                                              :
+                                                          Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: DropdownButton(
+                                                                  hint: buildTextRegularWidget(
+                                                                      cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                      cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
 
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  const SizedBox(width: 10.0,),
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectedCliId = item.id!;
-                                                          cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                        },
-                                                        child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                      )  ),
+                                                                      item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                      item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
 
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  const SizedBox(width: 10.0,),
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!);},
-                                                        child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                      )),
-                                                ],
+                                                                      context, 15.0),
+                                                                  isExpanded: true,
+                                                                  underline: Container(),
+                                                                  items:
+                                                                  cont.priorityList.map((String value) {
+                                                                    return DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged: (val) {
+                                                                    cont.updatePriorityForCurrent(val!,item.id!);
+                                                                  },
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width:10.0),
+                                                    Flexible(
+                                                      child: Container(
+                                                          height: 40.0,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                            border: Border.all(color: grey),),
+                                                          child: cont.reportingHead == "0"
+                                                              ? Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
+                                                            ),
+                                                          )
+                                                              :
+                                                          Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: DropdownButton(
+                                                                  hint: buildTextRegularWidget(
+                                                                      cont.addedStatusListForCurrent.contains(item.id) ?
+                                                                      cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
+                                                                      blackColor, context, 15.0),
+                                                                  isExpanded: true,
+                                                                  underline: Container(),
+                                                                  items:
+                                                                  cont.changeStatusList.map((String value) {
+                                                                    return DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged: (val) {
+                                                                    cont.updateStatusForCurrent(val!,item.id!,context);
+                                                                  },
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                                child: Table(
+                                                  children: [
+                                                    TableRow(
+                                                        children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 3.0),
+                                                            child: buildTextBoldWidget("Triggered\nDate", blackColor, context, 14.0,align: TextAlign.center),
+                                                          ),
+                                                          GestureDetector(
+                                                              onTap: (){
+                                                                if(cont.reportingHead == "1"){
+                                                                  cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                      item.targetDateTimeFormat!,"startedNotCompletedApiProbable",item.staDateTimeFormat!);
+                                                                }
+                                                              },
+                                                              child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                                          ),
+                                                          buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                                        ]
+                                                    ),
+                                                    TableRow(
+                                                        children: [
+                                                          buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                          GestureDetector(
+                                                            onTap: (){
+                                                              if(cont.reportingHead == "1"){
+                                                                cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                    item.targetDateTimeFormat!,"startedNotCompletedApiProbable",item.staDateTimeFormat!);
+                                                              }
+                                                            },
+                                                            child:buildTextRegularWidget("${
+                                                                cont.addedDateListForAll.contains(item.id)
+                                                                    ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                    : item.targetDateToShow}",
+                                                                blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                                          ),
+                                                          buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                        ]
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap: (){
+                                                              cont.selectedCliId = item.id!;
+                                                              cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                            },
+                                                            child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                          )  ),
+                                                      const SizedBox(width: 10.0,),
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap:(){
+                                                              cont.navigateToServiceView(item.id!,item.client!,item.servicename!,item.clientCode!);
+                                                            },
+                                                            child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                          )),
+                                                      const SizedBox(width: 10.0,),
+
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap: (){
+                                                              cont.updateStatusForCurrent("Complete",item.id!,context);
+                                                            },
+                                                            child: buildButtonWidget(context, "Complete",height: 40.0,buttonColor: approveColor,buttonFontSize:14.0),
+                                                          )  ),
+                                                    ],
+                                                  )
                                               )
-                                          )
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                  ),
+                                );
+                              }),
+                        ),
+                        ///high
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          child:
+                          cont.selectedMainType == "AllottedNotStarted" ?
+                          ///allotted not started
+                          cont.loader ? buildCircularIndicator() :
+                          cont.allottedNotStartedPastDueList.isEmpty
+                              ? Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child:buildTextBoldWidget("No data found", blackColor, context,
+                                  16.0,align: TextAlign.center))
+                              : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.allottedNotStartedPastDueList.length,
+                              itemBuilder: (context,index){
+                                final item = cont.allottedNotStartedPastDueList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left:5.0,right:5.0),
+                                  child: Card(
+                                    elevation: 1.0,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                        side: const BorderSide(color: grey)),
+                                    child:ExpansionTile(
+                                      tilePadding: const EdgeInsets.all(0.0),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.only(right: 10.0),
+                                        child: Icon(
+                                          cont.addedIndex.contains(index) ?
+                                          Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                          size: 25.0,
+                                        ),
+                                      ),
+                                      onExpansionChanged: (value){
+                                        cont.onExpanded(value,index);
+                                      },
+                                      title: Column(
+                                        children: [
+                                          buildClientCodeWidget(item.clientCode!,item.client!,context),
+                                          Padding(
+                                              padding: const EdgeInsets.only(left: 10.0),
+                                              child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                  );
-                                })
-                            ///started not completed
-                                :  cont.loader ? buildCircularIndicator() :
-                            cont.startedNotCompletedPastDueList.isEmpty ? Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: cont.startedNotCompletedPastDueList.length,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context,index){
-                                  final item = cont.startedNotCompletedPastDueList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Card(
-                                      elevation: 1.0,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-                                          side: const BorderSide(color: grey)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  height: 40.0,
-                                                  decoration: const BoxDecoration(color: primaryColor,
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                        child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                      )
-                                                  )
-                                              ),
-                                              Flexible(child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(border: Border.all(color: grey),
-                                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0),
-                                                        child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                                      )
-                                                  )
-                                              ),)
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10.0,),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-                                                style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                recognizer: TapGestureRecognizer()..onTap = () {
-                                                  //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                },
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "${
-                                                          cont.addedDateListForCurrent.contains(item.id)
-                                                              ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-                                                              : item.targetDateToShow}",
-                                                      style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                          decoration: TextDecoration.underline,decorationThickness: 2.0),
-                                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                                        //cont.selectTargetDateForCurrent(context,item.id!);
-                                                      }
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          ///priority
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          :
-                                                      Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child: DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedPriorityListForCurrent.contains(item.id) ?
-                                                                  cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.priorityList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updatePriorityForCurrent(val!,item.id!);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
-                                                  ),
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                child: Row(
+                                                  crossAxisAlignment : CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                    Flexible(child:buildTextBoldWidget("${item.allottedTo}", primaryColor, context, 14.0,align: TextAlign.left),)
+                                                  ],
                                                 )
-                                              ],
                                             ),
-                                          ),
-                                          ///assigned to
-                                          Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,),
+                                              child: Table(
                                                 children: [
-                                                  buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                  Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0)),
-                                                ],
-                                              )
-                                          ),
-                                          ///trigger date,statutory due date
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ///task,completion
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Task", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Completion", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ///status
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
+                                                  TableRow(
+                                                      children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(right: 3.0),
+                                                          child: buildTextBoldWidget("Triggered\nDate", blackColor, context, 14.0,align: TextAlign.center),
                                                         ),
-                                                      )
-                                                          :
-                                                      Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child: DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedStatusListForCurrent.contains(item.id) ?
-                                                                  cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.changeStatusList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updateStatusForCurrent(val!,item.id!,context);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
+                                                        GestureDetector(
+                                                            onTap: (){
+                                                              if(cont.reportingHead == "1"){
+                                                                cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                    item.targetDateTimeFormat!,"allottedApiHigh",item.staDateTimeFormat!);
+                                                              }
+                                                            },
+                                                            child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                                        ),
+                                                        buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                                      ]
                                                   ),
-                                                )
-                                              ],
+                                                  TableRow(
+                                                      children: [
+                                                        buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                        GestureDetector(
+                                                          onTap: (){
+                                                            if(cont.reportingHead == "1"){
+                                                              cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                  item.targetDateTimeFormat!,"allottedApiHigh",item.staDateTimeFormat!);
+                                                            }
+                                                          },
+                                                          child:buildTextRegularWidget("${
+                                                              cont.addedDateListForAll.contains(item.id)
+                                                                  ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                  : item.targetDateToShow}",
+                                                              blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                                        ),
+                                                        buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                      ]
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.all(10.0),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top:5.0),
                                               child: Row(
                                                 children: [
                                                   // Flexible(
-                                                  //     child: GestureDetector(
-                                                  //       onTap: (){cont.callStartService(item.id!);},
-                                                  //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                  //     )),
+                                                  //   child: GestureDetector(
+                                                  //     onTap: (){
+                                                  //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
+                                                  //     },
+                                                  //     child: Container(
+                                                  //         height: 40.0,
+                                                  //         width: MediaQuery.of(context).size.width,
+                                                  //         decoration: BoxDecoration(
+                                                  //           borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                  //           border: Border.all(color: grey),),
+                                                  //         child: Center(
+                                                  //             child: Padding(
+                                                  //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                  //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
+                                                  //             )
+                                                  //         )
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
                                                   // const SizedBox(width: 10.0,),
                                                   Flexible(
-                                                      child: GestureDetector(
-                                                        onTap:(){
-                                                          cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                        },
-                                                        child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                      )  ),
-                                                  const SizedBox(width: 10.0,),
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectedCliId = item.id!;
-                                                          cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                        },
-                                                        child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                      )  ),
+                                                    child: Container(
+                                                        height: 40.0,
+                                                        width: MediaQuery.of(context).size.width,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                          border: Border.all(color: grey),),
+                                                        child: cont.reportingHead == "0"
+                                                            ? Align(
+                                                          alignment: Alignment.centerLeft,
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                            child: buildTextRegularWidget(item.priorityToShow!,
+                                                                item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                context, 15.0,align: TextAlign.left),
+                                                          ),
+                                                        )
+                                                            : Center(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child:
+                                                              DropdownButton(
+                                                                hint: buildTextRegularWidget(
+                                                                    cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                    cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
+                                                                    item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                    item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                    context, 15.0),
+                                                                isExpanded: true,
+                                                                underline: Container(),
+                                                                items:
+                                                                cont.priorityList.map((String value) {
+                                                                  return DropdownMenuItem<String>(
+                                                                    value: value,
+                                                                    child: Text(value),
+                                                                  );
+                                                                }).toList(),
+                                                                onChanged: (val) {
+                                                                  cont.updatePriorityForCurrent(val!,item.id!);
+                                                                },
+                                                              ),
+                                                            )
+                                                        )
+                                                    ),
+                                                  )
                                                 ],
-                                              )
-                                          )
-                                        ],
-                                      ),
+                                              ),
+                                            ),
+                                            Padding(
+                                                padding: const EdgeInsets.all(10.0),
+                                                child: Row(
+                                                  children: [
+                                                    ///view
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){
+                                                            cont.navigateToServiceView(item.id!,item.client!,item.servicename!,item.clientCode!);
+                                                          },
+                                                          child: buildButtonWidget(context, "View",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                        )  ),
+
+                                                    ///reassign
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    const SizedBox(width: 10.0,),
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!,item.allottedTo!);},
+                                                          child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                        )),
+                                                    ///start service
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){cont.callStartService(item.id!,cont.selectedMainType);},
+                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                        )),
+                                                  ],
+                                                )
+                                            )
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                }),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                            child:
-                            cont.selectedMainType == "AllottedNotStarted" ?
-                            ///allotted not started
-                            cont.loader ? buildCircularIndicator() :
-                            cont.allottedNotStartedPastDueList.isEmpty
-                                ? Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child:buildTextBoldWidget("No data found", blackColor, context,
-                                    16.0,align: TextAlign.center))
-                                : ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: cont.allottedNotStartedPastDueList.length,
-                                itemBuilder: (context,index){
-                                  final item = cont.allottedNotStartedPastDueList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Card(
+                                  ),
+                                );
+                              })
+                          ///started not completed
+                              :  cont.loader ? buildCircularIndicator() :
+                          cont.startedNotCompletedPastDueList.isEmpty ? Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.startedNotCompletedPastDueList.length,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context,index){
+                                final item = cont.startedNotCompletedPastDueList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left:5.0,right:5.0),
+                                  child: Card(
                                       elevation: 1.0,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
                                           side: const BorderSide(color: grey)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  height: 40.0,
-                                                  decoration: const BoxDecoration(color: primaryColor,
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                        child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                      )
-                                                  )
-                                              ),
-                                              Flexible(child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(border: Border.all(color: grey),
-                                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0),
-                                                        child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                                      )
-                                                  )
-                                              ),)
-                                            ],
+                                      child:ExpansionTile(
+                                        tilePadding: const EdgeInsets.all(0.0),
+                                        trailing: Padding(
+                                          padding: const EdgeInsets.only(right: 10.0),
+                                          child: Icon(
+                                            cont.addedIndex.contains(index) ?
+                                            Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                            size: 25.0,
                                           ),
-                                          const SizedBox(height: 10.0,),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-                                                style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                // recognizer: TapGestureRecognizer()..onTap = () {
-                                                //   cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                // },
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "${
-                                                          cont.addedDateListForCurrent.contains(item.id)
-                                                              ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-                                                              : item.targetDateToShow}",
-                                                      style: TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                          decoration:
-                                                          cont.reportingHead == "0"
-                                                              ? TextDecoration.none : TextDecoration.underline,
-                                                          decorationThickness: 2.0),
-                                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                                        if(cont.reportingHead == "1"){
-                                                          cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
-                                                        }
-                                                      }
-                                                  ),
-                                                ],
-                                              ),
+                                        ),
+                                        onExpansionChanged: (value){
+                                          cont.onExpanded(value,index);
+                                        },
+                                        title: Column(
+                                          children: [
+                                            buildClientCodeWidget(item.clientCode!,item.client!,context),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0),
+                                                child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
                                             ),
-                                          ),
+                                          ],
+                                        ),
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              ///assigned to
+                                              Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,),
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.allottedTo}", primaryColor, context, 14.0,align: TextAlign.left)),
+                                                    ],
+                                                  )
+                                              ),
+                                              Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                  child: Row(
+                                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                                    children: [
+                                                      buildTextBoldWidget("Task - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
+                                                      SizedBox(width:20.0),
+                                                      buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.completionPercentage}", primaryColor, context, 14.0,align: TextAlign.left),)
 
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                // Flexible(
-                                                //   child: GestureDetector(
-                                                //     onTap: (){
-                                                //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                //     },
-                                                //     child: Container(
-                                                //         height: 40.0,
-                                                //         width: MediaQuery.of(context).size.width,
-                                                //         decoration: BoxDecoration(
-                                                //           borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                //           border: Border.all(color: grey),),
-                                                //         child: Center(
-                                                //             child: Padding(
-                                                //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
-                                                //             )
-                                                //         )
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                // const SizedBox(width: 10.0,),
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          : Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child:
-                                                            DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedPriorityListForCurrent.contains(item.id) ?
-                                                                  cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.priorityList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updatePriorityForCurrent(val!,item.id!);
-                                                              },
+                                                    ],
+                                                  )
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: Container(
+                                                          height: 40.0,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                            border: Border.all(color: grey),),
+                                                          child: cont.reportingHead == "0"
+                                                              ? Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: buildTextRegularWidget(item.priorityToShow!,
+                                                                  item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                  item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                  context, 15.0,align: TextAlign.left),
                                                             ),
                                                           )
-                                                      )
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Row(
-                                                crossAxisAlignment : CrossAxisAlignment.start,
-                                                children: [
-                                                  buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                  Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),)
-                                                ],
-                                              )
-                                          ),
-                                          ///trigger date,statutory due date
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.all(10.0),
-                                              child: Row(
-                                                children: [
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){cont.callStartService(item.id!,cont.selectedMainType);},
-                                                        child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                      )),
+                                                              :
+                                                          Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: DropdownButton(
+                                                                  hint: buildTextRegularWidget(
+                                                                      cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                      cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
 
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  const SizedBox(width: 10.0,),
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectedCliId = item.id!;
-                                                          cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                        },
-                                                        child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                      )  ),
+                                                                      item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                      item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
 
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  const SizedBox(width: 10.0,),
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!);},
-                                                        child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                      )),
-                                                ],
+                                                                      context, 15.0),
+                                                                  isExpanded: true,
+                                                                  underline: Container(),
+                                                                  items:
+                                                                  cont.priorityList.map((String value) {
+                                                                    return DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged: (val) {
+                                                                    cont.updatePriorityForCurrent(val!,item.id!);
+                                                                  },
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width:10.0),
+                                                    Flexible(
+                                                      child: Container(
+                                                          height: 40.0,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                            border: Border.all(color: grey),),
+                                                          child: cont.reportingHead == "0"
+                                                              ? Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
+                                                            ),
+                                                          )
+                                                              :
+                                                          Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: DropdownButton(
+                                                                  hint: buildTextRegularWidget(
+                                                                      cont.addedStatusListForCurrent.contains(item.id) ?
+                                                                      cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
+                                                                      blackColor, context, 15.0),
+                                                                  isExpanded: true,
+                                                                  underline: Container(),
+                                                                  items:
+                                                                  cont.changeStatusList.map((String value) {
+                                                                    return DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged: (val) {
+                                                                    cont.updateStatusForCurrent(val!,item.id!,context);
+                                                                  },
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                                child: Table(
+                                                  children: [
+                                                    TableRow(
+                                                        children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 3.0),
+                                                            child: buildTextBoldWidget("Triggered\nDate", blackColor, context, 14.0,align: TextAlign.center),
+                                                          ),
+                                                          GestureDetector(
+                                                              onTap: (){
+                                                                if(cont.reportingHead == "1"){
+                                                                  cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                      item.targetDateTimeFormat!,"startedNotCompletedApiHigh",item.staDateTimeFormat!);
+                                                                }
+                                                              },
+                                                              child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                                          ),
+                                                          buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                                        ]
+                                                    ),
+                                                    TableRow(
+                                                        children: [
+                                                          buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                          GestureDetector(
+                                                            onTap: (){
+                                                              if(cont.reportingHead == "1"){
+                                                                cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                    item.targetDateTimeFormat!,"startedNotCompletedApiHigh",item.staDateTimeFormat!);
+                                                              }
+                                                            },
+                                                            child:buildTextRegularWidget("${
+                                                                cont.addedDateListForAll.contains(item.id)
+                                                                    ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                    : item.targetDateToShow}",
+                                                                blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                                          ),
+                                                          buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                        ]
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap: (){
+                                                              cont.selectedCliId = item.id!;
+                                                              cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                            },
+                                                            child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                          )  ),
+                                                      const SizedBox(width: 10.0,),
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap:(){
+                                                              cont.navigateToServiceView(item.id!,item.client!,item.servicename!,item.clientCode!);
+                                                            },
+                                                            child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                          )),
+                                                      const SizedBox(width: 10.0,),
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap: (){
+                                                              cont.updateStatusForCurrent("Complete",item.id!,context);
+                                                            },
+                                                            child: buildButtonWidget(context, "Complete",height: 40.0,buttonColor: approveColor,buttonFontSize:14.0),
+                                                          )  ),
+                                                    ],
+                                                  )
                                               )
-                                          )
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                  ),
+                                );
+                              }),
+                        ),
+                        ///medium
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          child:
+                          cont.selectedMainType == "AllottedNotStarted" ?
+                          ///allotted not started
+                          cont.loader ? buildCircularIndicator() :
+                          cont.allottedNotStartedPastDueList.isEmpty
+                              ? Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child:buildTextBoldWidget("No data found", blackColor, context,
+                                  16.0,align: TextAlign.center))
+                              : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.allottedNotStartedPastDueList.length,
+                              itemBuilder: (context,index){
+                                final item = cont.allottedNotStartedPastDueList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left:5.0,right:5.0),
+                                  child: Card(
+                                    elevation: 1.0,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                        side: const BorderSide(color: grey)),
+                                    child: ExpansionTile(
+                                      tilePadding: const EdgeInsets.all(0.0),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.only(right: 10.0),
+                                        child: Icon(
+                                          cont.addedIndex.contains(index) ?
+                                          Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                          size: 25.0,
+                                        ),
+                                      ),
+                                      onExpansionChanged: (value){
+                                        cont.onExpanded(value,index);
+                                      },
+                                      title: Column(
+                                        children: [
+                                          buildClientCodeWidget(item.clientCode!,item.client!,context),
+                                          Padding(
+                                              padding: const EdgeInsets.only(left: 10.0),
+                                              child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                  );
-                                })
-                            ///started not completed
-                                :  cont.loader ? buildCircularIndicator() :
-                            cont.startedNotCompletedPastDueList.isEmpty ? Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: cont.startedNotCompletedPastDueList.length,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context,index){
-                                  final item = cont.startedNotCompletedPastDueList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Card(
-                                      elevation: 1.0,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-                                          side: const BorderSide(color: grey)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  height: 40.0,
-                                                  decoration: const BoxDecoration(color: primaryColor,
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                        child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                      )
-                                                  )
-                                              ),
-                                              Flexible(child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(border: Border.all(color: grey),
-                                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0),
-                                                        child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                                      )
-                                                  )
-                                              ),)
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10.0,),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-                                                style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                recognizer: TapGestureRecognizer()..onTap = () {
-                                                  //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                },
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "${
-                                                          cont.addedDateListForCurrent.contains(item.id)
-                                                              ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-                                                              : item.targetDateToShow}",
-                                                      style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                          decoration: TextDecoration.underline,decorationThickness: 2.0),
-                                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                                        //cont.selectTargetDateForCurrent(context,item.id!);
-                                                      }
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          ///priority
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          :
-                                                      Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child: DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedPriorityListForCurrent.contains(item.id) ?
-                                                                  cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.priorityList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updatePriorityForCurrent(val!,item.id!);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
-                                                  ),
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                child: Row(
+                                                  crossAxisAlignment : CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                    Flexible(child:buildTextBoldWidget("${item.allottedTo}", primaryColor, context, 14.0,align: TextAlign.left),)
+                                                  ],
                                                 )
-                                              ],
                                             ),
-                                          ),
-                                          ///assigned to
-                                          Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,),
+                                              child: Table(
                                                 children: [
-                                                  buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                  Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0)),
-                                                ],
-                                              )
-                                          ),
-                                          ///trigger date,statutory due date
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ///task,completion
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Task", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Completion", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ///status
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
+                                                  TableRow(
+                                                      children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(right: 3.0),
+                                                          child: buildTextBoldWidget("Triggered\nDate", blackColor, context, 14.0,align: TextAlign.center),
                                                         ),
-                                                      )
-                                                          :
-                                                      Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child: DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedStatusListForCurrent.contains(item.id) ?
-                                                                  cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.changeStatusList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updateStatusForCurrent(val!,item.id!,context);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
+                                                        GestureDetector(
+                                                            onTap: (){
+                                                              if(cont.reportingHead == "1"){
+                                                                cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                    item.targetDateTimeFormat!,"allottedApiMedium",item.staDateTimeFormat!);
+                                                              }
+                                                            },
+                                                            child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                                        ),
+                                                        buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                                      ]
                                                   ),
-                                                )
-                                              ],
+                                                  TableRow(
+                                                      children: [
+                                                        buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                        GestureDetector(
+                                                          onTap: (){
+                                                            if(cont.reportingHead == "1"){
+                                                              cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                  item.targetDateTimeFormat!,"allottedApiMedium",item.staDateTimeFormat!);
+                                                            }
+                                                          },
+                                                          child:buildTextRegularWidget("${
+                                                              cont.addedDateListForAll.contains(item.id)
+                                                                  ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                  : item.targetDateToShow}",
+                                                              blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                                        ),
+                                                        buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                      ]
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.all(10.0),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top:5.0),
                                               child: Row(
                                                 children: [
                                                   // Flexible(
-                                                  //     child: GestureDetector(
-                                                  //       onTap: (){cont.callStartService(item.id!);},
-                                                  //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                  //     )),
+                                                  //   child: GestureDetector(
+                                                  //     onTap: (){
+                                                  //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
+                                                  //     },
+                                                  //     child: Container(
+                                                  //         height: 40.0,
+                                                  //         width: MediaQuery.of(context).size.width,
+                                                  //         decoration: BoxDecoration(
+                                                  //           borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                  //           border: Border.all(color: grey),),
+                                                  //         child: Center(
+                                                  //             child: Padding(
+                                                  //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                  //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
+                                                  //             )
+                                                  //         )
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
                                                   // const SizedBox(width: 10.0,),
                                                   Flexible(
-                                                      child: GestureDetector(
-                                                        onTap:(){
-                                                          cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                        },
-                                                        child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                      )  ),
-                                                  const SizedBox(width: 10.0,),
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectedCliId = item.id!;
-                                                          cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                        },
-                                                        child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                      )  ),
+                                                    child: Container(
+                                                        height: 40.0,
+                                                        width: MediaQuery.of(context).size.width,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                          border: Border.all(color: grey),),
+                                                        child: cont.reportingHead == "0"
+                                                            ? Align(
+                                                          alignment: Alignment.centerLeft,
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                            child: buildTextRegularWidget(item.priorityToShow!,
+                                                                item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                context, 15.0,align: TextAlign.left),
+                                                          ),
+                                                        )
+                                                            : Center(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child:
+                                                              DropdownButton(
+                                                                hint: buildTextRegularWidget(
+                                                                    cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                    cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
+                                                                    item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                    item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                    context, 15.0),
+                                                                isExpanded: true,
+                                                                underline: Container(),
+                                                                items:
+                                                                cont.priorityList.map((String value) {
+                                                                  return DropdownMenuItem<String>(
+                                                                    value: value,
+                                                                    child: Text(value),
+                                                                  );
+                                                                }).toList(),
+                                                                onChanged: (val) {
+                                                                  cont.updatePriorityForCurrent(val!,item.id!);
+                                                                },
+                                                              ),
+                                                            )
+                                                        )
+                                                    ),
+                                                  )
                                                 ],
-                                              )
-                                          )
-                                        ],
-                                      ),
+                                              ),
+                                            ),
+                                            Padding(
+                                                padding: const EdgeInsets.all(10.0),
+                                                child: Row(
+                                                  children: [
+                                                    ///view
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){
+                                                            cont.navigateToServiceView(item.id!,item.client!,item.servicename!,item.clientCode!);
+                                                          },
+                                                          child: buildButtonWidget(context, "View",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                        )  ),
+
+                                                    ///reassign
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    const SizedBox(width: 10.0,),
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!,item.allottedTo!);},
+                                                          child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                        )),
+                                                    ///start service
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){cont.callStartService(item.id!,cont.selectedMainType);},
+                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                        )),
+                                                  ],
+                                                )
+                                            )
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                }),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height,
-                            width: MediaQuery.of(context).size.width,
-                            child:
-                            cont.selectedMainType == "AllottedNotStarted" ?
-                            ///allotted not started
-                            cont.loader ? buildCircularIndicator() :
-                            cont.allottedNotStartedPastDueList.isEmpty
-                                ? Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child:buildTextBoldWidget("No data found", blackColor, context,
-                                    16.0,align: TextAlign.center))
-                                : ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: cont.allottedNotStartedPastDueList.length,
-                                itemBuilder: (context,index){
-                                  final item = cont.allottedNotStartedPastDueList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Card(
+                                  ),
+                                );
+                              })
+                          ///started not completed
+                              :  cont.loader ? buildCircularIndicator() :
+                          cont.startedNotCompletedPastDueList.isEmpty ? Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.startedNotCompletedPastDueList.length,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context,index){
+                                final item = cont.startedNotCompletedPastDueList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left:5.0,right:5.0),
+                                  child: Card(
                                       elevation: 1.0,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
                                           side: const BorderSide(color: grey)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  height: 40.0,
-                                                  decoration: const BoxDecoration(color: primaryColor,
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                        child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                      )
-                                                  )
-                                              ),
-                                              Flexible(child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(border: Border.all(color: grey),
-                                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0),
-                                                        child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                                      )
-                                                  )
-                                              ),)
-                                            ],
+                                      child: ExpansionTile(
+                                        tilePadding: const EdgeInsets.all(0.0),
+                                        trailing: Padding(
+                                          padding: const EdgeInsets.only(right: 10.0),
+                                          child: Icon(
+                                            cont.addedIndex.contains(index) ?
+                                            Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                            size: 25.0,
                                           ),
-                                          const SizedBox(height: 10.0,),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-                                                style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                // recognizer: TapGestureRecognizer()..onTap = () {
-                                                //   cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                // },
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "${
-                                                          cont.addedDateListForCurrent.contains(item.id)
-                                                              ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-                                                              : item.targetDateToShow}",
-                                                      style: TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                          decoration:
-                                                          cont.reportingHead == "0"
-                                                              ? TextDecoration.none : TextDecoration.underline,
-                                                          decorationThickness: 2.0),
-                                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                                        if(cont.reportingHead == "1"){
-                                                          cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
-                                                        }
-                                                      }
-                                                  ),
-                                                ],
-                                              ),
+                                        ),
+                                        onExpansionChanged: (value){
+                                          cont.onExpanded(value,index);
+                                        },
+                                        title: Column(
+                                          children: [
+                                            buildClientCodeWidget(item.clientCode!,item.client!,context),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0),
+                                                child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
                                             ),
-                                          ),
+                                          ],
+                                        ),
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              ///assigned to
+                                              Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,),
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.allottedTo}", primaryColor, context, 14.0,align: TextAlign.left)),
+                                                    ],
+                                                  )
+                                              ),
+                                              Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                  child: Row(
+                                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                                    children: [
+                                                      buildTextBoldWidget("Task - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
+                                                      SizedBox(width:20.0),
+                                                      buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.completionPercentage}", primaryColor, context, 14.0,align: TextAlign.left),)
 
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                // Flexible(
-                                                //   child: GestureDetector(
-                                                //     onTap: (){
-                                                //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                //     },
-                                                //     child: Container(
-                                                //         height: 40.0,
-                                                //         width: MediaQuery.of(context).size.width,
-                                                //         decoration: BoxDecoration(
-                                                //           borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                //           border: Border.all(color: grey),),
-                                                //         child: Center(
-                                                //             child: Padding(
-                                                //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
-                                                //             )
-                                                //         )
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                // const SizedBox(width: 10.0,),
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          : Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child:
-                                                            DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedPriorityListForCurrent.contains(item.id) ?
-                                                                  cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.priorityList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updatePriorityForCurrent(val!,item.id!);
-                                                              },
+                                                    ],
+                                                  )
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: Container(
+                                                          height: 40.0,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                            border: Border.all(color: grey),),
+                                                          child: cont.reportingHead == "0"
+                                                              ? Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: buildTextRegularWidget(item.priorityToShow!,
+                                                                  item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                  item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                  context, 15.0,align: TextAlign.left),
                                                             ),
                                                           )
-                                                      )
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Row(
-                                                crossAxisAlignment : CrossAxisAlignment.start,
-                                                children: [
-                                                  buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                  Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),)
-                                                ],
-                                              )
-                                          ),
-                                          ///trigger date,statutory due date
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.all(10.0),
-                                              child: Row(
-                                                children: [
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){cont.callStartService(item.id!,"AllottedNotStarted");},
-                                                        child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                      )),
+                                                              :
+                                                          Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: DropdownButton(
+                                                                  hint: buildTextRegularWidget(
+                                                                      cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                      cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
 
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  const SizedBox(width: 10.0,),
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectedCliId = item.id!;
-                                                          cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                        },
-                                                        child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                      )  ),
+                                                                      item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                      item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
 
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  const SizedBox(width: 10.0,),
-                                                  cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!);},
-                                                        child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                      )),
-                                                ],
+                                                                      context, 15.0),
+                                                                  isExpanded: true,
+                                                                  underline: Container(),
+                                                                  items:
+                                                                  cont.priorityList.map((String value) {
+                                                                    return DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged: (val) {
+                                                                    cont.updatePriorityForCurrent(val!,item.id!);
+                                                                  },
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width:10.0),
+                                                    Flexible(
+                                                      child: Container(
+                                                          height: 40.0,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                            border: Border.all(color: grey),),
+                                                          child: cont.reportingHead == "0"
+                                                              ? Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
+                                                            ),
+                                                          )
+                                                              :
+                                                          Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: DropdownButton(
+                                                                  hint: buildTextRegularWidget(
+                                                                      cont.addedStatusListForCurrent.contains(item.id) ?
+                                                                      cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
+                                                                      blackColor, context, 15.0),
+                                                                  isExpanded: true,
+                                                                  underline: Container(),
+                                                                  items:
+                                                                  cont.changeStatusList.map((String value) {
+                                                                    return DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged: (val) {
+                                                                    cont.updateStatusForCurrent(val!,item.id!,context);
+                                                                  },
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                                child: Table(
+                                                  children: [
+                                                    TableRow(
+                                                        children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 3.0),
+                                                            child: buildTextBoldWidget("Triggered\nDate", blackColor, context, 14.0,align: TextAlign.center),
+                                                          ),
+                                                          GestureDetector(
+                                                              onTap: (){
+                                                                if(cont.reportingHead == "1"){
+                                                                  cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                      item.targetDateTimeFormat!,"startedNotCompletedApiMedium",item.staDateTimeFormat!);
+                                                                }
+                                                              },
+                                                              child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                                          ),
+                                                          buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                                        ]
+                                                    ),
+                                                    TableRow(
+                                                        children: [
+                                                          buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                          GestureDetector(
+                                                            onTap: (){
+                                                              if(cont.reportingHead == "1"){
+                                                                cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                    item.targetDateTimeFormat!,"startedNotCompletedApiMedium",item.staDateTimeFormat!);
+                                                              }
+                                                            },
+                                                            child:buildTextRegularWidget("${
+                                                                cont.addedDateListForAll.contains(item.id)
+                                                                    ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                    : item.targetDateToShow}",
+                                                                blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                                          ),
+                                                          buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                        ]
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap: (){
+                                                              cont.selectedCliId = item.id!;
+                                                              cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                            },
+                                                            child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                          )  ),
+                                                      const SizedBox(width: 10.0,),
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap:(){
+                                                              cont.navigateToServiceView(item.id!,item.client!,item.servicename!,item.clientCode!);
+                                                            },
+                                                            child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                          )),
+                                                      const SizedBox(width: 10.0,),
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap: (){
+                                                              cont.updateStatusForCurrent("Complete",item.id!,context);
+                                                            },
+                                                            child: buildButtonWidget(context, "Complete",height: 40.0,buttonColor: approveColor,buttonFontSize:14.0),
+                                                          )  ),
+                                                    ],
+                                                  )
                                               )
-                                          )
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                  ),
+                                );
+                              }),
+                        ),
+                        ///low
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          child:
+                          cont.selectedMainType == "AllottedNotStarted" ?
+                          ///allotted not started
+                          cont.loader ? buildCircularIndicator() :
+                          cont.allottedNotStartedPastDueList.isEmpty
+                              ? Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child:buildTextBoldWidget("No data found", blackColor, context,
+                                  16.0,align: TextAlign.center))
+                              : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.allottedNotStartedPastDueList.length,
+                              itemBuilder: (context,index){
+                                final item = cont.allottedNotStartedPastDueList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left:5.0,right:5.0),
+                                  child: Card(
+                                    elevation: 1.0,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                        side: const BorderSide(color: grey)),
+                                    child: ExpansionTile(
+                                      tilePadding: const EdgeInsets.all(0.0),
+                                      trailing: Padding(
+                                        padding: const EdgeInsets.only(right: 10.0),
+                                        child: Icon(
+                                          cont.addedIndex.contains(index) ?
+                                          Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                          size: 25.0,
+                                        ),
+                                      ),
+                                      onExpansionChanged: (value){
+                                        cont.onExpanded(value,index);
+                                      },
+                                      title: Column(
+                                        children: [
+                                          buildClientCodeWidget(item.clientCode!,item.client!,context),
+                                          Padding(
+                                              padding: const EdgeInsets.only(left: 10.0),
+                                              child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                  );
-                                })
-                            ///started not completed
-                                :  cont.loader ? buildCircularIndicator() :
-                            cont.startedNotCompletedPastDueList.isEmpty ? Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
-                                child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                itemCount: cont.startedNotCompletedPastDueList.length,
-                                scrollDirection: Axis.vertical,
-                                itemBuilder: (context,index){
-                                  final item = cont.startedNotCompletedPastDueList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Card(
-                                      elevation: 1.0,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-                                          side: const BorderSide(color: grey)),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                  height: 40.0,
-                                                  decoration: const BoxDecoration(color: primaryColor,
-                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                                        child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-                                                      )
-                                                  )
-                                              ),
-                                              Flexible(child: Container(
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: 40.0,
-                                                  decoration: BoxDecoration(border: Border.all(color: grey),
-                                                      borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-                                                  child: Align(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 10.0),
-                                                        child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-                                                      )
-                                                  )
-                                              ),)
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10.0,),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: RichText(
-                                              text: TextSpan(
-                                                text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-                                                style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-                                                recognizer: TapGestureRecognizer()..onTap = () {
-                                                  //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-                                                },
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                      text: "${
-                                                          cont.addedDateListForCurrent.contains(item.id)
-                                                              ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-                                                              : item.targetDateToShow}",
-                                                      style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-                                                          decoration: TextDecoration.underline,decorationThickness: 2.0),
-                                                      recognizer: TapGestureRecognizer()..onTap = () {
-                                                        //cont.selectTargetDateForCurrent(context,item.id!);
-                                                      }
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          ///priority
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-                                                        ),
-                                                      )
-                                                          :
-                                                      Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child: DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedPriorityListForCurrent.contains(item.id) ?
-                                                                  cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.priorityList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updatePriorityForCurrent(val!,item.id!);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
-                                                  ),
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                child: Row(
+                                                  crossAxisAlignment : CrossAxisAlignment.start,
+                                                  children: [
+                                                    buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                    Flexible(child:buildTextBoldWidget("${item.allottedTo}", primaryColor, context, 14.0,align: TextAlign.left),)
+                                                  ],
                                                 )
-                                              ],
                                             ),
-                                          ),
-                                          ///assigned to
-                                          Padding(
-                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-                                              child: Row(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,),
+                                              child: Table(
                                                 children: [
-                                                  buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-                                                  Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0)),
-                                                ],
-                                              )
-                                          ),
-                                          ///trigger date,statutory due date
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ///task,completion
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      buildTextBoldWidget("Task", blackColor, context, 14.0),
-                                                      buildTextBoldWidget("Completion", blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-                                                      buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-                                                    ]
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          ///status
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-                                            child: Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Container(
-                                                      height: 40.0,
-                                                      width: MediaQuery.of(context).size.width,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                        border: Border.all(color: grey),),
-                                                      child: cont.reportingHead == "0"
-                                                          ? Align(
-                                                        alignment: Alignment.centerLeft,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                          child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
+                                                  TableRow(
+                                                      children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(right: 3.0),
+                                                          child: buildTextBoldWidget("Triggered\nDate", blackColor, context, 14.0,align: TextAlign.center),
                                                         ),
-                                                      )
-                                                          :
-                                                      Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            child: DropdownButton(
-                                                              hint: buildTextRegularWidget(
-                                                                  cont.addedStatusListForCurrent.contains(item.id) ?
-                                                                  cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-                                                                  blackColor, context, 15.0),
-                                                              isExpanded: true,
-                                                              underline: Container(),
-                                                              items:
-                                                              cont.changeStatusList.map((String value) {
-                                                                return DropdownMenuItem<String>(
-                                                                  value: value,
-                                                                  child: Text(value),
-                                                                );
-                                                              }).toList(),
-                                                              onChanged: (val) {
-                                                                cont.updateStatusForCurrent(val!,item.id!,context);
-                                                              },
-                                                            ),
-                                                          )
-                                                      )
+                                                        GestureDetector(
+                                                            onTap: (){
+                                                              if(cont.reportingHead == "1"){
+                                                                cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                    item.targetDateTimeFormat!,"allottedApiLow",item.staDateTimeFormat!);
+                                                              }
+                                                            },
+                                                            child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                                        ),
+                                                        buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                                      ]
                                                   ),
-                                                )
-                                              ],
+                                                  TableRow(
+                                                      children: [
+                                                        buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                        GestureDetector(
+                                                          onTap: (){
+                                                            if(cont.reportingHead == "1"){
+                                                              cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                  item.targetDateTimeFormat!,"allottedApiLow",item.staDateTimeFormat!);
+                                                            }
+                                                          },
+                                                          child:buildTextRegularWidget("${
+                                                              cont.addedDateListForAll.contains(item.id)
+                                                                  ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                  : item.targetDateToShow}",
+                                                              blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                                        ),
+                                                        buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                      ]
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                              padding: const EdgeInsets.all(10.0),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top:5.0),
                                               child: Row(
                                                 children: [
                                                   // Flexible(
-                                                  //     child: GestureDetector(
-                                                  //       onTap: (){cont.callStartService(item.id!);},
-                                                  //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-                                                  //     )),
+                                                  //   child: GestureDetector(
+                                                  //     onTap: (){
+                                                  //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
+                                                  //     },
+                                                  //     child: Container(
+                                                  //         height: 40.0,
+                                                  //         width: MediaQuery.of(context).size.width,
+                                                  //         decoration: BoxDecoration(
+                                                  //           borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                  //           border: Border.all(color: grey),),
+                                                  //         child: Center(
+                                                  //             child: Padding(
+                                                  //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                  //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
+                                                  //             )
+                                                  //         )
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
                                                   // const SizedBox(width: 10.0,),
                                                   Flexible(
-                                                      child: GestureDetector(
-                                                        onTap:(){
-                                                          cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-                                                        },
-                                                        child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-                                                      )  ),
-                                                  const SizedBox(width: 10.0,),
-                                                  Flexible(
-                                                      child: GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectedCliId = item.id!;
-                                                          cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-                                                        },
-                                                        child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-                                                      )  ),
+                                                    child: Container(
+                                                        height: 40.0,
+                                                        width: MediaQuery.of(context).size.width,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                          border: Border.all(color: grey),),
+                                                        child: cont.reportingHead == "0"
+                                                            ? Align(
+                                                          alignment: Alignment.centerLeft,
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                            child: buildTextRegularWidget(item.priorityToShow!,
+                                                                item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                context, 15.0,align: TextAlign.left),
+                                                          ),
+                                                        )
+                                                            : Center(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child:
+                                                              DropdownButton(
+                                                                hint: buildTextRegularWidget(
+                                                                    cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                    cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
+                                                                    item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                    item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                    context, 15.0),
+                                                                isExpanded: true,
+                                                                underline: Container(),
+                                                                items:
+                                                                cont.priorityList.map((String value) {
+                                                                  return DropdownMenuItem<String>(
+                                                                    value: value,
+                                                                    child: Text(value),
+                                                                  );
+                                                                }).toList(),
+                                                                onChanged: (val) {
+                                                                  cont.updatePriorityForCurrent(val!,item.id!);
+                                                                },
+                                                              ),
+                                                            )
+                                                        )
+                                                    ),
+                                                  )
                                                 ],
-                                              )
-                                          )
-                                        ],
-                                      ),
+                                              ),
+                                            ),
+                                            Padding(
+                                                padding: const EdgeInsets.all(10.0),
+                                                child: Row(
+                                                  children: [
+                                                    ///view
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){
+                                                            cont.navigateToServiceView(item.id!,item.client!,item.servicename!,item.clientCode!);
+                                                          },
+                                                          child: buildButtonWidget(context, "View",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                        )  ),
+
+                                                    ///reassign
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    const SizedBox(width: 10.0,),
+                                                    cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!,item.allottedTo!);},
+                                                          child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                        )),
+                                                    ///start service
+                                                    const SizedBox(width: 10.0,),
+                                                    Flexible(
+                                                        child: GestureDetector(
+                                                          onTap: (){cont.callStartService(item.id!,cont.selectedMainType);},
+                                                          child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
+                                                        )),
+                                                  ],
+                                                )
+                                            )
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                }),
-                          ),
-                        ],
-                      ),
+                                  ),
+                                );
+                              })
+                          ///started not completed
+                              :  cont.loader ? buildCircularIndicator() :
+                          cont.startedNotCompletedPastDueList.isEmpty ? Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: cont.startedNotCompletedPastDueList.length,
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context,index){
+                                final item = cont.startedNotCompletedPastDueList[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Card(
+                                      elevation: 1.0,
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
+                                          side: const BorderSide(color: grey)),
+                                      child: ExpansionTile(
+                                        tilePadding: const EdgeInsets.all(0.0),
+                                        trailing: Padding(
+                                          padding: const EdgeInsets.only(right: 10.0),
+                                          child: Icon(
+                                            cont.addedIndex.contains(index) ?
+                                            Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                            size: 25.0,
+                                          ),
+                                        ),
+                                        onExpansionChanged: (value){
+                                          cont.onExpanded(value,index);
+                                        },
+                                        title: Column(
+                                          children: [
+                                            buildClientCodeWidget(item.clientCode!,item.client!,context),
+                                            Padding(
+                                                padding: const EdgeInsets.only(left: 10.0),
+                                                child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)
+                                            ),
+                                          ],
+                                        ),
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              ///assigned to
+                                              Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0,),
+                                                  child: Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.allottedTo}", primaryColor, context, 14.0,align: TextAlign.left)),
+                                                    ],
+                                                  )
+                                              ),
+                                              Padding(
+                                                  padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                                  child: Row(
+                                                    crossAxisAlignment : CrossAxisAlignment.start,
+                                                    children: [
+                                                      buildTextBoldWidget("Task - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
+                                                      SizedBox(width:20.0),
+                                                      buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
+                                                      Flexible(child:buildTextBoldWidget("${item.completionPercentage}", primaryColor, context, 14.0,align: TextAlign.left),)
+
+                                                    ],
+                                                  )
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                                child: Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: Container(
+                                                          height: 40.0,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                            border: Border.all(color: grey),),
+                                                          child: cont.reportingHead == "0"
+                                                              ? Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: buildTextRegularWidget(item.priorityToShow!,
+                                                                  item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                  item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                  context, 15.0,align: TextAlign.left),
+                                                            ),
+                                                          )
+                                                              :
+                                                          Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: DropdownButton(
+                                                                  hint: buildTextRegularWidget(
+                                                                      cont.addedPriorityListForCurrent.contains(item.id) ?
+                                                                      cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
+
+                                                                      item.priorityToShow == "High" ? Color(0xffFF0000) :
+                                                                      item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+
+                                                                      context, 15.0),
+                                                                  isExpanded: true,
+                                                                  underline: Container(),
+                                                                  items:
+                                                                  cont.priorityList.map((String value) {
+                                                                    return DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged: (val) {
+                                                                    cont.updatePriorityForCurrent(val!,item.id!);
+                                                                  },
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width:10.0),
+                                                    Flexible(
+                                                      child: Container(
+                                                          height: 40.0,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                            border: Border.all(color: grey),),
+                                                          child: cont.reportingHead == "0"
+                                                              ? Align(
+                                                            alignment: Alignment.centerLeft,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
+                                                            ),
+                                                          )
+                                                              :
+                                                          Center(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                child: DropdownButton(
+                                                                  hint: buildTextRegularWidget(
+                                                                      cont.addedStatusListForCurrent.contains(item.id) ?
+                                                                      cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
+                                                                      blackColor, context, 15.0),
+                                                                  isExpanded: true,
+                                                                  underline: Container(),
+                                                                  items:
+                                                                  cont.changeStatusList.map((String value) {
+                                                                    return DropdownMenuItem<String>(
+                                                                      value: value,
+                                                                      child: Text(value),
+                                                                    );
+                                                                  }).toList(),
+                                                                  onChanged: (val) {
+                                                                    cont.updateStatusForCurrent(val!,item.id!,context);
+                                                                  },
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 5.0),
+                                                child: Table(
+                                                  children: [
+                                                    TableRow(
+                                                        children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 3.0),
+                                                            child: buildTextBoldWidget("Triggered\nDate", blackColor, context, 14.0,align: TextAlign.center),
+                                                          ),
+                                                          GestureDetector(
+                                                              onTap: (){
+                                                                if(cont.reportingHead == "1"){
+                                                                  cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                      item.targetDateTimeFormat!,"startedNotCompletedApiLow",item.staDateTimeFormat!);
+                                                                }
+                                                              },
+                                                              child:buildTextBoldWidget("Target Date", blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,)
+                                                          ),
+                                                          buildTextBoldWidget("Statutory\nDue Date", blackColor, context, 14.0,align: TextAlign.center),
+                                                        ]
+                                                    ),
+                                                    TableRow(
+                                                        children: [
+                                                          buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                          GestureDetector(
+                                                            onTap: (){
+                                                              if(cont.reportingHead == "1"){
+                                                                cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,
+                                                                    item.targetDateTimeFormat!,"startedNotCompletedApiLow",item.staDateTimeFormat!);
+                                                              }
+                                                            },
+                                                            child:buildTextRegularWidget("${
+                                                                cont.addedDateListForAll.contains(item.id)
+                                                                    ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
+                                                                    : item.targetDateToShow}",
+                                                                blackColor, context, 14.0,align: TextAlign.center,decoration: TextDecoration.underline,),
+                                                          ),
+                                                          buildTextRegularWidget(item.satDateToShow!, blackColor, context, 14.0,align: TextAlign.center),
+                                                        ]
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                  padding: const EdgeInsets.all(10.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap: (){
+                                                              cont.selectedCliId = item.id!;
+                                                              cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
+                                                            },
+                                                            child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
+                                                          )  ),
+                                                      const SizedBox(width: 10.0,),
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap:(){
+                                                              cont.navigateToServiceView(item.id!,item.client!,item.servicename!,item.clientCode!);
+                                                            },
+                                                            child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
+                                                          )),
+                                                      const SizedBox(width: 10.0,),
+                                                      Flexible(
+                                                          child: GestureDetector(
+                                                            onTap: (){
+                                                              cont.updateStatusForCurrent("Complete",item.id!,context);
+                                                            },
+                                                            child: buildButtonWidget(context, "Complete",height: 40.0,buttonColor: approveColor,buttonFontSize:14.0),
+                                                          )  ),
+                                                    ],
+                                                  )
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                  ),
+                                );
+                              }),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-
-
-            //
-            //     cont.loader == true ? Center(child: buildCircularIndicator(),) :
-            //     SizedBox(
-            //         height:double.infinity,
-            //         width: MediaQuery.of(context).size.width,
-            //         child: ListView(
-            //           physics:const NeverScrollableScrollPhysics(),
-            //           shrinkWrap: true,
-            //           children: [
-            //
-            //
-            // ///completed but udin pending
-            //             cont.selectedMainType == "CompletedUdinPending" ?
-            //             cont.completedUdinPendingDataList.isEmpty ? Padding(
-            //                 padding: const EdgeInsets.only(top: 50.0),
-            //                 child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             Padding(
-            //                 padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
-            //                 child:SizedBox(
-            //                     height: MediaQuery.of(context).size.height,
-            //                     width: MediaQuery.of(context).size.width,
-            //                     child: ListView.builder(
-            //                         shrinkWrap: true,
-            //                         physics: const AlwaysScrollableScrollPhysics(),
-            //                         itemCount: cont.completedUdinPendingDataList.length,
-            //                         itemBuilder: (context,index){
-            //                           final item = cont.completedUdinPendingDataList[index];
-            //                           return Padding(
-            //                             padding: const EdgeInsets.all(5.0),
-            //                             child: Card(
-            //                               elevation: 1.0,
-            //                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //                                   side: const BorderSide(color: grey)),
-            //                               child: Column(
-            //                                 crossAxisAlignment: CrossAxisAlignment.start,
-            //                                 children: [
-            //                                   Row(
-            //                                     children: [
-            //                                       Container(
-            //                                           height: 40.0,
-            //                                           decoration: const BoxDecoration(color: primaryColor,
-            //                                               borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //                                           child: Align(
-            //                                               alignment: Alignment.centerLeft,
-            //                                               child: Padding(
-            //                                                 padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //                                                 child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //                                               )
-            //                                           )
-            //                                       ),
-            //                                       Flexible(child: Container(
-            //                                           width: MediaQuery.of(context).size.width,
-            //                                           height: 40.0,
-            //                                           decoration: BoxDecoration(border: Border.all(color: grey),
-            //                                               borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //                                           child: Align(
-            //                                               alignment: Alignment.centerLeft,
-            //                                               child: Padding(
-            //                                                 padding: const EdgeInsets.only(left: 10.0),
-            //                                                 child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //                                               )
-            //                                           )
-            //                                       ),)
-            //                                     ],
-            //                                   ),
-            //                                   const SizedBox(height: 10.0,),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                       child: Row(
-            //                                         crossAxisAlignment: CrossAxisAlignment.start,
-            //                                         children: [
-            //                                           buildTextBoldWidget("Service - ", blackColor, context, 14.0),
-            //                                           Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
-            //                                         ],
-            //                                       )
-            //                                   ),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                       child: Row(
-            //                                         crossAxisAlignment: CrossAxisAlignment.start,
-            //                                         children: [
-            //                                           buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //                                           Flexible(
-            //                                             child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
-            //                                           )
-            //                                         ],
-            //                                       )
-            //                                   ),
-            //                                   cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.all(10.0),
-            //                                       child: Row(
-            //                                         children: [
-            //                                           Flexible(
-            //                                               child: GestureDetector(
-            //                                                 onTap: (){cont.callStartService(item.id!);},
-            //                                                 child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //                                               )),
-            //                                           const SizedBox(width: 10.0,),
-            //                                           Flexible(
-            //                                             child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //                                           ),
-            //                                           const SizedBox(width: 10.0,),
-            //                                           Flexible(
-            //                                               child: GestureDetector(
-            //                                                 onTap: (){
-            //                                                   cont.selectedCliId = item.id!;
-            //                                                   cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //                                                 },
-            //                                                 child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //                                               )  ),
-            //                                         ],
-            //                                       )
-            //                                   )
-            //                                 ],
-            //                               ),
-            //                             ),
-            //                           );
-            //                         })))
-            //
-            //             ///completed but not billed
-            //                 : cont.selectedMainType == "CompletedNotBilled"
-            //                 ? cont.completedNotBilledDataList.isEmpty ? Padding(
-            //                 padding: const EdgeInsets.only(top: 50.0),
-            //                 child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             Padding(
-            //                 padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
-            //                 child:SizedBox(
-            //                     height: MediaQuery.of(context).size.height,
-            //                     width: MediaQuery.of(context).size.width,
-            //                     child:ListView.builder(
-            //                         shrinkWrap: true,
-            //                         physics: const AlwaysScrollableScrollPhysics(),
-            //                         itemCount: cont.completedNotBilledDataList.length,
-            //                         itemBuilder: (context,index){
-            //                           final item = cont.completedNotBilledDataList[index];
-            //                           return Padding(
-            //                             padding: const EdgeInsets.all(5.0),
-            //                             child: Card(
-            //                               elevation: 1.0,
-            //                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //                                   side: const BorderSide(color: grey)),
-            //                               child: Column(
-            //                                 crossAxisAlignment: CrossAxisAlignment.start,
-            //                                 children: [
-            //                                   Row(
-            //                                     children: [
-            //                                       Container(
-            //                                           height: 40.0,
-            //                                           decoration: const BoxDecoration(color: primaryColor,
-            //                                               borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //                                           child: Align(
-            //                                               alignment: Alignment.centerLeft,
-            //                                               child: Padding(
-            //                                                 padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //                                                 child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //                                               )
-            //                                           )
-            //                                       ),
-            //                                       Flexible(child: Container(
-            //                                           width: MediaQuery.of(context).size.width,
-            //                                           height: 40.0,
-            //                                           decoration: BoxDecoration(border: Border.all(color: grey),
-            //                                               borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //                                           child: Align(
-            //                                               alignment: Alignment.centerLeft,
-            //                                               child: Padding(
-            //                                                 padding: const EdgeInsets.only(left: 10.0),
-            //                                                 child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //                                               )
-            //                                           )
-            //                                       ),)
-            //                                     ],
-            //                                   ),
-            //                                   const SizedBox(height: 10.0,),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                       child: Row(
-            //                                         crossAxisAlignment: CrossAxisAlignment.start,
-            //                                         children: [
-            //                                           buildTextBoldWidget("Service - ", blackColor, context, 14.0),
-            //                                           Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
-            //                                         ],
-            //                                       )
-            //                                   ),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                       child: Row(
-            //                                         children: [
-            //                                           buildTextBoldWidget("Claim amount - ", blackColor, context, 14.0),
-            //                                           buildTextRegularWidget("Rs. ${item.claimAmount}", blackColor, context, 14.0),
-            //                                         ],
-            //                                       )
-            //                                   ),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                       child: Row(
-            //                                         children: [
-            //                                           buildTextBoldWidget("Amount of service period - ", blackColor, context, 14.0),
-            //                                           buildTextRegularWidget(item.amountOfServicePeriod!, blackColor, context, 14.0),
-            //                                         ],
-            //                                       )
-            //                                   ),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.all(10.0),
-            //                                       child: Row(
-            //                                         children: [
-            //                                           // Flexible(
-            //                                           //     child: GestureDetector(
-            //                                           //       onTap: (){cont.callStartService(item.id!);},
-            //                                           //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //                                           //     )),
-            //                                           // const SizedBox(width: 10.0,),
-            //                                           // Flexible(
-            //                                           //   child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //                                           // ),
-            //                                           // const SizedBox(width: 10.0,),
-            //                                           Flexible(
-            //                                               child: GestureDetector(
-            //                                                 onTap: (){
-            //                                                   cont.selectedCliId = item.id!;
-            //                                                   cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //                                                 },
-            //                                                 child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //                                               )  ),
-            //                                         ],
-            //                                       )
-            //                                   )
-            //                                 ],
-            //                               ),
-            //                             ),
-            //                           );
-            //                         })
-            //                 )
-            //             )
-            //
-            //             ///submitted for checking
-            //                 : cont.selectedMainType == "SubmittedForChecking"
-            //                 ?  cont.submittedForCheckingPieDataList.isEmpty ? Padding(
-            //                 padding: const EdgeInsets.only(top: 50.0),
-            //                 child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             SizedBox(
-            //               height: MediaQuery.of(context).size.height,
-            //               width: MediaQuery.of(context).size.width,
-            //               child:Padding(
-            //                   padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //                   child: ListView.builder(
-            //                       shrinkWrap: true,
-            //                       physics: const NeverScrollableScrollPhysics(),
-            //                       itemCount: cont.submittedForCheckingPieDataList.length,
-            //                       itemBuilder: (context,index){
-            //                         final item = cont.submittedForCheckingPieDataList[index];
-            //                         return Padding(
-            //                           padding: const EdgeInsets.all(5.0),
-            //                           child: Card(
-            //                             elevation: 1.0,
-            //                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //                                 side: const BorderSide(color: grey)),
-            //                             child: Column(
-            //                               crossAxisAlignment: CrossAxisAlignment.start,
-            //                               mainAxisSize: MainAxisSize.max,
-            //                               children: [
-            //                                 Row(
-            //                                   children: [
-            //                                     Container(
-            //                                         height: 40.0,
-            //                                         decoration: const BoxDecoration(color: primaryColor,
-            //                                             borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //                                         child: Align(
-            //                                             alignment: Alignment.centerLeft,
-            //                                             child: Padding(
-            //                                               padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //                                               child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //                                             )
-            //                                         )
-            //                                     ),
-            //                                     Flexible(child: Container(
-            //                                         width: MediaQuery.of(context).size.width,
-            //                                         height: 40.0,
-            //                                         decoration: BoxDecoration(border: Border.all(color: grey),
-            //                                             borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //                                         child: Align(
-            //                                             alignment: Alignment.centerLeft,
-            //                                             child: Padding(
-            //                                               padding: const EdgeInsets.only(left: 10.0),
-            //                                               child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //                                             )
-            //                                         )
-            //                                     ),)
-            //                                   ],
-            //                                 ),
-            //                                 const SizedBox(height: 10.0,),
-            //                                 Padding(
-            //                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                     child: Row(
-            //                                       crossAxisAlignment: CrossAxisAlignment.start,
-            //                                       children: [
-            //                                         buildTextBoldWidget("Service - ", blackColor, context, 14.0),
-            //                                         Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
-            //                                       ],
-            //                                     )
-            //                                 ),
-            //                                 ///priority
-            //                                 Padding(
-            //                                   padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //                                   child: Row(
-            //                                     children: [
-            //                                       Flexible(
-            //                                         child: Container(
-            //                                             height: 40.0,
-            //                                             width: MediaQuery.of(context).size.width,
-            //                                             decoration: BoxDecoration(
-            //                                               borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //                                               border: Border.all(color: grey),),
-            //                                             child: Center(
-            //                                                 child: Padding(
-            //                                                   padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //                                                   child: DropdownButton(
-            //                                                     hint: buildTextRegularWidget(
-            //                                                         cont.addedPriorityListForCurrent.contains(item.id) ?
-            //                                                         cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //                                                         blackColor, context, 15.0),
-            //                                                     isExpanded: true,
-            //                                                     underline: Container(),
-            //                                                     items:
-            //                                                     cont.priorityList.map((String value) {
-            //                                                       return DropdownMenuItem<String>(
-            //                                                         value: value,
-            //                                                         child: Text(value),
-            //                                                       );
-            //                                                     }).toList(),
-            //                                                     onChanged: (val) {
-            //                                                       cont.updatePriorityForCurrent(val!,item.id!);
-            //                                                     },
-            //                                                   ),
-            //                                                 )
-            //                                             )
-            //                                         ),
-            //                                       )
-            //                                     ],
-            //                                   ),
-            //                                 ),
-            //                                 Padding(
-            //                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                     child: Row(
-            //                                       crossAxisAlignment: CrossAxisAlignment.start,
-            //                                       children: [
-            //                                         buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //                                         Flexible(
-            //                                           child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
-            //                                         )
-            //                                       ],
-            //                                     )
-            //                                 ),
-            //                                 Padding(
-            //                                   padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                   child: Table(
-            //                                     children: [
-            //                                       buildTableTwoByTwoTitle(context,title1: "Trigger Date",title2: "Target Date",fontSize: 14.0,
-            //                                           title1FW: FontWeight.bold,title2FW: FontWeight.bold),
-            //                                       buildContentTwoByTwoSubTitle(context,contentTitle1: item.triggerDate!,contentTitle2: item.targetDate!,fontSize: 14.0,
-            //                                           title1FW: FontWeight.normal,title2FW: FontWeight.normal),
-            //                                       const TableRow(children: [SizedBox(height: 15.0,),SizedBox(height: 15.0,),],),
-            //                                     ],
-            //                                   ),
-            //                                 ),
-            //                                 ///task,completion
-            //                                 Padding(
-            //                                   padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //                                   child: Table(
-            //                                     children: [
-            //                                       TableRow(
-            //                                           children: [
-            //                                             buildTextBoldWidget("Task", blackColor, context, 14.0),
-            //                                             buildTextBoldWidget("Completion", blackColor, context, 14.0),
-            //                                           ]
-            //                                       ),
-            //                                       TableRow(
-            //                                           children: [
-            //                                             buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-            //                                             buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-            //                                           ]
-            //                                       ),
-            //                                     ],
-            //                                   ),
-            //                                 ),
-            //                                 ///status
-            //                                 Padding(
-            //                                   padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //                                   child: Row(
-            //                                     children: [
-            //                                       Flexible(
-            //                                         child: Container(
-            //                                             height: 40.0,
-            //                                             width: MediaQuery.of(context).size.width,
-            //                                             decoration: BoxDecoration(
-            //                                               borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //                                               border: Border.all(color: grey),),
-            //                                             child: Center(
-            //                                                 child: Padding(
-            //                                                   padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //                                                   child: DropdownButton(
-            //                                                     hint: buildTextRegularWidget(
-            //                                                         cont.addedStatusListForCurrent.contains(item.id) ?
-            //                                                         cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-            //                                                         blackColor, context, 15.0),
-            //                                                     isExpanded: true,
-            //                                                     underline: Container(),
-            //                                                     items:
-            //                                                     cont.changeStatusList.map((String value) {
-            //                                                       return DropdownMenuItem<String>(
-            //                                                         value: value,
-            //                                                         child: Text(value),
-            //                                                       );
-            //                                                     }).toList(),
-            //                                                     onChanged: (val) {
-            //                                                       cont.updateStatusForCurrent(val!,item.id!,context);
-            //                                                     },
-            //                                                   ),
-            //                                                 )
-            //                                             )
-            //                                         ),
-            //                                       )
-            //                                     ],
-            //                                   ),
-            //                                 ),
-            //                                 Padding(
-            //                                     padding: const EdgeInsets.all(10.0),
-            //                                     child: Row(
-            //                                       children: [
-            //                                         Flexible(
-            //                                             child: GestureDetector(
-            //                                               onTap: (){cont.callStartService(item.id!);},
-            //                                               child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //                                             )),
-            //                                         const SizedBox(width: 10.0,),
-            //                                         Flexible(
-            //                                           child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //                                         ),
-            //                                         const SizedBox(width: 10.0,),
-            //                                         Flexible(
-            //                                             child: GestureDetector(
-            //                                               onTap: (){
-            //                                                 cont.selectedCliId = item.id!;
-            //                                                 cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //                                               },
-            //                                               child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //                                             )  ),
-            //                                       ],
-            //                                     )
-            //                                 )
-            //                               ],
-            //                             ),
-            //                           ),
-            //                         );
-            //                       })
-            //               ),
-            //             )
-            //
-            //             ///work on hold
-            //                 : cont.selectedMainType == "WorkOnHold"
-            //                 ? cont.workOnHoldPieDataList.isEmpty ? Padding(
-            //                 padding: const EdgeInsets.only(top: 50.0),
-            //                 child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             Padding(
-            //                 padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
-            //                 child:SizedBox(
-            //                     height: MediaQuery.of(context).size.height,
-            //                     width: MediaQuery.of(context).size.width,
-            //                     child:ListView.builder(
-            //                         shrinkWrap: true,
-            //                         physics: const AlwaysScrollableScrollPhysics(),
-            //                         itemCount: cont.workOnHoldPieDataList.length,
-            //                         itemBuilder: (context,index){
-            //                           final item = cont.workOnHoldPieDataList[index];
-            //                           return Padding(
-            //                             padding: const EdgeInsets.all(5.0),
-            //                             child: Card(
-            //                               elevation: 1.0,
-            //                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //                                   side: const BorderSide(color: grey)),
-            //                               child: Column(
-            //                                 crossAxisAlignment: CrossAxisAlignment.start,
-            //                                 children: [
-            //                                   Row(
-            //                                     children: [
-            //                                       Container(
-            //                                           height: 40.0,
-            //                                           decoration: const BoxDecoration(color: primaryColor,
-            //                                               borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //                                           child: Align(
-            //                                               alignment: Alignment.centerLeft,
-            //                                               child: Padding(
-            //                                                 padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //                                                 child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //                                               )
-            //                                           )
-            //                                       ),
-            //                                       Flexible(child: Container(
-            //                                           width: MediaQuery.of(context).size.width,
-            //                                           height: 40.0,
-            //                                           decoration: BoxDecoration(border: Border.all(color: grey),
-            //                                               borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //                                           child: Align(
-            //                                               alignment: Alignment.centerLeft,
-            //                                               child: Padding(
-            //                                                 padding: const EdgeInsets.only(left: 10.0),
-            //                                                 child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //                                               )
-            //                                           )
-            //                                       ),)
-            //                                     ],
-            //                                   ),
-            //                                   const SizedBox(height: 10.0,),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                       child: Row(
-            //                                         crossAxisAlignment: CrossAxisAlignment.start,
-            //                                         children: [
-            //                                           buildTextBoldWidget("Service - ", blackColor, context, 14.0),
-            //                                           Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
-            //                                         ],
-            //                                       )
-            //                                   ),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                       child: Row(
-            //                                         crossAxisAlignment: CrossAxisAlignment.start,
-            //                                         children: [
-            //                                           buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //                                           Flexible(
-            //                                             child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
-            //                                           )
-            //                                         ],
-            //                                       )
-            //                                   ),
-            //                                   Padding(
-            //                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                     child: Table(
-            //                                       children: [
-            //                                         buildTableTwoByTwoTitle(context,title1: "Trigger Date",title2: "Target Date",fontSize: 14.0,
-            //                                             title1FW: FontWeight.bold,title2FW: FontWeight.bold),
-            //                                         buildContentTwoByTwoSubTitle(context,contentTitle1: item.triggerDate!,contentTitle2: item.targetDate!,fontSize: 14.0,
-            //                                             title1FW: FontWeight.normal,title2FW: FontWeight.normal),
-            //                                         const TableRow(children: [SizedBox(height: 15.0,),SizedBox(height: 15.0,),],),
-            //                                       ],
-            //                                     ),
-            //                                   ),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.all(10.0),
-            //                                       child: Row(
-            //                                         children: [
-            //                                           // Flexible(
-            //                                           //     child: GestureDetector(
-            //                                           //       onTap: (){cont.callStartService(item.id!);},
-            //                                           //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //                                           //     )),
-            //                                           // const SizedBox(width: 10.0,),
-            //                                           // Flexible(
-            //                                           //   child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //                                           // ),
-            //                                           // const SizedBox(width: 10.0,),
-            //                                           Flexible(
-            //                                               child: GestureDetector(
-            //                                                 onTap: (){
-            //                                                   cont.selectedCliId = item.id!;
-            //                                                   cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //                                                 },
-            //                                                 child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //                                               )  ),
-            //                                         ],
-            //                                       )
-            //                                   )
-            //                                 ],
-            //                               ),
-            //                             ),
-            //                           );
-            //                         })
-            //                 )
-            //             )
-            //
-            //             ///all tasks
-            //                 : cont.selectedMainType == "AllTasks"
-            //                 ? cont.allTasksDataList.isEmpty ? Padding(
-            //                 padding: const EdgeInsets.only(top: 50.0),
-            //                 child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             Padding(
-            //                 padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 20.0),
-            //                 child:SizedBox(
-            //                     height: MediaQuery.of(context).size.height,
-            //                     width: MediaQuery.of(context).size.width,
-            //                     child:ListView.builder(
-            //                         shrinkWrap: true,
-            //                         physics: const AlwaysScrollableScrollPhysics(),
-            //                         itemCount: cont.allTasksDataList.length,
-            //                         itemBuilder: (context,index){
-            //                           final item = cont.allTasksDataList[index];
-            //                           return Padding(
-            //                             padding: const EdgeInsets.all(5.0),
-            //                             child: Card(
-            //                               elevation: 1.0,
-            //                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //                                   side: const BorderSide(color: grey)),
-            //                               child: Column(
-            //                                 crossAxisAlignment: CrossAxisAlignment.start,
-            //                                 children: [
-            //                                   Row(
-            //                                     children: [
-            //                                       Container(
-            //                                           height: 40.0,
-            //                                           decoration: const BoxDecoration(color: primaryColor,
-            //                                               borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //                                           child: Align(
-            //                                               alignment: Alignment.centerLeft,
-            //                                               child: Padding(
-            //                                                 padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //                                                 child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //                                               )
-            //                                           )
-            //                                       ),
-            //                                       Flexible(child: Container(
-            //                                           width: MediaQuery.of(context).size.width,
-            //                                           height: 40.0,
-            //                                           decoration: BoxDecoration(border: Border.all(color: grey),
-            //                                               borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //                                           child: Align(
-            //                                               alignment: Alignment.centerLeft,
-            //                                               child: Padding(
-            //                                                 padding: const EdgeInsets.only(left: 10.0),
-            //                                                 child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //                                               )
-            //                                           )
-            //                                       ),)
-            //                                     ],
-            //                                   ),
-            //                                   const SizedBox(height: 10.0,),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                       child: Row(
-            //                                         crossAxisAlignment: CrossAxisAlignment.start,
-            //                                         children: [
-            //                                           buildTextBoldWidget("Service - ", blackColor, context, 14.0),
-            //                                           Flexible(child:buildTextRegularWidget("${item.servicename}", blackColor, context, 14.0,align: TextAlign.left)),
-            //                                         ],
-            //                                       )
-            //                                   ),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                       child: Row(
-            //                                         crossAxisAlignment: CrossAxisAlignment.start,
-            //                                         children: [
-            //                                           buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //                                           Flexible(
-            //                                             child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
-            //                                           )
-            //                                         ],
-            //                                       )
-            //                                   ),
-            //                                   Padding(
-            //                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //                                     child: Table(
-            //                                       children: [
-            //                                         buildTableTwoByTwoTitle(context,title1: "Trigger Date",title2: "Target Date",fontSize: 14.0,
-            //                                             title1FW: FontWeight.bold,title2FW: FontWeight.bold),
-            //                                         buildContentTwoByTwoSubTitle(context,contentTitle1: item.triggerDate!,contentTitle2: item.targetDate!,fontSize: 14.0,
-            //                                             title1FW: FontWeight.normal,title2FW: FontWeight.normal),
-            //                                         const TableRow(children: [SizedBox(height: 15.0,),SizedBox(height: 15.0,),],),
-            //                                       ],
-            //                                     ),
-            //                                   ),
-            //                                   Padding(
-            //                                       padding: const EdgeInsets.all(10.0),
-            //                                       child: Row(
-            //                                         children: [
-            //                                           Flexible(
-            //                                               child: GestureDetector(
-            //                                                 onTap: (){cont.callStartService(item.id!);},
-            //                                                 child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //                                               )),
-            //                                           const SizedBox(width: 10.0,),
-            //                                           Flexible(
-            //                                             child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //                                           ),
-            //                                           const SizedBox(width: 10.0,),
-            //                                           Flexible(
-            //                                               child: GestureDetector(
-            //                                                 onTap: (){
-            //                                                   cont.selectedCliId = item.id!;
-            //                                                   cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //                                                 },
-            //                                                 child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //                                               )  ),
-            //                                         ],
-            //                                       )
-            //                                   )
-            //                                 ],
-            //                               ),
-            //                             ),
-            //                           );
-            //                         })
-            //                 )
-            //             )
-            //
-            //             ///allotted not started,started not completed
-            //                 :
-            //             // ListView(
-            //             //   shrinkWrap: true,
-            //             //   physics: const NeverScrollableScrollPhysics(),
-            //             //   children: [
-            //             //     SizedBox(
-            //             //       height: 40,
-            //             //       child: ListView(
-            //             //         scrollDirection: Axis.horizontal,
-            //             //         shrinkWrap: true,
-            //             //         children: [
-            //             //           GestureDetector(
-            //             //             onTap: () {
-            //             //               cont.onPasDueSelected();
-            //             //             },
-            //             //             child: buildTabTitle(context, cont.isPastDueSelected, "Past Due (${cont.selectedPastDue})",width: 3),
-            //             //           ),
-            //             //           GestureDetector(
-            //             //             onTap: () {
-            //             //               cont.onPortableOverdueSelected();
-            //             //             },
-            //             //             child: buildTabTitle(context, cont.isPortableOverdueSelected, "Probable Overdue (${cont.selectedProbable})",width: 2),
-            //             //           ),
-            //             //           GestureDetector(
-            //             //             onTap: () {
-            //             //               cont.onHighSelected();
-            //             //             },
-            //             //             child: buildTabTitle(context, cont.isHighSelected, "High (${cont.selectedHigh})",width: 3),
-            //             //           ),
-            //             //           GestureDetector(
-            //             //             onTap: () {
-            //             //               cont.onHMediumSelected();
-            //             //             },
-            //             //             child: buildTabTitle(context, cont.isMediumSelected, "Medium (${cont.selectedMedium})",width: 3),
-            //             //           ),
-            //             //           GestureDetector(
-            //             //             onTap: () {
-            //             //               cont.onLowSelected();
-            //             //             },
-            //             //             child: buildTabTitle(context, cont.isLowSelected, "Low (${cont.selectedLow})",width: 3),
-            //             //           ),
-            //             //         ],
-            //             //       ),
-            //             //     ),
-            //             //
-            //             //     cont.isPastDueSelected ? Container(
-            //             //       height: 550,
-            //             //       //color: Colors.red,
-            //             //       width: MediaQuery.of(context).size.width,
-            //             //       child:
-            //             //       cont.selectedMainType == "AllottedNotStarted" ?
-            //             //       ///allotted not started
-            //             //       cont.loader ? buildCircularIndicator() :
-            //             //       cont.allottedNotStartedPastDueList.isEmpty
-            //             //           ? Padding(
-            //             //           padding: const EdgeInsets.only(top: 50.0),
-            //             //           child:buildTextBoldWidget("No data found", blackColor, context,
-            //             //               16.0,align: TextAlign.center))
-            //             //           : ListView.builder(
-            //             //           shrinkWrap: true,
-            //             //           physics: const AlwaysScrollableScrollPhysics(),
-            //             //           itemCount: cont.allottedNotStartedPastDueList.length,
-            //             //           itemBuilder: (context,index){
-            //             //             final item = cont.allottedNotStartedPastDueList[index];
-            //             //             return Padding(
-            //             //               padding: const EdgeInsets.all(5.0),
-            //             //               child: Card(
-            //             //                 elevation: 1.0,
-            //             //                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //             //                     side: const BorderSide(color: grey)),
-            //             //                 child: Column(
-            //             //                   crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                   children: [
-            //             //                     Row(
-            //             //                       children: [
-            //             //                         Container(
-            //             //                             height: 40.0,
-            //             //                             decoration: const BoxDecoration(color: primaryColor,
-            //             //                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //             //                             child: Align(
-            //             //                                 alignment: Alignment.centerLeft,
-            //             //                                 child: Padding(
-            //             //                                   padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //             //                                   child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //             //                                 )
-            //             //                             )
-            //             //                         ),
-            //             //                         Flexible(child: Container(
-            //             //                             width: MediaQuery.of(context).size.width,
-            //             //                             height: 40.0,
-            //             //                             decoration: BoxDecoration(border: Border.all(color: grey),
-            //             //                                 borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //             //                             child: Align(
-            //             //                                 alignment: Alignment.centerLeft,
-            //             //                                 child: Padding(
-            //             //                                   padding: const EdgeInsets.only(left: 10.0),
-            //             //                                   child: buildTextBoldWidget(item.client!+"$index", primaryColor, context, 14.0,align: TextAlign.left),
-            //             //                                 )
-            //             //                             )
-            //             //                         ),)
-            //             //                       ],
-            //             //                     ),
-            //             //                     const SizedBox(height: 10.0,),
-            //             //                     Padding(
-            //             //                       padding: const EdgeInsets.only(left: 10.0),
-            //             //                       child: RichText(
-            //             //                         text: TextSpan(
-            //             //                           text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-            //             //                           style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-            //             //                           // recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                           //   cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-            //             //                           // },
-            //             //                           children: <TextSpan>[
-            //             //                             TextSpan(
-            //             //                                 text: "${
-            //             //                                     cont.addedDateListForCurrent.contains(item.id)
-            //             //                                         ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-            //             //                                         : item.targetDateToShow}",
-            //             //                                 style: TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-            //             //                                     decoration:
-            //             //                                     cont.reportingHead == "0"
-            //             //                                         ? TextDecoration.none : TextDecoration.underline,
-            //             //                                     decorationThickness: 2.0),
-            //             //                                 recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                   if(cont.reportingHead == "1"){
-            //             //                                     cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
-            //             //                                   }
-            //             //                                 }
-            //             //                             ),
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                     ),
-            //             //
-            //             //                     Padding(
-            //             //                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                       child: Row(
-            //             //                         children: [
-            //             //                           // Flexible(
-            //             //                           //   child: GestureDetector(
-            //             //                           //     onTap: (){
-            //             //                           //       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-            //             //                           //     },
-            //             //                           //     child: Container(
-            //             //                           //         height: 40.0,
-            //             //                           //         width: MediaQuery.of(context).size.width,
-            //             //                           //         decoration: BoxDecoration(
-            //             //                           //           borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                           //           border: Border.all(color: grey),),
-            //             //                           //         child: Center(
-            //             //                           //             child: Padding(
-            //             //                           //               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                           //               child: buildTextRegularWidget("item.status", blackColor, context, 15.0),
-            //             //                           //             )
-            //             //                           //         )
-            //             //                           //     ),
-            //             //                           //   ),
-            //             //                           // ),
-            //             //                           // const SizedBox(width: 10.0,),
-            //             //                           Flexible(
-            //             //                             child: Container(
-            //             //                                 height: 40.0,
-            //             //                                 width: MediaQuery.of(context).size.width,
-            //             //                                 decoration: BoxDecoration(
-            //             //                                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                   border: Border.all(color: grey),),
-            //             //                                 child: cont.reportingHead == "0"
-            //             //                                     ? Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                     child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                   ),
-            //             //                                 )
-            //             //                                     : Center(
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                       child:
-            //             //                                       DropdownButton(
-            //             //                                         hint: buildTextRegularWidget(
-            //             //                                             cont.addedPriorityListForCurrent.contains(item.id) ?
-            //             //                                             cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //             //                                             blackColor, context, 15.0),
-            //             //                                         isExpanded: true,
-            //             //                                         underline: Container(),
-            //             //                                         items:
-            //             //                                         cont.priorityList.map((String value) {
-            //             //                                           return DropdownMenuItem<String>(
-            //             //                                             value: value,
-            //             //                                             child: Text(value),
-            //             //                                           );
-            //             //                                         }).toList(),
-            //             //                                         onChanged: (val) {
-            //             //                                           cont.updatePriorityForCurrent(val!,item.id!);
-            //             //                                         },
-            //             //                                       ),
-            //             //                                     )
-            //             //                                 )
-            //             //                             ),
-            //             //                           )
-            //             //                         ],
-            //             //                       ),
-            //             //                     ),
-            //             //                     Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //             //                         child: Row(
-            //             //                           crossAxisAlignment : CrossAxisAlignment.start,
-            //             //                           children: [
-            //             //                             buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //             //                             Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),)
-            //             //                           ],
-            //             //                         )
-            //             //                     ),
-            //             //                     ///trigger date,statutory due date
-            //             //                     Padding(
-            //             //                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                       child: Table(
-            //             //                         children: [
-            //             //                           TableRow(
-            //             //                               children: [
-            //             //                                 buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-            //             //                                 buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-            //             //                               ]
-            //             //                           ),
-            //             //                           TableRow(
-            //             //                               children: [
-            //             //                                 buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-            //             //                                 buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-            //             //                               ]
-            //             //                           ),
-            //             //                         ],
-            //             //                       ),
-            //             //                     ),
-            //             //                     Padding(
-            //             //                         padding: const EdgeInsets.all(10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             Flexible(
-            //             //                                 child: GestureDetector(
-            //             //                                   onTap: (){cont.callStartService(item.id!);},
-            //             //                                   child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //             //                                 )),
-            //             //
-            //             //                             cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-            //             //                             const SizedBox(width: 10.0,),
-            //             //                             cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-            //             //                             Flexible(
-            //             //                                 child: GestureDetector(
-            //             //                                   onTap: (){
-            //             //                                     cont.selectedCliId = item.id!;
-            //             //                                     cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //             //                                   },
-            //             //                                   child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //             //                                 )  ),
-            //             //
-            //             //                             cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-            //             //                             const SizedBox(width: 10.0,),
-            //             //                             cont.reportingHead == "0" ? const Opacity(opacity: 0.0) :
-            //             //                             Flexible(
-            //             //                                 child: GestureDetector(
-            //             //                                   onTap:(){cont.navigateToDetails(item.id!,item.client!,item.servicename!);},
-            //             //                                   child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //             //                                 )),
-            //             //                           ],
-            //             //                         )
-            //             //                     )
-            //             //                   ],
-            //             //                 ),
-            //             //               ),
-            //             //             );
-            //             //           })
-            //             //       ///started not completed
-            //             //           :  cont.loader ? buildCircularIndicator() :
-            //             //       cont.startedNotCompletedPastDueList.isEmpty ? Padding(
-            //             //           padding: const EdgeInsets.only(top: 50.0),
-            //             //           child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             //       ListView.builder(
-            //             //           shrinkWrap: true,
-            //             //           physics: const NeverScrollableScrollPhysics(),
-            //             //           itemCount: cont.startedNotCompletedPastDueList.length,
-            //             //           scrollDirection: Axis.vertical,
-            //             //           itemBuilder: (context,index){
-            //             //             final item = cont.startedNotCompletedPastDueList[index];
-            //             //             return Padding(
-            //             //               padding: const EdgeInsets.all(5.0),
-            //             //               child: Card(
-            //             //                 elevation: 1.0,
-            //             //                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //             //                     side: const BorderSide(color: grey)),
-            //             //                 child: Column(
-            //             //                   crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                   children: [
-            //             //                     Row(
-            //             //                       children: [
-            //             //                         Container(
-            //             //                             height: 40.0,
-            //             //                             decoration: const BoxDecoration(color: primaryColor,
-            //             //                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //             //                             child: Align(
-            //             //                                 alignment: Alignment.centerLeft,
-            //             //                                 child: Padding(
-            //             //                                   padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //             //                                   child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //             //                                 )
-            //             //                             )
-            //             //                         ),
-            //             //                         Flexible(child: Container(
-            //             //                             width: MediaQuery.of(context).size.width,
-            //             //                             height: 40.0,
-            //             //                             decoration: BoxDecoration(border: Border.all(color: grey),
-            //             //                                 borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //             //                             child: Align(
-            //             //                                 alignment: Alignment.centerLeft,
-            //             //                                 child: Padding(
-            //             //                                   padding: const EdgeInsets.only(left: 10.0),
-            //             //                                   child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //             //                                 )
-            //             //                             )
-            //             //                         ),)
-            //             //                       ],
-            //             //                     ),
-            //             //                     const SizedBox(height: 10.0,),
-            //             //                     Padding(
-            //             //                       padding: const EdgeInsets.only(left: 10.0),
-            //             //                       child: RichText(
-            //             //                         text: TextSpan(
-            //             //                           text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-            //             //                           style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-            //             //                           recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                             //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-            //             //                           },
-            //             //                           children: <TextSpan>[
-            //             //                             TextSpan(
-            //             //                                 text: "${
-            //             //                                     cont.addedDateListForCurrent.contains(item.id)
-            //             //                                         ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-            //             //                                         : item.targetDateToShow}",
-            //             //                                 style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-            //             //                                     decoration: TextDecoration.underline,decorationThickness: 2.0),
-            //             //                                 recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                   //cont.selectTargetDateForCurrent(context,item.id!);
-            //             //                                 }
-            //             //                             ),
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                     ),
-            //             //                     ///priority
-            //             //                     Padding(
-            //             //                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                       child: Row(
-            //             //                         children: [
-            //             //                           Flexible(
-            //             //                             child: Container(
-            //             //                                 height: 40.0,
-            //             //                                 width: MediaQuery.of(context).size.width,
-            //             //                                 decoration: BoxDecoration(
-            //             //                                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                   border: Border.all(color: grey),),
-            //             //                                 child: cont.reportingHead == "0"
-            //             //                                     ? Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                     child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                   ),
-            //             //                                 )
-            //             //                                     :
-            //             //                                 Center(
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                       child: DropdownButton(
-            //             //                                         hint: buildTextRegularWidget(
-            //             //                                             cont.addedPriorityListForCurrent.contains(item.id) ?
-            //             //                                             cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //             //                                             blackColor, context, 15.0),
-            //             //                                         isExpanded: true,
-            //             //                                         underline: Container(),
-            //             //                                         items:
-            //             //                                         cont.priorityList.map((String value) {
-            //             //                                           return DropdownMenuItem<String>(
-            //             //                                             value: value,
-            //             //                                             child: Text(value),
-            //             //                                           );
-            //             //                                         }).toList(),
-            //             //                                         onChanged: (val) {
-            //             //                                           cont.updatePriorityForCurrent(val!,item.id!);
-            //             //                                         },
-            //             //                                       ),
-            //             //                                     )
-            //             //                                 )
-            //             //                             ),
-            //             //                           )
-            //             //                         ],
-            //             //                       ),
-            //             //                     ),
-            //             //                     ///assigned to
-            //             //                     Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //             //                         child: Row(
-            //             //                           crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                           children: [
-            //             //                             buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //             //                             Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0)),
-            //             //                           ],
-            //             //                         )
-            //             //                     ),
-            //             //                     ///trigger date,statutory due date
-            //             //                     Padding(
-            //             //                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                       child: Table(
-            //             //                         children: [
-            //             //                           TableRow(
-            //             //                               children: [
-            //             //                                 buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-            //             //                                 buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-            //             //                               ]
-            //             //                           ),
-            //             //                           TableRow(
-            //             //                               children: [
-            //             //                                 buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-            //             //                                 buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-            //             //                               ]
-            //             //                           ),
-            //             //                         ],
-            //             //                       ),
-            //             //                     ),
-            //             //                     ///task,completion
-            //             //                     Padding(
-            //             //                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                       child: Table(
-            //             //                         children: [
-            //             //                           TableRow(
-            //             //                               children: [
-            //             //                                 buildTextBoldWidget("Task", blackColor, context, 14.0),
-            //             //                                 buildTextBoldWidget("Completion", blackColor, context, 14.0),
-            //             //                               ]
-            //             //                           ),
-            //             //                           TableRow(
-            //             //                               children: [
-            //             //                                 buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-            //             //                                 buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-            //             //                               ]
-            //             //                           ),
-            //             //                         ],
-            //             //                       ),
-            //             //                     ),
-            //             //                     ///status
-            //             //                     Padding(
-            //             //                       padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                       child: Row(
-            //             //                         children: [
-            //             //                           Flexible(
-            //             //                             child: Container(
-            //             //                                 height: 40.0,
-            //             //                                 width: MediaQuery.of(context).size.width,
-            //             //                                 decoration: BoxDecoration(
-            //             //                                   borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                   border: Border.all(color: grey),),
-            //             //                                 child: cont.reportingHead == "0"
-            //             //                                     ? Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                     child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                   ),
-            //             //                                 )
-            //             //                                     :
-            //             //                                 Center(
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                       child: DropdownButton(
-            //             //                                         hint: buildTextRegularWidget(
-            //             //                                             cont.addedStatusListForCurrent.contains(item.id) ?
-            //             //                                             cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-            //             //                                             blackColor, context, 15.0),
-            //             //                                         isExpanded: true,
-            //             //                                         underline: Container(),
-            //             //                                         items:
-            //             //                                         cont.changeStatusList.map((String value) {
-            //             //                                           return DropdownMenuItem<String>(
-            //             //                                             value: value,
-            //             //                                             child: Text(value),
-            //             //                                           );
-            //             //                                         }).toList(),
-            //             //                                         onChanged: (val) {
-            //             //                                           cont.updateStatusForCurrent(val!,item.id!,context);
-            //             //                                         },
-            //             //                                       ),
-            //             //                                     )
-            //             //                                 )
-            //             //                             ),
-            //             //                           )
-            //             //                         ],
-            //             //                       ),
-            //             //                     ),
-            //             //                     Padding(
-            //             //                         padding: const EdgeInsets.all(10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             // Flexible(
-            //             //                             //     child: GestureDetector(
-            //             //                             //       onTap: (){cont.callStartService(item.id!);},
-            //             //                             //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //             //                             //     )),
-            //             //                             // const SizedBox(width: 10.0,),
-            //             //                             Flexible(
-            //             //                                 child: GestureDetector(
-            //             //                                   onTap:(){
-            //             //                                     cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-            //             //                                   },
-            //             //                                   child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //             //                                 )  ),
-            //             //                             const SizedBox(width: 10.0,),
-            //             //                             Flexible(
-            //             //                                 child: GestureDetector(
-            //             //                                   onTap: (){
-            //             //                                     cont.selectedCliId = item.id!;
-            //             //                                     cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //             //                                   },
-            //             //                                   child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //             //                                 )  ),
-            //             //                           ],
-            //             //                         )
-            //             //                     )
-            //             //                   ],
-            //             //                 ),
-            //             //               ),
-            //             //             );
-            //             //           }),
-            //             //     )
-            //             //         : const Opacity(opacity: 0.0),
-            //             //
-            //             //     cont.isPortableOverdueSelected ? Padding(
-            //             //       padding: const EdgeInsets.only(top: 20.0,left: 10.0,right: 10.0,bottom: 20.0),
-            //             //       child: SizedBox(
-            //             //         height: MediaQuery.of(context).size.height,
-            //             //         width: MediaQuery.of(context).size.width,
-            //             //         child:
-            //             //         cont.selectedMainType == "AllottedNotStarted" ?
-            //             //         cont.allottedNotStartedPastDueList.isEmpty ? Padding(
-            //             //             padding: const EdgeInsets.only(top: 50.0),
-            //             //             child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             //         ListView.builder(
-            //             //             shrinkWrap: true,
-            //             //             physics: const NeverScrollableScrollPhysics(),
-            //             //             itemCount: cont.allottedNotStartedPastDueList.length,
-            //             //             scrollDirection: Axis.vertical,
-            //             //             itemBuilder: (context,index){
-            //             //               final item = cont.allottedNotStartedPastDueList[index];
-            //             //               return Padding(
-            //             //                 padding: const EdgeInsets.all(5.0),
-            //             //                 child: Card(
-            //             //                   elevation: 1.0,
-            //             //                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //             //                       side: const BorderSide(color: grey)),
-            //             //                   child: Column(
-            //             //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                     children: [
-            //             //                       Row(
-            //             //                         children: [
-            //             //                           Container(
-            //             //                               height: 40.0,
-            //             //                               decoration: const BoxDecoration(color: primaryColor,
-            //             //                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),
-            //             //                           Flexible(child: Container(
-            //             //                               width: MediaQuery.of(context).size.width,
-            //             //                               height: 40.0,
-            //             //                               decoration: BoxDecoration(border: Border.all(color: grey),
-            //             //                                   borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),)
-            //             //                         ],
-            //             //                       ),
-            //             //                       const SizedBox(height: 10.0,),
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0),
-            //             //                         child: RichText(
-            //             //                           text: TextSpan(
-            //             //                             text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-            //             //                             style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-            //             //                             recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                               cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-            //             //                             },
-            //             //                             children: <TextSpan>[
-            //             //                               TextSpan(
-            //             //                                   text: "${
-            //             //                                       cont.addedDateListForCurrent.contains(item.id)
-            //             //                                           ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-            //             //                                           : item.targetDateToShow}",
-            //             //                                   style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-            //             //                                       decoration: TextDecoration.underline,decorationThickness: 2.0),
-            //             //                                   recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                     cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
-            //             //                                   }
-            //             //                               ),
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                       ),
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             Flexible(
-            //             //                               child: Container(
-            //             //                                   height: 40.0,
-            //             //                                   width: MediaQuery.of(context).size.width,
-            //             //                                   decoration: BoxDecoration(
-            //             //                                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                     border: Border.all(color: grey),),
-            //             //                                   child: Center(
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: DropdownButton(
-            //             //                                           hint: buildTextRegularWidget(
-            //             //                                               cont.addedPriorityListForCurrent.contains(item.id) ?
-            //             //                                               cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //             //                                               blackColor, context, 15.0),
-            //             //                                           isExpanded: true,
-            //             //                                           underline: Container(),
-            //             //                                           items:
-            //             //                                           cont.priorityList.map((String value) {
-            //             //                                             return DropdownMenuItem<String>(
-            //             //                                               value: value,
-            //             //                                               child: Text(value),
-            //             //                                             );
-            //             //                                           }).toList(),
-            //             //                                           onChanged: (val) {
-            //             //                                             cont.updatePriorityForCurrent(val!,item.id!,);
-            //             //                                           },
-            //             //                                         ),
-            //             //                                       )
-            //             //                                   )
-            //             //                               ),
-            //             //                             )
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //             //                           child: Row(
-            //             //                             crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                             children: [
-            //             //                               buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //             //                               Flexible(
-            //             //                                 child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
-            //             //                               )
-            //             //                             ],
-            //             //                           )
-            //             //                       ),
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.all(10.0),
-            //             //                           child: Row(
-            //             //                             children: [
-            //             //                               // Flexible(
-            //             //                               //     child: GestureDetector(
-            //             //                               //       onTap: (){cont.callStartService(item.id!);},
-            //             //                               //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //             //                               //     )),
-            //             //                               // const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                 child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //             //                               ),
-            //             //                               const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                   child: GestureDetector(
-            //             //                                     onTap: (){
-            //             //                                       cont.selectedCliId = item.id!;
-            //             //                                       cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //             //                                     },
-            //             //                                     child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //             //                                   )  ),
-            //             //                             ],
-            //             //                           )
-            //             //                       )
-            //             //                     ],
-            //             //                   ),
-            //             //                 ),
-            //             //               );
-            //             //             })
-            //             //         ///started not completed
-            //             //             :  cont.loader ? buildCircularIndicator() :
-            //             //         cont.startedNotCompletedPastDueList.isEmpty ? Padding(
-            //             //             padding: const EdgeInsets.only(top: 50.0),
-            //             //             child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             //         ListView.builder(
-            //             //             shrinkWrap: true,
-            //             //             physics: const NeverScrollableScrollPhysics(),
-            //             //             itemCount: cont.startedNotCompletedPastDueList.length,
-            //             //             scrollDirection: Axis.vertical,
-            //             //             itemBuilder: (context,index){
-            //             //               final item = cont.startedNotCompletedPastDueList[index];
-            //             //               return Padding(
-            //             //                 padding: const EdgeInsets.all(5.0),
-            //             //                 child: Card(
-            //             //                   elevation: 1.0,
-            //             //                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //             //                       side: const BorderSide(color: grey)),
-            //             //                   child: Column(
-            //             //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                     children: [
-            //             //                       Row(
-            //             //                         children: [
-            //             //                           Container(
-            //             //                               height: 40.0,
-            //             //                               decoration: const BoxDecoration(color: primaryColor,
-            //             //                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),
-            //             //                           Flexible(child: Container(
-            //             //                               width: MediaQuery.of(context).size.width,
-            //             //                               height: 40.0,
-            //             //                               decoration: BoxDecoration(border: Border.all(color: grey),
-            //             //                                   borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),)
-            //             //                         ],
-            //             //                       ),
-            //             //                       const SizedBox(height: 10.0,),
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0),
-            //             //                         child: RichText(
-            //             //                           text: TextSpan(
-            //             //                             text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-            //             //                             style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-            //             //                             recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                               //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-            //             //                             },
-            //             //                             children: <TextSpan>[
-            //             //                               TextSpan(
-            //             //                                   text: "${
-            //             //                                       cont.addedDateListForCurrent.contains(item.id)
-            //             //                                           ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-            //             //                                           : item.targetDateToShow}",
-            //             //                                   style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-            //             //                                       decoration: TextDecoration.underline,decorationThickness: 2.0),
-            //             //                                   recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                     //cont.selectTargetDateForCurrent(context,item.id!);
-            //             //                                   }
-            //             //                               ),
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///priority
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             Flexible(
-            //             //                               child: Container(
-            //             //                                   height: 40.0,
-            //             //                                   width: MediaQuery.of(context).size.width,
-            //             //                                   decoration: BoxDecoration(
-            //             //                                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                     border: Border.all(color: grey),),
-            //             //                                   child: cont.reportingHead == "0"
-            //             //                                       ? Align(
-            //             //                                     alignment: Alignment.centerLeft,
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                       child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                     ),
-            //             //                                   )
-            //             //                                       :
-            //             //                                   Center(
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: DropdownButton(
-            //             //                                           hint: buildTextRegularWidget(
-            //             //                                               cont.addedPriorityListForCurrent.contains(item.id) ?
-            //             //                                               cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //             //                                               blackColor, context, 15.0),
-            //             //                                           isExpanded: true,
-            //             //                                           underline: Container(),
-            //             //                                           items:
-            //             //                                           cont.priorityList.map((String value) {
-            //             //                                             return DropdownMenuItem<String>(
-            //             //                                               value: value,
-            //             //                                               child: Text(value),
-            //             //                                             );
-            //             //                                           }).toList(),
-            //             //                                           onChanged: (val) {
-            //             //                                             cont.updatePriorityForCurrent(val!,item.id!);
-            //             //                                           },
-            //             //                                         ),
-            //             //                                       )
-            //             //                                   )
-            //             //                               ),
-            //             //                             )
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///assigned to
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //             //                           child: Row(
-            //             //                             crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                             children: [
-            //             //                               buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //             //                               Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0)),
-            //             //                             ],
-            //             //                           )
-            //             //                       ),
-            //             //                       ///trigger date,statutory due date
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Table(
-            //             //                           children: [
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-            //             //                                   buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-            //             //                                   buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///task,completion
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Table(
-            //             //                           children: [
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextBoldWidget("Task", blackColor, context, 14.0),
-            //             //                                   buildTextBoldWidget("Completion", blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-            //             //                                   buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///status
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             Flexible(
-            //             //                               child: Container(
-            //             //                                   height: 40.0,
-            //             //                                   width: MediaQuery.of(context).size.width,
-            //             //                                   decoration: BoxDecoration(
-            //             //                                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                     border: Border.all(color: grey),),
-            //             //                                   child: cont.reportingHead == "0"
-            //             //                                       ? Align(
-            //             //                                     alignment: Alignment.centerLeft,
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                       child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                     ),
-            //             //                                   )
-            //             //                                       :
-            //             //                                   Center(
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: DropdownButton(
-            //             //                                           hint: buildTextRegularWidget(
-            //             //                                               cont.addedStatusListForCurrent.contains(item.id) ?
-            //             //                                               cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-            //             //                                               blackColor, context, 15.0),
-            //             //                                           isExpanded: true,
-            //             //                                           underline: Container(),
-            //             //                                           items:
-            //             //                                           cont.changeStatusList.map((String value) {
-            //             //                                             return DropdownMenuItem<String>(
-            //             //                                               value: value,
-            //             //                                               child: Text(value),
-            //             //                                             );
-            //             //                                           }).toList(),
-            //             //                                           onChanged: (val) {
-            //             //                                             cont.updateStatusForCurrent(val!,item.id!,context);
-            //             //                                           },
-            //             //                                         ),
-            //             //                                       )
-            //             //                                   )
-            //             //                               ),
-            //             //                             )
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.all(10.0),
-            //             //                           child: Row(
-            //             //                             children: [
-            //             //                               // Flexible(
-            //             //                               //     child: GestureDetector(
-            //             //                               //       onTap: (){cont.callStartService(item.id!);},
-            //             //                               //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //             //                               //     )),
-            //             //                               // const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                   child: GestureDetector(
-            //             //                                     onTap:(){
-            //             //                                       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-            //             //                                     },
-            //             //                                     child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //             //                                   )  ),
-            //             //                               const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                   child: GestureDetector(
-            //             //                                     onTap: (){
-            //             //                                       cont.selectedCliId = item.id!;
-            //             //                                       cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //             //                                     },
-            //             //                                     child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //             //                                   )  ),
-            //             //                             ],
-            //             //                           )
-            //             //                       )
-            //             //                     ],
-            //             //                   ),
-            //             //                 ),
-            //             //               );
-            //             //             }),
-            //             //       ),
-            //             //     )
-            //             //         : const Opacity(opacity: 0.0),
-            //             //
-            //             //     cont.isHighSelected ? Padding(
-            //             //       padding: const EdgeInsets.only(top: 20.0,left: 10.0,right: 10.0,bottom: 20.0),
-            //             //       child: SizedBox(
-            //             //         height: MediaQuery.of(context).size.height,
-            //             //         width: MediaQuery.of(context).size.width,
-            //             //         child: cont.selectedMainType == "AllottedNotStarted"?
-            //             //         cont.allottedNotStartedPastDueList.isEmpty ? Padding(
-            //             //             padding: const EdgeInsets.only(top: 50.0),
-            //             //             child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             //         ListView.builder(
-            //             //             shrinkWrap: true,
-            //             //             physics: const NeverScrollableScrollPhysics(),
-            //             //             itemCount: cont.allottedNotStartedPastDueList.length,
-            //             //             scrollDirection: Axis.vertical,
-            //             //             itemBuilder: (context,index){
-            //             //               final item = cont.allottedNotStartedPastDueList[index];
-            //             //               return Padding(
-            //             //                 padding: const EdgeInsets.all(5.0),
-            //             //                 child: Card(
-            //             //                   elevation: 1.0,
-            //             //                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //             //                       side: const BorderSide(color: grey)),
-            //             //                   child: Column(
-            //             //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                     children: [
-            //             //                       Row(
-            //             //                         children: [
-            //             //                           Container(
-            //             //                               height: 40.0,
-            //             //                               decoration: const BoxDecoration(color: primaryColor,
-            //             //                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),
-            //             //                           Flexible(child: Container(
-            //             //                               width: MediaQuery.of(context).size.width,
-            //             //                               height: 40.0,
-            //             //                               decoration: BoxDecoration(border: Border.all(color: grey),
-            //             //                                   borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),)
-            //             //                         ],
-            //             //                       ),
-            //             //                       const SizedBox(height: 10.0,),
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0),
-            //             //                         child: RichText(
-            //             //                           text: TextSpan(
-            //             //                             text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-            //             //                             style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-            //             //                             recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                               cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-            //             //                             },
-            //             //                             children: <TextSpan>[
-            //             //                               TextSpan(
-            //             //                                   text: "${
-            //             //                                       cont.addedDateListForCurrent.contains(item.id)
-            //             //                                           ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-            //             //                                           : item.targetDateToShow}",
-            //             //                                   style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-            //             //                                       decoration: TextDecoration.underline,decorationThickness: 2.0),
-            //             //                                   recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                     cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
-            //             //                                   }
-            //             //                               ),
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                       ),
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             Flexible(
-            //             //                               child: Container(
-            //             //                                   height: 40.0,
-            //             //                                   width: MediaQuery.of(context).size.width,
-            //             //                                   decoration: BoxDecoration(
-            //             //                                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                     border: Border.all(color: grey),),
-            //             //                                   child: Center(
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: DropdownButton(
-            //             //                                           hint: buildTextRegularWidget(
-            //             //                                               cont.addedPriorityListForCurrent.contains(item.id) ?
-            //             //                                               cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //             //                                               blackColor, context, 15.0),
-            //             //                                           isExpanded: true,
-            //             //                                           underline: Container(),
-            //             //                                           items:
-            //             //                                           cont.priorityList.map((String value) {
-            //             //                                             return DropdownMenuItem<String>(
-            //             //                                               value: value,
-            //             //                                               child: Text(value),
-            //             //                                             );
-            //             //                                           }).toList(),
-            //             //                                           onChanged: (val) {
-            //             //                                             cont.updatePriorityForCurrent(val!,item.id!);
-            //             //                                           },
-            //             //                                         ),
-            //             //                                       )
-            //             //                                   )
-            //             //                               ),
-            //             //                             )
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //             //                           child: Row(
-            //             //                             crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                             children: [
-            //             //                               buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //             //                               Flexible(
-            //             //                                 child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
-            //             //                               )
-            //             //                             ],
-            //             //                           )
-            //             //                       ),
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.all(10.0),
-            //             //                           child: Row(
-            //             //                             children: [
-            //             //                               // Flexible(
-            //             //                               //     child: GestureDetector(
-            //             //                               //       onTap: (){cont.callStartService(item.id!);},
-            //             //                               //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //             //                               //     )),
-            //             //                               // const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                 child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //             //                               ),
-            //             //                               const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                   child: GestureDetector(
-            //             //                                     onTap: (){
-            //             //                                       cont.selectedCliId = item.id!;
-            //             //                                       cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //             //                                     },
-            //             //                                     child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //             //                                   )  ),
-            //             //                             ],
-            //             //                           )
-            //             //                       )
-            //             //                     ],
-            //             //                   ),
-            //             //                 ),
-            //             //               );
-            //             //             })
-            //             //         ///started not completed
-            //             //             :  cont.loader ? buildCircularIndicator() :
-            //             //         cont.startedNotCompletedPastDueList.isEmpty ? Padding(
-            //             //             padding: const EdgeInsets.only(top: 50.0),
-            //             //             child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             //         ListView.builder(
-            //             //             shrinkWrap: true,
-            //             //             physics: const NeverScrollableScrollPhysics(),
-            //             //             itemCount: cont.startedNotCompletedPastDueList.length,
-            //             //             scrollDirection: Axis.vertical,
-            //             //             itemBuilder: (context,index){
-            //             //               final item = cont.startedNotCompletedPastDueList[index];
-            //             //               return Padding(
-            //             //                 padding: const EdgeInsets.all(5.0),
-            //             //                 child: Card(
-            //             //                   elevation: 1.0,
-            //             //                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //             //                       side: const BorderSide(color: grey)),
-            //             //                   child: Column(
-            //             //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                     children: [
-            //             //                       Row(
-            //             //                         children: [
-            //             //                           Container(
-            //             //                               height: 40.0,
-            //             //                               decoration: const BoxDecoration(color: primaryColor,
-            //             //                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),
-            //             //                           Flexible(child: Container(
-            //             //                               width: MediaQuery.of(context).size.width,
-            //             //                               height: 40.0,
-            //             //                               decoration: BoxDecoration(border: Border.all(color: grey),
-            //             //                                   borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),)
-            //             //                         ],
-            //             //                       ),
-            //             //                       const SizedBox(height: 10.0,),
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0),
-            //             //                         child: RichText(
-            //             //                           text: TextSpan(
-            //             //                             text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-            //             //                             style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-            //             //                             recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                               //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-            //             //                             },
-            //             //                             children: <TextSpan>[
-            //             //                               TextSpan(
-            //             //                                   text: "${
-            //             //                                       cont.addedDateListForCurrent.contains(item.id)
-            //             //                                           ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-            //             //                                           : item.targetDateToShow}",
-            //             //                                   style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-            //             //                                       decoration: TextDecoration.underline,decorationThickness: 2.0),
-            //             //                                   recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                     //cont.selectTargetDateForCurrent(context,item.id!);
-            //             //                                   }
-            //             //                               ),
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///priority
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             Flexible(
-            //             //                               child: Container(
-            //             //                                   height: 40.0,
-            //             //                                   width: MediaQuery.of(context).size.width,
-            //             //                                   decoration: BoxDecoration(
-            //             //                                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                     border: Border.all(color: grey),),
-            //             //                                   child: cont.reportingHead == "0"
-            //             //                                       ? Align(
-            //             //                                     alignment: Alignment.centerLeft,
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                       child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                     ),
-            //             //                                   )
-            //             //                                       :
-            //             //                                   Center(
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: DropdownButton(
-            //             //                                           hint: buildTextRegularWidget(
-            //             //                                               cont.addedPriorityListForCurrent.contains(item.id) ?
-            //             //                                               cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //             //                                               blackColor, context, 15.0),
-            //             //                                           isExpanded: true,
-            //             //                                           underline: Container(),
-            //             //                                           items:
-            //             //                                           cont.priorityList.map((String value) {
-            //             //                                             return DropdownMenuItem<String>(
-            //             //                                               value: value,
-            //             //                                               child: Text(value),
-            //             //                                             );
-            //             //                                           }).toList(),
-            //             //                                           onChanged: (val) {
-            //             //                                             cont.updatePriorityForCurrent(val!,item.id!);
-            //             //                                           },
-            //             //                                         ),
-            //             //                                       )
-            //             //                                   )
-            //             //                               ),
-            //             //                             )
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///assigned to
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //             //                           child: Row(
-            //             //                             crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                             children: [
-            //             //                               buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //             //                               Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0)),
-            //             //                             ],
-            //             //                           )
-            //             //                       ),
-            //             //                       ///trigger date,statutory due date
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Table(
-            //             //                           children: [
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-            //             //                                   buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-            //             //                                   buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///task,completion
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Table(
-            //             //                           children: [
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextBoldWidget("Task", blackColor, context, 14.0),
-            //             //                                   buildTextBoldWidget("Completion", blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-            //             //                                   buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///status
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             Flexible(
-            //             //                               child: Container(
-            //             //                                   height: 40.0,
-            //             //                                   width: MediaQuery.of(context).size.width,
-            //             //                                   decoration: BoxDecoration(
-            //             //                                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                     border: Border.all(color: grey),),
-            //             //                                   child: cont.reportingHead == "0"
-            //             //                                       ? Align(
-            //             //                                     alignment: Alignment.centerLeft,
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                       child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                     ),
-            //             //                                   )
-            //             //                                       :
-            //             //                                   Center(
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: DropdownButton(
-            //             //                                           hint: buildTextRegularWidget(
-            //             //                                               cont.addedStatusListForCurrent.contains(item.id) ?
-            //             //                                               cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-            //             //                                               blackColor, context, 15.0),
-            //             //                                           isExpanded: true,
-            //             //                                           underline: Container(),
-            //             //                                           items:
-            //             //                                           cont.changeStatusList.map((String value) {
-            //             //                                             return DropdownMenuItem<String>(
-            //             //                                               value: value,
-            //             //                                               child: Text(value),
-            //             //                                             );
-            //             //                                           }).toList(),
-            //             //                                           onChanged: (val) {
-            //             //                                             cont.updateStatusForCurrent(val!,item.id!,context);
-            //             //                                           },
-            //             //                                         ),
-            //             //                                       )
-            //             //                                   )
-            //             //                               ),
-            //             //                             )
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.all(10.0),
-            //             //                           child: Row(
-            //             //                             children: [
-            //             //                               // Flexible(
-            //             //                               //     child: GestureDetector(
-            //             //                               //       onTap: (){cont.callStartService(item.id!);},
-            //             //                               //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //             //                               //     )),
-            //             //                               // const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                   child: GestureDetector(
-            //             //                                     onTap:(){
-            //             //                                       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-            //             //                                     },
-            //             //                                     child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //             //                                   )  ),
-            //             //                               const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                   child: GestureDetector(
-            //             //                                     onTap: (){
-            //             //                                       cont.selectedCliId = item.id!;
-            //             //                                       cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //             //                                     },
-            //             //                                     child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //             //                                   )  ),
-            //             //                             ],
-            //             //                           )
-            //             //                       )
-            //             //                     ],
-            //             //                   ),
-            //             //                 ),
-            //             //               );
-            //             //             }),
-            //             //       ),
-            //             //     )
-            //             //         : const Opacity(opacity: 0.0),
-            //             //
-            //             //     cont.isMediumSelected ? Padding(
-            //             //       padding: const EdgeInsets.only(top: 20.0,left: 10.0,right: 10.0,bottom: 20.0),
-            //             //       child: SizedBox(
-            //             //         height: MediaQuery.of(context).size.height,
-            //             //         width: MediaQuery.of(context).size.width,
-            //             //         child: cont.selectedMainType == "AllottedNotStarted" ?
-            //             //         cont.allottedNotStartedPastDueList.isEmpty ? Padding(
-            //             //             padding: const EdgeInsets.only(top: 50.0),
-            //             //             child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             //         ListView.builder(
-            //             //             shrinkWrap: true,
-            //             //             physics: const NeverScrollableScrollPhysics(),
-            //             //             itemCount: cont.allottedNotStartedPastDueList.length,
-            //             //             scrollDirection: Axis.vertical,
-            //             //             itemBuilder: (context,index){
-            //             //               final item = cont.allottedNotStartedPastDueList[index];
-            //             //               return Padding(
-            //             //                 padding: const EdgeInsets.all(5.0),
-            //             //                 child: Card(
-            //             //                   elevation: 1.0,
-            //             //                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //             //                       side: const BorderSide(color: grey)),
-            //             //                   child: Column(
-            //             //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                     children: [
-            //             //                       Row(
-            //             //                         children: [
-            //             //                           Container(
-            //             //                               height: 40.0,
-            //             //                               decoration: const BoxDecoration(color: primaryColor,
-            //             //                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),
-            //             //                           Flexible(child: Container(
-            //             //                               width: MediaQuery.of(context).size.width,
-            //             //                               height: 40.0,
-            //             //                               decoration: BoxDecoration(border: Border.all(color: grey),
-            //             //                                   borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),)
-            //             //                         ],
-            //             //                       ),
-            //             //                       const SizedBox(height: 10.0,),
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0),
-            //             //                         child: RichText(
-            //             //                           text: TextSpan(
-            //             //                             text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-            //             //                             style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-            //             //                             recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                               cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-            //             //                             },
-            //             //                             children: <TextSpan>[
-            //             //                               TextSpan(
-            //             //                                   text: "${
-            //             //                                       cont.addedDateListForCurrent.contains(item.id)
-            //             //                                           ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-            //             //                                           : item.targetDateToShow}",
-            //             //                                   style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-            //             //                                       decoration: TextDecoration.underline,decorationThickness: 2.0),
-            //             //                                   recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                     cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
-            //             //                                   }
-            //             //                               ),
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                       ),
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             Flexible(
-            //             //                               child: Container(
-            //             //                                   height: 40.0,
-            //             //                                   width: MediaQuery.of(context).size.width,
-            //             //                                   decoration: BoxDecoration(
-            //             //                                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                     border: Border.all(color: grey),),
-            //             //                                   child: Center(
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: DropdownButton(
-            //             //                                           hint: buildTextRegularWidget(
-            //             //                                               cont.addedPriorityListForCurrent.contains(item.id) ?
-            //             //                                               cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //             //                                               blackColor, context, 15.0),
-            //             //                                           isExpanded: true,
-            //             //                                           underline: Container(),
-            //             //                                           items:
-            //             //                                           cont.priorityList.map((String value) {
-            //             //                                             return DropdownMenuItem<String>(
-            //             //                                               value: value,
-            //             //                                               child: Text(value),
-            //             //                                             );
-            //             //                                           }).toList(),
-            //             //                                           onChanged: (val) {
-            //             //                                             cont.updatePriorityForCurrent(val!,item.id!);
-            //             //                                           },
-            //             //                                         ),
-            //             //                                       )
-            //             //                                   )
-            //             //                               ),
-            //             //                             )
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //             //                           child: Row(
-            //             //                             crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                             children: [
-            //             //                               buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //             //                               Flexible(
-            //             //                                 child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
-            //             //                               )
-            //             //                             ],
-            //             //                           )
-            //             //                       ),
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.all(10.0),
-            //             //                           child: Row(
-            //             //                             children: [
-            //             //                               // Flexible(
-            //             //                               //     child: GestureDetector(
-            //             //                               //       onTap: (){cont.callStartService(item.id!);},
-            //             //                               //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //             //                               //     )),
-            //             //                               // const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                 child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //             //                               ),
-            //             //                               const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                   child: GestureDetector(
-            //             //                                     onTap: (){
-            //             //                                       cont.selectedCliId = item.id!;
-            //             //                                       cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //             //                                     },
-            //             //                                     child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //             //                                   )  ),
-            //             //                             ],
-            //             //                           )
-            //             //                       )
-            //             //                     ],
-            //             //                   ),
-            //             //                 ),
-            //             //               );
-            //             //             })
-            //             //         ///started not completed
-            //             //             :  cont.loader ? buildCircularIndicator() :
-            //             //         cont.startedNotCompletedPastDueList.isEmpty ? Padding(
-            //             //             padding: const EdgeInsets.only(top: 50.0),
-            //             //             child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             //         ListView.builder(
-            //             //             shrinkWrap: true,
-            //             //             physics: const NeverScrollableScrollPhysics(),
-            //             //             itemCount: cont.startedNotCompletedPastDueList.length,
-            //             //             scrollDirection: Axis.vertical,
-            //             //             itemBuilder: (context,index){
-            //             //               final item = cont.startedNotCompletedPastDueList[index];
-            //             //               return Padding(
-            //             //                 padding: const EdgeInsets.all(5.0),
-            //             //                 child: Card(
-            //             //                   elevation: 1.0,
-            //             //                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //             //                       side: const BorderSide(color: grey)),
-            //             //                   child: Column(
-            //             //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                     children: [
-            //             //                       Row(
-            //             //                         children: [
-            //             //                           Container(
-            //             //                               height: 40.0,
-            //             //                               decoration: const BoxDecoration(color: primaryColor,
-            //             //                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),
-            //             //                           Flexible(child: Container(
-            //             //                               width: MediaQuery.of(context).size.width,
-            //             //                               height: 40.0,
-            //             //                               decoration: BoxDecoration(border: Border.all(color: grey),
-            //             //                                   borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //             //                               child: Align(
-            //             //                                   alignment: Alignment.centerLeft,
-            //             //                                   child: Padding(
-            //             //                                     padding: const EdgeInsets.only(left: 10.0),
-            //             //                                     child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //             //                                   )
-            //             //                               )
-            //             //                           ),)
-            //             //                         ],
-            //             //                       ),
-            //             //                       const SizedBox(height: 10.0,),
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0),
-            //             //                         child: RichText(
-            //             //                           text: TextSpan(
-            //             //                             text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-            //             //                             style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-            //             //                             recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                               //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-            //             //                             },
-            //             //                             children: <TextSpan>[
-            //             //                               TextSpan(
-            //             //                                   text: "${
-            //             //                                       cont.addedDateListForCurrent.contains(item.id)
-            //             //                                           ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-            //             //                                           : item.targetDateToShow}",
-            //             //                                   style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-            //             //                                       decoration: TextDecoration.underline,decorationThickness: 2.0),
-            //             //                                   recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                     //cont.selectTargetDateForCurrent(context,item.id!);
-            //             //                                   }
-            //             //                               ),
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///priority
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             Flexible(
-            //             //                               child: Container(
-            //             //                                   height: 40.0,
-            //             //                                   width: MediaQuery.of(context).size.width,
-            //             //                                   decoration: BoxDecoration(
-            //             //                                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                     border: Border.all(color: grey),),
-            //             //                                   child: cont.reportingHead == "0"
-            //             //                                       ? Align(
-            //             //                                     alignment: Alignment.centerLeft,
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                       child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                     ),
-            //             //                                   )
-            //             //                                       :
-            //             //                                   Center(
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: DropdownButton(
-            //             //                                           hint: buildTextRegularWidget(
-            //             //                                               cont.addedPriorityListForCurrent.contains(item.id) ?
-            //             //                                               cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //             //                                               blackColor, context, 15.0),
-            //             //                                           isExpanded: true,
-            //             //                                           underline: Container(),
-            //             //                                           items:
-            //             //                                           cont.priorityList.map((String value) {
-            //             //                                             return DropdownMenuItem<String>(
-            //             //                                               value: value,
-            //             //                                               child: Text(value),
-            //             //                                             );
-            //             //                                           }).toList(),
-            //             //                                           onChanged: (val) {
-            //             //                                             cont.updatePriorityForCurrent(val!,item.id!);
-            //             //                                           },
-            //             //                                         ),
-            //             //                                       )
-            //             //                                   )
-            //             //                               ),
-            //             //                             )
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///assigned to
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //             //                           child: Row(
-            //             //                             crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                             children: [
-            //             //                               buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //             //                               Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0)),
-            //             //                             ],
-            //             //                           )
-            //             //                       ),
-            //             //                       ///trigger date,statutory due date
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Table(
-            //             //                           children: [
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-            //             //                                   buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-            //             //                                   buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///task,completion
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Table(
-            //             //                           children: [
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextBoldWidget("Task", blackColor, context, 14.0),
-            //             //                                   buildTextBoldWidget("Completion", blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                             TableRow(
-            //             //                                 children: [
-            //             //                                   buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-            //             //                                   buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-            //             //                                 ]
-            //             //                             ),
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       ///status
-            //             //                       Padding(
-            //             //                         padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                         child: Row(
-            //             //                           children: [
-            //             //                             Flexible(
-            //             //                               child: Container(
-            //             //                                   height: 40.0,
-            //             //                                   width: MediaQuery.of(context).size.width,
-            //             //                                   decoration: BoxDecoration(
-            //             //                                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                     border: Border.all(color: grey),),
-            //             //                                   child: cont.reportingHead == "0"
-            //             //                                       ? Align(
-            //             //                                     alignment: Alignment.centerLeft,
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                       child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                     ),
-            //             //                                   )
-            //             //                                       :
-            //             //                                   Center(
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: DropdownButton(
-            //             //                                           hint: buildTextRegularWidget(
-            //             //                                               cont.addedStatusListForCurrent.contains(item.id) ?
-            //             //                                               cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-            //             //                                               blackColor, context, 15.0),
-            //             //                                           isExpanded: true,
-            //             //                                           underline: Container(),
-            //             //                                           items:
-            //             //                                           cont.changeStatusList.map((String value) {
-            //             //                                             return DropdownMenuItem<String>(
-            //             //                                               value: value,
-            //             //                                               child: Text(value),
-            //             //                                             );
-            //             //                                           }).toList(),
-            //             //                                           onChanged: (val) {
-            //             //                                             cont.updateStatusForCurrent(val!,item.id!,context);
-            //             //                                           },
-            //             //                                         ),
-            //             //                                       )
-            //             //                                   )
-            //             //                               ),
-            //             //                             )
-            //             //                           ],
-            //             //                         ),
-            //             //                       ),
-            //             //                       Padding(
-            //             //                           padding: const EdgeInsets.all(10.0),
-            //             //                           child: Row(
-            //             //                             children: [
-            //             //                               // Flexible(
-            //             //                               //     child: GestureDetector(
-            //             //                               //       onTap: (){cont.callStartService(item.id!);},
-            //             //                               //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //             //                               //     )),
-            //             //                               // const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                   child: GestureDetector(
-            //             //                                     onTap:(){
-            //             //                                       cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-            //             //                                     },
-            //             //                                     child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //             //                                   )  ),
-            //             //                               const SizedBox(width: 10.0,),
-            //             //                               Flexible(
-            //             //                                   child: GestureDetector(
-            //             //                                     onTap: (){
-            //             //                                       cont.selectedCliId = item.id!;
-            //             //                                       cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //             //                                     },
-            //             //                                     child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //             //                                   )  ),
-            //             //                             ],
-            //             //                           )
-            //             //                       )
-            //             //                     ],
-            //             //                   ),
-            //             //                 ),
-            //             //               );
-            //             //             }),
-            //             //       ),
-            //             //     )
-            //             //         : const Opacity(opacity: 0.0),
-            //             //
-            //             //     cont.isLowSelected ? Padding(
-            //             //         padding: const EdgeInsets.only(top: 10.0,left: 10.0,right: 10.0,bottom: 20.0),
-            //             //         child: SizedBox(
-            //             //           height: MediaQuery.of(context).size.height,
-            //             //           width: MediaQuery.of(context).size.width,
-            //             //           child: cont.selectedMainType == "AllottedNotStarted" ?
-            //             //           cont.allottedNotStartedPastDueList.isEmpty ? Padding(
-            //             //               padding: const EdgeInsets.only(top: 50.0),
-            //             //               child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             //           ListView.builder(
-            //             //               shrinkWrap: true,
-            //             //               physics: const NeverScrollableScrollPhysics(),
-            //             //               itemCount: cont.allottedNotStartedPastDueList.length,
-            //             //               itemBuilder: (context,index){
-            //             //                 final item = cont.allottedNotStartedPastDueList[index];
-            //             //                 return Padding(
-            //             //                   padding: const EdgeInsets.all(5.0),
-            //             //                   child: Card(
-            //             //                     elevation: 1.0,
-            //             //                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //             //                         side: const BorderSide(color: grey)),
-            //             //                     child: Column(
-            //             //                       crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                       children: [
-            //             //                         Row(
-            //             //                           children: [
-            //             //                             Container(
-            //             //                                 height: 40.0,
-            //             //                                 decoration: const BoxDecoration(color: primaryColor,
-            //             //                                     borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //             //                                 child: Align(
-            //             //                                     alignment: Alignment.centerLeft,
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //             //                                       child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //             //                                     )
-            //             //                                 )
-            //             //                             ),
-            //             //                             Flexible(child: Container(
-            //             //                                 width: MediaQuery.of(context).size.width,
-            //             //                                 height: 40.0,
-            //             //                                 decoration: BoxDecoration(border: Border.all(color: grey),
-            //             //                                     borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //             //                                 child: Align(
-            //             //                                     alignment: Alignment.centerLeft,
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 10.0),
-            //             //                                       child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //             //                                     )
-            //             //                                 )
-            //             //                             ),)
-            //             //                           ],
-            //             //                         ),
-            //             //                         const SizedBox(height: 10.0,),
-            //             //                         Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0),
-            //             //                           child: RichText(
-            //             //                             text: TextSpan(
-            //             //                               text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-            //             //                               style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-            //             //                               recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                 cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-            //             //                               },
-            //             //                               children: <TextSpan>[
-            //             //                                 TextSpan(
-            //             //                                     text: "${
-            //             //                                         cont.addedDateListForCurrent.contains(item.id)
-            //             //                                             ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-            //             //                                             : item.targetDateToShow}",
-            //             //                                     style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-            //             //                                         decoration: TextDecoration.underline,decorationThickness: 2.0),
-            //             //                                     recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                       cont.selectTargetDateForCurrent(context,item.id!,item.triggerDateTimeFormat!,item.targetDateTimeFormat!);
-            //             //                                     }
-            //             //                                 ),
-            //             //                               ],
-            //             //                             ),
-            //             //                           ),
-            //             //                         ),
-            //             //                         Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                           child: Row(
-            //             //                             children: [
-            //             //                               Flexible(
-            //             //                                 child: Container(
-            //             //                                     height: 40.0,
-            //             //                                     width: MediaQuery.of(context).size.width,
-            //             //                                     decoration: BoxDecoration(
-            //             //                                       borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                       border: Border.all(color: grey),),
-            //             //                                     child: Center(
-            //             //                                         child: Padding(
-            //             //                                           padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                           child: DropdownButton(
-            //             //                                             hint: buildTextRegularWidget(
-            //             //                                                 cont.addedPriorityListForCurrent.contains(item.id) ?
-            //             //                                                 cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //             //                                                 blackColor, context, 15.0),
-            //             //                                             isExpanded: true,
-            //             //                                             underline: Container(),
-            //             //                                             items:
-            //             //                                             cont.priorityList.map((String value) {
-            //             //                                               return DropdownMenuItem<String>(
-            //             //                                                 value: value,
-            //             //                                                 child: Text(value),
-            //             //                                               );
-            //             //                                             }).toList(),
-            //             //                                             onChanged: (val) {
-            //             //                                               cont.updatePriorityForCurrent(val!,item.id!,);
-            //             //                                             },
-            //             //                                           ),
-            //             //                                         )
-            //             //                                     )
-            //             //                                 ),
-            //             //                               )
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                         Padding(
-            //             //                             padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //             //                             child: Row(
-            //             //                               crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                               children: [
-            //             //                                 buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //             //                                 Flexible(
-            //             //                                   child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0,align: TextAlign.left),
-            //             //                                 )
-            //             //                               ],
-            //             //                             )
-            //             //                         ),
-            //             //                         Padding(
-            //             //                             padding: const EdgeInsets.all(10.0),
-            //             //                             child: Row(
-            //             //                               children: [
-            //             //                                 // Flexible(
-            //             //                                 //     child: GestureDetector(
-            //             //                                 //       onTap: (){cont.callStartService(item.id!);},
-            //             //                                 //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //             //                                 //     )),
-            //             //                                 // const SizedBox(width: 10.0,),
-            //             //                                 Flexible(
-            //             //                                   child: buildButtonWidget(context, "Reassign",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //             //                                 ),
-            //             //                                 const SizedBox(width: 10.0,),
-            //             //                                 Flexible(
-            //             //                                     child: GestureDetector(
-            //             //                                       onTap: (){
-            //             //                                         cont.selectedCliId = item.id!;
-            //             //                                         cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //             //                                       },
-            //             //                                       child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //             //                                     )  ),
-            //             //                               ],
-            //             //                             )
-            //             //                         )
-            //             //                       ],
-            //             //                     ),
-            //             //                   ),
-            //             //                 );
-            //             //               })
-            //             //           ///started not completed
-            //             //               :  cont.loader ? buildCircularIndicator() :
-            //             //           cont.startedNotCompletedPastDueList.isEmpty ? Padding(
-            //             //               padding: const EdgeInsets.only(top: 50.0),
-            //             //               child:buildTextBoldWidget("No data found", blackColor, context, 16.0,align: TextAlign.center)):
-            //             //           ListView.builder(
-            //             //               shrinkWrap: true,
-            //             //               physics: const NeverScrollableScrollPhysics(),
-            //             //               itemCount: cont.startedNotCompletedPastDueList.length,
-            //             //               scrollDirection: Axis.vertical,
-            //             //               itemBuilder: (context,index){
-            //             //                 final item = cont.startedNotCompletedPastDueList[index];
-            //             //                 return Padding(
-            //             //                   padding: const EdgeInsets.all(5.0),
-            //             //                   child: Card(
-            //             //                     elevation: 1.0,
-            //             //                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-            //             //                         side: const BorderSide(color: grey)),
-            //             //                     child: Column(
-            //             //                       crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                       children: [
-            //             //                         Row(
-            //             //                           children: [
-            //             //                             Container(
-            //             //                                 height: 40.0,
-            //             //                                 decoration: const BoxDecoration(color: primaryColor,
-            //             //                                     borderRadius: BorderRadius.only(topLeft: Radius.circular(7.0),)),
-            //             //                                 child: Align(
-            //             //                                     alignment: Alignment.centerLeft,
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-            //             //                                       child: buildTextBoldWidget(item.clientCode!, whiteColor, context, 14.0),
-            //             //                                     )
-            //             //                                 )
-            //             //                             ),
-            //             //                             Flexible(child: Container(
-            //             //                                 width: MediaQuery.of(context).size.width,
-            //             //                                 height: 40.0,
-            //             //                                 decoration: BoxDecoration(border: Border.all(color: grey),
-            //             //                                     borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
-            //             //                                 child: Align(
-            //             //                                     alignment: Alignment.centerLeft,
-            //             //                                     child: Padding(
-            //             //                                       padding: const EdgeInsets.only(left: 10.0),
-            //             //                                       child: buildTextBoldWidget(item.client!, primaryColor, context, 14.0,align: TextAlign.left),
-            //             //                                     )
-            //             //                                 )
-            //             //                             ),)
-            //             //                           ],
-            //             //                         ),
-            //             //                         const SizedBox(height: 10.0,),
-            //             //                         Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0),
-            //             //                           child: RichText(
-            //             //                             text: TextSpan(
-            //             //                               text: "${item.servicename} triggered on ${item.triggerDateToShow} and ending on ",
-            //             //                               style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0),
-            //             //                               recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                 //cont.navigateToDetails(item.id!,item.client!,item.servicename!);
-            //             //                               },
-            //             //                               children: <TextSpan>[
-            //             //                                 TextSpan(
-            //             //                                     text: "${
-            //             //                                         cont.addedDateListForCurrent.contains(item.id)
-            //             //                                             ? cont.selectedDateToShowForCurrent == "" ? item.targetDateToShow : cont.selectedDateToShowForCurrent
-            //             //                                             : item.targetDateToShow}",
-            //             //                                     style: const TextStyle(fontWeight: FontWeight.w400,color: blackColor,fontSize: 16.0,
-            //             //                                         decoration: TextDecoration.underline,decorationThickness: 2.0),
-            //             //                                     recognizer: TapGestureRecognizer()..onTap = () {
-            //             //                                       //cont.selectTargetDateForCurrent(context,item.id!);
-            //             //                                     }
-            //             //                                 ),
-            //             //                               ],
-            //             //                             ),
-            //             //                           ),
-            //             //                         ),
-            //             //                         ///priority
-            //             //                         Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                           child: Row(
-            //             //                             children: [
-            //             //                               Flexible(
-            //             //                                 child: Container(
-            //             //                                     height: 40.0,
-            //             //                                     width: MediaQuery.of(context).size.width,
-            //             //                                     decoration: BoxDecoration(
-            //             //                                       borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                       border: Border.all(color: grey),),
-            //             //                                     child: cont.reportingHead == "0"
-            //             //                                         ? Align(
-            //             //                                       alignment: Alignment.centerLeft,
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: buildTextRegularWidget(item.priorityToShow!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                       ),
-            //             //                                     )
-            //             //                                         :
-            //             //                                     Center(
-            //             //                                         child: Padding(
-            //             //                                           padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                           child: DropdownButton(
-            //             //                                             hint: buildTextRegularWidget(
-            //             //                                                 cont.addedPriorityListForCurrent.contains(item.id) ?
-            //             //                                                 cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-            //             //                                                 blackColor, context, 15.0),
-            //             //                                             isExpanded: true,
-            //             //                                             underline: Container(),
-            //             //                                             items:
-            //             //                                             cont.priorityList.map((String value) {
-            //             //                                               return DropdownMenuItem<String>(
-            //             //                                                 value: value,
-            //             //                                                 child: Text(value),
-            //             //                                               );
-            //             //                                             }).toList(),
-            //             //                                             onChanged: (val) {
-            //             //                                               cont.updatePriorityForCurrent(val!,item.id!);
-            //             //                                             },
-            //             //                                           ),
-            //             //                                         )
-            //             //                                     )
-            //             //                                 ),
-            //             //                               )
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                         ///assigned to
-            //             //                         Padding(
-            //             //                             padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,),
-            //             //                             child: Row(
-            //             //                               crossAxisAlignment: CrossAxisAlignment.start,
-            //             //                               children: [
-            //             //                                 buildTextBoldWidget("Assigned to - ", blackColor, context, 14.0),
-            //             //                                 Flexible(child:buildTextRegularWidget("${item.allottedTo}", blackColor, context, 14.0)),
-            //             //                               ],
-            //             //                             )
-            //             //                         ),
-            //             //                         ///trigger date,statutory due date
-            //             //                         Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                           child: Table(
-            //             //                             children: [
-            //             //                               TableRow(
-            //             //                                   children: [
-            //             //                                     buildTextBoldWidget("Trigger Date", blackColor, context, 14.0),
-            //             //                                     buildTextBoldWidget("Statutory Due Date", blackColor, context, 14.0),
-            //             //                                   ]
-            //             //                               ),
-            //             //                               TableRow(
-            //             //                                   children: [
-            //             //                                     buildTextRegularWidget(item.triggerDateToShow!, blackColor, context, 14.0),
-            //             //                                     buildTextRegularWidget(item.satDateToShow!.toString(), blackColor, context, 14.0),
-            //             //                                   ]
-            //             //                               ),
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                         ///task,completion
-            //             //                         Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                           child: Table(
-            //             //                             children: [
-            //             //                               TableRow(
-            //             //                                   children: [
-            //             //                                     buildTextBoldWidget("Task", blackColor, context, 14.0),
-            //             //                                     buildTextBoldWidget("Completion", blackColor, context, 14.0),
-            //             //                                   ]
-            //             //                               ),
-            //             //                               TableRow(
-            //             //                                   children: [
-            //             //                                     buildTextRegularWidget(item.tasks!, blackColor, context, 14.0),
-            //             //                                     buildTextRegularWidget(item.completionPercentage!.toString(), blackColor, context, 14.0),
-            //             //                                   ]
-            //             //                               ),
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                         ///status
-            //             //                         Padding(
-            //             //                           padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
-            //             //                           child: Row(
-            //             //                             children: [
-            //             //                               Flexible(
-            //             //                                 child: Container(
-            //             //                                     height: 40.0,
-            //             //                                     width: MediaQuery.of(context).size.width,
-            //             //                                     decoration: BoxDecoration(
-            //             //                                       borderRadius: const BorderRadius.all(Radius.circular(5)),
-            //             //                                       border: Border.all(color: grey),),
-            //             //                                     child: cont.reportingHead == "0"
-            //             //                                         ? Align(
-            //             //                                       alignment: Alignment.centerLeft,
-            //             //                                       child: Padding(
-            //             //                                         padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                         child: buildTextRegularWidget(item.statusName!, blackColor, context, 15.0,align: TextAlign.left),
-            //             //                                       ),
-            //             //                                     )
-            //             //                                         :
-            //             //                                     Center(
-            //             //                                         child: Padding(
-            //             //                                           padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-            //             //                                           child: DropdownButton(
-            //             //                                             hint: buildTextRegularWidget(
-            //             //                                                 cont.addedStatusListForCurrent.contains(item.id) ?
-            //             //                                                 cont.selectedServiceStatus==""?item.statusName!:cont.selectedServiceStatus : item.statusName!,
-            //             //                                                 blackColor, context, 15.0),
-            //             //                                             isExpanded: true,
-            //             //                                             underline: Container(),
-            //             //                                             items:
-            //             //                                             cont.changeStatusList.map((String value) {
-            //             //                                               return DropdownMenuItem<String>(
-            //             //                                                 value: value,
-            //             //                                                 child: Text(value),
-            //             //                                               );
-            //             //                                             }).toList(),
-            //             //                                             onChanged: (val) {
-            //             //                                               cont.updateStatusForCurrent(val!,item.id!,context);
-            //             //                                             },
-            //             //                                           ),
-            //             //                                         )
-            //             //                                     )
-            //             //                                 ),
-            //             //                               )
-            //             //                             ],
-            //             //                           ),
-            //             //                         ),
-            //             //                         Padding(
-            //             //                             padding: const EdgeInsets.all(10.0),
-            //             //                             child: Row(
-            //             //                               children: [
-            //             //                                 // Flexible(
-            //             //                                 //     child: GestureDetector(
-            //             //                                 //       onTap: (){cont.callStartService(item.id!);},
-            //             //                                 //       child: buildButtonWidget(context, "Start Service",height: 40.0,buttonColor: Colors.green,buttonFontSize:14.0),
-            //             //                                 //     )),
-            //             //                                 // const SizedBox(width: 10.0,),
-            //             //                                 Flexible(
-            //             //                                     child: GestureDetector(
-            //             //                                       onTap:(){
-            //             //                                         cont.navigateToServiceView(item.id!,item.client!,item.servicename!);
-            //             //                                       },
-            //             //                                       child:buildButtonWidget(context, "Log",height: 40.0,buttonColor: Colors.orange,buttonFontSize:14.0),
-            //             //                                     )  ),
-            //             //                                 const SizedBox(width: 10.0,),
-            //             //                                 Flexible(
-            //             //                                     child: GestureDetector(
-            //             //                                       onTap: (){
-            //             //                                         cont.selectedCliId = item.id!;
-            //             //                                         cont.showCheckPasswordOrReasonDialog("Cancel - ${item.servicename}",context);
-            //             //                                       },
-            //             //                                       child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor,buttonFontSize:14.0),
-            //             //                                     )  ),
-            //             //                               ],
-            //             //                             )
-            //             //                         )
-            //             //                       ],
-            //             //                     ),
-            //             //                   ),
-            //             //                 );
-            //             //               }),
-            //             //         )
-            //             //     )
-            //             //         : const Opacity(opacity: 0.0),
-            //             //   ],
-            //             // ),
-            //             const SizedBox(height: 20.0,)
-            //           ],
-            //         )
-            //     )
+              ),
             ),
           )
       );
