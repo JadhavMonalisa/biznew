@@ -224,7 +224,7 @@ class _ManualAssignmentScreenState extends State<ManualAssignmentScreen> {
                                 isExpanded: true,
                                 underline: Container(),
                                 items:
-                                cont.serviceList.isEmpty
+                                cont.servicesFromCategoryList.isEmpty
                                     ? cont.noDataList.map((value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
@@ -232,12 +232,12 @@ class _ManualAssignmentScreenState extends State<ManualAssignmentScreen> {
                                   );
                                 }).toList()
                                     :
-                                cont.serviceList.map((ClaimServiceList value) {
+                                cont.servicesFromCategoryList.map((ServicesList value) {
                                   return DropdownMenuItem<String>(
                                     value: value.serviceName,
                                     child: Text(value.serviceName!),
                                     onTap: (){
-                                      cont.updateSelectedServiceId(value.serviceId!,value.id!);
+                                      cont.updateSelectedServiceId(value.serviceId!,value.serviceName!);
                                     },
                                   );
                                 }).toList(),
@@ -467,20 +467,19 @@ class _ManualAssignmentScreenState extends State<ManualAssignmentScreen> {
                     //     ],
                     //   ),
                     // ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: cont.loadAllTaskList.length,
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context,index){
-                          final item = cont.loadAllTaskList[index];
+                    Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),
+                      side: const BorderSide(color: blackColor)),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: cont.tasksList.length,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context,index){
+                            final item = cont.tasksList[index];
 
-                          return
-                            Card(
-                              elevation: 1.0,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-                                  side: const BorderSide(color: grey)),
-                              child: Padding(
+                            return
+                              Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -513,252 +512,287 @@ class _ManualAssignmentScreenState extends State<ManualAssignmentScreen> {
                                           },
                                         )
                                     ),
+                                    const Divider(color: grey,),
+                                    const SizedBox(height: 5.0,),
+                                    Row(
+                                        children: [
+                                          buildTextRegularWidget("Employee", blackColor, context, 14.0),
+                                          const SizedBox(width: 33.0,),
+                                          Flexible(
+                                            child: Container(
+                                                height: 30.0,
+                                                width: MediaQuery.of(context).size.width,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                  border: Border.all(color: grey),),
+                                                child: Center(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                      child: DropdownButton(
+                                                        hint: buildTextRegularWidget(
+                                                          cont.taskSelectedEmpList.isEmpty ? "":
+                                                            cont.taskSelectedEmpList[index] ,
+                                                            blackColor, context, 15.0),
+                                                        isExpanded: true,
+                                                        underline: Container(),
+                                                        items:
+                                                        cont.employeeList.map((ClaimSubmittedByList value) {
+                                                          return DropdownMenuItem<String>(
+                                                            value: value.firmEmployeeName,
+                                                            child: Text(value.firmEmployeeName!),
+                                                            onTap: (){
+                                                              cont.updateEmployee(index,value.firmEmployeeName!,value.mastId!,item.taskId!);
+                                                            },
+                                                          );
+                                                        }).toList(),
+                                                        onChanged: (val) {
+                                                          //cont.updateEmployee(index,val!,item.taskId!);
+                                                        },
+                                                      ),
+                                                    )
+                                                )
+                                            ),
+                                          ),
+                                          //const SizedBox(width: 20.0,),
+                                        ]
+                                    ),
+                                    const SizedBox(height: 5.0,),
 
-                                    // const Divider(color: grey,),
-                                    // const SizedBox(height: 5.0,),
-                                    //
-                                    // Row(
-                                    //     children: [
-                                    //       buildTextRegularWidget("Employee", blackColor, context, 14.0),
-                                    //       const SizedBox(width: 33.0,),
-                                    //       Flexible(
-                                    //         child: Container(
-                                    //             height: 30.0,
-                                    //             width: MediaQuery.of(context).size.width,
-                                    //             decoration: BoxDecoration(
-                                    //               borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                    //               border: Border.all(color: grey),),
-                                    //             child: Center(
-                                    //                 child: Padding(
-                                    //                   padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                    //                   child: DropdownButton(
-                                    //                     hint: buildTextRegularWidget(
-                                    //                       // cont.addedAssignedTo.contains(item.taskId) ?
-                                    //                       // cont.selectedEmpFromDashboardNext==""?"":cont.selectedEmpFromDashboardNext : "",
-                                    //                       // cont.triggerSelectedEmpList.isEmpty
-                                    //                       //     ? "" : cont.triggerSelectedEmpList[index],
-                                    //
-                                    //
-                                    //                         cont.triggerSelectedEmpList.isEmpty ? "":
-                                    //                         cont.triggerSelectedEmpList[index] ,
-                                    //
-                                    //                         // cont.addedAssignedTo.contains(item.taskId)
-                                    //                         //     ? cont.triggerSelectedEmpList[index]
-                                    //                         //     : "Select",
-                                    //                         blackColor, context, 15.0),
-                                    //                     isExpanded: true,
-                                    //                     underline: Container(),
-                                    //                     items:
-                                    //                     cont.employeeList.map((ClaimSubmittedByList value) {
-                                    //                       return DropdownMenuItem<String>(
-                                    //                         value: value.firmEmployeeName,
-                                    //                         child: Text(value.firmEmployeeName!),
-                                    //                         onTap: (){
-                                    //                           cont.updateAssignedTo(index,value.firmEmployeeName!,value.mastId!,item.taskId!);
-                                    //                         },
-                                    //                       );
-                                    //                     }).toList(),
-                                    //                     onChanged: (val) {
-                                    //                       // cont.updateAssignedTo(index,val!,item.taskId!);
-                                    //                     },
-                                    //                   ),
-                                    //                 )
-                                    //             )
-                                    //         ),
-                                    //       ),
-                                    //       //const SizedBox(width: 20.0,),
-                                    //     ]
-                                    // ),
-                                    // const SizedBox(height: 5.0,),
-                                    //
-                                    // Container(
-                                    //   width: MediaQuery.of(context).size.width,
-                                    //   child: Row(
-                                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    //       children: [
-                                    //         buildTextRegularWidget("Completion % ", blackColor, context, 14.0),
-                                    //         const SizedBox(width: 5.0,),
-                                    //         Flexible(
-                                    //           child: Container(
-                                    //               height: 30.0,
-                                    //               width: 40,
-                                    //               decoration: BoxDecoration(
-                                    //                 borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                    //                 border: Border.all(color: grey),),
-                                    //               child:
-                                    //               cont.completionList.isEmpty ? null :
-                                    //               Center(
-                                    //                 child: TextFormField(
-                                    //                   controller: cont.completionList[index],
-                                    //                   keyboardType: TextInputType.number,
-                                    //                   onTap: () {
-                                    //                   },
-                                    //                   enabled: true,
-                                    //                   style:const TextStyle(fontSize: 15.0,),
-                                    //                   textAlign: TextAlign.right,
-                                    //                   decoration: InputDecoration(
-                                    //                     contentPadding: const EdgeInsets.only(left:2,bottom: 10.0),
-                                    //                     hintText: item.completion!,
-                                    //                     hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                    //                       color: blackColor, fontSize: 15,),),
-                                    //                     border: InputBorder.none,
-                                    //                   ),
-                                    //                   onChanged: (value) {
-                                    //                     //cont.addCompletion(index,value);
-                                    //                   },
-                                    //                 ),
-                                    //               )
-                                    //           ),
-                                    //         ),
-                                    //         const SizedBox(width:10.0),
-                                    //
-                                    //         buildTextRegularWidget("D", blackColor, context, 14.0,align: TextAlign.center),
-                                    //         const SizedBox(width:5.0),
-                                    //         Flexible(
-                                    //           child: Container(
-                                    //               height: 30.0,
-                                    //               width: 40,
-                                    //               decoration: BoxDecoration(
-                                    //                 borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                    //                 border: Border.all(color: grey),),
-                                    //               child:
-                                    //               cont.daysList.isEmpty ? null :
-                                    //               Center(
-                                    //                 child: TextFormField(
-                                    //                   controller: cont.daysList[index],
-                                    //                   keyboardType: TextInputType.number,
-                                    //                   onTap: () {
-                                    //
-                                    //                   },
-                                    //                   enabled: true,
-                                    //                   style:const TextStyle(fontSize: 15.0),
-                                    //                   textAlign: TextAlign.right,
-                                    //                   decoration: InputDecoration(
-                                    //                     contentPadding: const EdgeInsets.only(left:2,bottom: 10.0),
-                                    //                     hintText: item.days!,
-                                    //                     hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                    //                       color: blackColor, fontSize: 15,),),
-                                    //                     border: InputBorder.none,
-                                    //                   ),
-                                    //                   onChanged: (value) {
-                                    //                     //cont.addDays(index,value);
-                                    //                   },
-                                    //                 ),
-                                    //               )
-                                    //           ),
-                                    //         ),
-                                    //         const SizedBox(width:10.0),
-                                    //
-                                    //         buildTextRegularWidget("H", blackColor, context, 14.0,align: TextAlign.center),
-                                    //         const SizedBox(width:5.0),
-                                    //         Flexible(
-                                    //           child: Container(
-                                    //               height: 30.0,
-                                    //               width: 40,
-                                    //               decoration: BoxDecoration(
-                                    //                 borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                    //                 border: Border.all(color: grey),),
-                                    //               child:
-                                    //               cont.hoursList.isEmpty ? null :
-                                    //               Center(
-                                    //                 child: TextFormField(
-                                    //                   controller: cont.hoursList[index],
-                                    //                   keyboardType: TextInputType.number,
-                                    //                   onTap: () {
-                                    //                   },
-                                    //                   enabled: true,
-                                    //                   style:const TextStyle(fontSize: 15.0),
-                                    //                   textAlign: TextAlign.right,
-                                    //                   decoration: InputDecoration(
-                                    //                     hintText: item.hours!,
-                                    //                     contentPadding: const EdgeInsets.only(left:2,bottom: 10.0),
-                                    //                     hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                    //                       color: blackColor, fontSize: 15,),),
-                                    //                     border: InputBorder.none,
-                                    //                   ),
-                                    //                   onChanged: (value) {
-                                    //                     //cont.addHours(index,value);
-                                    //                   },
-                                    //                 ),
-                                    //               )
-                                    //           ),
-                                    //         ),
-                                    //         const SizedBox(width:10.0),
-                                    //
-                                    //         buildTextRegularWidget("M", blackColor, context, 14.0,align: TextAlign.center),
-                                    //         const SizedBox(width:5.0),
-                                    //         Flexible(
-                                    //           child: Container(
-                                    //               height: 30.0,
-                                    //               width: 40,
-                                    //               decoration: BoxDecoration(
-                                    //                 borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                    //                 border: Border.all(color: grey),),
-                                    //               child:
-                                    //               cont.minuteList.isEmpty ? null :
-                                    //               Center(
-                                    //                 child: TextFormField(
-                                    //                   controller: cont.minuteList[index],
-                                    //                   keyboardType: TextInputType.number,
-                                    //                   textAlign: TextAlign.right,
-                                    //                   onTap: () {
-                                    //                   },
-                                    //                   enabled: true,
-                                    //                   style:const TextStyle(fontSize: 15.0),
-                                    //                   decoration: InputDecoration(
-                                    //                     hintText: item.minutes!,
-                                    //                     contentPadding: const EdgeInsets.only(left:2,bottom: 10.0),
-                                    //                     hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                    //                       color: blackColor, fontSize: 15,),),
-                                    //                     border: InputBorder.none,
-                                    //                   ),
-                                    //                   onChanged: (value) {
-                                    //                     // cont.addMinutes(index,value);
-                                    //                   },
-                                    //                 ),
-                                    //               )
-                                    //           ),
-                                    //         ),
-                                    //       ]
-                                    //   ),
-                                    // ),
-                                    // const SizedBox(height: 10.0,),
-                                    //
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                                    //   child: Row(
-                                    //     crossAxisAlignment: CrossAxisAlignment.center,
-                                    //     mainAxisAlignment: MainAxisAlignment.center,
-                                    //     children: [
-                                    //       Flexible(
-                                    //         child: GestureDetector(
-                                    //           onTap: (){
-                                    //             cont.removeFromSelectedTriggered(index,);
-                                    //           },
-                                    //           child: buildButtonWidget(context, "Remove",height: 35.0,
-                                    //               width: 150.0,
-                                    //               buttonColor: errorColor,buttonFontSize:14.0),
-                                    //         ),
-                                    //       ),
-                                    //       const SizedBox(width: 10.0,),
-                                    //       Flexible(
-                                    //         child: GestureDetector(
-                                    //           onTap: (){
-                                    //             //showInprocessDialog(context);
-                                    //             cont.checkAllAddedValues(index);
-                                    //           },
-                                    //           child: buildButtonWidget(context, "Add",width: 150.0,
-                                    //             height: 35.0,buttonColor: approveColor,buttonFontSize:14.0,),
-                                    //         ),
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // )
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            buildTextRegularWidget("Completion % ", blackColor, context, 14.0),
+                                            const SizedBox(width: 5.0,),
+                                            Flexible(
+                                              child: Container(
+                                                  height: 30.0,
+                                                  width: 40,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                    border: Border.all(color: grey),),
+                                                  child:
+                                                  cont.taskCompletionList.isEmpty ? null :
+                                                  Center(
+                                                    child: TextFormField(
+                                                      controller: cont.taskCompletionList[index],
+                                                      keyboardType: TextInputType.number,
+                                                      onTap: () {
+                                                      },
+                                                      enabled: true,
+                                                      style:const TextStyle(fontSize: 15.0,),
+                                                      textAlign: TextAlign.right,
+                                                      decoration: InputDecoration(
+                                                        contentPadding: const EdgeInsets.only(left:2,bottom: 10.0),
+                                                        hintText: item.completion!,
+                                                        hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                                          color: blackColor, fontSize: 15,),),
+                                                        border: InputBorder.none,
+                                                      ),
+                                                      onChanged: (value) {
+                                                        //cont.addCompletion(index,value);
+                                                      },
+                                                    ),
+                                                  )
+                                              ),
+                                            ),
+                                            const SizedBox(width:10.0),
+
+                                            buildTextRegularWidget("D", blackColor, context, 14.0,align: TextAlign.center),
+                                            const SizedBox(width:5.0),
+                                            Flexible(
+                                              child: Container(
+                                                  height: 30.0,
+                                                  width: 40,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                    border: Border.all(color: grey),),
+                                                  child:
+                                                  cont.taskDaysList.isEmpty ? null :
+                                                  Center(
+                                                    child: TextFormField(
+                                                      controller: cont.taskDaysList[index],
+                                                      keyboardType: TextInputType.number,
+                                                      onTap: () {
+
+                                                      },
+                                                      enabled: true,
+                                                      style:const TextStyle(fontSize: 15.0),
+                                                      textAlign: TextAlign.right,
+                                                      decoration: InputDecoration(
+                                                        contentPadding: const EdgeInsets.only(left:2,bottom: 10.0),
+                                                        hintText: item.days!,
+                                                        hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                                          color: blackColor, fontSize: 15,),),
+                                                        border: InputBorder.none,
+                                                      ),
+                                                      onChanged: (value) {
+                                                        //cont.addDays(index,value);
+                                                      },
+                                                    ),
+                                                  )
+                                              ),
+                                            ),
+                                            const SizedBox(width:10.0),
+
+                                            buildTextRegularWidget("H", blackColor, context, 14.0,align: TextAlign.center),
+                                            const SizedBox(width:5.0),
+                                            Flexible(
+                                              child: Container(
+                                                  height: 30.0,
+                                                  width: 40,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                    border: Border.all(color: grey),),
+                                                  child:
+                                                  cont.taskHoursList.isEmpty ? null :
+                                                  Center(
+                                                    child: TextFormField(
+                                                      controller: cont.taskHoursList[index],
+                                                      keyboardType: TextInputType.number,
+                                                      onTap: () {
+                                                      },
+                                                      enabled: true,
+                                                      style:const TextStyle(fontSize: 15.0),
+                                                      textAlign: TextAlign.right,
+                                                      decoration: InputDecoration(
+                                                        hintText: item.hours!,
+                                                        contentPadding: const EdgeInsets.only(left:2,bottom: 10.0),
+                                                        hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                                          color: blackColor, fontSize: 15,),),
+                                                        border: InputBorder.none,
+                                                      ),
+                                                      onChanged: (value) {
+                                                        //cont.addHours(index,value);
+                                                      },
+                                                    ),
+                                                  )
+                                              ),
+                                            ),
+                                            const SizedBox(width:10.0),
+
+                                            buildTextRegularWidget("M", blackColor, context, 14.0,align: TextAlign.center),
+                                            const SizedBox(width:5.0),
+                                            Flexible(
+                                              child: Container(
+                                                  height: 30.0,
+                                                  width: 40,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                    border: Border.all(color: grey),),
+                                                  child:
+                                                  cont.taskMinuteList.isEmpty ? null :
+                                                  Center(
+                                                    child: TextFormField(
+                                                      controller: cont.taskMinuteList[index],
+                                                      keyboardType: TextInputType.number,
+                                                      textAlign: TextAlign.right,
+                                                      onTap: () {
+                                                      },
+                                                      enabled: true,
+                                                      style:const TextStyle(fontSize: 15.0),
+                                                      decoration: InputDecoration(
+                                                        hintText: item.minutes!,
+                                                        contentPadding: const EdgeInsets.only(left:2,bottom: 10.0),
+                                                        hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                                          color: blackColor, fontSize: 15,),),
+                                                        border: InputBorder.none,
+                                                      ),
+                                                      onChanged: (value) {
+                                                        // cont.addMinutes(index,value);
+                                                      },
+                                                    ),
+                                                  )
+                                              ),
+                                            ),
+                                          ]
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10.0,),
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Flexible(
+                                            child: GestureDetector(
+                                              onTap: (){
+                                                cont.removeFromSelected(index,);
+                                              },
+                                              child: buildButtonWidget(context, "Remove",height: 35.0,
+                                                  width: 150.0,
+                                                  buttonColor: errorColor,buttonFontSize:14.0),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10.0,),
+                                          Flexible(
+                                            child: GestureDetector(
+                                              onTap: (){
+                                                cont.checkAllAddedValues(index);
+                                              },
+                                              child: buildButtonWidget(context, "Add",width: 150.0,
+                                                height: 35.0,buttonColor: approveColor,buttonFontSize:14.0,),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
-                              ),
-                            );
-                        }),
+                              );
+                          }),
+                    ),
+                    cont.tasksList.isEmpty ? const Opacity(opacity: 0.0,):
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0,right: 15.0,top:10.0),
+                      child:
+
+                      Row(
+                        children: [
+                          buildTextBoldWidget("Completion % : ", blackColor, context, 15.0),
+                          buildTextRegularWidget(cont.totalCompletion.toString(), blackColor, context, 15.0),
+
+                          const Spacer(),
+                          buildTextBoldWidget("  Total : ", blackColor, context, 15.0),
+                          buildTextRegularWidget(cont.totalDays.toString(), blackColor, context, 15.0),
+                          buildTextBoldWidget("D ", blackColor, context, 15.0),
+
+                          buildTextRegularWidget(cont.totalHours.toString(), blackColor, context, 15.0),
+                          buildTextBoldWidget("H ", blackColor, context, 15.0),
+
+                          buildTextRegularWidget(cont.totalMins.toString(), blackColor, context, 15.0),
+                          buildTextBoldWidget("M   ", blackColor, context, 15.0),
+                        ],
+                      ),
+                    ),
+                    cont.tasksList.isEmpty ? const Opacity(opacity: 0.0,):
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: (){
+                                cont.addMoreForManualAssignment(cont.tasksList.length);
+                              },
+                              child: buildButtonWidget(context, "Add more",buttonColor: editColor,height: 35.0),
+                            ),
+                          ),
+                          const SizedBox(width: 10.0,),
+                          Flexible(
+                              child: GestureDetector(
+                                onTap: (){
+                                  cont.saveTasks();
+                                },
+                                child: buildButtonWidget(context, "Save",buttonColor: approveColor,height: 35.0),
+                              )
+                          ),
+                        ],
+                      ),
+                    ),
                   ]
                 )
               )

@@ -254,7 +254,7 @@ class _ClaimListState extends State<ClaimList> {
                     cont.updateStatus("Delete",item.claimId!,context);
                   },
                       //child:buildActionForClaim(errorColor,Icons.delete,)
-                      child:Icon(Icons.delete,color: errorColor,size: 30.0,)
+                      child:const Icon(Icons.delete,color: errorColor,size: 30.0,)
                   )),
                   cont.reportingHead == "0" && item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
                   const SizedBox(width: 30.0,),
@@ -333,7 +333,7 @@ class _ClaimListState extends State<ClaimList> {
                       );
                     },
                     //child: buildActionForClaim(editColor,Icons.clear),
-                    child: Icon(Icons.clear,color: editColor,size: 30.0,),
+                    child: const Icon(Icons.clear,color: editColor,size: 30.0,),
                   )),
                   item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
                   const SizedBox(width: 30.0,),
@@ -343,7 +343,7 @@ class _ClaimListState extends State<ClaimList> {
                     cont.navigateToClaimEdit(item.claimId!,"view");
                   },
                       //    child:buildActionForClaim(primaryColor,Icons.visibility,)
-                      child:Icon(Icons.visibility,color: primaryColor,size: 30.0,)
+                      child:const Icon(Icons.visibility,color: primaryColor,size: 30.0,)
                   )),
                   const SizedBox(width: 30.0,),
 
@@ -352,7 +352,7 @@ class _ClaimListState extends State<ClaimList> {
                     cont.navigateToClaimEdit(item.claimId!,"form");
                   },
                       //child:buildActionForClaim(buttonColor,Icons.edit))
-                      child:Icon(Icons.edit,color: buttonColor,size: 30.0,))
+                      child:const Icon(Icons.edit,color: buttonColor,size: 30.0,))
                   ),
                   item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
                   const SizedBox(width: 30.0,),
@@ -362,7 +362,7 @@ class _ClaimListState extends State<ClaimList> {
                   Flexible(child: GestureDetector(
                       onTap: (){cont.updateStatus("Approved",item.claimId!,context);},
                       //child:buildActionForClaim(approveColor,Icons.check)
-                      child:Icon(Icons.check,color: approveColor,size: 30.0,)
+                      child:const Icon(Icons.check,color: approveColor,size: 30.0,)
                   )),
                   item.claimStatus == "Approved" ? const Opacity(opacity: 0.0,):
                   const SizedBox(width: 5.0,),

@@ -215,11 +215,31 @@ class TimesheetStatusModel {
   }
 }
 
+// class StatusList {
+//   String? id;
+//   String? name;
+//
+//   StatusList({this.id, this.name});
+//
+//   StatusList.fromJson(Map<String, dynamic> json) {
+//     id = json['id']??"";
+//     name = json['name']??"";
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['id'] = id;
+//     data['name'] = name;
+//     return data;
+//   }
+// }
+
 class StatusList {
+  String? taskId;
   String? id;
   String? name;
 
-  StatusList({this.id, this.name});
+  StatusList({this.taskId,this.id, this.name});
 
   StatusList.fromJson(Map<String, dynamic> json) {
     id = json['id']??"";
@@ -233,6 +253,22 @@ class StatusList {
     return data;
   }
 }
+
+class DummyStatusListModel {
+  String? taskId;
+  String? taskName;
+  List<StatusList>? dummyStatusList;
+
+  DummyStatusListModel({this.taskId, this.taskName,this.dummyStatusList});
+}
+
+// class DummyStatusList{
+//   String? statusId;
+//   String? statusName;
+//
+//   DummyStatusList({this.statusId, this.statusName});
+// }
+
 
 class TypeOfWorkModel {
   String? message;

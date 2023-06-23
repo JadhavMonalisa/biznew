@@ -271,8 +271,6 @@ class TimesheetFormController extends GetxController {
       else if(buttonName=="save&add"){
         checkValidationForStepper2(buttonName);
       }
-      print("buttonName");
-      print(buttonName);
 
       update();
     }
@@ -405,13 +403,6 @@ class TimesheetFormController extends GetxController {
       details.text.isEmpty ? validateDetailsStepper2=true: validateDetailsStepper2=false;
       timeStepper3List.isEmpty ? validateTimeSpentStepper2=true: validateTimeSpentStepper2=false;
       timeStepper2StatusList.isEmpty ? validateStatusStepper2=true: validateStatusStepper2=false;
-      print("error caught");
-      print(selectedClient);
-      print(selectedService);
-      print(selectedTaskStatusList);
-      print(details.text);
-      print(timeStepper3List.toString());
-      print(timeStepper2StatusList.toString());
 
 
       update();
@@ -419,7 +410,6 @@ class TimesheetFormController extends GetxController {
     else{
       // currentService == "office" ? callTimesheetAddAllotted(btnName)
       //     : Utils.showSuccessSnackBar("Coming soon");
-      print("allotted api call");
       callTimesheetAddAllotted(btnName);
       update();
     }
@@ -742,6 +732,9 @@ class TimesheetFormController extends GetxController {
   /// task list
   void callTaskList() async {
     taskList.clear();statusList.clear();
+    print("In task api");
+    print(selectedServiceId);
+    print(clientApplicableServiceId);
     try {
       TimesheetTaskModel? response = (await repository.getTimesheetTaskList(selectedServiceId,clientApplicableServiceId));
 
@@ -817,6 +810,10 @@ class TimesheetFormController extends GetxController {
   //     update();
   //   }
   // }
+
+  DummyStatusListModel dummyStatusListModel = DummyStatusListModel();
+  List<StatusList> dummyStatusList = [];
+
   void callStatusList(String taskId) async {
     try {
       TimesheetStatusModel? response = (await repository.getTimesheetStatusList(clientApplicableServiceId,taskId));
@@ -832,6 +829,11 @@ class TimesheetFormController extends GetxController {
           // response.list!.forEach((element) {
           //   statusToShow.add(element.name!);
           // });
+
+          dummyStatusListModel.taskId = taskId;
+
+          dummyStatusListModel.dummyStatusList = response.list;
+
         }
         update();
       } else {
@@ -863,7 +865,7 @@ class TimesheetFormController extends GetxController {
     try {
       ApiResponse? response = (await repository.getTimesheetStart(clientApplicableServiceId,selectedTaskId));
       if (response.success!) {
-        Navigator.pop(context);
+        if (context.mounted) Navigator.pop(context);
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
         update();
@@ -887,7 +889,7 @@ class TimesheetFormController extends GetxController {
     try {
       ApiResponse? response = (await repository.getTimesheetStatusUpdate(clientApplicableServiceId,selectedTaskId,remark.text,statusStart));
       if (response.success!) {
-        Navigator.pop(context);
+        if (context.mounted) Navigator.pop(context);
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
         update();
@@ -1012,8 +1014,6 @@ class TimesheetFormController extends GetxController {
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
-        print("response");
-        print(response);
         //clearStepper2();
         //if(btnName =="save&goToNonAllotted"){
         if(btnName =="next"){
@@ -1073,7 +1073,7 @@ class TimesheetFormController extends GetxController {
       TimesheetLogModel? response = (await repository.getTimesheetLog(date,id));
       if (response.success!) {
         timesheetLog = response.timesheetLogDetails!;
-        openLog(context);
+        if (context.mounted) openLog(context);
         updateLoader(false);
         update();
       } else {
@@ -1369,7 +1369,7 @@ class TimesheetFormController extends GetxController {
       ApiResponse? response = (await repository.getTimesheetAction(selectedActionId,timesheetId,selectedAction));
       if (response.success!) {
         clearForTimesheetAction();
-        Navigator.pop(context);
+        if (context.mounted) Navigator.pop(context);
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
         update();

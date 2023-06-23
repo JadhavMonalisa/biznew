@@ -520,9 +520,9 @@ class _ServiceDashboardNextOtherState extends State<ServiceDashboardNextOther> {
                                           children: [
                                             buildTextBoldWidget("Task - ", blackColor, context, 14.0),
                                             Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
-                                            SizedBox(width:20.0),
+                                            const SizedBox(width:20.0),
                                             buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
-                                            Flexible(child:buildTextBoldWidget("${item.completionPercentage.toString()}", primaryColor, context, 14.0,align: TextAlign.left),)
+                                            Flexible(child:buildTextBoldWidget(item.completionPercentage.toString(), primaryColor, context, 14.0,align: TextAlign.left),)
 
                                           ],
                                         )

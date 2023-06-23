@@ -17,11 +17,11 @@ class ClientDashboardModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Success'] = this.success;
-    if (this.clientDashboardList != null) {
-      data['data'] = this.clientDashboardList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (clientDashboardList != null) {
+      data['data'] = clientDashboardList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -71,19 +71,19 @@ class ClientDashboardList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['client'] = this.client;
-    data['client_code'] = this.client_code;
-    data['total_cnt'] = this.totalCnt;
-    data['triggered_cnt'] = this.triggeredCnt;
-    data['pastdue_cnt'] = this.pastdueCnt;
-    data['probable_cnt'] = this.probableCnt;
-    data['high_cnt'] = this.highCnt;
-    data['medium_cnt'] = this.mediumCnt;
-    data['low_cnt'] = this.lowCnt;
-    data['docs_in_hand'] = this.docsInHand;
-    data['billed_cnt'] = this.billedCnt;
-    data['unbilled_cnt'] = this.unbilledCnt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['client'] = client;
+    data['client_code'] = client_code;
+    data['total_cnt'] = totalCnt;
+    data['triggered_cnt'] = triggeredCnt;
+    data['pastdue_cnt'] = pastdueCnt;
+    data['probable_cnt'] = probableCnt;
+    data['high_cnt'] = highCnt;
+    data['medium_cnt'] = mediumCnt;
+    data['low_cnt'] = lowCnt;
+    data['docs_in_hand'] = docsInHand;
+    data['billed_cnt'] = billedCnt;
+    data['unbilled_cnt'] = unbilledCnt;
     return data;
   }
 }

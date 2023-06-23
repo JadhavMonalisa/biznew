@@ -1,15 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:biznew/constant/provider/custom_exception.dart';
 import 'package:biznew/constant/repository/api_repository.dart';
 import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/claim_form/claim_model.dart';
 import 'package:biznew/screens/claim_form/export_poc.dart';
-import 'package:biznew/screens/dashboard/dashboard_model.dart';
 import 'package:biznew/utils/custom_response.dart';
 import 'package:biznew/utils/utils.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -364,10 +361,6 @@ class ClaimFormController extends GetxController {
     //claimFileName = selectedClaimFile!.path.split("/").last;
     claimFileName = selectedClaimImage.path.split('/').last;
 
-    print("selected");
-    print(selectedClaimImage.path);
-    print(claimFileName);
-
     validateClaimImage=false;
     updateLoader(false);
     update();
@@ -471,9 +464,6 @@ class ClaimFormController extends GetxController {
     //updateLoader(true);
     try {
       ClaimServiceResponse? response = (await repository.getClaimServicesList(clientFirmId,selectedClaimYearId));
-      print("Claim service");
-      print(clientFirmId);
-      print(selectedClaimYearId);
       if (response.success!) {
         if (response.serviceList!.isEmpty) {
         }
@@ -775,9 +765,6 @@ class ClaimFormController extends GetxController {
           claimFileName = claimEditList[0].file!;
           selectedClientName = claimEditList[0].firmClientName!;
           selectedYear = "${claimEditList[0].startYear!}-${claimEditList[0].endYear!}";
-
-          print("claimFileName");
-          print(claimFileName);
           updateLoader(false);
           update();
         }
@@ -922,7 +909,7 @@ class ClaimFormController extends GetxController {
           statusAction=="Reject"? remark.text : ""));
 
       if (response.success!) {
-        Navigator.pop(context);
+        if (context.mounted) Navigator.pop(context);
         Utils.showSuccessSnackBar(response.message);
         remark.clear();
         updateLoader(false);

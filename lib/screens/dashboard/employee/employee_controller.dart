@@ -66,7 +66,6 @@ class EmployeeDashboardController extends GetxController {
     updateLoader(true);
     employeeDashboardListData.clear();
 
-    print("call start");
     try {
       updateLoader(true);
       EmployeeDashboardModel? response = await repository.getEmployeeDashboardList();
@@ -85,12 +84,9 @@ class EmployeeDashboardController extends GetxController {
         update();
       }
     } on CustomException {
-      print("exception");
       updateLoader(false);
       update();
     } catch (error) {
-      print("error");
-      print(error);
       updateLoader(false);
       update();
     }

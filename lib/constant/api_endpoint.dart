@@ -1,6 +1,6 @@
 class ApiEndpoint {
-  //static const String baseUrl = "https://dev.bizalys.com/api";
-  static const String baseUrl = "https://bizalys.com/api";
+  static const String baseUrl = "https://dev.bizalys.com/api";
+  //static const String baseUrl = "https://bizalys.com/api";
   static const String imageBaseUrl = "";
 
   ///Basic User
@@ -156,5 +156,8 @@ class ApiEndpoint {
 
   ///manual assignment
   static const String mainCategoryUrl = "$baseUrl/ApiController/service_main_category";
+  static const String servicesFromMainCategoryUrl = "$baseUrl/ApiController/get_manual_services";
+  static const String taskListUrl = "$baseUrl/ServicesController/load_all_tasks_for_manual";
+  static const String manualAssignmentUrl = "$baseUrl/ServicesController/manual_assignment";
 
 }

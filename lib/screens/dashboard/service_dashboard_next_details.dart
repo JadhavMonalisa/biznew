@@ -58,7 +58,7 @@ class _ServiceDashboardNextDetailsState extends State<ServiceDashboardNextDetail
                           )
                       ),
                       Padding(
-                          padding: EdgeInsets.only(right: 10.0,left: 20.0,top: 10.0),
+                          padding: const EdgeInsets.only(right: 10.0,left: 20.0,top: 10.0),
                           child: Table(
                             children: [
                               TableRow(
@@ -205,7 +205,7 @@ class _ServiceDashboardNextDetailsState extends State<ServiceDashboardNextDetail
                                           ]
                                       ),
                                       const SizedBox(height: 5.0,),
-                                      Container(
+                                      SizedBox(
                                         width: MediaQuery.of(context).size.width,
                                         child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -549,7 +549,7 @@ class _ServiceDashboardNextDetailsState extends State<ServiceDashboardNextDetail
                             buildTextBoldWidget("Completion % : ", blackColor, context, 15.0),
                             buildTextRegularWidget(cont.allottedTotalCompletion.toString(), blackColor, context, 15.0),
 
-                            Spacer(),
+                            const Spacer(),
                             buildTextBoldWidget("  Total : ", blackColor, context, 15.0),
                             buildTextRegularWidget(cont.allottedTotalDays.toString(), blackColor, context, 15.0),
                             buildTextBoldWidget("D ", blackColor, context, 15.0),

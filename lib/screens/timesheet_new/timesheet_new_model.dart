@@ -1,3 +1,6 @@
+import 'package:biznew/screens/timesheet_form/timesheet_model.dart';
+import 'package:flutter/material.dart';
+
 class TimesheetNewModel{
   String? clientListClientId;
   String? clientListClientStatus;
@@ -101,7 +104,8 @@ class TimesheetTaskListData {
         this.serviceName,
         this.clientId,
         this.clientName,
-        this.timesheetTaskDetailsData});
+        this.timesheetTaskDetailsData,
+      });
 
   TimesheetTaskListData.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -113,21 +117,21 @@ class TimesheetTaskListData {
     if (json['Data'] != null) {
       timesheetTaskDetailsData = <TimesheetTaskDetailsData>[];
       json['Data'].forEach((v) {
-        timesheetTaskDetailsData!.add(new TimesheetTaskDetailsData.fromJson(v));
+        timesheetTaskDetailsData!.add(TimesheetTaskDetailsData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Success'] = this.success;
-    data['ServiceId'] = this.serviceId;
-    data['ServiceName'] = this.serviceName;
-    data['ClientId'] = this.clientId;
-    data['ClientName'] = this.clientName;
-    if (this.timesheetTaskDetailsData != null) {
-      data['Data'] = this.timesheetTaskDetailsData!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    data['ServiceId'] = serviceId;
+    data['ServiceName'] = serviceName;
+    data['ClientId'] = clientId;
+    data['ClientName'] = clientName;
+    if (timesheetTaskDetailsData != null) {
+      data['Data'] = timesheetTaskDetailsData!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -136,8 +140,9 @@ class TimesheetTaskListData {
 class TimesheetTaskDetailsData {
   String? taskId;
   String? taskName;
+  TextEditingController? testTaskDetails;
 
-  TimesheetTaskDetailsData({this.taskId, this.taskName});
+  TimesheetTaskDetailsData({this.taskId, this.taskName,this.testTaskDetails});
 
   TimesheetTaskDetailsData.fromJson(Map<String, dynamic> json) {
     taskId = json['task_id'];
@@ -145,9 +150,16 @@ class TimesheetTaskDetailsData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['task_id'] = this.taskId;
-    data['task_name'] = this.taskName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['task_id'] = taskId;
+    data['task_name'] = taskName;
     return data;
   }
+}
+
+class TestTextEditingController{
+  TextEditingController? textEditingController;
+
+  TestTextEditingController(this.textEditingController);
+
 }

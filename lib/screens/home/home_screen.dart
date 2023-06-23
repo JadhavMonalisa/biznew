@@ -69,12 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       physics:const NeverScrollableScrollPhysics(),
                       children: [
                         Center(
-                          child: Container(
+                          child: SizedBox(
                             height: MediaQuery.of(context).size.height/1.1,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                buildDrawer(context,cont.name),Spacer(),
+                                buildDrawer(context,cont.name),const Spacer(),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
                                   child: Row(

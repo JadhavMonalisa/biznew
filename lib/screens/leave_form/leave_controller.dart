@@ -3,7 +3,6 @@ import 'package:biznew/constant/provider/custom_exception.dart';
 import 'package:biznew/constant/repository/api_repository.dart';
 import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/claim_form/claim_model.dart';
-import 'package:biznew/screens/claim_form/claim_model.dart';
 import 'package:biznew/screens/leave_form/leave_model.dart';
 import 'package:biznew/utils/custom_response.dart';
 import 'package:biznew/utils/utils.dart';
@@ -87,8 +86,6 @@ class LeaveController extends GetxController {
     callLeaveTypeList();
     //callLeaveList();
 
-    print("items");
-    print(items.length);
   }
 
   ///employee list
@@ -114,8 +111,6 @@ class LeaveController extends GetxController {
       removeSecondBracket = removeFirstBracket.replaceAll("]", "");
       update();
     }
-    print("selectedMultipleEmpIdList in add");
-    print(selectedMultipleEmpIdList);
     callLeaveList();
     //update();
   }
@@ -126,8 +121,6 @@ class LeaveController extends GetxController {
     selectedMultipleEmpIdList.remove(value.mastId!);
     removeFirstBracket = selectedMultipleEmpIdList.toString().replaceAll("[", "");
     removeSecondBracket = removeFirstBracket.replaceAll("]", "");
-    print("removeSecondBracket in remove");
-    print(removeSecondBracket);
     callLeaveList();
     //update();
   }
@@ -174,14 +167,10 @@ class LeaveController extends GetxController {
   updateSelectedLeaveFlag(int val,BuildContext context){
     selectedEmployee = "";selectedLeaveStatus="";
     updateLoader(true);
-    print("b4 selectedLeaveStatus");
-    print(selectedLeaveStatus);
     selectedLeaveFlag = val;
     if(selectedLeaveFlag != 2 && selectedLeaveStatus == ""){
       selectedLeaveStatus = "All"; update();
     }
-    print("selectedLeaveStatus");
-    print(selectedLeaveStatus);
     callLeaveList(); update();
   }
 
@@ -306,7 +295,6 @@ class LeaveController extends GetxController {
   changeSelectedIndex(v,String leaveName) {
     selectedLeave = v;
     nameOfLeaveFor = leaveName;
-    print(nameOfLeaveFor);
     if(selectedStartDateToShow!=selectedEndDateToShow){
 
     }
@@ -321,7 +309,6 @@ class LeaveController extends GetxController {
     selectedLeaveForExam = v;
     nameOfLeaveForExam = nameForExam;
 
-    print(nameOfLeaveForExam);
     if(selectedLeaveType=="Exam Leave"){
       checkLeaveForExamValidation();
       update();

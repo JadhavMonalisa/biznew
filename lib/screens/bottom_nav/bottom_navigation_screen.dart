@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../common_widget/widget.dart';
 import '../../theme/app_colors.dart';
 import 'bottom_nav_controller.dart';
 
@@ -38,15 +37,15 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               child: ExpandableFab(
                   key: _key,type: ExpandableFabType.up,
                   distance: 70.0,
-
                   children : [
                     SizedBox(
                       width: 130.0,
                       child: FloatingActionButton.extended(
+                        heroTag: "btn1",
                         onPressed: (){
                           Get.toNamed(AppRoutes.leaveList,arguments: ["Leaves"]);
                         },
-                        icon: Icon(Icons.calendar_today),
+                        icon: const Icon(Icons.calendar_today),
 
                         backgroundColor: primaryColor, label: buildTextBoldWidget("Leaves", whiteColor, context, 12.0),
 
@@ -56,6 +55,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                     SizedBox(
                       width: 130.0,height: 45.0,
                       child: FloatingActionButton(
+                        heroTag: "btn2",
                         onPressed: (){
                           Get.toNamed(AppRoutes.claimList,arguments: ["Claim"]);
                         },
@@ -65,7 +65,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            buildTextBoldWidget("${Strings.rupees}", whiteColor, context, 16.0),
+                            buildTextBoldWidget(Strings.rupees, whiteColor, context, 16.0),
                             buildTextBoldWidget("Claims", whiteColor, context, 12.0),
                           ],
                         ),
@@ -81,10 +81,11 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                     SizedBox(
                       width: 130.0,
                       child: FloatingActionButton.extended(
+                        heroTag: "btn3",
                           onPressed: (){
                             Get.toNamed(AppRoutes.pettyTaskFrom,arguments: ["Petty Task"]);
                           },
-                        icon: Icon(Icons.task),
+                        icon: const Icon(Icons.task),
                           backgroundColor: primaryColor, label: buildTextBoldWidget("Petty Task", whiteColor, context, 12.0),
                           //child:buildTextRegularWidget("Petty Task", whiteColor, context, 11.0)
                       ),
@@ -115,18 +116,16 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           type: BottomNavigationBarType.fixed,
           elevation: 0,
           items: <BottomNavigationBarItem>[
-            buildItem(Icons.dashboard, "Dashboard",0,cont),
-            buildItem(Icons.dashboard, "Employee",1,cont),
-            buildItem(Icons.dashboard, "Client",2,cont),
-            buildItem(Icons.timer, "Timesheet",3,cont),
-            // buildClaimItem(Strings.rupees, "Claim",2,cont),
-            // buildItem(Icons.calendar_today, "Leaves",3,cont),
+            buildItem(Icons.dashboard, "Dashboard\n",0,cont),
+            buildItem(Icons.badge, "Employee\nDashboard",1,cont),
+            buildItem(Icons.person_pin_outlined, "Client\nDashboard",2,cont),
+            buildItem(Icons.timer, "Timesheet\n",3,cont),
           ],
           selectedItemColor: primaryColor,
           unselectedItemColor: subTitleTextColor,
           selectedFontSize: 12,
           unselectedFontSize: 12,
-          selectedLabelStyle: GoogleFonts.rubik(textStyle: const TextStyle(fontWeight: FontWeight.w500),),
+          selectedLabelStyle: GoogleFonts.rubik(textStyle: const TextStyle(fontWeight: FontWeight.w500)),
           unselectedLabelStyle: GoogleFonts.rubik(textStyle: const TextStyle(fontWeight: FontWeight.w400),),
         ),
       ),

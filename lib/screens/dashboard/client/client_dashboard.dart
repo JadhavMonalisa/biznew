@@ -1,6 +1,5 @@
 import 'package:biznew/common_widget/widget.dart';
 import 'package:biznew/screens/dashboard/client/client_controller.dart';
-import 'package:biznew/screens/dashboard/dashboard_controller.dart';
 import 'package:biznew/theme/app_colors.dart';
 import 'package:biznew/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
@@ -35,13 +34,13 @@ class _ClientDashboardState extends State<ClientDashboard> {
                       physics:const NeverScrollableScrollPhysics(),
                       children: [
                         Center(
-                          child: Container(
+                          child: SizedBox(
                             height: MediaQuery.of(context).size.height/1.1,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 buildDrawer(context,cont.name),
-                                Spacer(),
+                                const Spacer(),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
                                   child: Row(
@@ -161,7 +160,7 @@ class _ClientDashboardState extends State<ClientDashboard> {
                                             children: [
                                               buildTextRegularWidget("Billed & Outstanding", blackColor, context, 15.0,align: TextAlign.left),
                                               buildTextBoldWidget(" : ${item.billedCnt!}", blackColor, context, 15.0,align: TextAlign.left),
-                                              Spacer(),
+                                              const Spacer(),
                                               buildTextRegularWidget("Total", blackColor, context, 15.0,align: TextAlign.left),
                                               buildTextBoldWidget(" : ${item.totalCnt!}", blackColor, context, 15.0,align: TextAlign.left),
                                               const SizedBox(width: 15.0,),
@@ -184,8 +183,8 @@ class _ClientDashboardState extends State<ClientDashboard> {
                                             TableRow(
                                                 children: [
                                                   buildTextBoldWidget("Triggered not allotted", Colors.blue, context, 14.0,align: TextAlign.center),
-                                                  buildTextBoldWidget("Pastdue", const Color(0xffFFEE58), context, 14.0,align: TextAlign.center),
-                                                  buildTextBoldWidget("Probable\nOverdue", Color(0xff0000FF), context, 14.0,align: TextAlign.center),
+                                                  buildTextBoldWidget("Pastdue", const Color(0xFFffc000), context, 14.0,align: TextAlign.center),
+                                                  buildTextBoldWidget("Probable\nOverdue", const Color(0xff0000FF), context, 14.0,align: TextAlign.center),
                                                 ]
                                             ),
                                             TableRow(
@@ -197,9 +196,9 @@ class _ClientDashboardState extends State<ClientDashboard> {
                                             ),
                                             TableRow(
                                                 children: [
-                                                  buildTextBoldWidget("High",  Color(0xffFF0000), context, 14.0,align: TextAlign.center),
-                                                  buildTextBoldWidget("Medium", Color(0xffFFA500), context, 14.0,align: TextAlign.center),
-                                                  buildTextBoldWidget("Low", Color(0xff008000), context, 14.0,align: TextAlign.center),
+                                                  buildTextBoldWidget("High",  const Color(0xffFF0000), context, 14.0,align: TextAlign.center),
+                                                  buildTextBoldWidget("Medium", const Color(0xffF57C00), context, 14.0,align: TextAlign.center),
+                                                  buildTextBoldWidget("Low", const Color(0xff008000), context, 14.0,align: TextAlign.center),
                                                 ]
                                             ),
                                             TableRow(

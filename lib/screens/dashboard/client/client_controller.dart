@@ -62,14 +62,10 @@ class ClientDashboardController extends GetxController {
   void callClientDashboardList() async {
     clientDashboardListData.clear();
 
-    print("call start");
     try {
       updateLoader(true);
       ClientDashboardModel? response = await repository.getClientDashboardList();
 
-      print("client res");
-      print(response.success);
-      print("client api call");
       if (response.success!) {
         if (response.clientDashboardList!.isEmpty) {
         }
@@ -77,8 +73,6 @@ class ClientDashboardController extends GetxController {
           clientDashboardListData.addAll(response.clientDashboardList!);
         }
 
-        print("clientDashboardListData.length");
-        print(clientDashboardListData.length);
         updateLoader(false);
         update();
       } else {
@@ -86,12 +80,9 @@ class ClientDashboardController extends GetxController {
         update();
       }
     } on CustomException {
-      print("exception");
       updateLoader(false);
       update();
     } catch (error) {
-      print("error");
-      print(error);
       updateLoader(false);
       update();
     }

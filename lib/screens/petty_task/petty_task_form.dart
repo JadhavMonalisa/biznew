@@ -1,6 +1,5 @@
 import 'package:biznew/common_widget/error_text.dart';
 import 'package:biznew/common_widget/widget.dart';
-import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/petty_task/petty_task_controller.dart';
 import 'package:biznew/screens/petty_task/petty_task_model.dart';
 import 'package:biznew/theme/app_colors.dart';
@@ -38,12 +37,12 @@ class _PettyTaskFormState extends State<PettyTaskForm> {
                       physics:const NeverScrollableScrollPhysics(),
                       children: [
                         Center(
-                          child: Container(
+                          child: SizedBox(
                             height: MediaQuery.of(context).size.height/1.1,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                buildDrawer(context,cont.name),Spacer(),
+                                buildDrawer(context,cont.name),const Spacer(),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
                                   child: Row(

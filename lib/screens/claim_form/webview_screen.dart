@@ -8,7 +8,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 // ignore: must_be_immutable
 class WebViewScreen extends StatefulWidget {
-  WebViewScreen({Key? key}) : super(key: key);
+  const WebViewScreen({Key? key}) : super(key: key);
 
   @override
   State<WebViewScreen> createState() => _WebViewScreenState();

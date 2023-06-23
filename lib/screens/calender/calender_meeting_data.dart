@@ -33,7 +33,7 @@ class _CalenderMeetingDataState extends State<CalenderMeetingData> {
                     whiteColor,context, 16,align: TextAlign.center),
               ),
               body:
-              cont.loader == true ? Center(child: buildCircularIndicator(),) :
+              cont.isLoading == true ? Center(child: buildCircularIndicator(),) :
               SizedBox(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,

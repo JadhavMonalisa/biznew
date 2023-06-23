@@ -34,13 +34,13 @@ class _EmployeeDashboardScreenState extends State<EmployeeDashboardScreen> {
                       physics:const NeverScrollableScrollPhysics(),
                       children: [
                         Center(
-                          child: Container(
+                          child: SizedBox(
                             height: MediaQuery.of(context).size.height/1.1,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 buildDrawer(context,cont.name),
-                                Spacer(),
+                                const Spacer(),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
                                   child: Row(
@@ -157,7 +157,7 @@ class _EmployeeDashboardScreenState extends State<EmployeeDashboardScreen> {
                                   //         TableRow(
                                   //             children: [
                                   //               buildTextBoldWidget("Allotted but\nnot started", Colors.blue, context, 14.0,align: TextAlign.center),
-                                  //               buildTextBoldWidget("Pastdue", const Color(0xffFFEE58), context, 14.0,align: TextAlign.center),
+                                  //               buildTextBoldWidget("Pastdue", const Color(0xFFffc000), context, 14.0,align: TextAlign.center),
                                   //               buildTextBoldWidget("Probable\nOverdue", Color(0xff0000FF), context, 14.0,align: TextAlign.center),
                                   //             ]
                                   //         ),
@@ -171,7 +171,7 @@ class _EmployeeDashboardScreenState extends State<EmployeeDashboardScreen> {
                                   //         TableRow(
                                   //             children: [
                                   //               buildTextBoldWidget("High",  Color(0xffFF0000), context, 14.0,align: TextAlign.center),
-                                  //               buildTextBoldWidget("Medium", Color(0xffFFA500), context, 14.0,align: TextAlign.center),
+                                  //               buildTextBoldWidget("Medium",Color(0xffF57C00), context, 14.0,align: TextAlign.center),
                                   //               buildTextBoldWidget("Low", Color(0xff008000), context, 14.0,align: TextAlign.center),
                                   //             ]
                                   //         ),
@@ -225,13 +225,13 @@ class _EmployeeDashboardScreenState extends State<EmployeeDashboardScreen> {
                                           child:Row(
                                             children: [
                                               buildTextRegularWidget("Total Services : ", blackColor, context, 15.0,align: TextAlign.left),
-                                              buildTextBoldWidget("${item.totalCnt!}", blackColor, context, 15.0,align: TextAlign.left),
-                                              Spacer(),
+                                              buildTextBoldWidget(item.totalCnt!, blackColor, context, 15.0,align: TextAlign.left),
+                                              const Spacer(),
                                               buildTextRegularWidget("Status : ", blackColor, context, 15.0,align: TextAlign.left),
-                                              buildTextBoldWidget("${item.leaveStatus!}",
+                                              buildTextBoldWidget(item.leaveStatus!,
                                                   item.leaveStatus == "Present" ? approveColor : errorColor,
                                                   context, 15.0,align: TextAlign.left),
-                                              SizedBox(width: 15.0),
+                                              const SizedBox(width: 15.0),
                                             ],
                                           )  )
                                     ],
@@ -278,8 +278,8 @@ class _EmployeeDashboardScreenState extends State<EmployeeDashboardScreen> {
                                         TableRow(
                                             children: [
                                               buildTextBoldWidget("Allotted but\nnot started", Colors.blue, context, 14.0,align: TextAlign.center),
-                                              buildTextBoldWidget("Pastdue", const Color(0xffFFEE58), context, 14.0,align: TextAlign.center),
-                                              buildTextBoldWidget("Probable\nOverdue", Color(0xff0000FF), context, 14.0,align: TextAlign.center),
+                                              buildTextBoldWidget("Pastdue", const Color(0xFFffc000), context, 14.0,align: TextAlign.center),
+                                              buildTextBoldWidget("Probable\nOverdue", const Color(0xff0000FF), context, 14.0,align: TextAlign.center),
                                             ]
                                         ),
                                         TableRow(
@@ -291,9 +291,9 @@ class _EmployeeDashboardScreenState extends State<EmployeeDashboardScreen> {
                                         ),
                                         TableRow(
                                             children: [
-                                              buildTextBoldWidget("High",  Color(0xffFF0000), context, 14.0,align: TextAlign.center),
-                                              buildTextBoldWidget("Medium", Color(0xffFFA500), context, 14.0,align: TextAlign.center),
-                                              buildTextBoldWidget("Low", Color(0xff008000), context, 14.0,align: TextAlign.center),
+                                              buildTextBoldWidget("High",  const Color(0xffFF0000), context, 14.0,align: TextAlign.center),
+                                              buildTextBoldWidget("Medium", const Color(0xffF57C00), context, 14.0,align: TextAlign.center),
+                                              buildTextBoldWidget("Low", const Color(0xff008000), context, 14.0,align: TextAlign.center),
                                             ]
                                         ),
                                         TableRow(

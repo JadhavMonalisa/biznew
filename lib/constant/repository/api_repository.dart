@@ -77,7 +77,6 @@ class ApiRepository {
     final response = await apiClient.post(
       ApiEndpoint.clientDashboardUrl, body: formData, headers: headers,
     );
-    print("rep api call");
     return ClientDashboardModel.fromJson(response);
   }
   ///employee dashboard
@@ -85,6 +84,8 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "firm_id":firmId,"mast_id":userId,
     },);
+    print("formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.employeeDashboardUrl, body: formData, headers: headers,
     );
@@ -153,8 +154,6 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "firm_id":firmId,"client_id":selectedClientId,"year_id":selectedClaimYearId
     },);
-    print("formData.fields for services");
-    print(formData.fields);
     final response = await apiClient.post(
         ApiEndpoint.claimServicesListUrl,body:formData,headers: headers
     );
@@ -215,10 +214,6 @@ class ApiRepository {
     var stream =  http.ByteStream(Stream.castFrom(File(claimImage).openRead()));
     var multipartFileSign =  http.MultipartFile('claimImage', stream,length, filename: basename(File(claimImage).path));
     request.files.add(multipartFileSign);
-
-
-    print("request.files");
-    print(request.files);
     var response = await request.send();
     return response.stream.transform(utf8.decoder);
   }
@@ -227,8 +222,6 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "firm_id":firmId,"mast_id":userId,"flag":flag,"status":status,"employee":empId
     },);
-    print("formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
         ApiEndpoint.claimListUrl,body:formData,headers: headers
     );
@@ -323,8 +316,6 @@ class ApiRepository {
       "ndays":noOfDaysLeave, "startdate":startDate, "enddate":endDate,
       "reason":reason, "leavefor":leaveFor,"attempts":noOfAttempt,"group":group
     },);
-    print("formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.leaveAddUrl, body: formData, headers: headers,
     );
@@ -335,8 +326,6 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "firm_id":firmId,"mast_id":userId,"flag":flag,"status":status,"emp":idList??""
     },);
-    print("formData");
-    print(formData.fields);
     final response = await apiClient.post(
         ApiEndpoint.leaveListUrl,body:formData,headers: headers
     );
@@ -391,6 +380,8 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "mast_id":userId,"timesheet_date":date,
     },);
+    print("timesheet check");
+    print(formData.fields);
     final response = await apiClient.post(
         ApiEndpoint.timesheetCheckUrl,body:formData,headers: headers
     );
@@ -402,6 +393,8 @@ class ApiRepository {
       "mast_id":userId,"firm_id":firmId,"timesheet_date":date,
       "in_time":inTime,"out_time":outTime,"total_time":totalTime,"workat":workAt
     },);
+    print("get timesheet add formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetAddUrl, body: formData, headers: headers,
     );
@@ -435,8 +428,6 @@ class ApiRepository {
     final response = await apiClient.post(
       ApiEndpoint.timesheetServicesListUrl, body: formData, headers: headers,
     );
-
-    print(formData.fields);
     return TimesheetServiceListModel.fromJson(response);
   }
   Future<TimesheetServiceListModel> getTimesheetNonAllottedServicesList(String clientId) async {
@@ -453,6 +444,8 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "mast_id":userId,"service_id":serviceId,"client_applicable_service_id":clientApplicableServiceId
     },);
+    print("formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetTaskListUrl, body: formData, headers: headers,
     );
@@ -462,6 +455,8 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "mast_id":userId,"service_id":serviceId,"client_applicable_service_id":clientApplicableServiceId
     },);
+    print("formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetTaskListUrl, body: formData, headers: headers,
     );
@@ -491,6 +486,8 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "firm_id":firmId,"mast_id":userId,"client_applicable_service_id":clientServiceId,"task_id":taskId
     },);
+    print("status formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetStatusListUrl, body: formData, headers: headers,
     );
@@ -525,8 +522,8 @@ class ApiRepository {
       "service_id":serviceId,"client_applicable_service_id":clientApplicableServiceId,
       "task_id":taskId, "remark":remark, "nohours":noOfHours,
     },);
-    print("formData");
-    print(formData);
+    print("allotted or non allotted formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetAddAllottedUrl, body: formData, headers: headers,
     );
@@ -624,8 +621,6 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"branch_id":branchId,
     "client_id":clientId,"employee_id":empId,"target_date":targetDate,"trigger_date":triggerDate,"tasks":task,
     "fees": fees,"estimated_hrs":hrs,"estimated_mins":min},);
-    print("formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.addPettyTaskUrl, body: formData, headers: headers,
     );
@@ -996,8 +991,6 @@ class ApiRepository {
     final response = await apiClient.post(
       ApiEndpoint.triggeredNotAllottedLoadAllUrl, body: formData, headers: headers,
     );
-    print("formData.fields");
-    print(formData.fields);
     return TriggeredNotAllottedLoadAllModel.fromJson(response);
   }
 
@@ -1013,9 +1006,6 @@ class ApiRepository {
   ///update target date
   Future<ApiResponse> getUpdateTargetDate(String date,String id) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"target_date":date,"id":id},);
-
-    print("formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.updateTargetDateUrl, body: formData, headers: headers,
     );
@@ -1037,15 +1027,11 @@ class ApiRepository {
     final response = await apiClient.post(
       ApiEndpoint.loadAllTaskUrl, body: formData, headers: headers,
     );
-    print("formData.fields");
-    print(formData.fields);
     return LoadAllTaskModel.fromJson(response);
   }
   ///start task
   Future<ApiResponse> getStartTask(String cliId,String id) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"cli_id":cliId,"id":id},);
-    print("formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.startTaskUrl, body: formData, headers: headers,
     );
@@ -1081,10 +1067,6 @@ class ApiRepository {
   Future<ApiResponse> getCheckCompletedTaskService(String id,String status) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId,"id":id,
     "status":status},);
-
-    print("formData.fields");
-    print(formData.fields);
-
     final response = await apiClient.post(
       ApiEndpoint.checkCompletedTaskServiceUrl, body: formData, headers: headers,
     );
@@ -1105,8 +1087,6 @@ class ApiRepository {
   String remark,String taskName) async {
     final FormData formData = FormData.fromMap({"firm_id":firmId,"mast_id":userId, "assign_id":assignId,
       "id":id, "status_id":statusId,"status":status,"remark":remark,"task_name":taskName},);
-    print("FormData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.updateServiceTaskStatusUrl, body: formData, headers: headers,
     );
@@ -1122,9 +1102,6 @@ class ApiRepository {
     final response = await apiClient.post(
       ApiEndpoint.reassignServicesUrl, body: formData, headers: headers,
     );
-
-    print("formData.fields");
-    print(formData.fields);
     return ApiResponse.fromJson(response);
   }
 
@@ -1137,8 +1114,6 @@ class ApiRepository {
     final response = await apiClient.post(
       ApiEndpoint.reassignTriggeredNotAllottedUrl, body: formData, headers: headers,
     );
-    print("formData.fields");
-    print(formData.fields);
     return ApiResponse.fromJson(response);
   }
   ///main category list
@@ -1150,5 +1125,45 @@ class ApiRepository {
         ApiEndpoint.mainCategoryUrl,body:formData,headers: headers
     );
     return MainCategoryModel.fromJson(response);
+  }
+  ///services from main category
+  Future<ServicesFromMainCategoryModel> getServicesFromMainCategoryList(String mainCategoryId) async {
+    final FormData formData = FormData.fromMap({
+      "firm_id":firmId,"main_category_id":mainCategoryId
+    },);
+    final response = await apiClient.post(
+        ApiEndpoint.servicesFromMainCategoryUrl,body:formData,headers: headers
+    );
+    return ServicesFromMainCategoryModel.fromJson(response);
+  }
+  ///tasks list
+  Future<ManualAssignmentTaskModel> getManualAssignmentTaskList(String serviceId) async {
+    final FormData formData = FormData.fromMap({
+      "firm_id":firmId,"service_id":serviceId
+    },);
+    final response = await apiClient.post(
+        ApiEndpoint.taskListUrl,body:formData,headers: headers
+    );
+    return ManualAssignmentTaskModel.fromJson(response);
+  }
+  ///manual assignment
+  Future<ApiResponse> getManualAssignment(String completionList,String taskNameList,
+      String daysList, String hrList,String minList, String empIdList, String taskIdList,
+      String srList,String priority, String selectedYearId,String selectedYear,
+      String mainCategoryId, String serviceId,String clientId,String triggerDate,String targetDate,
+      String fees,String remark) async {
+    final FormData formData = FormData.fromMap({
+      "firm_id":firmId, "mast_id":userId, "completion":completionList,
+      "task_name":taskNameList, "days":daysList,"hours":hrList,
+      "mins":minList,"emp":empIdList,"task_id":taskIdList,"srno":srList,
+      "priority":priority,"year_id":selectedYearId,"year":selectedYear,
+      "main_category_id":mainCategoryId,"service_id":serviceId,"client_id":clientId,
+      "trigger_date":triggerDate, "target_date":targetDate, "fees":fees,
+      "remark":remark
+    },);
+    final response = await apiClient.post(
+        ApiEndpoint.taskListUrl,body:formData,headers: headers
+    );
+    return ApiResponse.fromJson(response);
   }
 }

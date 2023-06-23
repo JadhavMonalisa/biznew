@@ -1,4 +1,6 @@
 
+import 'package:biznew/screens/attendance/attendance_binding.dart';
+import 'package:biznew/screens/attendance/attendance_screen.dart';
 import 'package:biznew/screens/bottom_nav/bottom_nav_binding.dart';
 import 'package:biznew/screens/bottom_nav/bottom_navigation_screen.dart';
 import 'package:biznew/screens/calender/caledner_binding.dart';
@@ -19,7 +21,6 @@ import 'package:biznew/screens/dashboard/notification_list_screen.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_all.dart';
 import 'package:biznew/screens/dashboard/service_dashboard.dart';
 import 'package:biznew/screens/dashboard/dashboard_binding.dart';
-import 'package:biznew/screens/dashboard/service_dashboard_next.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_next_demo.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_next_details.dart';
 import 'package:biznew/screens/dashboard/service_dashboard_next_other.dart';
@@ -74,9 +75,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.bottomNav,
       page: () => const BottomNavigationScreen(),
-      // bindings: [BottomNavBinding(),TimesheetFormBinding(),ClaimFormBinding(),
-      //   LeaveBinding(),DashboardBinding(),HomeBinding()],
-      bindings: [BottomNavBinding(),TimesheetFormBinding(),ClaimFormBinding(),
+      bindings: [BottomNavBinding(),TimesheetNewFormBinding(),ClaimFormBinding(),
         LeaveBinding(),DashboardBinding(),HomeBinding(),EmployeeBinding(),ClientBinding()],
     ),
     ///home module
@@ -157,7 +156,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.webViewScreen,
-      page: () => WebViewScreen(),
+      page: () => const WebViewScreen(),
       binding: ClaimFormBinding(),
     ),
     GetPage(
@@ -222,7 +221,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.calenderDemoScreen,
-      page: () => TableEventsExample(),
+      page: () => const TableEventsExample(),
       binding: CalenderBinding(),
     ),
     GetPage(
@@ -239,6 +238,11 @@ class AppPages {
       name: AppRoutes.employeeDashboard,
       page: () => const EmployeeDashboardScreen(),
       binding: EmployeeBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.attendanceScreen,
+      page: () => const AttendanceScreen(),
+      binding: AttendanceBinding(),
     ),
   ];
 }

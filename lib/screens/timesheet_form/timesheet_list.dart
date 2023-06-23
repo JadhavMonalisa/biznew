@@ -32,149 +32,149 @@ class _TimesheetListState extends State<TimesheetList> {
         ),
       ),
       body:
-      // cont.loader == true ? Center(child: buildCircularIndicator(),) :
-      // SizedBox(
-      //   height: MediaQuery.of(context).size.height,
-      //   width: MediaQuery.of(context).size.width,
-      //   child: Padding(
-      //     padding:const EdgeInsets.only(left: 12.0,right: 12.0,bottom: 5.0,top: 5.0),
-      //     child: ListView(
-      //       physics:const AlwaysScrollableScrollPhysics(),shrinkWrap: true,
-      //       children: [
-      //         Padding(
-      //             padding: const EdgeInsets.only(right: 5.0,left: 10.0),
-      //             child:Row(
-      //               children: [
-      //                 buildTextRegularWidget("Select View Timesheet ", blackColor, context, 15.0),
-      //                 Radio<int>(
-      //                   value: 0,
-      //                   groupValue: cont.selectedTimesheetFlag,
-      //                   activeColor: primaryColor,
-      //                   onChanged: (int? value) {
-      //                     cont.updateSelectedTimesheetFlag(value!,"own",context,);
-      //                   },
-      //                 ),
-      //                 buildTextRegularWidget("Own", blackColor, context, 15.0),
-      //                 Radio<int>(
-      //                   value: 1,
-      //                   groupValue: cont.selectedTimesheetFlag,
-      //                   activeColor: primaryColor,
-      //                   onChanged: (int? value) {
-      //                     cont.updateSelectedTimesheetFlag(value!,"team",context,);
-      //                   },
-      //                 ),
-      //                 buildTextRegularWidget("Team", blackColor, context, 15.0),
-      //               ],
-      //             )),
-      //         cont.selectedFlag == "own"  ? const Opacity(opacity: 0.0) :
-      //         Padding(
-      //           padding: const EdgeInsets.only(right: 10.0,left: 10.0,bottom: 10.0),
-      //           child: Container(
-      //               height: 40.0,width: MediaQuery.of(context).size.width,
-      //               decoration: BoxDecoration(
-      //                 borderRadius: const BorderRadius.all(Radius.circular(5)),
-      //                 border: Border.all(color: grey),),
-      //               child: Center(
-      //                   child: Padding(
-      //                     padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-      //                     child: DropdownButton(
-      //                       hint: buildTextRegularWidget(cont.selectedEmployee==""?"Select employee":cont.selectedEmployee, blackColor, context, 15.0),
-      //                       isExpanded: true,
-      //                       underline: Container(),
-      //                       items:
-      //                       cont.employeeList.isEmpty
-      //                           ? cont.noDataList.map((value) {
-      //                         return DropdownMenuItem<String>(
-      //                           value: value,
-      //                           child: Text(value),
-      //                         );
-      //                       }).toList()
-      //                           : cont.employeeList.map((ClaimSubmittedByList value) {
-      //                         return DropdownMenuItem<String>(
-      //                           value: value.firmEmployeeName,
-      //                           child: Text(value.firmEmployeeName!),
-      //                         );
-      //                       }).toList(),
-      //                       onChanged: (val) {
-      //                         cont.updateSelectedEmployee(val!);
-      //                       },
-      //                     ),
-      //                   )
-      //               )
-      //           ),
-      //         ),
-      //         Padding(
-      //           padding: const EdgeInsets.only(right: 10.0,left: 10.0,bottom: 10.0),
-      //           child: Container(
-      //               height: 40.0,width: MediaQuery.of(context).size.width,
-      //               decoration: BoxDecoration(
-      //                 borderRadius: const BorderRadius.all(Radius.circular(5)),
-      //                 border: Border.all(color: grey),),
-      //               child: Center(
-      //                   child: Padding(
-      //                     padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-      //                     child: DropdownButton(
-      //                       hint: buildTextRegularWidget(cont.selectedTimesheetStatus==""?"Select leave status":cont.selectedTimesheetStatus, blackColor, context, 15.0),
-      //                       isExpanded: true,
-      //                       underline: Container(),
-      //                       items:
-      //                       cont.timesheetStatusList.map((String leaveStatus) {
-      //                         return DropdownMenuItem<String>(
-      //                           value: leaveStatus,
-      //                           child: Text(leaveStatus),
-      //                         );
-      //                       }).toList(),
-      //                       onChanged: (val) {
-      //                         cont.updateSelectedTimesheetStatus(val!);
-      //                       },
-      //                     ),
-      //                   )
-      //               )
-      //           ),
-      //         ),
-      //         cont.timesheetList.isEmpty ? buildNoDataFound(context):
-      //         ListView.builder(
-      //             shrinkWrap:true,
-      //             itemCount: cont.timesheetList.length,
-      //             physics:const NeverScrollableScrollPhysics(),
-      //             itemBuilder: (context,index){
-      //               return Padding(
-      //                   padding: const EdgeInsets.only(top: 5.0),
-      //                   child:buildTimesheetList(cont.timesheetList[index],cont)
-      //               );
-      //             })
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      // bottomNavigationBar: cont.loader == true ? const Opacity(opacity: 0.0)
-      //     :Padding(
-      //   padding: const EdgeInsets.only(bottom: 10.0,left: 220.0,right: 20.0),
-      //   child:  GestureDetector(
-      //     onTap: (){
-      //       Get.toNamed(AppRoutes.timesheetNewForm);
-      //       //showInprocessDialog(context);
-      //     },
-      //     child: buildButtonWidget(context, "+ Add Timesheet",radius: 5.0,height: 40.0),
-      //   ),
-      // ),
-
-      Padding(
-        padding: const EdgeInsets.only(left:20.0,right: 20.0,top: 50.0),
-        child: Container(
-          height: 200.0,
-           decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
-         child: Column(
-             crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+      cont.loader == true ? Center(child: buildCircularIndicator(),) :
+      SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding:const EdgeInsets.only(left: 12.0,right: 12.0,bottom: 5.0,top: 5.0),
+          child: ListView(
+            physics:const AlwaysScrollableScrollPhysics(),shrinkWrap: true,
             children: [
-               buildTextBoldWidget("We're coming soon!", blackColor, context, 20,align: TextAlign.center),
-               const Divider(color: primaryColor,),
-               const SizedBox(height: 20.0,),
-               buildTextRegularWidget("Sorry for inconvenience, this page is under construction.", blackColor, context, 16.0,align: TextAlign.left,),
-             ],
-           ),
-         ),
-       ),
+              Padding(
+                  padding: const EdgeInsets.only(right: 5.0,left: 10.0),
+                  child:Row(
+                    children: [
+                      buildTextRegularWidget("Select View Timesheet ", blackColor, context, 15.0),
+                      Radio<int>(
+                        value: 0,
+                        groupValue: cont.selectedTimesheetFlag,
+                        activeColor: primaryColor,
+                        onChanged: (int? value) {
+                          cont.updateSelectedTimesheetFlag(value!,"own",context,);
+                        },
+                      ),
+                      buildTextRegularWidget("Own", blackColor, context, 15.0),
+                      Radio<int>(
+                        value: 1,
+                        groupValue: cont.selectedTimesheetFlag,
+                        activeColor: primaryColor,
+                        onChanged: (int? value) {
+                          cont.updateSelectedTimesheetFlag(value!,"team",context,);
+                        },
+                      ),
+                      buildTextRegularWidget("Team", blackColor, context, 15.0),
+                    ],
+                  )),
+              cont.selectedFlag == "own"  ? const Opacity(opacity: 0.0) :
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0,left: 10.0,bottom: 10.0),
+                child: Container(
+                    height: 40.0,width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      border: Border.all(color: grey),),
+                    child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                          child: DropdownButton(
+                            hint: buildTextRegularWidget(cont.selectedEmployee==""?"Select employee":cont.selectedEmployee, blackColor, context, 15.0),
+                            isExpanded: true,
+                            underline: Container(),
+                            items:
+                            cont.employeeList.isEmpty
+                                ? cont.noDataList.map((value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList()
+                                : cont.employeeList.map((ClaimSubmittedByList value) {
+                              return DropdownMenuItem<String>(
+                                value: value.firmEmployeeName,
+                                child: Text(value.firmEmployeeName!),
+                              );
+                            }).toList(),
+                            onChanged: (val) {
+                              cont.updateSelectedEmployee(val!);
+                            },
+                          ),
+                        )
+                    )
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0,left: 10.0,bottom: 10.0),
+                child: Container(
+                    height: 40.0,width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      border: Border.all(color: grey),),
+                    child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                          child: DropdownButton(
+                            hint: buildTextRegularWidget(cont.selectedTimesheetStatus==""?"Select leave status":cont.selectedTimesheetStatus, blackColor, context, 15.0),
+                            isExpanded: true,
+                            underline: Container(),
+                            items:
+                            cont.timesheetStatusList.map((String leaveStatus) {
+                              return DropdownMenuItem<String>(
+                                value: leaveStatus,
+                                child: Text(leaveStatus),
+                              );
+                            }).toList(),
+                            onChanged: (val) {
+                              cont.updateSelectedTimesheetStatus(val!);
+                            },
+                          ),
+                        )
+                    )
+                ),
+              ),
+              cont.timesheetList.isEmpty ? buildNoDataFound(context):
+              ListView.builder(
+                  shrinkWrap:true,
+                  itemCount: cont.timesheetList.length,
+                  physics:const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context,index){
+                    return Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child:buildTimesheetList(cont.timesheetList[index],cont)
+                    );
+                  })
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: cont.loader == true ? const Opacity(opacity: 0.0)
+          :Padding(
+        padding: const EdgeInsets.only(bottom: 10.0,left: 220.0,right: 20.0),
+        child:  GestureDetector(
+          onTap: (){
+            Get.toNamed(AppRoutes.timesheetNewForm);
+            //showInprocessDialog(context);
+          },
+          child: buildButtonWidget(context, "+ Add Timesheet",radius: 5.0,height: 40.0),
+        ),
+      ),
+
+      // Padding(
+      //   padding: const EdgeInsets.only(left:20.0,right: 20.0,top: 50.0),
+      //   child: Container(
+      //     height: 200.0,
+      //      decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+      //    child: Column(
+      //        crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+      //       children: [
+      //          buildTextBoldWidget("We're coming soon!", blackColor, context, 20,align: TextAlign.center),
+      //          const Divider(color: primaryColor,),
+      //          const SizedBox(height: 20.0,),
+      //          buildTextRegularWidget("Sorry for inconvenience, this page is under construction.", blackColor, context, 16.0,align: TextAlign.left,),
+      //        ],
+      //      ),
+      //    ),
+      //  ),
     ));
     });
   }

@@ -1,9 +1,7 @@
 import 'package:biznew/common_widget/widget.dart';
-import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/dashboard/dashboard_controller.dart';
 import 'package:biznew/theme/app_colors.dart';
 import 'package:biznew/theme/app_text_theme.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -140,11 +138,11 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                   )
                               ),
                               TabBar(
-                                physics: AlwaysScrollableScrollPhysics(),
+                                physics: const AlwaysScrollableScrollPhysics(),
                                 isScrollable: true,
                                 indicatorColor: Colors.white,
-                                labelStyle: TextStyle(fontSize: 16.0,backgroundColor: primaryColor,color: whiteColor),  //For Selected tab
-                                unselectedLabelStyle: TextStyle(fontSize: 16.0,backgroundColor: primaryColor,color: primaryColor), //For Un-selected Tabs
+                                labelStyle: const TextStyle(fontSize: 16.0,backgroundColor: primaryColor,color: whiteColor),  //For Selected tab
+                                unselectedLabelStyle: const TextStyle(fontSize: 16.0,backgroundColor: primaryColor,color: primaryColor), //For Un-selected Tabs
                                 onTap: (index){
                                   cont.onTabIndexSelect(index);
                                 },
@@ -263,8 +261,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                           child: Padding(
                                                             padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                             child: buildTextRegularWidget(item.priorityToShow!,
-                                                                item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                 context, 15.0,align: TextAlign.left),
                                                           ),
                                                         )
@@ -276,8 +274,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                 hint: buildTextRegularWidget(
                                                                     cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                     cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                    item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                    item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                    item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                    item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                     context, 15.0),
                                                                 isExpanded: true,
                                                                 underline: Container(),
@@ -447,7 +445,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                     children: [
                                                       buildTextBoldWidget("Task - ", blackColor, context, 14.0),
                                                       Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
-                                                      SizedBox(width:20.0),
+                                                      const SizedBox(width:20.0),
                                                       buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
                                                       Flexible(child:buildTextBoldWidget("${item.completionPercentage}", primaryColor, context, 14.0,align: TextAlign.left),)
 
@@ -471,8 +469,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                               child: buildTextRegularWidget(item.priorityToShow!,
-                                                                  item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                  item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                  item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                  item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                   context, 15.0,align: TextAlign.left),
                                                             ),
                                                           )
@@ -485,8 +483,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                       cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                       cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
 
-                                                                      item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                      item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                      item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                      item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
 
                                                                       context, 15.0),
                                                                   isExpanded: true,
@@ -778,8 +776,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                           child: Padding(
                                                             padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                             child: buildTextRegularWidget(item.priorityToShow!,
-                                                                item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                 context, 15.0,align: TextAlign.left),
                                                           ),
                                                         )
@@ -791,8 +789,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                 hint: buildTextRegularWidget(
                                                                     cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                     cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                    item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                    item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                    item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                    item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                     context, 15.0),
                                                                 isExpanded: true,
                                                                 underline: Container(),
@@ -916,7 +914,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                     children: [
                                                       buildTextBoldWidget("Task - ", blackColor, context, 14.0),
                                                       Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
-                                                      SizedBox(width:20.0),
+                                                      const SizedBox(width:20.0),
                                                       buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
                                                       Flexible(child:buildTextBoldWidget("${item.completionPercentage}", primaryColor, context, 14.0,align: TextAlign.left),)
 
@@ -940,8 +938,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                               child: buildTextRegularWidget(item.priorityToShow!,
-                                                                  item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                  item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                  item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                  item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                   context, 15.0,align: TextAlign.left),
                                                             ),
                                                           )
@@ -954,8 +952,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                       cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                       cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
 
-                                                                      item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                      item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                      item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                      item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
 
                                                                       context, 15.0),
                                                                   isExpanded: true,
@@ -1247,8 +1245,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                           child: Padding(
                                                             padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                             child: buildTextRegularWidget(item.priorityToShow!,
-                                                                item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                 context, 15.0,align: TextAlign.left),
                                                           ),
                                                         )
@@ -1260,8 +1258,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                 hint: buildTextRegularWidget(
                                                                     cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                     cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                    item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                    item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                    item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                    item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                     context, 15.0),
                                                                 isExpanded: true,
                                                                 underline: Container(),
@@ -1385,7 +1383,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                     children: [
                                                       buildTextBoldWidget("Task - ", blackColor, context, 14.0),
                                                       Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
-                                                      SizedBox(width:20.0),
+                                                      const SizedBox(width:20.0),
                                                       buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
                                                       Flexible(child:buildTextBoldWidget("${item.completionPercentage}", primaryColor, context, 14.0,align: TextAlign.left),)
 
@@ -1409,8 +1407,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                               child: buildTextRegularWidget(item.priorityToShow!,
-                                                                  item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                  item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                  item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                  item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                   context, 15.0,align: TextAlign.left),
                                                             ),
                                                           )
@@ -1423,8 +1421,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                       cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                       cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
 
-                                                                      item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                      item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                      item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                      item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
 
                                                                       context, 15.0),
                                                                   isExpanded: true,
@@ -1715,8 +1713,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                           child: Padding(
                                                             padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                             child: buildTextRegularWidget(item.priorityToShow!,
-                                                                item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                 context, 15.0,align: TextAlign.left),
                                                           ),
                                                         )
@@ -1728,8 +1726,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                 hint: buildTextRegularWidget(
                                                                     cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                     cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                    item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                    item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                    item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                    item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                     context, 15.0),
                                                                 isExpanded: true,
                                                                 underline: Container(),
@@ -1853,7 +1851,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                     children: [
                                                       buildTextBoldWidget("Task - ", blackColor, context, 14.0),
                                                       Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
-                                                      SizedBox(width:20.0),
+                                                      const SizedBox(width:20.0),
                                                       buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
                                                       Flexible(child:buildTextBoldWidget("${item.completionPercentage}", primaryColor, context, 14.0,align: TextAlign.left),)
 
@@ -1877,8 +1875,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                               child: buildTextRegularWidget(item.priorityToShow!,
-                                                                  item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                  item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                  item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                  item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                   context, 15.0,align: TextAlign.left),
                                                             ),
                                                           )
@@ -1891,8 +1889,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                       cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                       cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
 
-                                                                      item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                      item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                      item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                      item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
 
                                                                       context, 15.0),
                                                                   isExpanded: true,
@@ -2183,8 +2181,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                           child: Padding(
                                                             padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                             child: buildTextRegularWidget(item.priorityToShow!,
-                                                                item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                 context, 15.0,align: TextAlign.left),
                                                           ),
                                                         )
@@ -2196,8 +2194,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                 hint: buildTextRegularWidget(
                                                                     cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                     cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
-                                                                    item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                    item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                    item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                    item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                     context, 15.0),
                                                                 isExpanded: true,
                                                                 underline: Container(),
@@ -2321,7 +2319,7 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                     children: [
                                                       buildTextBoldWidget("Task - ", blackColor, context, 14.0),
                                                       Flexible(child:buildTextBoldWidget("${item.tasks}", primaryColor, context, 14.0,align: TextAlign.left),),
-                                                      SizedBox(width:20.0),
+                                                      const SizedBox(width:20.0),
                                                       buildTextBoldWidget("Completion % - ", blackColor, context, 14.0),
                                                       Flexible(child:buildTextBoldWidget("${item.completionPercentage}", primaryColor, context, 14.0,align: TextAlign.left),)
 
@@ -2345,8 +2343,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                             child: Padding(
                                                               padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                               child: buildTextRegularWidget(item.priorityToShow!,
-                                                                  item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                  item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                  item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                  item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
                                                                   context, 15.0,align: TextAlign.left),
                                                             ),
                                                           )
@@ -2359,8 +2357,8 @@ class _ServiceDashboardNextScreenState extends State<ServiceDashboardNextScreen>
                                                                       cont.addedPriorityListForCurrent.contains(item.id) ?
                                                                       cont.selectedCurrentPriority==""?item.priorityToShow!:cont.selectedCurrentPriority : item.priorityToShow!,
 
-                                                                      item.priorityToShow == "High" ? Color(0xffFF0000) :
-                                                                      item.priorityToShow == "Medium" ? Color(0xffFFA500) : Color(0xff008000),
+                                                                      item.priorityToShow == "High" ? const Color(0xffFF0000) :
+                                                                      item.priorityToShow == "Medium" ? const Color(0xffF57C00) : const Color(0xff008000),
 
                                                                       context, 15.0),
                                                                   isExpanded: true,

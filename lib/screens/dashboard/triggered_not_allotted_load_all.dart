@@ -1,5 +1,4 @@
 import 'package:biznew/common_widget/widget.dart';
-import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/claim_form/claim_model.dart';
 import 'package:biznew/screens/dashboard/dashboard_controller.dart';
 import 'package:biznew/theme/app_colors.dart';
@@ -7,7 +6,6 @@ import 'package:biznew/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:oktoast/oktoast.dart';
 
 class TriggeredNotAllottedLoadAll extends StatefulWidget {
   const TriggeredNotAllottedLoadAll({Key? key}) : super(key: key);
@@ -156,9 +154,9 @@ class _TriggeredNotAllottedLoadAllState extends State<TriggeredNotAllottedLoadAl
                               Card(
                                 elevation: 1.0,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7.0),
-                                    side: BorderSide(color: grey)),
+                                    side: const BorderSide(color: grey)),
                                 child: Padding(
-                                  padding: EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -248,7 +246,7 @@ class _TriggeredNotAllottedLoadAllState extends State<TriggeredNotAllottedLoadAl
                                       ),
                                       const SizedBox(height: 5.0,),
 
-                                      Container(
+                                      SizedBox(
                                         width: MediaQuery.of(context).size.width,
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -447,7 +445,7 @@ class _TriggeredNotAllottedLoadAllState extends State<TriggeredNotAllottedLoadAl
                               buildTextBoldWidget("Completion % : ", blackColor, context, 15.0),
                               buildTextRegularWidget(cont.totalCompletion.toString(), blackColor, context, 15.0),
 
-                              Spacer(),
+                              const Spacer(),
                               buildTextBoldWidget("  Total : ", blackColor, context, 15.0),
                               buildTextRegularWidget(cont.totalDays.toString(), blackColor, context, 15.0),
                               buildTextBoldWidget("D ", blackColor, context, 15.0),

@@ -11,17 +11,17 @@ class EmployeeDashboardModel {
     if (json['data'] != null) {
       employeeDashboardData = <EmployeeDashboardData>[];
       json['data'].forEach((v) {
-        employeeDashboardData!.add(new EmployeeDashboardData.fromJson(v));
+        employeeDashboardData!.add(EmployeeDashboardData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Success'] = this.success;
-    if (this.employeeDashboardData != null) {
-      data['data'] = this.employeeDashboardData!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (employeeDashboardData != null) {
+      data['data'] = employeeDashboardData!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -65,17 +65,17 @@ class EmployeeDashboardData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['leave_status'] = this.leaveStatus;
-    data['employee'] = this.employee;
-    data['total_cnt'] = this.totalCnt;
-    data['allotted_cnt'] = this.allottedCnt;
-    data['pastdue_cnt'] = this.pastdueCnt;
-    data['probable_cnt'] = this.probableCnt;
-    data['high_cnt'] = this.highCnt;
-    data['medium_cnt'] = this.mediumCnt;
-    data['low_cnt'] = this.lowCnt;
-    data['pending_claims'] = this.pendingClaims;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['leave_status'] = leaveStatus;
+    data['employee'] = employee;
+    data['total_cnt'] = totalCnt;
+    data['allotted_cnt'] = allottedCnt;
+    data['pastdue_cnt'] = pastdueCnt;
+    data['probable_cnt'] = probableCnt;
+    data['high_cnt'] = highCnt;
+    data['medium_cnt'] = mediumCnt;
+    data['low_cnt'] = lowCnt;
+    data['pending_claims'] = pendingClaims;
     return data;
   }
 }

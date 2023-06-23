@@ -895,17 +895,17 @@ class CompletedNotBilledPieModel {
     if (json['data'] != null) {
       completedNotBilledPieList = <CompletedNotBilledPieList>[];
       json['data'].forEach((v) {
-        completedNotBilledPieList!.add(new CompletedNotBilledPieList.fromJson(v));
+        completedNotBilledPieList!.add(CompletedNotBilledPieList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Success'] = this.success;
-    if (this.completedNotBilledPieList != null) {
-      data['data'] = this.completedNotBilledPieList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (completedNotBilledPieList != null) {
+      data['data'] = completedNotBilledPieList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -937,13 +937,13 @@ class CompletedNotBilledPieList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['client_code'] = this.clientCode;
-    data['client'] = this.client;
-    data['servicename'] = this.servicename;
-    data['Amount of Service Period'] = this.amountOfServicePeriod;
-    data['Claim Amount'] = this.claimAmount;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['client_code'] = clientCode;
+    data['client'] = client;
+    data['servicename'] = servicename;
+    data['Amount of Service Period'] = amountOfServicePeriod;
+    data['Claim Amount'] = claimAmount;
     return data;
   }
 }
@@ -961,17 +961,17 @@ class SubmittedForCheckingPieModel {
     if (json['data'] != null) {
       submittedForCheckingPieList = <SubmittedForCheckingPieList>[];
       json['data'].forEach((v) {
-        submittedForCheckingPieList!.add(new SubmittedForCheckingPieList.fromJson(v));
+        submittedForCheckingPieList!.add(SubmittedForCheckingPieList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Success'] = this.success;
-    if (this.submittedForCheckingPieList != null) {
-      data['data'] = this.submittedForCheckingPieList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (submittedForCheckingPieList != null) {
+      data['data'] = submittedForCheckingPieList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -1048,19 +1048,19 @@ class SubmittedForCheckingPieList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['client_code'] = this.clientCode;
-    data['client'] = this.client;
-    data['servicename'] = this.servicename;
-    data['trigger_date'] = this.triggerDate;
-    data['target_date'] = this.targetDate;
-    data['sat_date'] = this.satDate;
-    data['priority'] = this.priority;
-    data['Allotted To'] = this.allottedTo;
-    data['Tasks'] = this.tasks;
-    data['Completion_Percentage'] = this.completionPercentage;
-    data['Status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['client_code'] = clientCode;
+    data['client'] = client;
+    data['servicename'] = servicename;
+    data['trigger_date'] = triggerDate;
+    data['target_date'] = targetDate;
+    data['sat_date'] = satDate;
+    data['priority'] = priority;
+    data['Allotted To'] = allottedTo;
+    data['Tasks'] = tasks;
+    data['Completion_Percentage'] = completionPercentage;
+    data['Status'] = status;
     return data;
   }
 }
@@ -1078,17 +1078,17 @@ class WorkOnHoldPieModel {
     if (json['data'] != null) {
       workOnHoldPieList = <WorkOnHoldPieList>[];
       json['data'].forEach((v) {
-        workOnHoldPieList!.add(new WorkOnHoldPieList.fromJson(v));
+        workOnHoldPieList!.add(WorkOnHoldPieList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Success'] = this.success;
-    if (this.workOnHoldPieList != null) {
-      data['data'] = this.workOnHoldPieList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (workOnHoldPieList != null) {
+      data['data'] = workOnHoldPieList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -1145,19 +1145,19 @@ class WorkOnHoldPieList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['client_code'] = this.clientCode;
-    data['client'] = this.client;
-    data['servicename'] = this.servicename;
-    data['trigger_date'] = this.triggerDate;
-    data['target_date'] = this.targetDate;
-    data['sat_date'] = this.satDate;
-    data['priority'] = this.priority;
-    data['Allotted To'] = this.allottedTo;
-    data['Tasks'] = this.tasks;
-    data['Completion_Percentage'] = this.completionPercentage;
-    data['Status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['client_code'] = clientCode;
+    data['client'] = client;
+    data['servicename'] = servicename;
+    data['trigger_date'] = triggerDate;
+    data['target_date'] = targetDate;
+    data['sat_date'] = satDate;
+    data['priority'] = priority;
+    data['Allotted To'] = allottedTo;
+    data['Tasks'] = tasks;
+    data['Completion_Percentage'] = completionPercentage;
+    data['Status'] = status;
     return data;
   }
 }
@@ -1175,17 +1175,17 @@ class AllTasksPieModel {
     if (json['data'] != null) {
       allTasksPieList = <AllTasksPieList>[];
       json['data'].forEach((v) {
-        allTasksPieList!.add(new AllTasksPieList.fromJson(v));
+        allTasksPieList!.add(AllTasksPieList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Success'] = this.success;
-    if (this.allTasksPieList != null) {
-      data['data'] = this.allTasksPieList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (allTasksPieList != null) {
+      data['data'] = allTasksPieList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -1245,19 +1245,19 @@ class AllTasksPieList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['client_code'] = this.clientCode;
-    data['client'] = this.client;
-    data['servicename'] = this.servicename;
-    data['trigger_date'] = this.triggerDate;
-    data['target_date'] = this.targetDate;
-    data['sat_date'] = this.satDate;
-    data['priority'] = this.priority;
-    data['Allotted To'] = this.allottedTo;
-    data['Tasks'] = this.tasks;
-    data['Completion_Percentage'] = this.completionPercentage;
-    data['Status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['client_code'] = clientCode;
+    data['client'] = client;
+    data['servicename'] = servicename;
+    data['trigger_date'] = triggerDate;
+    data['target_date'] = targetDate;
+    data['sat_date'] = satDate;
+    data['priority'] = priority;
+    data['Allotted To'] = allottedTo;
+    data['Tasks'] = tasks;
+    data['Completion_Percentage'] = completionPercentage;
+    data['Status'] = status;
     return data;
   }
 }
@@ -1369,17 +1369,17 @@ class TriggeredNotAllottedModel {
     if (json['data'] != null) {
       triggeredNotAllottedPieChartList = <TriggeredNotAllottedPieChartList>[];
       json['data'].forEach((v) {
-        triggeredNotAllottedPieChartList!.add(new TriggeredNotAllottedPieChartList.fromJson(v));
+        triggeredNotAllottedPieChartList!.add(TriggeredNotAllottedPieChartList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Success'] = this.success;
-    if (this.triggeredNotAllottedPieChartList != null) {
-      data['data'] = this.triggeredNotAllottedPieChartList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (triggeredNotAllottedPieChartList != null) {
+      data['data'] = triggeredNotAllottedPieChartList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -1444,15 +1444,15 @@ class TriggeredNotAllottedPieChartList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['client_code'] = this.clientCode;
-    data['client'] = this.client;
-    data['servicename'] = this.servicename;
-    data['trigger_date'] = this.triggerDate;
-    data['target_date'] = this.targetDate;
-    data['sat_date'] = this.satDate;
-    data['periodicity'] = this.periodicity;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['client_code'] = clientCode;
+    data['client'] = client;
+    data['servicename'] = servicename;
+    data['trigger_date'] = triggerDate;
+    data['target_date'] = targetDate;
+    data['sat_date'] = satDate;
+    data['periodicity'] = periodicity;
     return data;
   }
 }
@@ -1470,17 +1470,17 @@ class TriggeredNotAllottedLoadAllModel {
     if (json['data'] != null) {
       triggeredNotAllottedLoadAllList = <TriggeredNotAllottedLoadAllList>[];
       json['data'].forEach((v) {
-        triggeredNotAllottedLoadAllList!.add(new TriggeredNotAllottedLoadAllList.fromJson(v));
+        triggeredNotAllottedLoadAllList!.add(TriggeredNotAllottedLoadAllList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Success'] = this.success;
-    if (this.triggeredNotAllottedLoadAllList != null) {
-      data['data'] = this.triggeredNotAllottedLoadAllList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (triggeredNotAllottedLoadAllList != null) {
+      data['data'] = triggeredNotAllottedLoadAllList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -1544,24 +1544,24 @@ class TriggeredNotAllottedLoadAllList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['task_id'] = this.taskId;
-    data['sortno'] = this.sortno;
-    data['task_name'] = this.taskName;
-    data['task_service_main_category_id'] = this.taskServiceMainCategoryId;
-    data['task_service_id'] = this.taskServiceId;
-    data['completion'] = this.completion;
-    data['task_ondate'] = this.taskOndate;
-    data['days'] = this.days;
-    data['hours'] = this.hours;
-    data['minutes'] = this.minutes;
-    data['firm_id'] = this.firmId;
-    data['mast_id'] = this.mastId;
-    data['biz_admin_id'] = this.bizAdminId;
-    data['add_on_date'] = this.addOnDate;
-    data['added_by'] = this.addedBy;
-    data['modified_on_date'] = this.modifiedOnDate;
-    data['modified_by'] = this.modifiedBy;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['task_id'] = taskId;
+    data['sortno'] = sortno;
+    data['task_name'] = taskName;
+    data['task_service_main_category_id'] = taskServiceMainCategoryId;
+    data['task_service_id'] = taskServiceId;
+    data['completion'] = completion;
+    data['task_ondate'] = taskOndate;
+    data['days'] = days;
+    data['hours'] = hours;
+    data['minutes'] = minutes;
+    data['firm_id'] = firmId;
+    data['mast_id'] = mastId;
+    data['biz_admin_id'] = bizAdminId;
+    data['add_on_date'] = addOnDate;
+    data['added_by'] = addedBy;
+    data['modified_on_date'] = modifiedOnDate;
+    data['modified_by'] = modifiedBy;
     return data;
   }
 }

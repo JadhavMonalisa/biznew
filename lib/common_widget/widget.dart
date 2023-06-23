@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:biznew/constant/strings.dart';
 import 'package:biznew/routes/app_pages.dart';
+import 'package:biznew/screens/attendance/attendance_controller.dart';
 import 'package:biznew/screens/calender/calender_controller.dart';
 import 'package:biznew/screens/claim_form/claim_form_controller.dart';
 import 'package:biznew/screens/dashboard/client/client_controller.dart';
@@ -559,6 +560,49 @@ showWarningOnClaimFormDialog(BuildContext context,String title,String subTitle, 
     },
   );
 }
+showWarningOnAttendanceDialog(BuildContext context,String title,String subTitle, AttendanceController cont,{bool logoutFeature = false,}){
+  showDialog(barrierDismissible: true,
+    context:context,
+    builder:(BuildContext context){
+      return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))
+        ),
+        content: Container(
+          height: 150.0,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              buildTextRegularWidget(title, blackColor, context, 20,align: TextAlign.left),const SizedBox(height: 10.0,),
+              buildTextRegularWidget(subTitle, blackColor, context, 16.0,align: TextAlign.left,),
+              const SizedBox(height: 20.0,),
+              Row(
+                children: [
+                  Flexible(child:
+                  GestureDetector(
+                    onTap: (){
+                      logoutFeature ? cont.callLogout() : exit(0);
+                    },
+                    child: buildButtonWidget(context, "Yes",radius: 5.0,width: MediaQuery.of(context).size.width),
+                  )
+                  ),
+                  const SizedBox(width: 3.0,),
+                  Flexible(child:GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: buildButtonWidget(context, "No",radius: 5.0,width: MediaQuery.of(context).size.width),
+                  )),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
 showWarningOnTimesheetFormDialog(BuildContext context,String title,String subTitle, TimesheetFormController cont,{bool logoutFeature = false,}){
   showDialog(barrierDismissible: true,
     context:context,
@@ -794,7 +838,7 @@ buildDrawer(BuildContext context,String name, {Widget? branchWidget}){
       Padding(
         padding:const EdgeInsets.all(10.0),
         child: Container(
-          height: 360.0,width: MediaQuery.of(context).size.width,
+          height: 430.0,width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0),color: grey.withOpacity(0.2)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -803,16 +847,12 @@ buildDrawer(BuildContext context,String name, {Widget? branchWidget}){
                 padding: const EdgeInsets.only(top: 10.0,left: 10.0),
                 child: buildTextBoldWidget("Menu", primaryColor, context, 14.0),
               ),
-              // buildDrawerTitle(context,Icons.dashboard,"Dashboard","Show service activities",AppRoutes.serviceDashboard),buildDrawerDivider(),
-              // buildDrawerTitle(context,Icons.dashboard,"Employee Dashboard","Show employee activities",AppRoutes.employeeDashboard),buildDrawerDivider(),
-              // buildDrawerTitle(context,Icons.dashboard,"Client Dashboard","Show client activities",AppRoutes.clientDashboard),buildDrawerDivider(),
-              //buildDrawerTitle(context,Icons.calendar_today,"Leaves","Manage your leaves",AppRoutes.leaveList),buildDrawerDivider(),
-              //buildDrawerTitle(context,Icons.filter_frames,"Claim","Manage your claims",AppRoutes.claimList),buildDrawerDivider(),
-              buildDrawerTitle(context,Icons.timer,"Timesheet","Manage your timesheet",AppRoutes.timesheetList),buildDrawerDivider(),
+              //buildDrawerTitle(context,Icons.timer,"Timesheet","Manage your timesheet",AppRoutes.timesheetList),buildDrawerDivider(),
+              buildDrawerTitle(context,Icons.check,"Attendance","Manage your timesheet",AppRoutes.attendanceScreen),buildDrawerDivider(),
+              buildDrawerTitle(context,Icons.timer,"Timesheet","Manage your timesheet",AppRoutes.timesheetNewForm),buildDrawerDivider(),
               buildDrawerTitle(context,Icons.edit,"Appointment","Book your appointment",AppRoutes.serviceDashboard),buildDrawerDivider(),
               buildDrawerTitle(context,Icons.file_copy_outlined,"Reports","Display all reports",AppRoutes.serviceDashboard),buildDrawerDivider(),
-              //buildDrawerTitle(context,Icons.task,"Petty Task","Add petty task",AppRoutes.pettyTaskFrom),buildDrawerDivider(),
-              buildDrawerTitle(context,Icons.calendar_today_outlined,"Calendar","Check your meetings",AppRoutes.calenderScreen),buildDrawerDivider(),
+              buildDrawerTitle(context,Icons.calendar_today_outlined,"Calendar","Check your meetings",AppRoutes.calenderDemoScreen),buildDrawerDivider(),
               buildDrawerTitle(context,Icons.add,"Manual Assignment","Check your meetings",AppRoutes.manualAssignmentScreen),buildDrawerDivider(),
             ],
           ),
@@ -828,9 +868,12 @@ buildDrawerTitle(BuildContext context,IconData icon,String title,String subTitle
         if(title == "Appointment" || title == "Reports"){
           //showInprocessDialog(context);
         }
-        else if(title == "Calendar" || title == "Timesheet"){
-          //showInprocessDialog(context);
-        }
+        // else if(title == "Calendar" || title == "Timesheet"){
+        //   //showInprocessDialog(context);
+        // }
+        // else if(title == "Calendar"){
+        //   //showInprocessDialog(context);
+        // }
         // else if(title == "Timesheet"){
         //   //showInprocessDialog(context);
         // }
@@ -864,7 +907,8 @@ buildDrawerTitle(BuildContext context,IconData icon,String title,String subTitle
               const SizedBox(width: 20.0,),
               buildTextBoldWidget(title, blackColor, context, 14.0),
               //Spacer(),
-              title == "Appointment" || title == "Reports" || title == "Calendar" || title == "Timesheet"
+              title == "Appointment" || title == "Reports"
+                  //|| title == "Calendar"
               ?
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
@@ -942,9 +986,9 @@ buildClientCodeWidget(String clientCode,String clientName, BuildContext context,
         Flexible(
           child: Container(
               height: h2,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   //border: Border.all(color: grey),
-                  borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(7.0))),
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
@@ -979,9 +1023,9 @@ buildClientCodeWidgetForOther(String clientCode,String clientName, BuildContext 
       Flexible(
         child: Container(
             height: h2,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               //border: Border.all(color: grey),
-                borderRadius: const BorderRadius.only(topRight: Radius.circular(7.0))),
+                borderRadius: BorderRadius.only(topRight: Radius.circular(7.0))),
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(

@@ -238,7 +238,7 @@ class _LeaveListState extends State<LeaveList> {
                     cont.updateStatus("Delete",item.id!);
                   },
                       //    child:buildActionForClaim(errorColor,Icons.delete,)
-                      child:Icon(Icons.delete,color: errorColor,size: 30.0,)
+                      child:const Icon(Icons.delete,color: errorColor,size: 30.0,)
                   )),
                   const SizedBox(width: 30.0,),
 
@@ -318,7 +318,7 @@ class _LeaveListState extends State<LeaveList> {
                       );
                     },
                     //child: buildActionForClaim(buttonColor,Icons.clear),
-                    child: Icon(Icons.clear,color: buttonColor,size: 30.0,),
+                    child: const Icon(Icons.clear,color: buttonColor,size: 30.0,),
                   )),
                   //cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
                   //item.leaveStatus == "Approved" || item.leaveStatus == "Deleted" ? const Opacity(opacity: 0.0,):
@@ -329,7 +329,7 @@ class _LeaveListState extends State<LeaveList> {
                     cont.navigateToLeaveEdit(item.id!,"view");
                   },
                       //child:buildActionForClaim(primaryColor,Icons.visibility,))
-                      child:Icon(Icons.visibility,color: primaryColor,size: 30.0,))
+                      child:const Icon(Icons.visibility,color: primaryColor,size: 30.0,))
                   ),const SizedBox(width: 30.0,),
 
 
@@ -340,7 +340,7 @@ class _LeaveListState extends State<LeaveList> {
                     cont.navigateToLeaveEdit(item.id!,"form");
                   },
                       //child:buildActionForClaim(editColor,Icons.edit)
-                      child:Icon(Icons.edit,color: editColor,size: 30.0,)
+                      child:const Icon(Icons.edit,color: editColor,size: 30.0,)
                   )),
                   //cont.reportingHead == "0" ? const Opacity(opacity: 0.0,):
                   item.leaveStatus == "Approved" || item.leaveStatus == "Deleted"? const Opacity(opacity: 0.0,):
@@ -355,7 +355,7 @@ class _LeaveListState extends State<LeaveList> {
                         cont.updateStatus("Approved",item.id!);
                       },
                       //child:buildActionForClaim(approveColor,Icons.check)
-                      child:Icon(Icons.check,color: approveColor,size: 30.0,)
+                      child:const Icon(Icons.check,color: approveColor,size: 30.0,)
                   ))
                       :const Opacity(opacity: 0.0,),
                   item.leaveStatus == "Approved" || item.leaveStatus == "Deleted"? const Opacity(opacity: 0.0,):

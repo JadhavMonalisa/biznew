@@ -245,17 +245,17 @@ class AccessRightResponse {
     if (json['data'] != null) {
       accessRightDetails = <AccessRightDetails>[];
       json['data'].forEach((v) {
-        accessRightDetails!.add(new AccessRightDetails.fromJson(v));
+        accessRightDetails!.add(AccessRightDetails.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Message'] = this.message;
-    data['Success'] = this.success;
-    if (this.accessRightDetails != null) {
-      data['data'] = this.accessRightDetails!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (accessRightDetails != null) {
+      data['data'] = accessRightDetails!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -273,9 +273,9 @@ class AccessRightDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['module_name'] = this.moduleName;
-    data['add_access'] = this.addAccess;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['module_name'] = moduleName;
+    data['add_access'] = addAccess;
     return data;
   }
 }

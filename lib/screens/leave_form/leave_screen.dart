@@ -38,12 +38,12 @@ class _LeaveFormState extends State<LeaveForm> {
                   physics:const NeverScrollableScrollPhysics(),
                   children: [
                     Center(
-                      child: Container(
+                      child: SizedBox(
                         height: MediaQuery.of(context).size.height/1.1,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            buildDrawer(context,cont.name),Spacer(),
+                            buildDrawer(context,cont.name),const Spacer(),
                             Padding(
                               padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
                               child: Row(
@@ -239,11 +239,11 @@ class _LeaveFormState extends State<LeaveForm> {
                           child: Row(
                             children: [
                               Flexible(
-                                child: Container(
+                                child: SizedBox(
                                   width: MediaQuery.of(context).size.width/2,
                                   child: Column(
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         height:40.0,
                                         child:buildTextBoldWidget("No. of days leave",
                                             blackColor, context, 15.0),
@@ -261,11 +261,11 @@ class _LeaveFormState extends State<LeaveForm> {
                                 thickness: 2,
                               ),
                               Flexible(
-                                child: Container(
+                                child: SizedBox(
                                   width: MediaQuery.of(context).size.width/2,
                                   child: Column(
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         height: 40.0,
                                         child:buildTextBoldWidget("Total leaves in this year",
                                             blackColor, context, 15.0,align: TextAlign.center),

@@ -38,7 +38,7 @@ class _PettyTaskClientFormState extends State<PettyTaskClientForm> {
                       physics:const NeverScrollableScrollPhysics(),
                       children: [
                         Center(
-                          child: Container(
+                          child: SizedBox(
                             height: MediaQuery.of(context).size.height/1.1,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

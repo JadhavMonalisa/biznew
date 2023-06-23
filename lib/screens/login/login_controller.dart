@@ -168,9 +168,6 @@ class LoginController extends GetxController {
 
         for (var element in response.accessRightDetails!) {
           if(element.moduleName == "Own Service Status"){
-            print("element.moduleName");
-            print(element.moduleName);
-            print(element.addAccess);
 
             //String statusValue = element.addAccess == "Y" ? "Y" : "N";
             GetStorage().write("OwnServiceStatus", element.addAccess);

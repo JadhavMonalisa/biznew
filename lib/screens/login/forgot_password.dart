@@ -1,14 +1,11 @@
-import 'dart:io';
 import 'package:biznew/common_widget/error_text.dart';
 import 'package:biznew/common_widget/widget.dart';
 import 'package:biznew/constant/assets.dart';
 import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/login/login_controller.dart';
 import 'package:biznew/theme/app_text_theme.dart';
-import 'package:biznew/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../theme/app_colors.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {

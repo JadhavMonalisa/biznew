@@ -7,7 +7,6 @@ import 'package:biznew/constant/repository/api_repository.dart';
 import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/screens/claim_form/claim_model.dart';
 import 'package:biznew/screens/dashboard/dashboard_model.dart';
-import 'package:biznew/screens/dashboard/triggered_not_allotted_load_all.dart';
 import 'package:biznew/screens/petty_task/petty_task_model.dart';
 import 'package:biznew/theme/app_colors.dart';
 import 'package:biznew/theme/app_text_theme.dart';
@@ -20,7 +19,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
 
-import 'client/client_dashboard_model.dart';
 
 class DashboardController extends GetxController {
   final ApiRepository repository;
@@ -40,8 +38,8 @@ class DashboardController extends GetxController {
   int currentPos = 0;
 
   List chartDetails = ["Triggered In Last 7 Days","More Than 7 Days","Past Due","Probable Overdue","High",];
-  //List chartColors = [Colors.blue,Colors.brown,Colors.orangeAccent.shade100,Colors.indigo,Colors.red];
-  List chartColors = [Colors.blue,Colors.brown,const Color(0xffFFEE58),const Color(0xff0000FF),const Color(0xffFF0000)];
+  //List chartColors = [Colors.blue,Colors.brown,const Color(0xFFffc000),const Color(0xff0000FF),const Color(0xffFF0000)];
+  List chartColors = [Colors.blue,Colors.brown,const Color(0xFFffc000),const Color(0xff0000FF),const Color(0xffFF0000)];
 
   final allColors = <pie_chart_color.Color>[
     Colors.grey,Colors.brown,Colors.orangeAccent.shade100,Colors.indigo,Colors.red
@@ -57,14 +55,13 @@ class DashboardController extends GetxController {
   };
   final triggerNotAllottedColors = <pie_chart_color.Color>[
     Colors.blue,Colors.brown,
-    const Color(0xffFFEE58)
-    //Color(0xffFFFF99),
-    //Colors.indigo,
+    //const Color(0xFFffc000)
+    //const Color(0xFFffc000)
+    const Color(0xFFffc000)
   ];
   List<int> triggeredNotAllotted = [];
   /// 2. allotted not started
   List allottedNotStartedDetails = ["Past Due","Probable Overdue","High","Medium","Low"];
-  //List allottedNotStartedColors = [Colors.grey,Colors.brown,Colors.orangeAccent.shade100,Colors.indigo,Colors.red];
 
   List<int> ownAllottedNotStarted = [];
   List<int> teamAllottedNotStarted = [];
@@ -84,14 +81,9 @@ class DashboardController extends GetxController {
     "Medium":0.0,
     "Low":0.0
   };
-  // final allottedNotStartedColors = <pie_chart_color.Color>[
-  //   Colors.blue,Colors.brown,Colors.orangeAccent.shade100,Colors.indigo,Colors.red,Colors.black
-  // ];
-  // final allottedNotStartedColors = <pie_chart_color.Color>[
-  // Colors.orangeAccent.shade100,Colors.brown,Colors.red,Colors.orange,Colors.green
-  // ];
   final allottedNotStartedColors = <pie_chart_color.Color>[
-    const Color(0xffFFEE58),const Color(0xff0000FF),const Color(0xffFF0000),const Color(0xffFFA500),const Color(0xff008000)
+    const Color(0xFFffc000),
+    const Color(0xff0000FF),const Color(0xffFF0000),Color(0xffF57C00),const Color(0xff008000)
   ];
   List<AllottedNotStartedPastDueData> allottedNotStartedPastDueList = [];
 
@@ -109,9 +101,9 @@ class DashboardController extends GetxController {
     "Low":0.0
   };
   final startedNotCompletedColors = <pie_chart_color.Color>[
-   // Colors.blue,Colors.brown,Colors.orangeAccent.shade100,Colors.indigo,Colors.red,
-   // Colors.orangeAccent.shade100,Colors.brown,Colors.red,Colors.orange,Colors.green
-    const Color(0xffFFEE58),const Color(0xff0000FF),const Color(0xffFF0000),const Color(0xffFFA500),const Color(0xff008000)
+    //const Color(0xFFffc000),
+    const Color(0xFFffc000),
+    const Color(0xff0000FF),const Color(0xffFF0000),Color(0xffF57C00),const Color(0xff008000)
   ];
   List<StartedNotCompletedPieList> startedNotCompletedPastDueList = [];
 
@@ -296,8 +288,6 @@ class DashboardController extends GetxController {
           for (var element in employeeList) {
             idInEmp.add(element.mastId!);
           }
-          print("idInEmp");
-          print(idInEmp);
         }
         updateLoader(false);
         update();
@@ -461,16 +451,13 @@ class DashboardController extends GetxController {
         updateLoader(false);
         update();
       } else {
-        //Utils.showErrorSnackBar(response.message);
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
-      //Utils.showErrorSnackBar(e.getMsg());
+    } on CustomException {
       updateLoader(false);
       update();
     } catch (error) {
-      //Utils.showErrorSnackBar(error.toString());
       updateLoader(false);
       update();
     }
@@ -498,8 +485,6 @@ class DashboardController extends GetxController {
           teamAllottedNotStarted.add(element);
         }
 
-        print("new selectedType");
-        print(selectedType);
         if(selectedType == "Own"){
           selectedPastDue = ownAllottedNotStarted[0].toString();
           selectedProbable = ownAllottedNotStarted[1].toString();
@@ -517,16 +502,13 @@ class DashboardController extends GetxController {
         updateLoader(false);
         update();
       } else {
-        //Utils.showErrorSnackBar(response.message);
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
-      //Utils.showErrorSnackBar(e.getMsg());
+    } on CustomException {
       updateLoader(false);
       update();
     } catch (error) {
-      //Utils.showErrorSnackBar(error.toString());
       updateLoader(false);
       update();
     }
@@ -573,16 +555,13 @@ class DashboardController extends GetxController {
         updateLoader(false);
         update();
       } else {
-        //Utils.showErrorSnackBar(response.message);
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
-      //Utils.showErrorSnackBar(e.getMsg());
+    } on CustomException {
       updateLoader(false);
       update();
     } catch (error) {
-      //Utils.showErrorSnackBar(error.toString());
       updateLoader(false);
       update();
     }
@@ -611,7 +590,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -641,7 +620,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -677,7 +656,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -713,7 +692,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -762,8 +741,6 @@ class DashboardController extends GetxController {
 
   ///due data api
   callDueDataApi(String title,String type, String count){
-    print("selectedMainType");
-    print(selectedMainType);
     updateLoader(true);
     selectedPieChartTitle = title;
     selectedType = type ; selectedCount = count ;
@@ -1192,8 +1169,6 @@ class DashboardController extends GetxController {
     if(picked==null){}
     else{
       callUpdateTargetDate(id,apiAfterChangeDate);
-      print("selectedMainType");
-      print(selectedMainType);
     }
     update();
   }
@@ -1399,8 +1374,6 @@ class DashboardController extends GetxController {
   }
 
   onTabIndexSelect(int index){
-    print("index");
-    print(index);
     addedIndex.clear(); isExpanded = false;
     addedDateListForAll.clear(); selectedDateToShowForCurrent = "";
     if(index == 0){
@@ -1425,17 +1398,11 @@ class DashboardController extends GetxController {
     selectedPieChartTitle == "Past Due";
     updateLoader(true);
     initialIndex = 0;
-    print("selectedType");
-    print(selectedType);
-    print("selectedMainType");
-    print(selectedMainType);
     if(selectedMainType == "AllottedNotStarted")
       {
-        print("In if");
         selectedType == "Own" ? callAllottedNotStartedPastDueOwn() : callAllottedNotStartedPastDueTeam();
       }
     else if(selectedMainType == "StartedNotCompleted"){
-      print("In else");
         selectedType == "Own" ? callStartedNotCompletedPastOwn() : callStartedNotCompletedPastTeam();
 
     }
@@ -1568,7 +1535,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -1602,7 +1569,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
@@ -1618,8 +1585,6 @@ class DashboardController extends GetxController {
     selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
     selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
 
-    print("selectedPastDue");
-    print(selectedPastDue);
     update();
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
@@ -1643,7 +1608,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -1683,7 +1648,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -1724,7 +1689,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -1763,7 +1728,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -1804,7 +1769,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);  Utils.dismissLoadingDialog();
       update();
@@ -1828,7 +1793,7 @@ class DashboardController extends GetxController {
     try {
       AllottedNotStartedPastDueTeam? response = (await repository.getAllottedNotStartedProbableTeam()) ;
 
-      if (response!.success!) {
+      if (response.success!) {
         allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
         updateLoader(false);  Utils.dismissLoadingDialog();
         update();
@@ -1838,7 +1803,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -1874,7 +1839,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -1910,7 +1875,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -1946,7 +1911,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -1971,40 +1936,29 @@ class DashboardController extends GetxController {
   void callStartedNotCompletedPastTeam() async {
     startedNotCompletedPastDueList.clear();
     try {
-      print("api call");
       StartedButCompletedPieModel? response = await repository.getStartedNotCompletedPastDueTeam();
 
 
-      print("response success");
-      print(response.success);
       if (response.success!) {
         startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
 
-        print("in api if");
-        print(response);
         updateLoader(false);
         Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        print("in api else");
         Utils.dismissLoadingDialog();
         updateLoader(false);
         update();
       }
-      print("startedNotCompletedPastDueList.length");
-      print(startedNotCompletedPastDueList.length);
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
-      print("in api exception");
       Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
     } catch (error) {
       //Utils.showErrorSnackBar(error.toString());
-      print("in api catch");
-      print(error);
       Utils.dismissLoadingDialog();
       updateLoader(false);
       update();
@@ -2033,7 +1987,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -2068,7 +2022,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -2103,7 +2057,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -2138,7 +2092,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -2174,10 +2128,8 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
 
-      print("startedNotCompletedPastDueList.length");
-      print(startedNotCompletedPastDueList.length);
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -2212,7 +2164,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -2247,7 +2199,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -2282,7 +2234,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -2317,7 +2269,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       Utils.dismissLoadingDialog();
       updateLoader(false);
@@ -2352,7 +2304,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -2379,7 +2331,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -2407,7 +2359,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -2436,7 +2388,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -2463,7 +2415,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -2492,7 +2444,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -2519,7 +2471,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -2548,7 +2500,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -2575,7 +2527,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
@@ -2621,7 +2573,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       updateLoader(false);
       update();
     } catch (error) {
@@ -2645,7 +2597,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       updateLoader(false);
       update();
     } catch (error) {
@@ -2669,7 +2621,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       updateLoader(false);
       update();
     } catch (error) {
@@ -2724,7 +2676,7 @@ class DashboardController extends GetxController {
         updateLoader(false);update();
       }
       update();
-    } on CustomException catch (e) {
+    } on CustomException {
       updateLoader(false);
       update();
     } catch (error) {
@@ -2766,38 +2718,27 @@ class DashboardController extends GetxController {
 
     taskNameFirstBracketRemove =  taskNameListToSendApi.toString().replaceAll("[", "");
     taskNameSecondBracketRemove = taskNameFirstBracketRemove.toString().replaceAll("]", "");
-    print("task names : $taskNameSecondBracketRemove");
-    print("task names : ${taskNameSecondBracketRemove.replaceAll(", ", ",")}");
 
     completionFirstBracketRemove =  completionListToSendApi.toString().replaceAll("[", "");
     completionSecondBracketRemove = completionFirstBracketRemove.toString().replaceAll("]", "");
-    print("completions : $completionSecondBracketRemove");
 
     daysFirstBracketRemove =  daysListToSendApi.toString().replaceAll("[", "");
     daysSecondBracketRemove = daysFirstBracketRemove.toString().replaceAll("]", "");
-    print("days : $daysSecondBracketRemove");
 
     hoursFirstBracketRemove =  hoursListToSendApi.toString().replaceAll("[", "");
     hoursSecondBracketRemove = hoursFirstBracketRemove.toString().replaceAll("]", "");
-    print("hours : $hoursSecondBracketRemove");
 
     minuteFirstBracketRemove =  minuteListToSendApi.toString().replaceAll("[", "");
     minuteSecondBracketRemove = minuteFirstBracketRemove.toString().replaceAll("]", "");
-    print("minutes : $minuteSecondBracketRemove");
 
     taskEmpFirstBracketRemove =  triggerSelectedEmpIdList.toString().replaceAll("[", "");
     taskEmpSecondBracketRemove = taskEmpFirstBracketRemove.toString().replaceAll("]", "");
-    print("task emp id: $taskEmpSecondBracketRemove");
 
     taskIdFirstBracketRemove =  taskId.toString().replaceAll("[", "");
     taskIdSecondBracketRemove = taskIdFirstBracketRemove.toString().replaceAll("]", "");
-    print("task task id : $taskIdSecondBracketRemove");
-    print("task task id : ${taskIdSecondBracketRemove.toString().replaceAll(" ", "")}");
 
     srNoFirstBracketRemove =  srNo.toString().replaceAll("[", "");
     srNoSecondBracketRemove = srNoFirstBracketRemove.toString().replaceAll("]", "");
-    print("srno : $srNoSecondBracketRemove");
-    print("selectedCliId : $selectedCliId");
     callReassignTriggeredNotAllotted();
     }
   }
@@ -2953,8 +2894,6 @@ class DashboardController extends GetxController {
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
 
-        print(apiAfterChangeDate);
-        print(selectedType);
 
         if(apiAfterChangeDate=="triggerApi"){
           selectedType == "Triggered in Last 7 Days" ? callTriggeredNotAllottedLast7Days()
@@ -3039,8 +2978,6 @@ class DashboardController extends GetxController {
 
       if (response.success!) {
 
-        print("serviceName");
-        print(serviceName);
 
         // if(selectedPieChartTitle == "Past Due"){
         //   onPasDueSelected();
@@ -3226,8 +3163,6 @@ class DashboardController extends GetxController {
       update();
     }
 
-    print("triggerSelectedEmpList");
-    print(triggerSelectedEmpList);
     update();
   }
 
@@ -3238,10 +3173,6 @@ class DashboardController extends GetxController {
     selectedEmpFromDashboardNextAllotted = assignTo;
     selectedEmpIdFromDashboardNextAllotted = id;
 
-    print("value");
-    print(assignTo);
-    print(id);
-    print(taskId);
     if(addedAssignedToAllotted.contains(taskId)){
       addedAssignedToAllotted.remove(taskId);
       update();
@@ -3324,36 +3255,27 @@ class DashboardController extends GetxController {
 
       allottedTaskNameFirstBracketRemove = allottedTaskNameListToSendApi.toString().replaceAll("[", "");
       allottedTaskNameSecondBracketRemove = allottedTaskNameFirstBracketRemove.toString().replaceAll("]", "");
-      print("task names : $allottedTaskNameSecondBracketRemove");
 
       allottedCompletionFirstBracketRemove = allottedCompletionListToSendApi.toString().replaceAll("[", "");
       allottedCompletionSecondBracketRemove = allottedCompletionFirstBracketRemove.toString().replaceAll("]", "");
-      print("completions : $allottedCompletionSecondBracketRemove");
 
       allottedDaysFirstBracketRemove = allottedDaysListToSendApi.toString().replaceAll("[", "");
       allottedDaysSecondBracketRemove = allottedDaysFirstBracketRemove.toString().replaceAll("]", "");
-      print("days : $allottedDaysSecondBracketRemove");
 
       allottedHoursFirstBracketRemove = allottedHoursListToSendApi.toString().replaceAll("[", "");
       allottedHoursSecondBracketRemove = allottedHoursFirstBracketRemove.toString().replaceAll("]", "");
-      print("hours : $allottedHoursSecondBracketRemove");
 
       allottedMinuteFirstBracketRemove = allottedMinuteListToSendApi.toString().replaceAll("[", "");
       allottedMinuteSecondBracketRemove = allottedMinuteFirstBracketRemove.toString().replaceAll("]", "");
-      print("minutes : $allottedMinuteSecondBracketRemove");
 
       allottedTaskEmpFirstBracketRemove = allottedSelectedEmpIdList.toString().replaceAll("[", "");
       allottedTaskEmpSecondBracketRemove = allottedTaskEmpFirstBracketRemove.toString().replaceAll("]", "");
-      print("task emp : $allottedTaskEmpSecondBracketRemove");
 
       allottedTaskIdFirstBracketRemove = allottedTaskId.toString().replaceAll("[", "");
       allottedTaskIdSecondBracketRemove = allottedTaskIdFirstBracketRemove.toString().replaceAll("]", "");
-      print("task emp id : $allottedTaskIdSecondBracketRemove");
 
       allottedSrNoFirstBracketRemove = allottedSrNo.toString().replaceAll("[", "");
       allottedSrNoSecondBracketRemove = allottedSrNoFirstBracketRemove.toString().replaceAll("]", "");
-      print("srno : $allottedSrNoSecondBracketRemove");
-      print("allottedSelectedReassignId : $allottedSelectedReassignId");
 
       callReassignServices();
     }
@@ -3530,9 +3452,6 @@ class DashboardController extends GetxController {
     int sum = forCompletionCalculationAllotted.fold(0, (p, c) => p + c);
     allottedTotalCompletion = sum;
 
-    print("allottedTotalCompletion");
-    print(allottedTotalCompletion);
-    print(forCompletionCalculationAllotted);
     update();
   }
 
@@ -3723,11 +3642,7 @@ class DashboardController extends GetxController {
 
   addDays(int index,String value){
     addedDaysValue = int.parse(value);
-    print("addedDaysValue");
-    print(addedDaysValue);
     totalDays = totalDays + addedDaysValue;
-    print("totalDays");
-    print(totalDays);
     update();
   }
 
@@ -3893,17 +3808,6 @@ class DashboardController extends GetxController {
   ///reassign triggered not allotted services
   void callReassignTriggeredNotAllotted() async {
     updateLoader(true);
-    print(taskNameSecondBracketRemove);
-    print(selectedEmployeeId);
-    print(completionSecondBracketRemove);
-    print(daysSecondBracketRemove);
-    print(hoursSecondBracketRemove);
-    print(minuteSecondBracketRemove);
-    print(taskEmpSecondBracketRemove);
-    print(taskIdSecondBracketRemove);
-    print(srNoSecondBracketRemove);
-    print(selectedCurrentPriorityId);
-    print(selectedPeriod==0?"1":"2");
 
     try {
       ApiResponse? response = (await repository.getReassignTriggeredNotAllotted(
@@ -3918,7 +3822,6 @@ class DashboardController extends GetxController {
           srNoSecondBracketRemove.replaceAll(" ", ""),
           selectedCurrentPriorityId,
           selectedPeriod==0?"1":"2"));
-      print(response);
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         //clearAllFromAllottedReassign();
@@ -3933,14 +3836,10 @@ class DashboardController extends GetxController {
       }
       update();
     } on CustomException catch (e) {
-      print("exception error");
-      print(e.getMsg());
       Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
     } catch (error) {
-      print("catch error");
-      print(error);
       Utils.showErrorSnackBar(error.toString());
       updateLoader(false);
       update();
@@ -3963,10 +3862,6 @@ class DashboardController extends GetxController {
     selectedClientCode = clientCode;
 
     selectedClientIdForOpenLog = cliId;
-    print("selected");
-    print(selectedClientName);
-    print(selectedServiceName);
-    print(cliId);
     update();
     callLoadAllTaskService(cliId);
 
@@ -4017,9 +3912,9 @@ class DashboardController extends GetxController {
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
-        Navigator.of(context).pop();
+        if (context.mounted) Navigator.of(context).pop();
         hideReasonContent = false;
-        showCheckPasswordOrReasonDialog("Reason for cancel",context);
+        if (context.mounted) showCheckPasswordOrReasonDialog("Reason for cancel",context);
         callAllottedNotStarted();
         callStartedNotCompleted();
         update();
@@ -4048,7 +3943,7 @@ class DashboardController extends GetxController {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
         clearDialog();
-        Navigator.of(context).pop();
+        if (context.mounted) Navigator.of(context).pop();
         callAllottedNotStartedOwn();
         callAllottedNotStarted();
         update();
@@ -4092,7 +3987,7 @@ class DashboardController extends GetxController {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
         clearDialog();
-        Navigator.of(context).pop();
+        if (context.mounted) Navigator.of(context).pop();
         callAllottedNotStartedOwn();
         callAllottedNotStarted();
         update();
@@ -4133,8 +4028,6 @@ class DashboardController extends GetxController {
         update();
       }
       else {
-        print("in else msg");
-        print(response.message);
         // if(response.message == "All tasks are not marked as completed"){
         //   //updateLoader(false);
         //   //showDialogToCompleteAllTask(context);
@@ -4142,8 +4035,6 @@ class DashboardController extends GetxController {
         //
         // }
         // else{
-          print("in else");
-          print(response.message);
           Utils.showErrorSnackBar(response.message);
           updateLoader(false);
           update();
@@ -4226,19 +4117,15 @@ class DashboardController extends GetxController {
       ApiResponse? response = (await repository.getUpdateTaskService(selectedCurrentStatusId,
           selectedServiceStatus=="Inprocess" ? "1" : selectedServiceStatus == "Hold" ? "2" : "4",
           selectedServiceStatus,remarkController.text??""));
-      print("response");
-      print(response);
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
-        // callAllottedNotStartedOwn();
-        // callAllottedNotStarted();
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
         updateLoader(false);update();
       }
-      Navigator.pop(context);
+      if (context.mounted) Navigator.pop(context);
       update();
     } on CustomException catch (e) {
       Utils.showErrorSnackBar(e.getMsg());
@@ -4286,9 +4173,6 @@ class DashboardController extends GetxController {
       showRemarkDialogForTaskStatus(context,id,assignId,selectedTaskStatusId,selectedTaskStatus,taskName);
     }
 
-    print("Selection");
-    print(selectedTaskStatus);
-    print(selectedTaskStatusId);
     update();
   }
 
@@ -4311,9 +4195,6 @@ class DashboardController extends GetxController {
       showRemarkDialogForTaskStatus(context,id,assignId,selectedTaskStatusId,selectedTaskStatus,taskName);
     }
 
-    print("Selection");
-    print(selectedTaskStatus);
-    print(selectedTaskStatusId);
     update();
   }
 
@@ -4420,8 +4301,6 @@ class DashboardController extends GetxController {
     try {
       ApiResponse? response = (await repository.getUpdateTaskStatus(assignId,id,selectedTaskStatusId,selectedTaskStatus,
           remarkController.text,taskName));
-      print("response");
-      print(response);
       if (response.success!) {
         clearRemarkDialog();
         Utils.showSuccessSnackBar(response.message);
@@ -4468,9 +4347,6 @@ class DashboardController extends GetxController {
       update();
     }
 
-    print("Selected common emp");
-    print(selectedEmployee);
-    print(selectedEmployeeId);
 
     update();
   }

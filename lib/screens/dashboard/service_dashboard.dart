@@ -10,7 +10,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 class ServiceDashboardScreen extends StatefulWidget {
   const ServiceDashboardScreen({Key? key}) : super(key: key);
@@ -75,7 +74,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
               physics:const NeverScrollableScrollPhysics(),
               children: [
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     height: MediaQuery.of(context).size.height/1.1,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +124,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                             ),
                           ),),
 
-                        Spacer(),
+                        const Spacer(),
                         Padding(
                           padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
                           child: Row(
@@ -201,51 +200,77 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                       child: const Icon(Icons.arrow_back_ios,color: primaryColor,),
                                     ),
                                     const Spacer(),
-                                    PieChart(
-                                      dataMap:
-                                      index == 0 ? cont.allottedNotStartedValues :
-                                      index == 1 ? cont.startedNotCompletedValues :
-                                      index == 2 ? cont.completedIdPendingValues :
-                                      index == 3 ? cont.workOnHoldValues :
-                                      index == 4 ? cont.submittedForCheckingValues : cont.allTasksCompletedValues ,
+                                    Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: (){
+                                            Utils.showAlertSnackBar("Please click on particular count!");
+                                          },
+                                          child: PieChart(
+                                            dataMap:
+                                            index == 0 ? cont.allottedNotStartedValues :
+                                            index == 1 ? cont.startedNotCompletedValues :
+                                            index == 2 ? cont.completedIdPendingValues :
+                                            index == 3 ? cont.workOnHoldValues :
+                                            index == 4 ? cont.submittedForCheckingValues : cont.allTasksCompletedValues ,
 
-                                      animationDuration: const Duration(milliseconds: 800),
-                                      chartLegendSpacing: 32,
-                                      chartRadius: MediaQuery.of(context).size.width / 2.5,
+                                            animationDuration: const Duration(milliseconds: 800),
+                                            chartLegendSpacing: 32,
+                                            chartRadius: MediaQuery.of(context).size.width / 2.5,
 
-                                      colorList: index == 0 ? cont.allottedNotStartedColors :
-                                      index == 1 ? cont.startedNotCompletedColors :
-                                      index == 2 ? cont.completedIdPendingColors :
-                                      index == 3 ? cont.workOnHoldColors :
-                                      index == 4 ? cont.submittedForCheckingColors :cont.allTasksCompletedColors,
+                                            colorList: index == 0 ? cont.allottedNotStartedColors :
+                                            index == 1 ? cont.startedNotCompletedColors :
+                                            index == 2 ? cont.completedIdPendingColors :
+                                            index == 3 ? cont.workOnHoldColors :
+                                            index == 4 ? cont.submittedForCheckingColors :cont.allTasksCompletedColors,
 
-                                      initialAngleInDegree: 0,
-                                      chartType: ChartType.ring,
-                                      ringStrokeWidth: 42,
+                                            initialAngleInDegree: 0,
+                                            chartType: ChartType.ring,
+                                            ringStrokeWidth: 42,
 
-                                      centerText: index == 0 ? cont.allottedNotStartedTotal :
-                                      index == 1 ? cont.startedNotCompletedTotal :
-                                      index == 2 ? cont.completedIdPendingTotal :
-                                      index == 3 ? cont.workOnHoldTotal :
-                                      index == 4 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
-
-                                      centerTextStyle: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
-                                      legendOptions: const LegendOptions(
-                                        showLegendsInRow: false,
-                                        legendPosition: LegendPosition.bottom,
-                                        showLegends: false,
-                                        legendShape: BoxShape.circle,
-                                        legendTextStyle: TextStyle(fontWeight: FontWeight.bold,height: 2.0),
-                                      ),
-                                      chartValuesOptions: const ChartValuesOptions(
-                                        showChartValueBackground: true,
-                                        showChartValues: false,
-                                        showChartValuesInPercentage: false,
-                                        showChartValuesOutside: true,
-                                        decimalPlaces: 1,
-                                      ),
+                                            // centerText: index == 0 ? cont.allottedNotStartedTotal :
+                                            // index == 1 ? cont.startedNotCompletedTotal :
+                                            // index == 2 ? cont.completedIdPendingTotal :
+                                            // index == 3 ? cont.workOnHoldTotal :
+                                            // index == 4 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
+                                            //
+                                            // centerTextStyle: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
+                                            legendOptions: const LegendOptions(
+                                              showLegendsInRow: false,
+                                              legendPosition: LegendPosition.bottom,
+                                              showLegends: false,
+                                              legendShape: BoxShape.circle,
+                                              legendTextStyle: TextStyle(fontWeight: FontWeight.bold,height: 2.0),
+                                            ),
+                                            chartValuesOptions: const ChartValuesOptions(
+                                              showChartValueBackground: true,
+                                              showChartValues: false,
+                                              showChartValuesInPercentage: false,
+                                              showChartValuesOutside: true,
+                                              decimalPlaces: 1,
+                                            ),
+                                          ),
+                                        ),
+                                        Center(
+                                          child: GestureDetector(
+                                            onTap: (){
+                                              Utils.showAlertSnackBar("Please click on particular count!");
+                                            },
+                                            child: Text(
+                                              index == 0 ? cont.triggerNotAllottedTotal :
+                                              index == 1 ? cont.allottedNotStartedTotal :
+                                              index == 2 ? cont.startedNotCompletedTotal :
+                                              index == 3 ? cont.completedIdPendingTotal :
+                                              index == 4 ? cont.completedNotBilledTotal :
+                                              index == 5 ? cont.workOnHoldTotal :
+                                              index == 6 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
+                                              style: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     ),
-
                                     const Spacer(),
                                     GestureDetector(
                                       onTap: (){cont.goToNextSlider();},
@@ -302,7 +327,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                             children: <TextSpan>[
                                                                               TextSpan(
                                                                                   text: cont.ownAllottedNotStarted.isEmpty ? "" :cont.ownAllottedNotStarted[index].toString(),
-                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0,
+                                                                                    decoration: TextDecoration.underline,)),
                                                                             ],
                                                                             recognizer: TapGestureRecognizer()..onTap= () {
                                                                               cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Own",
@@ -322,7 +348,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                             children: <TextSpan>[
                                                                               TextSpan(
                                                                                   text: cont.teamAllottedNotStarted.isEmpty ? "" :cont.teamAllottedNotStarted[index].toString(),
-                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0,decoration: TextDecoration.underline,)),
                                                                             ],
                                                                             recognizer: TapGestureRecognizer()..onTap= () {
                                                                               cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Team",cont.teamAllottedNotStarted[index].toString());
@@ -366,7 +392,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                               children: <TextSpan>[
                                                                                 TextSpan(
                                                                                     text: cont.ownStartedNotCompleted[index].toString(),
-                                                                                    style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                                    style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0,
+                                                                                    decoration: TextDecoration.underline)),
                                                                               ],
                                                                               recognizer: TapGestureRecognizer()..onTap= () {
                                                                                 cont.callDueDataForStartedNotCompletedApi(cont.startedNotCompletedDetails[index],"Own",cont.ownStartedNotCompleted[index].toString());
@@ -385,7 +412,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                               children: <TextSpan>[
                                                                                 TextSpan(
                                                                                     text: cont.teamStartedNotCompleted[index].toString(),
-                                                                                    style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                                    style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0,decoration: TextDecoration.underline)),
                                                                               ],
                                                                               recognizer: TapGestureRecognizer()..onTap= () {
                                                                                 cont.callDueDataForStartedNotCompletedApi(cont.startedNotCompletedDetails[index],"Team",cont.teamStartedNotCompleted[index].toString());
@@ -412,46 +439,6 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                         child:Card(
                                                             child: Padding(
                                                               padding: const EdgeInsets.all(5.0),
-                                                              // child: Column(
-                                                              //   children: [
-                                                              //     buildTextBoldWidget(cont.chartDetails[index], cont.chartColors[index], context, 14.0),
-                                                              //     const SizedBox(height: 5.0,),
-                                                              //     IntrinsicHeight(
-                                                              //       child: Row(
-                                                              //         crossAxisAlignment: CrossAxisAlignment.center,
-                                                              //         mainAxisAlignment: MainAxisAlignment.center,
-                                                              //         children: [
-                                                              //           RichText(
-                                                              //             text: TextSpan(
-                                                              //               text: 'Own - ',
-                                                              //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                                              //               children: <TextSpan>[
-                                                              //                 TextSpan(
-                                                              //                     text: cont.ownCompletedUdinPending[index].toString(),
-                                                              //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                              //               ],
-                                                              //             ),
-                                                              //           ),
-                                                              //           const VerticalDivider(
-                                                              //             color: grey,
-                                                              //             thickness: 2,
-                                                              //           ),
-                                                              //            RichText(
-                                                              //             text: TextSpan(
-                                                              //               text: 'Team - ',
-                                                              //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                                              //               children: <TextSpan>[
-                                                              //                 TextSpan(
-                                                              //                     text: cont.teamCompletedUdinPending[index].toString(),
-                                                              //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                              //               ],
-                                                              //             ),
-                                                              //           ),
-                                                              //         ],
-                                                              //       ),
-                                                              //     ),
-                                                              //   ],
-                                                              // ),
                                                               child: IntrinsicHeight(
                                                                 child: Row(
                                                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -464,7 +451,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                         child:Column(
                                                                           children: [
                                                                             buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                            buildTextBoldWidget(cont.ownCompletedUdinPending[0].toString(), blackColor, context, 16.0),
+                                                                            buildTextBoldWidget(cont.ownCompletedUdinPending[0].toString(), blackColor,
+                                                                                context, 16.0,decoration: TextDecoration.underline),
                                                                           ],
                                                                         )
                                                                     ),
@@ -479,7 +467,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                       child: Column(
                                                                         children: [
                                                                           buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                          buildTextBoldWidget(cont.teamCompletedUdinPending[0].toString(), blackColor, context, 16.0),
+                                                                          buildTextBoldWidget(cont.teamCompletedUdinPending[0].toString(), blackColor,
+                                                                              context, 16.0,decoration: TextDecoration.underline),
                                                                         ],
                                                                       ),
                                                                     ),
@@ -509,7 +498,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.ownWorkOnHold.isEmpty?"":cont.ownWorkOnHold[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownWorkOnHold.isEmpty?"":cont.ownWorkOnHold[0].toString(),
+                                                                        blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),
                                                               ),
@@ -524,7 +514,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.teamWorkOnHold.isEmpty?"":cont.teamWorkOnHold[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.teamWorkOnHold.isEmpty?"":cont.teamWorkOnHold[0].toString(), blackColor,
+                                                                        context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),)
                                                             ],
@@ -552,7 +543,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.ownSubmittedForChecking.isEmpty?"":cont.ownSubmittedForChecking[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownSubmittedForChecking.isEmpty?"":cont.ownSubmittedForChecking[0].toString(),
+                                                                        blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),
                                                               ),
@@ -567,7 +559,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.teamSubmittedForChecking.isEmpty?"":cont.teamSubmittedForChecking[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.teamSubmittedForChecking.isEmpty?"":cont.teamSubmittedForChecking[0].toString(),
+                                                                        blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),
                                                               ),
@@ -584,75 +577,6 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                   child:Card(
                                                       child: Padding(
                                                         padding: const EdgeInsets.all(5.0),
-                                                        ///1
-                                                        // child: Column(
-                                                        //   children: [
-                                                        //     buildTextBoldWidget(cont.chartDetails[index], cont.chartColors[index], context, 14.0),
-                                                        //     const SizedBox(height: 5.0,),
-                                                        //     IntrinsicHeight(
-                                                        //       child: Row(
-                                                        //         crossAxisAlignment: CrossAxisAlignment.center,
-                                                        //         mainAxisAlignment: MainAxisAlignment.center,
-                                                        //         children: [
-                                                        //           RichText(
-                                                        //             text: TextSpan(
-                                                        //               text: 'Own - ',
-                                                        //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                                        //               children: <TextSpan>[
-                                                        //                 TextSpan(
-                                                        //                     text: cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[index].toString(),
-                                                        //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                        //               ],
-                                                        //             ),
-                                                        //           ),
-                                                        //           //buildTextRegularWidget("Own - ${cont.ownAllottedNotStarted[index].toString()}", blackColor, context, 14.0),
-                                                        //           const VerticalDivider(
-                                                        //             color: grey,
-                                                        //             thickness: 2,
-                                                        //           ),
-                                                        //           //buildTextRegularWidget("Team - ${cont.teamAllottedNotStarted[index].toString()}", blackColor, context, 14.0),
-                                                        //           RichText(
-                                                        //             text: TextSpan(
-                                                        //               text: 'Team - ',
-                                                        //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                                        //               children: <TextSpan>[
-                                                        //                 TextSpan(
-                                                        //                     text: cont.teamAllTaskCompleted.isEmpty?"":cont.teamAllTaskCompleted[index].toString(),
-                                                        //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                        //               ],
-                                                        //             ),
-                                                        //           ),
-                                                        //         ],
-                                                        //       ),
-                                                        //     ),
-                                                        //   ],
-                                                        // ),
-                                                        ///2
-                                                        // child: IntrinsicHeight(
-                                                        //   child: Row(
-                                                        //     crossAxisAlignment: CrossAxisAlignment.center,
-                                                        //     mainAxisAlignment: MainAxisAlignment.center,
-                                                        //     children: [
-                                                        //       Column(
-                                                        //         children: [
-                                                        //           buildTextBoldWidget("Own", blackColor, context, 16.0),
-                                                        //           buildTextRegularWidget(cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[0].toString(), blackColor, context, 16.0),
-                                                        //         ],
-                                                        //       ),
-                                                        //       const VerticalDivider(
-                                                        //         color: grey,
-                                                        //         thickness: 2,
-                                                        //       ),
-                                                        //       Column(
-                                                        //         children: [
-                                                        //           buildTextBoldWidget("Team", blackColor, context, 16.0),
-                                                        //           buildTextRegularWidget(cont.teamAllTaskCompleted.isEmpty ? "" :cont.teamAllTaskCompleted[0].toString(), blackColor, context, 16.0),
-                                                        //         ],
-                                                        //       ),
-                                                        //     ],
-                                                        //   ),
-                                                        // ),
-                                                        ///3
                                                         child: IntrinsicHeight(
                                                           child: Row(
                                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -665,7 +589,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[0].toString(), blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),
                                                               ),
@@ -680,7 +604,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.teamAllTaskCompleted.isEmpty ? "" :cont.teamAllTaskCompleted[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.teamAllTaskCompleted.isEmpty ? "" :cont.teamAllTaskCompleted[0].toString(), blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),
                                                               ),
@@ -736,66 +660,76 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                     Stack(
                                       alignment: Alignment.center,
                                         children: [
-                                          PieChart(
-                                            dataMap:
-                                            index == 0 ? cont.triggerNotAllottedValues :
-                                            index == 1 ? cont.allottedNotStartedValues :
-                                            index == 2 ? cont.startedNotCompletedValues :
-                                            index == 3 ? cont.completedIdPendingValues :
-                                            index == 4 ? cont.completedNotBilledValues :
-                                            index == 5 ? cont.workOnHoldValues :
-                                            index == 6 ? cont.submittedForCheckingValues : cont.allTasksCompletedValues,
+                                          GestureDetector(
+                                            onTap: (){
+                                              Utils.showAlertSnackBar("Please click on particular count!");
+                                            },
+                                            child: PieChart(
+                                              dataMap:
+                                              index == 0 ? cont.triggerNotAllottedValues :
+                                              index == 1 ? cont.allottedNotStartedValues :
+                                              index == 2 ? cont.startedNotCompletedValues :
+                                              index == 3 ? cont.completedIdPendingValues :
+                                              index == 4 ? cont.completedNotBilledValues :
+                                              index == 5 ? cont.workOnHoldValues :
+                                              index == 6 ? cont.submittedForCheckingValues : cont.allTasksCompletedValues,
 
-                                            animationDuration: const Duration(milliseconds: 800),
-                                            chartLegendSpacing: 32,
-                                            chartRadius: MediaQuery.of(context).size.width / 2.5,
+                                              animationDuration: const Duration(milliseconds: 800),
+                                              chartLegendSpacing: 32,
+                                              chartRadius: MediaQuery.of(context).size.width / 2.5,
 
-                                            colorList: index == 0 ? cont.triggerNotAllottedColors :
-                                            index == 1 ? cont.allottedNotStartedColors :
-                                            index == 2 ? cont.startedNotCompletedColors :
-                                            index == 3 ? cont.completedIdPendingColors :
-                                            index == 4 ? cont.completedNotBilledColors :
-                                            index == 5 ? cont.workOnHoldColors:
-                                            index == 6 ? cont.submittedForCheckingColors :cont.allTasksCompletedColors,
+                                              colorList: index == 0 ? cont.triggerNotAllottedColors :
+                                              index == 1 ? cont.allottedNotStartedColors :
+                                              index == 2 ? cont.startedNotCompletedColors :
+                                              index == 3 ? cont.completedIdPendingColors :
+                                              index == 4 ? cont.completedNotBilledColors :
+                                              index == 5 ? cont.workOnHoldColors:
+                                              index == 6 ? cont.submittedForCheckingColors :cont.allTasksCompletedColors,
 
-                                            initialAngleInDegree: 0,
-                                            chartType: ChartType.ring,
-                                            ringStrokeWidth: 42,
+                                              initialAngleInDegree: 0,
+                                              chartType: ChartType.ring,
+                                              ringStrokeWidth: 42,
 
-                                            // centerText: index == 0 ? cont.triggerNotAllottedTotal :
-                                            // index == 1 ? cont.allottedNotStartedTotal :
-                                            // index == 2 ? cont.startedNotCompletedTotal :
-                                            // index == 3 ? cont.completedIdPendingTotal :
-                                            // index == 4 ? cont.completedNotBilledTotal :
-                                            // index == 5 ? cont.workOnHoldTotal :
-                                            // index == 6 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
+                                              // centerText: index == 0 ? cont.triggerNotAllottedTotal :
+                                              // index == 1 ? cont.allottedNotStartedTotal :
+                                              // index == 2 ? cont.startedNotCompletedTotal :
+                                              // index == 3 ? cont.completedIdPendingTotal :
+                                              // index == 4 ? cont.completedNotBilledTotal :
+                                              // index == 5 ? cont.workOnHoldTotal :
+                                              // index == 6 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
 
-                                            //centerTextStyle: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
-                                            legendOptions: const LegendOptions(
-                                              showLegendsInRow: false,
-                                              legendPosition: LegendPosition.bottom,
-                                              showLegends: false,
-                                              legendShape: BoxShape.circle,
-                                              legendTextStyle: TextStyle(fontWeight: FontWeight.bold,height: 2.0),
-                                            ),
-                                            chartValuesOptions: const ChartValuesOptions(
-                                              showChartValueBackground: true,
-                                              showChartValues: false,
-                                              showChartValuesInPercentage: false,
-                                              showChartValuesOutside: true,
-                                              decimalPlaces: 1,
+                                              //centerTextStyle: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
+                                              legendOptions: const LegendOptions(
+                                                showLegendsInRow: false,
+                                                legendPosition: LegendPosition.bottom,
+                                                showLegends: false,
+                                                legendShape: BoxShape.circle,
+                                                legendTextStyle: TextStyle(fontWeight: FontWeight.bold,height: 2.0),
+                                              ),
+                                              chartValuesOptions: const ChartValuesOptions(
+                                                showChartValueBackground: true,
+                                                showChartValues: false,
+                                                showChartValuesInPercentage: false,
+                                                showChartValuesOutside: true,
+                                                decimalPlaces: 1,
+                                              ),
                                             ),
                                           ),
                                           Center(
-                                            child: Text(
-                                                index == 0 ? cont.triggerNotAllottedTotal :
-                                                index == 1 ? cont.allottedNotStartedTotal :
-                                                index == 2 ? cont.startedNotCompletedTotal :
-                                                index == 3 ? cont.completedIdPendingTotal :
-                                                index == 4 ? cont.completedNotBilledTotal :
-                                                index == 5 ? cont.workOnHoldTotal :
-                                                index == 6 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
-                                              style: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
+                                            child: GestureDetector(
+                                              onTap: (){
+                                                Utils.showAlertSnackBar("Please click on particular count!");
+                                              },
+                                              child: Text(
+                                                  index == 0 ? cont.triggerNotAllottedTotal :
+                                                  index == 1 ? cont.allottedNotStartedTotal :
+                                                  index == 2 ? cont.startedNotCompletedTotal :
+                                                  index == 3 ? cont.completedIdPendingTotal :
+                                                  index == 4 ? cont.completedNotBilledTotal :
+                                                  index == 5 ? cont.workOnHoldTotal :
+                                                  index == 6 ? cont.submittedForCheckingTotal : cont.allTasksCompletedTotal,
+                                                style: const TextStyle(color: primaryColor,fontSize: 20.0,fontWeight: FontWeight.bold),
+                                              ),
                                             ),
                                           )
                                         ],
@@ -847,7 +781,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child:Column(
                                                                   children: [
                                                                     buildTextBoldWidget(cont.chartDetails[index], cont.chartColors[index], context, 16.0),
-                                                                    buildTextBoldWidget(cont.triggeredNotAllotted.isEmpty?"":cont.triggeredNotAllotted[index].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.triggeredNotAllotted.isEmpty?"":cont.triggeredNotAllotted[index].toString(), blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 )
                                                             ),
@@ -868,7 +802,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                           child:Card(
                                                             child: Padding(
                                                               padding:const EdgeInsets.all(10.0),
-                                                              child: buildTextBoldWidget(cont.completedNotBilled[index].toString(), blackColor, context, 16.0,align: TextAlign.center),
+                                                              child: buildTextBoldWidget(cont.completedNotBilled[index].toString(), blackColor, context, 16.0,align: TextAlign.center,decoration: TextDecoration.underline),
                                                             ),
                                                           )
                                                         )
@@ -918,7 +852,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                       RichText(
                                                                         text: TextSpan(
                                                                             text: 'Own - ',
-                                                                            style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 16.0),
+                                                                            style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,
+                                                                                fontSize: 16.0,),
                                                                             children: <TextSpan>[
                                                                               TextSpan(
                                                                                   recognizer: TapGestureRecognizer()..onTap= () {
@@ -927,7 +862,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                                     );
                                                                                   },
                                                                                   text: cont.ownAllottedNotStarted.isEmpty ? "" :cont.ownAllottedNotStarted[index].toString(),
-                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0,decoration: TextDecoration.underline)),
                                                                             ],
                                                                             recognizer: TapGestureRecognizer()..onTap= () {
                                                                               cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Own",
@@ -950,7 +885,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                                 cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Team",cont.teamAllottedNotStarted[index].toString());
                                                                               },
                                                                                 text: cont.teamAllottedNotStarted.isEmpty ? "" :cont.teamAllottedNotStarted[index].toString(),
-                                                                                style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                                style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0,decoration: TextDecoration.underline)),
                                                                           ],
                                                                             recognizer: TapGestureRecognizer()..onTap= () {
                                                                               cont.callDueDataApi(cont.allottedNotStartedDetails[index],"Team",cont.teamAllottedNotStarted[index].toString());
@@ -997,7 +932,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                                         cont.startedNotCompletedDetails[index],"Own",cont.ownStartedNotCompleted[index].toString());
                                                                                   },
                                                                                   text: cont.ownStartedNotCompleted.isEmpty ? "" :cont.ownStartedNotCompleted[index].toString(),
-                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0,decoration: TextDecoration.underline)),
                                                                             ],
                                                                               recognizer: TapGestureRecognizer()..onTap= () {
                                                                                 cont.callDueDataForStartedNotCompletedApi(
@@ -1019,7 +954,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                             cont.callDueDataForStartedNotCompletedApi(cont.startedNotCompletedDetails[index],"Team",cont.teamStartedNotCompleted[index].toString());
                                                                           },
                                                                                   text: cont.teamStartedNotCompleted[index].toString(),
-                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0)),
+                                                                                  style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0,decoration: TextDecoration.underline)),
                                                                             ],
                                                                               recognizer: TapGestureRecognizer()..onTap= () {
                                                                                 cont.callDueDataForStartedNotCompletedApi(cont.startedNotCompletedDetails[index],"Team",cont.teamStartedNotCompleted[index].toString());
@@ -1046,46 +981,6 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                         child:Card(
                                                             child: Padding(
                                                               padding: const EdgeInsets.all(5.0),
-                                                              // child: Column(
-                                                              //   children: [
-                                                              //     buildTextBoldWidget(cont.chartDetails[index], cont.chartColors[index], context, 14.0),
-                                                              //     const SizedBox(height: 5.0,),
-                                                              //     IntrinsicHeight(
-                                                              //       child: Row(
-                                                              //         crossAxisAlignment: CrossAxisAlignment.center,
-                                                              //         mainAxisAlignment: MainAxisAlignment.center,
-                                                              //         children: [
-                                                              //           RichText(
-                                                              //             text: TextSpan(
-                                                              //               text: 'Own - ',
-                                                              //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                                              //               children: <TextSpan>[
-                                                              //                 TextSpan(
-                                                              //                     text: cont.ownCompletedUdinPending[index].toString(),
-                                                              //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                              //               ],
-                                                              //             ),
-                                                              //           ),
-                                                              //           const VerticalDivider(
-                                                              //             color: grey,
-                                                              //             thickness: 2,
-                                                              //           ),
-                                                              //            RichText(
-                                                              //             text: TextSpan(
-                                                              //               text: 'Team - ',
-                                                              //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                                              //               children: <TextSpan>[
-                                                              //                 TextSpan(
-                                                              //                     text: cont.teamCompletedUdinPending[index].toString(),
-                                                              //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                              //               ],
-                                                              //             ),
-                                                              //           ),
-                                                              //         ],
-                                                              //       ),
-                                                              //     ),
-                                                              //   ],
-                                                              // ),
                                                               child: IntrinsicHeight(
                                                                 child: Row(
                                                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -1098,7 +993,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                       child:Column(
                                                                         children: [
                                                                           buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                          buildTextBoldWidget(cont.ownCompletedUdinPending[0].toString(), blackColor, context, 16.0),
+                                                                          buildTextBoldWidget(cont.ownCompletedUdinPending[0].toString(), blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                         ],
                                                                       )
                                                                     ),
@@ -1113,7 +1008,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                       child: Column(
                                                                         children: [
                                                                           buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                          buildTextBoldWidget(cont.teamCompletedUdinPending[0].toString(), blackColor, context, 16.0),
+                                                                          buildTextBoldWidget(cont.teamCompletedUdinPending[0].toString(), blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                         ],
                                                                       ),
                                                                     ),
@@ -1127,45 +1022,6 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                               index == 5
                                                   ?
                                               cont.workOnHoldValues.isEmpty ? const Text(""):
-                                              // ListView.builder(
-                                              //     shrinkWrap: true,
-                                              //     physics: const NeverScrollableScrollPhysics(),
-                                              //     itemCount: cont.workOnHoldValues.length,
-                                              //     itemBuilder: (context,index){
-                                              //       return Padding(
-                                              //           padding: const EdgeInsets.all(2.0),
-                                              //           child:Card(
-                                              //               child: Padding(
-                                              //                 padding: const EdgeInsets.all(5.0),
-                                              //                 child: IntrinsicHeight(
-                                              //                   child: Row(
-                                              //                     crossAxisAlignment: CrossAxisAlignment.center,
-                                              //                     mainAxisAlignment: MainAxisAlignment.center,
-                                              //                     children: [
-                                              //                       Column(
-                                              //                         children: [
-                                              //                           buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                              //                           buildTextBoldWidget(cont.ownWorkOnHold.isEmpty?"":cont.ownWorkOnHold[index].toString(), blackColor, context, 16.0),
-                                              //                         ],
-                                              //                       ),
-                                              //                       const VerticalDivider(
-                                              //                         color: grey,
-                                              //                         thickness: 2,
-                                              //                       ),
-                                              //                       Column(
-                                              //                         children: [
-                                              //                           buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                              //                           buildTextBoldWidget(cont.teamWorkOnHold.isEmpty?"":cont.teamWorkOnHold[index].toString(), blackColor, context, 16.0),
-                                              //                         ],
-                                              //                       ),
-                                              //                     ],
-                                              //                   ),
-                                              //                 ),
-                                              //               )
-                                              //           )
-                                              //       );
-                                              //     })
-
                                               Padding(
                                                   padding: const EdgeInsets.all(2.0),
                                                   child:Card(
@@ -1183,7 +1039,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.ownWorkOnHold.isEmpty?"":cont.ownWorkOnHold[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownWorkOnHold.isEmpty?"":cont.ownWorkOnHold[0].toString(), blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),
                                                               ),
@@ -1198,7 +1054,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                               child: Column(
                                                                 children: [
                                                                   buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                  buildTextBoldWidget(cont.teamWorkOnHold.isEmpty?"":cont.teamWorkOnHold[0].toString(), blackColor, context, 16.0),
+                                                                  buildTextBoldWidget(cont.teamWorkOnHold.isEmpty?"":cont.teamWorkOnHold[0].toString(), blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                 ],
                                                               ),)
                                                             ],
@@ -1211,84 +1067,6 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                   :
                                               index == 6
                                                   ? cont.submittedForCheckingValues.isEmpty ? const Text(""):
-                                              // ListView.builder(
-                                              //     shrinkWrap: true,
-                                              //     physics: const NeverScrollableScrollPhysics(),
-                                              //     itemCount: cont.submittedForCheckingValues.length,
-                                              //     itemBuilder: (context,index){
-                                              //       return Padding(
-                                              //           padding: const EdgeInsets.all(2.0),
-                                              //           child:Card(
-                                              //               child: Padding(
-                                              //                 padding: const EdgeInsets.all(5.0),
-                                              //                 // child: Column(
-                                              //                 //   children: [
-                                              //                 //     buildTextBoldWidget(cont.chartDetails[index], cont.submittedForCheckingColors[index], context, 14.0),
-                                              //                 //     const SizedBox(height: 5.0,),
-                                              //                 //     IntrinsicHeight(
-                                              //                 //       child: Row(
-                                              //                 //         crossAxisAlignment: CrossAxisAlignment.center,
-                                              //                 //         mainAxisAlignment: MainAxisAlignment.center,
-                                              //                 //         children: [
-                                              //                 //           RichText(
-                                              //                 //             text: TextSpan(
-                                              //                 //               text: 'Own - ',
-                                              //                 //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                              //                 //               children: <TextSpan>[
-                                              //                 //                 TextSpan(
-                                              //                 //                     text: cont.ownSubmittedForChecking[index].toString(),
-                                              //                 //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                              //                 //               ],
-                                              //                 //             ),
-                                              //                 //           ),
-                                              //                 //           const VerticalDivider(
-                                              //                 //             color: grey,
-                                              //                 //             thickness: 2,
-                                              //                 //           ),
-                                              //                 //           RichText(
-                                              //                 //             text: TextSpan(
-                                              //                 //               text: 'Team - ',
-                                              //                 //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                              //                 //               children: <TextSpan>[
-                                              //                 //                 TextSpan(
-                                              //                 //                     text: cont.teamSubmittedForChecking[index].toString(),
-                                              //                 //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                              //                 //               ],
-                                              //                 //             ),
-                                              //                 //           ),
-                                              //                 //         ],
-                                              //                 //       ),
-                                              //                 //     ),
-                                              //                 //   ],
-                                              //                 // ),
-                                              //                 child: IntrinsicHeight(
-                                              //                   child: Row(
-                                              //                     crossAxisAlignment: CrossAxisAlignment.center,
-                                              //                     mainAxisAlignment: MainAxisAlignment.center,
-                                              //                     children: [
-                                              //                       Column(
-                                              //                         children: [
-                                              //                           buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                              //                           buildTextBoldWidget(cont.ownSubmittedForChecking[index].toString(), blackColor, context, 16.0),
-                                              //                         ],
-                                              //                       ),
-                                              //                       const VerticalDivider(
-                                              //                         color: grey,
-                                              //                         thickness: 2,
-                                              //                       ),
-                                              //                       Column(
-                                              //                         children: [
-                                              //                           buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                              //                           buildTextBoldWidget(cont.teamSubmittedForChecking[index].toString(), blackColor, context, 16.0),
-                                              //                         ],
-                                              //                       ),
-                                              //                     ],
-                                              //                   ),
-                                              //                 ),
-                                              //               )
-                                              //           )
-                                              //       );
-                                              //     })
                                               Padding(
                                                   padding: const EdgeInsets.all(2.0),
                                                   child:Card(
@@ -1306,7 +1084,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.ownSubmittedForChecking.isEmpty?"":cont.ownSubmittedForChecking[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownSubmittedForChecking.isEmpty?"":cont.ownSubmittedForChecking[0].toString(), blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),
                                                               ),
@@ -1321,7 +1099,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.teamSubmittedForChecking.isEmpty?"":cont.teamSubmittedForChecking[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.teamSubmittedForChecking.isEmpty?"":cont.teamSubmittedForChecking[0].toString(), blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),
                                                               ),
@@ -1334,161 +1112,12 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
 
                                                   :
                                               cont.allTasksCompletedValues.isEmpty ? const Text("") :
-                                              // ListView.builder(
-                                              //     shrinkWrap: true,
-                                              //     physics: const NeverScrollableScrollPhysics(),
-                                              //     itemCount: cont.allTasksCompletedValues.length,
-                                              //     itemBuilder: (context,index){
-                                              //       return Padding(
-                                              //           padding: const EdgeInsets.all(2.0),
-                                              //           child:Card(
-                                              //               child: Padding(
-                                              //                 padding: const EdgeInsets.all(5.0),
-                                              //                 // child: Column(
-                                              //                 //   children: [
-                                              //                 //     buildTextBoldWidget(cont.chartDetails[index], cont.chartColors[index], context, 14.0),
-                                              //                 //     const SizedBox(height: 5.0,),
-                                              //                 //     IntrinsicHeight(
-                                              //                 //       child: Row(
-                                              //                 //         crossAxisAlignment: CrossAxisAlignment.center,
-                                              //                 //         mainAxisAlignment: MainAxisAlignment.center,
-                                              //                 //         children: [
-                                              //                 //           RichText(
-                                              //                 //             text: TextSpan(
-                                              //                 //               text: 'Own - ',
-                                              //                 //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                              //                 //               children: <TextSpan>[
-                                              //                 //                 TextSpan(
-                                              //                 //                     text: cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[index].toString(),
-                                              //                 //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                              //                 //               ],
-                                              //                 //             ),
-                                              //                 //           ),
-                                              //                 //           //buildTextRegularWidget("Own - ${cont.ownAllottedNotStarted[index].toString()}", blackColor, context, 14.0),
-                                              //                 //           const VerticalDivider(
-                                              //                 //             color: grey,
-                                              //                 //             thickness: 2,
-                                              //                 //           ),
-                                              //                 //           //buildTextRegularWidget("Team - ${cont.teamAllottedNotStarted[index].toString()}", blackColor, context, 14.0),
-                                              //                 //           RichText(
-                                              //                 //             text: TextSpan(
-                                              //                 //               text: 'Team - ',
-                                              //                 //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                              //                 //               children: <TextSpan>[
-                                              //                 //                 TextSpan(
-                                              //                 //                     text: cont.teamAllTaskCompleted.isEmpty?"":cont.teamAllTaskCompleted[index].toString(),
-                                              //                 //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                              //                 //               ],
-                                              //                 //             ),
-                                              //                 //           ),
-                                              //                 //         ],
-                                              //                 //       ),
-                                              //                 //     ),
-                                              //                 //   ],
-                                              //                 // ),
-                                              //                 child: IntrinsicHeight(
-                                              //                   child: Row(
-                                              //                     crossAxisAlignment: CrossAxisAlignment.center,
-                                              //                     mainAxisAlignment: MainAxisAlignment.center,
-                                              //                     children: [
-                                              //                       Column(
-                                              //                         children: [
-                                              //                           buildTextBoldWidget("Own", blackColor, context, 16.0),
-                                              //                           buildTextRegularWidget(cont.ownAllTaskCompleted[0].toString(), blackColor, context, 16.0),
-                                              //                         ],
-                                              //                       ),
-                                              //                       const VerticalDivider(
-                                              //                         color: grey,
-                                              //                         thickness: 2,
-                                              //                       ),
-                                              //                       Column(
-                                              //                         children: [
-                                              //                           buildTextBoldWidget("Team", blackColor, context, 16.0),
-                                              //                           buildTextRegularWidget(cont.teamAllTaskCompleted[0].toString(), blackColor, context, 16.0),
-                                              //                         ],
-                                              //                       ),
-                                              //                     ],
-                                              //                   ),
-                                              //                 ),
-                                              //               )
-                                              //           )
-                                              //       );
-                                              //     }),
 
                                               Padding(
                                                   padding: const EdgeInsets.all(2.0),
                                                   child:Card(
                                                       child: Padding(
                                                         padding: const EdgeInsets.all(5.0),
-                                                        ///1
-                                                        // child: Column(
-                                                        //   children: [
-                                                        //     buildTextBoldWidget(cont.chartDetails[index], cont.chartColors[index], context, 14.0),
-                                                        //     const SizedBox(height: 5.0,),
-                                                        //     IntrinsicHeight(
-                                                        //       child: Row(
-                                                        //         crossAxisAlignment: CrossAxisAlignment.center,
-                                                        //         mainAxisAlignment: MainAxisAlignment.center,
-                                                        //         children: [
-                                                        //           RichText(
-                                                        //             text: TextSpan(
-                                                        //               text: 'Own - ',
-                                                        //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                                        //               children: <TextSpan>[
-                                                        //                 TextSpan(
-                                                        //                     text: cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[index].toString(),
-                                                        //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                        //               ],
-                                                        //             ),
-                                                        //           ),
-                                                        //           //buildTextRegularWidget("Own - ${cont.ownAllottedNotStarted[index].toString()}", blackColor, context, 14.0),
-                                                        //           const VerticalDivider(
-                                                        //             color: grey,
-                                                        //             thickness: 2,
-                                                        //           ),
-                                                        //           //buildTextRegularWidget("Team - ${cont.teamAllottedNotStarted[index].toString()}", blackColor, context, 14.0),
-                                                        //           RichText(
-                                                        //             text: TextSpan(
-                                                        //               text: 'Team - ',
-                                                        //               style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                                        //               children: <TextSpan>[
-                                                        //                 TextSpan(
-                                                        //                     text: cont.teamAllTaskCompleted.isEmpty?"":cont.teamAllTaskCompleted[index].toString(),
-                                                        //                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                        //               ],
-                                                        //             ),
-                                                        //           ),
-                                                        //         ],
-                                                        //       ),
-                                                        //     ),
-                                                        //   ],
-                                                        // ),
-                                                        ///2
-                                                        // child: IntrinsicHeight(
-                                                        //   child: Row(
-                                                        //     crossAxisAlignment: CrossAxisAlignment.center,
-                                                        //     mainAxisAlignment: MainAxisAlignment.center,
-                                                        //     children: [
-                                                        //       Column(
-                                                        //         children: [
-                                                        //           buildTextBoldWidget("Own", blackColor, context, 16.0),
-                                                        //           buildTextRegularWidget(cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[0].toString(), blackColor, context, 16.0),
-                                                        //         ],
-                                                        //       ),
-                                                        //       const VerticalDivider(
-                                                        //         color: grey,
-                                                        //         thickness: 2,
-                                                        //       ),
-                                                        //       Column(
-                                                        //         children: [
-                                                        //           buildTextBoldWidget("Team", blackColor, context, 16.0),
-                                                        //           buildTextRegularWidget(cont.teamAllTaskCompleted.isEmpty ? "" :cont.teamAllTaskCompleted[0].toString(), blackColor, context, 16.0),
-                                                        //         ],
-                                                        //       ),
-                                                        //     ],
-                                                        //   ),
-                                                        // ),
-                                                        ///3
                                                         child: IntrinsicHeight(
                                                           child: Row(
                                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -1501,7 +1130,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Own", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.ownAllTaskCompleted.isEmpty ? "" :cont.ownAllTaskCompleted[0].toString(), blackColor,
+                                                                        context, 16.0, decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),
                                                               ),
@@ -1516,7 +1146,8 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                 child: Column(
                                                                   children: [
                                                                     buildTextRegularWidget("Team", blackColor, context, 16.0),
-                                                                    buildTextBoldWidget(cont.teamAllTaskCompleted.isEmpty ? "" :cont.teamAllTaskCompleted[0].toString(), blackColor, context, 16.0),
+                                                                    buildTextBoldWidget(cont.teamAllTaskCompleted.isEmpty ? "" :cont.teamAllTaskCompleted[0].toString(),
+                                                                        blackColor, context, 16.0,decoration: TextDecoration.underline),
                                                                   ],
                                                                 ),
                                                               ),
@@ -1526,108 +1157,18 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                       )
                                                   )
                                               ),
-                                              //  Padding(
-                                              //   padding: const EdgeInsets.all(2.0),
-                                              //   child: Card(
-                                              //       elevation: 1.0,
-                                              //       child: Padding(
-                                              //         padding: const EdgeInsets.all(5.0),
-                                              //         child: Column(
-                                              //           crossAxisAlignment: CrossAxisAlignment.center,
-                                              //           mainAxisAlignment: MainAxisAlignment.center,
-                                              //           children: [
-                                              //             buildTextBoldWidget("Total", blackColor, context, 14.0),
-                                              //             IntrinsicHeight(
-                                              //               child: Row(
-                                              //                 crossAxisAlignment: CrossAxisAlignment.center,
-                                              //                 mainAxisAlignment: MainAxisAlignment.center,
-                                              //                 children: [
-                                              //                   RichText(
-                                              //                     text: TextSpan(
-                                              //                       text: 'Own - ',
-                                              //                       style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                              //                       children: <TextSpan>[
-                                              //                         TextSpan(text:
-                                              //                           index == 1 ? cont.allottedOwnTotal.toString() :
-                                              //                           index == 2 ? cont.startedNotCompletedOwnTotal.toString() :
-                                              //                           index == 3 ? cont.completedIdPendingOwnTotal.toString() :
-                                              //                           index == 5 ? cont.workOnHoldOwnTotal.toString() :
-                                              //                           index == 6 ? cont.submittedForCheckingOwnTotal.toString() :
-                                              //                           cont.allTaskCompletedOwnTotal.toString(),
-                                              //                             style: const TextStyle(fontWeight: FontWeight.bold)),
-                                              //                       ],
-                                              //                     ),
-                                              //                   ),
-                                              //                   //buildTextRegularWidget("Own - ${cont.allottedOwnTotal.toString()}", blackColor, context, 14.0),
-                                              //                   const VerticalDivider(
-                                              //                     color: grey,
-                                              //                     thickness: 2,
-                                              //                   ),
-                                              //                   RichText(
-                                              //                     text: TextSpan(
-                                              //                       text: 'Team - ',
-                                              //                       style: const TextStyle(fontWeight: FontWeight.normal,color: blackColor,fontSize: 14.0),
-                                              //                       children: <TextSpan>[
-                                              //                         TextSpan(
-                                              //                             text: index == 1 ? cont.allottedTeamTotal.toString() :
-                                              //                                 index == 2 ? cont.startedNotCompletedTeamTotal.toString() :
-                                              //                                 index == 3 ? cont.completedIdPendingTeamTotal.toString() :
-                                              //                                 index == 5 ? cont.workOnHoldTeamTotal.toString() :
-                                              //                                 index == 6 ? cont.submittedForCheckingTeamTotal.toString() :
-                                              //                                 cont.allTaskCompletedTeamTotal.toString(),
-                                              //                             style: const TextStyle(fontWeight: FontWeight.bold)),
-                                              //                       ],
-                                              //                     ),
-                                              //                   ),
-                                              //                   //buildTextRegularWidget("Team - ${cont.allottedTeamTotal.toString()}", blackColor, context, 14.0),
-                                              //                 ],
-                                              //               ),
-                                              //             ),
-                                              //             const SizedBox(height: 10.0,),
-                                              //           ],
-                                              //         ),
-                                              //       )
-                                              //   ),
-                                              // )
                                             ],
                                           )
                                       )),
                                     ],
                                   )
                               ),
-
-                              // Padding(
-                              //   padding : const EdgeInsets.only(bottom:150.0),
-                              //   child: ExpandableFab(
-                              //       key: _key,
-                              //       children : [
-                              //         FloatingActionButton.small(
-                              //             onPressed: (){},heroTag: null,
-                              //             backgroundColor: Colors.red,
-                              //             child:buildTextRegularWidget("Petty Task", blackColor, context, 12.0)
-                              //         )
-                              //       ]
-                              //   ),
-                              // ),
                             ],
                           ),
                         );
                       }
                   )
               ))),
-      // floatingActionButton: Padding(
-      //     padding : const EdgeInsets.only(bottom:150.0),
-      //   child: ExpandableFab(
-      //     key: _key,
-      //     children : [
-      //       FloatingActionButton.small(
-      //           onPressed: (){},
-      //           backgroundColor: Colors.red,
-      //       child:buildTextRegularWidget("Petty Task", blackColor, context, 12.0)
-      //       )
-      //     ]
-      //   ),
-      // )
         ));
     });
   }

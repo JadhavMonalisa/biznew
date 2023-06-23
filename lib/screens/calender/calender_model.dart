@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+
 class CalenderModel {
   String? message;
   bool? success;
@@ -27,19 +31,25 @@ class CalenderModel {
   }
 }
 
+//Color formattedColor = Colors.primaries[Random().nextInt(Colors.primaries.length)];
+
 class CalenderData {
   String? title;
   String? start;
   String? constraint;
   String? color;
+  int? newColor;
+  //Color? ranColor;
+  Color? formattedColor;
 
-  CalenderData({this.title, this.start, this.constraint, this.color});
+  CalenderData({this.title, this.start, this.constraint, this.color, this.newColor, this.formattedColor});
 
   CalenderData.fromJson(Map<String, dynamic> json) {
-    title = json['title'];
-    start = json['start'];
-    constraint = json['constraint'];
-    color = json['color'];
+    title = json['title']??"";
+    start = json['start']??'';
+    constraint = json['constraint']??"";
+    color = json['color']??"";
+    newColor =  int.parse("0xFF${json['color'].toString().replaceAll("#", "")}");
   }
 
   Map<String, dynamic> toJson() {
