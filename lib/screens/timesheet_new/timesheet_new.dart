@@ -91,7 +91,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                         return
 
                           cont.currentStep == 0
-                          ? Padding(
+                              ? Padding(
                             padding: const EdgeInsets.only(top:30.0),
                             child:GestureDetector(
                                 onTap: (){
@@ -102,9 +102,9 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                 child:buildButtonWidget(context, "Next")
                             ),
                           )
-                          : cont.currentStep == 1 && cont.isFillTimesheetSelected == true
+                              : cont.currentStep == 1 && cont.isFillTimesheetSelected == true
                               ? cont.currentService == "allotted"
-                                  ? Padding(
+                              ? Padding(
                               padding: const EdgeInsets.only(top:30.0),
                               child: Row(
                                 children: [
@@ -128,21 +128,21 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                 ],
                               )
                           )
-                                  : Padding(
-                              padding: const EdgeInsets.only(top:30.0),
-                              child: GestureDetector(
-                                  onTap: (){
-                                    // if(cont.currentService == "")
-                                    // {
-                                    //   cont.checkValidationForNonAllotted(context);
-                                    // }
+                              : Padding(
+                            padding: const EdgeInsets.only(top:30.0),
+                            child: GestureDetector(
+                                onTap: (){
+                                  // if(cont.currentService == "")
+                                  // {
+                                  //   cont.checkValidationForNonAllotted(context);
+                                  // }
 
-                                    cont.currentService == "office"
-                                        ? cont.checkValidationForOffice(context)
-                                        : cont.checkValidationForNonAllotted(context);
-                                  },
-                                  child:buildButtonWidget(context, "Save")
-                              ),
+                                  cont.currentService == "office"
+                                      ? cont.checkValidationForOffice(context)
+                                      : cont.checkValidationForNonAllotted(context);
+                                },
+                                child:buildButtonWidget(context, "Save")
+                            ),
                           )
                               : const Opacity(opacity: 0.0);
                       },
@@ -542,503 +542,503 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
       )
 
           : cont.currentService == "allotted"
-              ? Padding(
-      padding: const EdgeInsets.only(left:5.0,right:5.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
+          ? Padding(
+        padding: const EdgeInsets.only(left:5.0,right:5.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                    onTap: (){
+                      cont.goToPreviousFromAllotted();
+                      //cont.cancel();
+                    },
+                    child:SizedBox(
+                        width: 80.0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildTextBoldWidget("Previous", primaryColor, context, 15.0),
+                            const Divider(thickness: 2.0,color: primaryColor,),
+                          ],
+                        )
+                    )
+                ),
+                GestureDetector(
                   onTap: (){
-                    cont.goToPreviousFromAllotted();
-                    //cont.cancel();
                   },
-                  child:SizedBox(
-                      width: 80.0,
+                  child: SizedBox(
+                      width: 40.0,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          buildTextBoldWidget("Previous", primaryColor, context, 15.0),
+                          buildTextBoldWidget("Skip", primaryColor, context, 15.0),
                           const Divider(thickness: 2.0,color: primaryColor,),
                         ],
                       )
-                  )
-              ),
-              GestureDetector(
-                onTap: (){
-                },
-                child: SizedBox(
-                    width: 40.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        buildTextBoldWidget("Skip", primaryColor, context, 15.0),
-                        const Divider(thickness: 2.0,color: primaryColor,),
-                      ],
-                    )
+                  ),
                 ),
+                GestureDetector(
+                  onTap: (){
+                  },
+                  child: SizedBox(
+                      width: 40.0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          buildTextBoldWidget("Next", primaryColor, context, 15.0),
+                          const Divider(thickness: 2.0,color: primaryColor,),
+                        ],
+                      )
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 10.0,),
+            buildTimeSheetTitle(context,"Allotted Services", fontSize:16.0),
+
+            const SizedBox(height: 10.0,),
+            MultiSelectDialogField<ClientListData>(
+              items: cont.items,
+              title: const Text("Employee"),
+              selectedColor: primaryColor,
+              decoration: BoxDecoration(
+                color: whiteColor,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                border: Border.all(color: grey,),
               ),
-              GestureDetector(
-                onTap: (){
-                },
-                child: SizedBox(
-                    width: 40.0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        buildTextBoldWidget("Next", primaryColor, context, 15.0),
-                        const Divider(thickness: 2.0,color: primaryColor,),
-                      ],
-                    )
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 10.0,),
-          buildTimeSheetTitle(context,"Allotted Services", fontSize:16.0),
-
-          const SizedBox(height: 10.0,),
-          MultiSelectDialogField<ClientListData>(
-            items: cont.items,
-            title: const Text("Employee"),
-            selectedColor: primaryColor,
-            decoration: BoxDecoration(
-              color: whiteColor,
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
-              border: Border.all(color: grey,),
-            ),
-            //initialValue: cont.allottedTimesheetSelectedEmpList,
-            buttonIcon: const Icon(
-              Icons.person,
-              color: blackColor,size: 20.0,
-            ),
-            buttonText: buildTextRegularWidget("Select employee", blackColor, context, 15.0),
-            onConfirm: (results) {
-              cont.onSelectionForMultipleEmployee(results);
-            },
-            chipDisplay: MultiSelectChipDisplay(
-              onTap: (value) {
-                cont.onDeleteMultipleEmployee(value);
+              //initialValue: cont.allottedTimesheetSelectedEmpList,
+              buttonIcon: const Icon(
+                Icons.person,
+                color: blackColor,size: 20.0,
+              ),
+              buttonText: buildTextRegularWidget("Select employee", blackColor, context, 15.0),
+              onConfirm: (results) {
+                cont.onSelectionForMultipleEmployee(results);
               },
-              icon: const Icon(Icons.clear,color: errorColor,),
-            ),
-          ),
-          const SizedBox(height: 15.0,),
-          MultiSelectDialogField<TimesheetServicesListData>(
-            items: cont.serviceItems,
-            title: const Text("Service"),
-            selectedColor: primaryColor,
-            decoration: BoxDecoration(
-              color: whiteColor,
-              borderRadius: const BorderRadius.all(Radius.circular(5)),
-              border: Border.all(color: grey,),
-            ),
-            //initialValue: cont.allottedTimesheetSelectedServiceList,
-            buttonIcon: const Icon(
-              Icons.person,
-              color: blackColor,size: 20.0,
-            ),
-            buttonText: buildTextRegularWidget("Select services", blackColor, context, 15.0),
-            onConfirm: (results) {
-              cont.onSelectionForMultipleService(results);
-            },
-            chipDisplay: MultiSelectChipDisplay(
-              onTap: (value) {
-                cont.onDeleteMultipleService(value);
-              },
-              icon: const Icon(Icons.clear,color: errorColor,),
-            ),
-          ),
-          const SizedBox(height: 15.0,),
-
-          buildTextBoldWidget("Also Fill", blackColor, context, 16.0),
-          const SizedBox(height: 5.0,),
-
-          Row(
-            children: <Widget>[
-               Checkbox(value: cont.cbNonAllotted,
-                  activeColor: Colors.green,
-                  onChanged:(newValue){
-                 cont.updateNonAllottedCheckBox(newValue!);
-                  }),
-              buildTextRegularWidget("Non Allotted Services", blackColor, context, 14.0)
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Checkbox(value: cont.cbOffice,
-                  activeColor: Colors.green,
-                  onChanged:(newValue){
-                    cont.updateOfficeCheckBox(newValue!);
-                  }),
-              buildTextRegularWidget("Office Related", blackColor, context, 14.0)
-            ],
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(top:30.0),
-            child:GestureDetector(
-                onTap: (){
-                  cont.fillTimesheet();
+              chipDisplay: MultiSelectChipDisplay(
+                onTap: (value) {
+                  cont.onDeleteMultipleEmployee(value);
                 },
-                child:buildButtonWidget(context, "Fill Timesheet")
+                icon: const Icon(Icons.clear,color: errorColor,),
+              ),
             ),
-          ),
+            const SizedBox(height: 15.0,),
+            MultiSelectDialogField<TimesheetServicesListData>(
+              items: cont.serviceItems,
+              title: const Text("Service"),
+              selectedColor: primaryColor,
+              decoration: BoxDecoration(
+                color: whiteColor,
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                border: Border.all(color: grey,),
+              ),
+              //initialValue: cont.allottedTimesheetSelectedServiceList,
+              buttonIcon: const Icon(
+                Icons.person,
+                color: blackColor,size: 20.0,
+              ),
+              buttonText: buildTextRegularWidget("Select services", blackColor, context, 15.0),
+              onConfirm: (results) {
+                cont.onSelectionForMultipleService(results);
+              },
+              chipDisplay: MultiSelectChipDisplay(
+                onTap: (value) {
+                  cont.onDeleteMultipleService(value);
+                },
+                icon: const Icon(Icons.clear,color: errorColor,),
+              ),
+            ),
+            const SizedBox(height: 15.0,),
 
-          cont.isFillTimesheetSelected ?
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 10.0,),
+            buildTextBoldWidget("Also Fill", blackColor, context, 16.0),
+            const SizedBox(height: 5.0,),
+
+            Row(
+              children: <Widget>[
+                Checkbox(value: cont.cbNonAllotted,
+                    activeColor: Colors.green,
+                    onChanged:(newValue){
+                      cont.updateNonAllottedCheckBox(newValue!);
+                    }),
+                buildTextRegularWidget("Non Allotted Services", blackColor, context, 14.0)
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Checkbox(value: cont.cbOffice,
+                    activeColor: Colors.green,
+                    onChanged:(newValue){
+                      cont.updateOfficeCheckBox(newValue!);
+                    }),
+                buildTextRegularWidget("Office Related", blackColor, context, 14.0)
+              ],
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top:30.0),
+              child:GestureDetector(
+                  onTap: (){
+                    cont.fillTimesheet();
+                  },
+                  child:buildButtonWidget(context, "Fill Timesheet")
+              ),
+            ),
+
+            cont.isFillTimesheetSelected ?
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 10.0,),
 
 
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: cont.timesheetTaskListData.length,
-                  itemBuilder: (context,taskListIndex){
-                return  Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0),
-                      side: const BorderSide(color: primaryColor)),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0,),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10.0,right: 10.0),
-                          child: buildRichTextWidget("${cont.timesheetTaskListData[taskListIndex].clientName} -> ",
-                            "${cont.timesheetTaskListData[taskListIndex].serviceName}",
-                            title1Color: primaryColor,title2Color: blackColor,),
-                        ),
-                        const SizedBox(height: 10.0,),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: cont.timesheetTaskListData.length,
+                    itemBuilder: (context,taskListIndex){
+                      return  Card(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0),
+                            side: const BorderSide(color: primaryColor)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20.0,),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10.0,right: 10.0),
+                                child: buildRichTextWidget("${cont.timesheetTaskListData[taskListIndex].clientName} -> ",
+                                  "${cont.timesheetTaskListData[taskListIndex].serviceName}",
+                                  title1Color: primaryColor,title2Color: blackColor,),
+                              ),
+                              const SizedBox(height: 10.0,),
 
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData!.length,
-                            itemBuilder: (context,taskDetailsIndex){
-                              print("taskDetailsIndex");
-                              print(taskDetailsIndex);
-                              print(taskListIndex);
-                              return ExpansionTile(
-                                          expandedAlignment:Alignment.topLeft,
-                                          title: buildTextBoldWidget(cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskName!,
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData!.length,
+                                  itemBuilder: (context,taskDetailsIndex){
+                                    print("taskDetailsIndex");
+                                    print(taskDetailsIndex);
+                                    print(taskListIndex);
+                                    return ExpansionTile(
+                                      expandedAlignment:Alignment.topLeft,
+                                      title: buildTextBoldWidget(cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskName!,
                                           blackColor, context, 15.0,align: TextAlign.left),
-                                          expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                                          childrenPadding: const EdgeInsets.only(left:20.0),
+                                      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                                      childrenPadding: const EdgeInsets.only(left:20.0),
+                                      children: [
+                                        Table(
                                           children: [
-                                            Table(
-                                              children: [
-                                                TableRow(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 40.0,
-                                                        child:Align(
-                                                          alignment: Alignment.centerLeft,
-                                                          child: buildTextRegularWidget("Details", blackColor, context, 14.0),
-                                                        )
+                                            TableRow(
+                                                children: [
+                                                  SizedBox(
+                                                      height: 40.0,
+                                                      child:Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: buildTextRegularWidget("Details", blackColor, context, 14.0),
+                                                      )
+                                                  ),
+                                                  cont.detailsControllerList.isEmpty ? const Opacity(opacity: 0.0) :
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(right: 15.0),
+                                                    child: Container(
+                                                      height: 40.0,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                        border: Border.all(color: grey),),
+                                                      child: TextFormField(
+                                                        controller: cont.detailsControllerList[taskDetailsIndex],
+                                                        //controller: cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].testTaskDetails,
+                                                        keyboardType: TextInputType.text,
+                                                        textAlign: TextAlign.left,
+                                                        textAlignVertical: TextAlignVertical.center,
+                                                        textInputAction: TextInputAction.done,
+                                                        onTap: () {
+                                                        },
+                                                        enabled: true,
+                                                        style:const TextStyle(fontSize: 15.0),
+                                                        decoration: InputDecoration(
+                                                          contentPadding: const EdgeInsets.all(10),
+                                                          hintText: "Details",
+                                                          hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                                            color: blackColor, fontSize: 15,),),
+                                                          border: InputBorder.none,
+                                                        ),
+                                                        onChanged: (value) {
+                                                        },
                                                       ),
-                                                      cont.detailsControllerList.isEmpty ? const Opacity(opacity: 0.0) :
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(right: 15.0),
-                                                        child: Container(
-                                                          height: 40.0,
+                                                    ),
+                                                  ),
+                                                ]
+                                            ),
+                                            const TableRow(
+                                                children: [
+                                                  SizedBox(height: 10.0,),
+                                                  SizedBox(height: 10.0,),
+                                                ]
+                                            ),
+                                            TableRow(
+                                                children: [
+                                                  SizedBox(
+                                                      height: 40.0,
+                                                      child:Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: buildTextRegularWidget("Time Spent", blackColor, context, 14.0),
+                                                      )
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: (){
+                                                      cont.selectTimeForTask(context,taskDetailsIndex);
+                                                    },
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(right: 15.0),
+                                                      child: Container(
+                                                          height: 40.0,width: MediaQuery.of(context).size.width,
                                                           decoration: BoxDecoration(
                                                             borderRadius: const BorderRadius.all(Radius.circular(5)),
                                                             border: Border.all(color: grey),),
-                                                          child: TextFormField(
-                                                            //controller: cont.detailsControllerList[taskDetailsIndex],
-                                                            controller: cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].testTaskDetails,
-                                                            keyboardType: TextInputType.text,
-                                                            textAlign: TextAlign.left,
-                                                            textAlignVertical: TextAlignVertical.center,
-                                                            textInputAction: TextInputAction.done,
-                                                            onTap: () {
-                                                            },
-                                                            enabled: true,
-                                                            style:const TextStyle(fontSize: 15.0),
-                                                            decoration: InputDecoration(
-                                                              contentPadding: const EdgeInsets.all(10),
-                                                              hintText: "Details",
-                                                              hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                                                color: blackColor, fontSize: 15,),),
-                                                              border: InputBorder.none,
-                                                            ),
-                                                            onChanged: (value) {
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ]
-                                                ),
-                                                const TableRow(
-                                                    children: [
-                                                      SizedBox(height: 10.0,),
-                                                      SizedBox(height: 10.0,),
-                                                    ]
-                                                ),
-                                                TableRow(
-                                                    children: [
-                                                      SizedBox(
-                                                          height: 40.0,
-                                                          child:Align(
-                                                            alignment: Alignment.centerLeft,
-                                                            child: buildTextRegularWidget("Time Spent", blackColor, context, 14.0),
-                                                          )
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: (){
-                                                          cont.selectTimeForTask(context,taskDetailsIndex);
-                                                        },
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(right: 15.0),
-                                                          child: Container(
-                                                              height: 40.0,width: MediaQuery.of(context).size.width,
-                                                              decoration: BoxDecoration(
-                                                                borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                                border: Border.all(color: grey),),
-                                                              child: Align(
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child:Padding(
-                                                                    padding: const EdgeInsets.only(left: 10.0),
-                                                                    child: buildTextRegularWidget(cont.timeSpentList[taskDetailsIndex], blackColor, context, 15.0),
-                                                                    //child: buildTextRegularWidget(cont.timeSpentControllerList[taskDetailsIndex].text, blackColor, context, 15.0),
-                                                                  )
+                                                          child: Align(
+                                                              alignment: Alignment.centerLeft,
+                                                              child:Padding(
+                                                                padding: const EdgeInsets.only(left: 10.0),
+                                                                child: buildTextRegularWidget(cont.timeSpentList[taskDetailsIndex], blackColor, context, 15.0),
+                                                                //child: buildTextRegularWidget(cont.timeSpentControllerList[taskDetailsIndex].text, blackColor, context, 15.0),
                                                               )
-                                                            // child:GestureDetector(
-                                                            //   onTap: (){
-                                                            //     cont.selectTimeForTask(context,taskDetailsIndex);
-                                                            //   },
-                                                            //   child: TextFormField(
-                                                            //     controller: cont.timeSpentControllerList[taskDetailsIndex],
-                                                            //     keyboardType: TextInputType.text,
-                                                            //     textAlign: TextAlign.left,
-                                                            //     textAlignVertical: TextAlignVertical.center,
-                                                            //     textInputAction: TextInputAction.done,
-                                                            //     onTap: () {
-                                                            //     },
-                                                            //     enabled: false,
-                                                            //     style:const TextStyle(fontSize: 15.0),
-                                                            //     decoration: InputDecoration(
-                                                            //       contentPadding: const EdgeInsets.all(10),
-                                                            //       hintText: "time",
-                                                            //       hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
-                                                            //         color: blackColor, fontSize: 15,),),
-                                                            //       border: InputBorder.none,
-                                                            //     ),
-                                                            //     onChanged: (value) {
-                                                            //     },
-                                                            //   ),
-                                                            // )
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ]
-                                                ),
-                                                const TableRow(
-                                                    children: [
-                                                      SizedBox(height: 10.0,),
-                                                      SizedBox(height: 10.0,),
-                                                    ]
-                                                ),
-                                                // TableRow(
-                                                //     children: [
-                                                //       SizedBox(
-                                                //           height: 40.0,
-                                                //           child:Align(
-                                                //             alignment: Alignment.centerLeft,
-                                                //             child: buildTextRegularWidget("Claim Amount", blackColor, context, 14.0),
-                                                //           )
-                                                //       ),
-                                                //       Padding(
-                                                //         padding: const EdgeInsets.only(right: 15.0),
-                                                //         child: Container(
-                                                //           height: 40.0,width: MediaQuery.of(context).size.width,
-                                                //           decoration: BoxDecoration(
-                                                //             borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                //             border: Border.all(color: grey),),
-                                                //           child: Align(
-                                                //             alignment: Alignment.centerLeft,
-                                                //             child: Padding(
-                                                //               padding: const EdgeInsets.only(left: 10.0),
-                                                //               child: buildTextRegularWidget("0", blackColor, context, 14.0),
-                                                //             ),
-                                                //           )
-                                                //         ),
-                                                //       )
-                                                //     ]
-                                                // ),
-                                                // const TableRow(
-                                                //     children: [
-                                                //       SizedBox(height: 10.0,),
-                                                //       SizedBox(height: 10.0,),
-                                                //     ]
-                                                // ),
-                                                TableRow(
-                                                    children: [
-                                                      SizedBox(
-                                                          height: 40.0,
-                                                          child:Align(
-                                                            alignment: Alignment.centerLeft,
-                                                            child: buildTextRegularWidget("Status", blackColor, context, 14.0),
                                                           )
+                                                        // child:GestureDetector(
+                                                        //   onTap: (){
+                                                        //     cont.selectTimeForTask(context,taskDetailsIndex);
+                                                        //   },
+                                                        //   child: TextFormField(
+                                                        //     controller: cont.timeSpentControllerList[taskDetailsIndex],
+                                                        //     keyboardType: TextInputType.text,
+                                                        //     textAlign: TextAlign.left,
+                                                        //     textAlignVertical: TextAlignVertical.center,
+                                                        //     textInputAction: TextInputAction.done,
+                                                        //     onTap: () {
+                                                        //     },
+                                                        //     enabled: false,
+                                                        //     style:const TextStyle(fontSize: 15.0),
+                                                        //     decoration: InputDecoration(
+                                                        //       contentPadding: const EdgeInsets.all(10),
+                                                        //       hintText: "time",
+                                                        //       hintStyle: GoogleFonts.rubik(textStyle: const TextStyle(
+                                                        //         color: blackColor, fontSize: 15,),),
+                                                        //       border: InputBorder.none,
+                                                        //     ),
+                                                        //     onChanged: (value) {
+                                                        //     },
+                                                        //   ),
+                                                        // )
                                                       ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(right: 15.0),
-                                                        child:
-                                                            cont.checkStartList[taskDetailsIndex] == "0"
-                                                            ? GestureDetector(
-                                                              onTap: (){
-                                                                print("start");
-                                                                print(cont.allottedTimesheetSelectedServiceList[taskListIndex].id!);
-                                                                print(cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskId!);
-                                                                cont.callTimesheetStart(context,cont.allottedTimesheetSelectedServiceList[taskDetailsIndex].id!,
-                                                                    cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskId!);
-                                                              },
-                                                              child: buildButtonWidget(context, "Start",height: 40.0),
-                                                            )
-                                                            : Container(
-                                                            height: 40.0,
-                                                            width: MediaQuery.of(context).size.width,
-                                                            decoration: BoxDecoration(
-                                                              borderRadius: const BorderRadius.all(Radius.circular(5)),
-                                                              border: Border.all(color: grey),),
-                                                            // child: Center(
-                                                            //     child: Padding(
-                                                            //       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                            //       child: DropdownButton<String>(
-                                                            //         // hint: buildTextRegularWidget(cont.selectedClient==""?"Select Client":cont.selectedClient,
-                                                            //         //     cont.selectedClient==""?grey:blackColor, context, 15.0),
-                                                            //         hint: buildTextRegularWidget(
-                                                            //             cont.addedAllottedStatusNameList.isEmpty ? "":
-                                                            //             cont.addedAllottedStatusNameList[taskDetailsIndex] , blackColor, context, 15.0,align: TextAlign.left),
-                                                            //         isExpanded: true,
-                                                            //         underline: Container(),
-                                                            //         //iconEnabledColor: cont.selectedClient==""?grey:blackColor,
-                                                            //         items:
-                                                            //         cont.allottedStartedStatusList.isEmpty
-                                                            //             ?
-                                                            //         cont.noDataList.map((value) {
-                                                            //           return DropdownMenuItem<String>(
-                                                            //             value: value,
-                                                            //             child: Text(value),
-                                                            //           );
-                                                            //         }).toList()
-                                                            //             :
-                                                            //         cont.allottedStartedStatusList.map((value) {
-                                                            //           return DropdownMenuItem<String>(
-                                                            //             value: value,
-                                                            //             child: Text(value),
-                                                            //             onTap: (){
-                                                            //               //cont.updateSelectedAllottedStatus(context,value,taskDetailsIndex);
-                                                            //             },
-                                                            //           );
-                                                            //         }).toList(),
-                                                            //         onChanged: (val) {
-                                                            //           cont.updateSelectedAllottedStatus(context,val!,taskDetailsIndex);
-                                                            //           },
-                                                            //       ),
-                                                            //     )
-                                                            // )
-                                                            child:
-                                                            Center(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                                  child: DropdownButton<String>(
-                                                                    hint: buildTextRegularWidget(
-                                                                        cont.addedAllottedStatusNameList.isEmpty ? "":
-                                                                        cont.addedAllottedStatusNameList[taskDetailsIndex] , blackColor, context, 15.0,align: TextAlign.left),
-                                                                    isExpanded: true,
-                                                                    underline: Container(),
-                                                                    //iconEnabledColor: cont.selectedClient==""?grey:blackColor,
-                                                                    items:
-                                                                    cont.statusList.isEmpty
-                                                                        ?
-                                                                    cont.noDataList.map((value) {
-                                                                      return DropdownMenuItem<String>(
-                                                                        value: value,
-                                                                        child: Text(value),
-                                                                      );
-                                                                    }).toList()
-                                                                        :
-                                                                    cont.statusList.map((StatusList value) {
-                                                                      return DropdownMenuItem<String>(
-                                                                        value: value.name,
-                                                                        child:
-                                                                        cont.taskIdList[taskListIndex] == value.taskId
-                                                                          ? Text("${value.name!} ")
-                                                                          : Text(""),
-                                                                        // child:  Text(cont.taskIdList[taskDetailsIndex] == value.taskId
-                                                                        //     ? value.name! : value.name.toString().trim()),
-                                                                        onTap: (){
-                                                                          //cont.updateSelectedAllottedStatus(context,value,taskDetailsIndex);
-                                                                        },
-                                                                      );
-                                                                    }).toList(),
-                                                                    onChanged: (val) {
-                                                                      cont.updateSelectedAllottedStatus(context,val!,taskDetailsIndex);
-                                                                    },
-                                                                  ),
-                                                                  // child: PopupMenuButton<String>(
-                                                                  //   itemBuilder: (context) {
-                                                                  //     return cont.statusList.map((StatusList str) {
-                                                                  //       return PopupMenuItem(
-                                                                  //         value: str.name,
-                                                                  //         child:Text(cont.taskIdList[taskDetailsIndex] == str.taskId?str.name!:"")
-                                                                  //       );
-                                                                  //     }).toList();
-                                                                  //   },
-                                                                  //   child: Row(
-                                                                  //     mainAxisSize: MainAxisSize.min,
-                                                                  //     children: <Widget>[
-                                                                  //       Text(cont.addedAllottedStatusNameList[taskDetailsIndex]),
-                                                                  //       Icon(Icons.arrow_drop_down),
-                                                                  //     ],
-                                                                  //   ),
-                                                                  //   onSelected: (v) {
-                                                                  //     setState(() {
-                                                                  //       cont.updateSelectedAllottedStatus(context,v,taskDetailsIndex);
-                                                                  //     });
-                                                                  //   },
-                                                                  // )
-                                                                )
-                                                            )
-                                                        ),
-                                                      )
-                                                    ]
-                                                ),
-                                              ],
+                                                    ),
+                                                  ),
+                                                ]
                                             ),
+                                            const TableRow(
+                                                children: [
+                                                  SizedBox(height: 10.0,),
+                                                  SizedBox(height: 10.0,),
+                                                ]
+                                            ),
+                                            // TableRow(
+                                            //     children: [
+                                            //       SizedBox(
+                                            //           height: 40.0,
+                                            //           child:Align(
+                                            //             alignment: Alignment.centerLeft,
+                                            //             child: buildTextRegularWidget("Claim Amount", blackColor, context, 14.0),
+                                            //           )
+                                            //       ),
+                                            //       Padding(
+                                            //         padding: const EdgeInsets.only(right: 15.0),
+                                            //         child: Container(
+                                            //           height: 40.0,width: MediaQuery.of(context).size.width,
+                                            //           decoration: BoxDecoration(
+                                            //             borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                            //             border: Border.all(color: grey),),
+                                            //           child: Align(
+                                            //             alignment: Alignment.centerLeft,
+                                            //             child: Padding(
+                                            //               padding: const EdgeInsets.only(left: 10.0),
+                                            //               child: buildTextRegularWidget("0", blackColor, context, 14.0),
+                                            //             ),
+                                            //           )
+                                            //         ),
+                                            //       )
+                                            //     ]
+                                            // ),
+                                            // const TableRow(
+                                            //     children: [
+                                            //       SizedBox(height: 10.0,),
+                                            //       SizedBox(height: 10.0,),
+                                            //     ]
+                                            // ),
+                                            TableRow(
+                                                children: [
+                                                  SizedBox(
+                                                      height: 40.0,
+                                                      child:Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: buildTextRegularWidget("Status", blackColor, context, 14.0),
+                                                      )
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(right: 15.0),
+                                                    child:
+                                                    cont.checkStartList[taskDetailsIndex] == "0"
+                                                        ? GestureDetector(
+                                                      onTap: (){
+                                                        print("start");
+                                                        print(cont.allottedTimesheetSelectedServiceList[taskListIndex].id!);
+                                                        print(cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskId!);
+                                                        cont.callTimesheetStart(context,cont.allottedTimesheetSelectedServiceList[taskDetailsIndex].id!,
+                                                            cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskId!);
+                                                      },
+                                                      child: buildButtonWidget(context, "Start",height: 40.0),
+                                                    )
+                                                        : Container(
+                                                        height: 40.0,
+                                                        width: MediaQuery.of(context).size.width,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                          border: Border.all(color: grey),),
+                                                        // child: Center(
+                                                        //     child: Padding(
+                                                        //       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                        //       child: DropdownButton<String>(
+                                                        //         // hint: buildTextRegularWidget(cont.selectedClient==""?"Select Client":cont.selectedClient,
+                                                        //         //     cont.selectedClient==""?grey:blackColor, context, 15.0),
+                                                        //         hint: buildTextRegularWidget(
+                                                        //             cont.addedAllottedStatusNameList.isEmpty ? "":
+                                                        //             cont.addedAllottedStatusNameList[taskDetailsIndex] , blackColor, context, 15.0,align: TextAlign.left),
+                                                        //         isExpanded: true,
+                                                        //         underline: Container(),
+                                                        //         //iconEnabledColor: cont.selectedClient==""?grey:blackColor,
+                                                        //         items:
+                                                        //         cont.allottedStartedStatusList.isEmpty
+                                                        //             ?
+                                                        //         cont.noDataList.map((value) {
+                                                        //           return DropdownMenuItem<String>(
+                                                        //             value: value,
+                                                        //             child: Text(value),
+                                                        //           );
+                                                        //         }).toList()
+                                                        //             :
+                                                        //         cont.allottedStartedStatusList.map((value) {
+                                                        //           return DropdownMenuItem<String>(
+                                                        //             value: value,
+                                                        //             child: Text(value),
+                                                        //             onTap: (){
+                                                        //               //cont.updateSelectedAllottedStatus(context,value,taskDetailsIndex);
+                                                        //             },
+                                                        //           );
+                                                        //         }).toList(),
+                                                        //         onChanged: (val) {
+                                                        //           cont.updateSelectedAllottedStatus(context,val!,taskDetailsIndex);
+                                                        //           },
+                                                        //       ),
+                                                        //     )
+                                                        // )
+                                                        child:
+                                                        Center(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                              child: DropdownButton<String>(
+                                                                hint: buildTextRegularWidget(
+                                                                    cont.addedAllottedStatusNameList.isEmpty ? "":
+                                                                    cont.addedAllottedStatusNameList[taskDetailsIndex] , blackColor, context, 15.0,align: TextAlign.left),
+                                                                isExpanded: true,
+                                                                underline: Container(),
+                                                                //iconEnabledColor: cont.selectedClient==""?grey:blackColor,
+                                                                items:
+                                                                cont.statusList.isEmpty
+                                                                    ?
+                                                                cont.noDataList.map((value) {
+                                                                  return DropdownMenuItem<String>(
+                                                                    value: value,
+                                                                    child: Text(value),
+                                                                  );
+                                                                }).toList()
+                                                                    :
+                                                                cont.statusList.map((StatusList value) {
+                                                                  return DropdownMenuItem<String>(
+                                                                    value: value.name,
+                                                                    child:
+                                                                    cont.taskIdList[taskListIndex] == value.taskId
+                                                                        ? Text("${value.name!} ")
+                                                                        : Text(""),
+                                                                    // child:  Text(cont.taskIdList[taskDetailsIndex] == value.taskId
+                                                                    //     ? value.name! : value.name.toString().trim()),
+                                                                    onTap: (){
+                                                                      //cont.updateSelectedAllottedStatus(context,value,taskDetailsIndex);
+                                                                    },
+                                                                  );
+                                                                }).toList(),
+                                                                onChanged: (val) {
+                                                                  cont.updateSelectedAllottedStatus(context,val!,taskDetailsIndex);
+                                                                },
+                                                              ),
+                                                              // child: PopupMenuButton<String>(
+                                                              //   itemBuilder: (context) {
+                                                              //     return cont.statusList.map((StatusList str) {
+                                                              //       return PopupMenuItem(
+                                                              //         value: str.name,
+                                                              //         child:Text(cont.taskIdList[taskDetailsIndex] == str.taskId?str.name!:"")
+                                                              //       );
+                                                              //     }).toList();
+                                                              //   },
+                                                              //   child: Row(
+                                                              //     mainAxisSize: MainAxisSize.min,
+                                                              //     children: <Widget>[
+                                                              //       Text(cont.addedAllottedStatusNameList[taskDetailsIndex]),
+                                                              //       Icon(Icons.arrow_drop_down),
+                                                              //     ],
+                                                              //   ),
+                                                              //   onSelected: (v) {
+                                                              //     setState(() {
+                                                              //       cont.updateSelectedAllottedStatus(context,v,taskDetailsIndex);
+                                                              //     });
+                                                              //   },
+                                                              // )
+                                                            )
+                                                        )
+                                                    ),
+                                                  )
+                                                ]
+                                            ),
+                                          ],
+                                        ),
 
-                                          const SizedBox(height: 10.0,),
+                                        const SizedBox(height: 10.0,),
                                         //   Center(
                                         //     child: buildButtonWidget(context, "Add Claim",height: 35.0,width: 120.0,buttonColor: approveColor)
                                         //   ),
                                         // const SizedBox(height: 10.0,),
-                              ],
-                              );
-                        }),
+                                      ],
+                                    );
+                                  }),
 
-                        const SizedBox(height: 10.0,),
-                      ],
-                    ),
-                  ),
-                );
-              }),
+                              const SizedBox(height: 10.0,),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
 
-              const SizedBox(height: 10.0,),
-              buildRichTextWidget("Timesheet filled for * ", "${cont.hrSum} Hrs and ${cont.minSum} minutes",title1Color: primaryColor,title2Color: blackColor,),
-              const SizedBox(height: 10.0,),
-              buildRichTextWidget("Difference hours * ", "1 Hrs",title1Color: primaryColor,title2Color: blackColor,),
-              const SizedBox(height: 10.0,),
-            ],
-          )
-              : const Opacity(opacity: 0.0)
-        ],
-      ),
-    )
-              : Padding(
+                const SizedBox(height: 10.0,),
+                buildRichTextWidget("Timesheet filled for * ", "${cont.hrSum} Hrs and ${cont.minSum} minutes",title1Color: primaryColor,title2Color: blackColor,),
+                const SizedBox(height: 10.0,),
+                buildRichTextWidget("Difference hours * ", "1 Hrs",title1Color: primaryColor,title2Color: blackColor,),
+                const SizedBox(height: 10.0,),
+              ],
+            )
+                : const Opacity(opacity: 0.0)
+          ],
+        ),
+      )
+          : Padding(
         padding: const EdgeInsets.only(left:5.0,right:5.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
@@ -1179,7 +1179,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                       child: DropdownButton(
                         itemHeight: 70.0,
                         hint: buildTextRegularWidget(
-                           cont.nonAllottedSelectedTaskName == ""? "Select Task" : cont.nonAllottedSelectedTaskName,
+                            cont.nonAllottedSelectedTaskName == ""? "Select Task" : cont.nonAllottedSelectedTaskName,
                             blackColor, context, 15.0,align: TextAlign.left),
                         isExpanded: true,
                         underline: Container(),

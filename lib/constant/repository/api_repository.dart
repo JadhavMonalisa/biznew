@@ -467,6 +467,8 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "mast_id":userId,"service_id":serviceId,"client_applicable_service_id":clientApplicableServiceId
     },);
+    print("formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetGetNonAllottedTaskUrl, body: formData, headers: headers,
     );
@@ -476,6 +478,8 @@ class ApiRepository {
     final FormData formData = FormData.fromMap({
       "mast_id":userId,"service_id":serviceId,"client_applicable_service_id":clientApplicableServiceId
     },);
+    print("non allotted task formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetGetNonAllottedTaskUrl, body: formData, headers: headers,
     );

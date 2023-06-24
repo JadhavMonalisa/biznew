@@ -363,13 +363,13 @@ class TimesheetNewFormController extends GetxController {
 
           for (var element in response.data!) {
             allottedServiceList.add(TimesheetServicesListData(
-              id: element.id,
-              serviceId: element.serviceId,
-              selectedClientId: selectedClientId,
-              serviceName: element.serviceName,
-              selectedClientName: selectedClient,
-              period: element.period,
-              serviceDueDatePeriodicity: element.serviceDueDatePeriodicity
+                id: element.id,
+                serviceId: element.serviceId,
+                selectedClientId: selectedClientId,
+                serviceName: element.serviceName,
+                selectedClientName: selectedClient,
+                period: element.period,
+                serviceDueDatePeriodicity: element.serviceDueDatePeriodicity
             ));
           }
 
@@ -673,9 +673,9 @@ class TimesheetNewFormController extends GetxController {
           //statusList.addAll(response.list!);
           for (var element in response.list!) {
             statusList.add(StatusList(
-                taskId: taskId,
-                id: element.id,
-                name: element.name,
+              taskId: taskId,
+              id: element.id,
+              name: element.name,
             ));
           }
           checkStartList.add(response.start!);
@@ -865,7 +865,7 @@ class TimesheetNewFormController extends GetxController {
 
       hrSum = hrList.reduce((a, b) => a + b);
       minSum = minList.reduce((a, b) => a + b);
-      
+
       if(minSum>=60){
         remainingFromMin = minSum ~/ 60;
         minSum = minSum % 60;
@@ -914,14 +914,14 @@ class TimesheetNewFormController extends GetxController {
                               setter((){
                                 Navigator.of(context).pop();
 
-                               if(currentService == "allotted") {
-                                 stepsList.add("Allotted");
-                                 saveCurrentAllottedList();
-                               }
-                               else{
-                                 currentService = "nonAllotted";
-                                 saveCurrentNonAllottedList();
-                               }
+                                if(currentService == "allotted") {
+                                  stepsList.add("Allotted");
+                                  saveCurrentAllottedList();
+                                }
+                                else{
+                                  currentService = "nonAllotted";
+                                  saveCurrentNonAllottedList();
+                                }
                               });
                             },
                             child: buildButtonWidget(context, "Yes",height: 40.0,buttonColor: approveColor),
@@ -1240,12 +1240,12 @@ class TimesheetNewFormController extends GetxController {
   callSaveAllotted() async{
     try {
       ApiResponse? response = (await repository.getTimesheetAddAllotted(selectedDateToSend,
-        removeSecondBracket, removeSecondBracketForService,
-        removeSecondBracketForClientApplicableService,
-        removeSecondTaskIdListBracket,
-        //allottedStatusRemarkText.text??"",
-        removeSecondDetailsBracket,
-        removeSecondTimeSpentBracket));
+          removeSecondBracket, removeSecondBracketForService,
+          removeSecondBracketForClientApplicableService,
+          removeSecondTaskIdListBracket,
+          //allottedStatusRemarkText.text??"",
+          removeSecondDetailsBracket,
+          removeSecondTimeSpentBracket));
 
       if (response.success!) {
         //callSaveNonAllotted();
@@ -1270,20 +1270,20 @@ class TimesheetNewFormController extends GetxController {
       print(response);
     }
     on CustomException catch (e) {
-        print("allotted exception");
-        print(e);
-        print(e.getMsg());
-        print(e.getResponse());
-        Utils.showErrorSnackBar(e.getMsg());
-        updateLoader(false);
-        update();
+      print("allotted exception");
+      print(e);
+      print(e.getMsg());
+      print(e.getResponse());
+      Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
     }
     catch (error) {
       print("allotted error");
       print(error);
-        Utils.showErrorSnackBar(error.toString());
-        updateLoader(false);
-        update();
+      Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
     }
   }
 
@@ -1332,6 +1332,9 @@ class TimesheetNewFormController extends GetxController {
   addNonAllottedTaskNameAndId(String id, String name){
     selectedNonAllottedTaskNameList.add(name);
     selectedNonAllottedTaskIdList.add(id);
+    print("non allotted task");
+    print(name);
+    print(id);
     update();
   }
   onNonAllottedTaskName(String val){
@@ -1495,7 +1498,7 @@ class TimesheetNewFormController extends GetxController {
     selectedNonAllottedTime="";
 
     if(cbNonAllotted == true && cbOffice == true){
-     currentService = "nonAllotted";callEmployeeList(); update();
+      currentService = "nonAllotted";callEmployeeList(); update();
     }
     else if(cbNonAllotted == true && cbOffice == false){
       currentService = "nonAllotted";callEmployeeList(); update();
@@ -1890,8 +1893,8 @@ class TimesheetNewFormController extends GetxController {
   }
 
   goToPreviousFromAllotted(){
-      cancel();
-      update();
+    cancel();
+    update();
   }
 
   ///common
@@ -1903,23 +1906,23 @@ class TimesheetNewFormController extends GetxController {
 
   calculateTimesheetHrMin(){
 
-      var format = DateFormat("HH:mm");
-      // ignore: prefer_typing_uninitialized_variables
-      var two;
-      // var one = format.parse(stepper1InTime.text);
-      // var two = format.parse(stepper1OutTime.text);
-      // difference = two.difference(one);
-      // totalTimeToShow = "${difference!.inHours}:${difference!.inMinutes.remainder(60)}";
-      // timesheetTotalTime.text = totalTimeToShow;
+    var format = DateFormat("HH:mm");
+    // ignore: prefer_typing_uninitialized_variables
+    var two;
+    // var one = format.parse(stepper1InTime.text);
+    // var two = format.parse(stepper1OutTime.text);
+    // difference = two.difference(one);
+    // totalTimeToShow = "${difference!.inHours}:${difference!.inMinutes.remainder(60)}";
+    // timesheetTotalTime.text = totalTimeToShow;
 
-      for (var element in timeSpentList) {
-        var one = format.parse(element);
+    for (var element in timeSpentList) {
+      var one = format.parse(element);
 
-        one = two.difference(one);
+      one = two.difference(one);
 
-      }
+    }
 
-      update();
+    update();
   }
 
   continued(){

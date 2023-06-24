@@ -141,8 +141,9 @@ class TimesheetTaskDetailsData {
   String? taskId;
   String? taskName;
   TextEditingController? testTaskDetails;
+  String? timeSpent;
 
-  TimesheetTaskDetailsData({this.taskId, this.taskName,this.testTaskDetails});
+  TimesheetTaskDetailsData({this.taskId, this.taskName,this.testTaskDetails,this.timeSpent});
 
   TimesheetTaskDetailsData.fromJson(Map<String, dynamic> json) {
     taskId = json['task_id'];
