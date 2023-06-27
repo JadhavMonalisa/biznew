@@ -13,12 +13,12 @@ class EmployeeDashboardController extends GetxController {
   EmployeeDashboardController({required this.repository})
       : assert(repository != null);
 
-  String userId="";
-  String userName="";
-  String name="";
-  String reportingHead="";
-  String roleId="";
-  String userType="";
+  String userId = "";
+  String userName = "";
+  String name = "";
+  String reportingHead = "";
+  String roleId = "";
+  String userType = "";
   bool loader = false;
 
   @override
@@ -26,35 +26,37 @@ class EmployeeDashboardController extends GetxController {
     // TODO: implement onInit
     super.onInit();
 
-    userId = GetStorage().read("userId")??"";
-    userName = GetStorage().read("userName")??"";
-    name = GetStorage().read("name")??"";
-    reportingHead = GetStorage().read("reportingHead")??"";
-    roleId = GetStorage().read("roleId")??"";
-    userType = GetStorage().read("userType")??"";
+    userId = GetStorage().read("userId") ?? "";
+    userName = GetStorage().read("userName") ?? "";
+    name = GetStorage().read("name") ?? "";
+    reportingHead = GetStorage().read("reportingHead") ?? "";
+    roleId = GetStorage().read("roleId") ?? "";
+    userType = GetStorage().read("userType") ?? "";
     repository.getData();
 
     callEmployeeDashboardList();
   }
 
-  onWillPopBack(){
+  onWillPopBack() {
     Get.offNamedUntil(AppRoutes.bottomNav, (route) => false);
     update();
   }
 
-  updateLoader(bool val) { loader = val; update(); }
+  updateLoader(bool val) {
+    loader = val;
+    update();
+  }
 
   List<int> addedIndex = [];
   bool isExpanded = false;
 
-  onExpanded(bool expanded,int index){
+  onExpanded(bool expanded, int index) {
     isExpanded = expanded;
 
-    if(addedIndex.contains(index)){
+    if (addedIndex.contains(index)) {
       addedIndex.remove(index);
       update();
-    }
-    else{
+    } else {
       addedIndex.add(index);
       update();
     }
@@ -68,12 +70,12 @@ class EmployeeDashboardController extends GetxController {
 
     try {
       updateLoader(true);
-      EmployeeDashboardModel? response = await repository.getEmployeeDashboardList();
+      EmployeeDashboardModel? response =
+          await repository.getEmployeeDashboardList();
 
       if (response.success!) {
         if (response.employeeDashboardData!.isEmpty) {
-        }
-        else{
+        } else {
           employeeDashboardListData.addAll(response.employeeDashboardData!);
         }
 
@@ -92,7 +94,7 @@ class EmployeeDashboardController extends GetxController {
     }
   }
 
-  callLogout(){
+  callLogout() {
     Utils.showLoadingDialog();
     GetStorage().remove("userId");
     GetStorage().remove("userName");
@@ -104,5 +106,4 @@ class EmployeeDashboardController extends GetxController {
     Get.offNamedUntil(AppRoutes.login, (route) => false);
     update();
   }
-
 }

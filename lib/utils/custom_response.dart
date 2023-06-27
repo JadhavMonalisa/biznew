@@ -16,6 +16,7 @@ class CustomResponse {
     return data;
   }
 }
+
 class ApiResponse {
   bool? success;
   String? message;
@@ -23,8 +24,8 @@ class ApiResponse {
   ApiResponse({this.success, this.message});
 
   ApiResponse.fromJson(Map<String, dynamic> json) {
-    success = json['Success']??"";
-    message = json['Message']??"";
+    success = json['Success'] ?? "";
+    message = json['Message'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -34,6 +35,7 @@ class ApiResponse {
     return data;
   }
 }
+
 class CheckTimesheetApiResponse {
   bool? success;
   String? message;
@@ -42,9 +44,9 @@ class CheckTimesheetApiResponse {
   CheckTimesheetApiResponse({this.success, this.message});
 
   CheckTimesheetApiResponse.fromJson(Map<String, dynamic> json) {
-    success = json['Success']??"";
-    message = json['Message']??"";
-    flag = json['Flag']??"";
+    success = json['Success'] ?? "";
+    message = json['Message'] ?? "";
+    flag = json['Flag'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -55,6 +57,7 @@ class CheckTimesheetApiResponse {
     return data;
   }
 }
+
 class CheckTimesheetTimeResponse {
   bool? success;
   String? message;
@@ -64,10 +67,10 @@ class CheckTimesheetTimeResponse {
   CheckTimesheetTimeResponse({this.success, this.message});
 
   CheckTimesheetTimeResponse.fromJson(Map<String, dynamic> json) {
-    success = json['Success']??"";
-    message = json['Message']??"";
-    totalTime = json['total_time']??"";
-    balanceTime = json['balance_time']??"";
+    success = json['Success'] ?? "";
+    message = json['Message'] ?? "";
+    totalTime = json['total_time'] ?? "";
+    balanceTime = json['balance_time'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +82,7 @@ class CheckTimesheetTimeResponse {
     return data;
   }
 }
+
 class TotalLeaveCountResponse {
   bool? success;
   String? message;
@@ -87,9 +91,9 @@ class TotalLeaveCountResponse {
   TotalLeaveCountResponse({this.success, this.message, this.totalLeaves});
 
   TotalLeaveCountResponse.fromJson(Map<String, dynamic> json) {
-    success = json['Success']??"";
-    message = json['Message']??"";
-    totalLeaves = json['Total leaves']??"";
+    success = json['Success'] ?? "";
+    message = json['Message'] ?? "";
+    totalLeaves = json['Total leaves'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -100,6 +104,7 @@ class TotalLeaveCountResponse {
     return data;
   }
 }
+
 class LoginResponse {
   String? message;
   bool? success;
@@ -107,7 +112,12 @@ class LoginResponse {
   String? isReportingHead;
   String? roleId;
 
-  LoginResponse({this.message, this.success, this.userDetails, this.isReportingHead, this.roleId});
+  LoginResponse(
+      {this.message,
+      this.success,
+      this.userDetails,
+      this.isReportingHead,
+      this.roleId});
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -160,49 +170,49 @@ class UserDetails {
 
   UserDetails(
       {this.id,
-        this.name,
-        this.username,
-        this.password,
-        this.firmId,
-        this.mastStatus,
-        this.payStatus,
-        this.userType,
-        this.addOnDate,
-        this.addedBy,
-        this.modifiedOnDate,
-        this.modifiedBy,
-        this.parent,
-        this.loginAttempt,
-        this.isEntry,
-        this.employeeId,
-        this.bizEmpStaffId,
-        this.distributorId,
-        this.expDate,
-        this.mail,
-        this.partnerId});
+      this.name,
+      this.username,
+      this.password,
+      this.firmId,
+      this.mastStatus,
+      this.payStatus,
+      this.userType,
+      this.addOnDate,
+      this.addedBy,
+      this.modifiedOnDate,
+      this.modifiedBy,
+      this.parent,
+      this.loginAttempt,
+      this.isEntry,
+      this.employeeId,
+      this.bizEmpStaffId,
+      this.distributorId,
+      this.expDate,
+      this.mail,
+      this.partnerId});
 
   UserDetails.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    name = json['name']??"";
-    username = json['username']??"";
-    password = json['password']??"";
-    firmId = json['firm_id']??"";
-    mastStatus = json['mast_status']??'';
-    payStatus = json['pay_status']??'';
-    userType = json['user_type']??'';
-    addOnDate = json['add_on_date']??'';
-    addedBy = json['added_by']??'';
-    modifiedOnDate = json['modified_on_date']??'';
-    modifiedBy = json['modified_by']??'';
-    parent = json['parent']??'';
-    loginAttempt = json['login_attempt']??'';
-    isEntry = json['is_entry']??'';
-    employeeId = json['employee_id']??'';
-    bizEmpStaffId = json['biz_emp_staff_id']??'';
-    distributorId = json['distributor_id']??'';
-    expDate = json['exp_date']??'';
-    mail = json['mail']??'';
-    partnerId = json['partner_id']??'';
+    id = json['id'] ?? "";
+    name = json['name'] ?? "";
+    username = json['username'] ?? "";
+    password = json['password'] ?? "";
+    firmId = json['firm_id'] ?? "";
+    mastStatus = json['mast_status'] ?? '';
+    payStatus = json['pay_status'] ?? '';
+    userType = json['user_type'] ?? '';
+    addOnDate = json['add_on_date'] ?? '';
+    addedBy = json['added_by'] ?? '';
+    modifiedOnDate = json['modified_on_date'] ?? '';
+    modifiedBy = json['modified_by'] ?? '';
+    parent = json['parent'] ?? '';
+    loginAttempt = json['login_attempt'] ?? '';
+    isEntry = json['is_entry'] ?? '';
+    employeeId = json['employee_id'] ?? '';
+    bizEmpStaffId = json['biz_emp_staff_id'] ?? '';
+    distributorId = json['distributor_id'] ?? '';
+    expDate = json['exp_date'] ?? '';
+    mail = json['mail'] ?? '';
+    partnerId = json['partner_id'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
@@ -279,5 +289,3 @@ class AccessRightDetails {
     return data;
   }
 }
-
-

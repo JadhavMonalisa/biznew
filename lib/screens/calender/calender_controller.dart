@@ -20,12 +20,13 @@ class CalenderViewController extends GetxController {
   final ApiRepository repository;
 
   // ignore: unnecessary_null_comparison
-  CalenderViewController({required this.repository}) : assert(repository != null);
+  CalenderViewController({required this.repository})
+      : assert(repository != null);
 
   ///common
-  String userId="";
-  String userName="";
-  String name="";
+  String userId = "";
+  String userName = "";
+  String name = "";
   bool loader = false;
   DateTime todayDate = DateTime.now();
   CalendarController canController = CalendarController();
@@ -39,8 +40,8 @@ class CalenderViewController extends GetxController {
 
   List<Event> events = <Event>[];
   final kToday = DateTime.now();
-  final kFirstDay = DateTime(2000,01,01);
-  final kLastDay =  DateTime(3000,01,01);
+  final kFirstDay = DateTime(2000, 01, 01);
+  final kLastDay = DateTime(3000, 01, 01);
   //late final ValueNotifier<List<Event>> selectedEvents;
   CalendarFormat calendarFormat = CalendarFormat.month;
   RangeSelectionMode rangeSelectionMode = RangeSelectionMode
@@ -49,7 +50,8 @@ class CalenderViewController extends GetxController {
   DateTime? selectedDay;
   DateTime? rangeStart;
   DateTime? rangeEnd;
-  Color randomColor = Colors.primaries[Random().nextInt(Colors.primaries.length)];
+  Color randomColor =
+      Colors.primaries[Random().nextInt(Colors.primaries.length)];
   bool isLoading = true;
 
   @override
@@ -60,24 +62,28 @@ class CalenderViewController extends GetxController {
     typeToSendApi = "";
     calenderDataList.clear();
 
-    userId = GetStorage().read("userId")??"";
-    userName = GetStorage().read("userName")??"";
-    name = GetStorage().read("name")??"";
+    userId = GetStorage().read("userId") ?? "";
+    userName = GetStorage().read("userName") ?? "";
+    name = GetStorage().read("name") ?? "";
 
     repository.getData();
     selectedYear = todayDate.year.toString();
     callCalender();
 
+    print("selectedYear in init");
+    print(selectedYear);
     update();
   }
 
-  viewChanged(ViewChangedDetails viewChangedDetails){
+  viewChanged(ViewChangedDetails viewChangedDetails) {
     SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       calenderDataList.clear();
       appointments.clear();
       AppointmentDataSource(appointments).appointments!.clear();
-      selectedYear = DateFormat('yyyy').format(viewChangedDetails
-          .visibleDates[viewChangedDetails.visibleDates.length ~/ 2]).toString();
+      selectedYear = DateFormat('yyyy')
+          .format(viewChangedDetails
+              .visibleDates[viewChangedDetails.visibleDates.length ~/ 2])
+          .toString();
       //canController.selectedDate = viewChangedDetails.visibleDates[0];
 
       //selectedYear = todayDate.year.toString();
@@ -96,18 +102,19 @@ class CalenderViewController extends GetxController {
   AppointmentDataSource getCalendarDataSource() {
     appointments.clear();
 
-    for(int i = 0; i< calenderDataList.length; i++) {
+    for (int i = 0; i < calenderDataList.length; i++) {
       appointments.add(Appointment(
         startTime: DateTime.parse(calenderDataList[i].start!),
-        endTime: DateTime.parse(calenderDataList[i].start!).add(const Duration(hours: 12)),
+        endTime: DateTime.parse(calenderDataList[i].start!)
+            .add(const Duration(hours: 12)),
         subject: calenderDataList[i].title!,
-        color:Colors.primaries[Random().nextInt(Colors.primaries.length)],
+        color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
         startTimeZone: '',
         endTimeZone: '',
         notes: calenderDataList[i].constraint,
         location: calenderDataList[i].start,
       ));
-     }
+    }
     return AppointmentDataSource(appointments);
   }
 
@@ -131,10 +138,9 @@ class CalenderViewController extends GetxController {
     final dayCount = last.difference(first).inDays + 1;
     return List.generate(
       dayCount,
-          (index) => DateTime.utc(first.year, first.month, first.day + index),
+      (index) => DateTime.utc(first.year, first.month, first.day + index),
     );
   }
-
 
   ///calender
   void callCalender() async {
@@ -143,14 +149,15 @@ class CalenderViewController extends GetxController {
     AppointmentDataSource(appointments).appointments!.clear();
     isLoading = true;
     update();
-
+    print("selectedYear");
+    print(selectedYear);
     try {
       CalenderModel? response = (await repository.getCalender(selectedYear));
 
       if (response.success!) {
         calenderDataList.addAll(response.calenderData!);
 
-        for(int i = 0; i< calenderDataList.length; i++) {
+        for (int i = 0; i < calenderDataList.length; i++) {
           events.add(Event(calenderDataList[i].start!));
         }
 
@@ -175,10 +182,12 @@ class CalenderViewController extends GetxController {
       update();
     }
   }
+
   ///calender due date
   List<CalendarDueData> dueDateList = [];
 
-  onAppointmentClick(BuildContext context,CalendarAppointmentDetails calendarAppointmentDetails){
+  onAppointmentClick(BuildContext context,
+      CalendarAppointmentDetails calendarAppointmentDetails) {
     for (var element in calendarAppointmentDetails.appointments) {
       dateOfAppointment = element.location;
       typeToSendApi = element.notes;
@@ -189,13 +198,17 @@ class CalenderViewController extends GetxController {
     update();
   }
 
-  updateLoader(bool val) { loader = val; update(); }
+  updateLoader(bool val) {
+    loader = val;
+    update();
+  }
 
   void callCalenderDueDate() async {
     dueDateList.clear();
     isLoading = true;
     try {
-      CalendarDueDateModel? response = (await repository.getCalenderDueDate(dateOfAppointment,typeToSendApi));
+      CalendarDueDateModel? response = (await repository.getCalenderDueDate(
+          dateOfAppointment, typeToSendApi));
 
       if (response.success!) {
         dueDateList.addAll(response.data!);
@@ -225,13 +238,12 @@ class CalenderViewController extends GetxController {
 
   DateTime dateOnDueDataScreen = DateTime.now();
 
-  addParameter(String dateToSend, String type){
+  addParameter(String dateToSend, String type) {
     updateLoader(true);
-    if(type == "holiday"){
+    if (type == "holiday") {
       Utils.showAlertSnackBar("Holiday on this day");
       updateLoader(false);
-    }
-    else{
+    } else {
       dateOfAppointment = dateToSend;
       dateOnDueDataScreen = DateTime.parse(dateOfAppointment);
       typeToSendApi = type;
@@ -240,14 +252,14 @@ class CalenderViewController extends GetxController {
     update();
   }
 
-  navigateToCalenderDetailScreen(String type,String dateToSend){
+  navigateToCalenderDetailScreen(String type, String dateToSend) {
     updateLoader(true);
     isLoading = true;
-    if(type == "holiday"){
+    if (type == "holiday") {
       Utils.showAlertSnackBar("Holiday on this day");
-      updateLoader(false); isLoading = false;
-    }
-    else{
+      updateLoader(false);
+      isLoading = false;
+    } else {
       dateOfAppointment = dateToSend;
       dateOnDueDataScreen = DateTime.parse(dateOfAppointment);
       typeToSendApi = type;
@@ -255,36 +267,50 @@ class CalenderViewController extends GetxController {
     }
     update();
   }
+
   ///show dialog calendar due date
-  showCalendarDueDateDialog(BuildContext context){
+  showCalendarDueDateDialog(BuildContext context) {
     //callCalenderDueDate(context);
 
     showDialog(
       barrierDismissible: true,
-      context:context,
-      builder:(BuildContext context){
-        return StatefulBuilder(builder: (context,setter){
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setter) {
           return Dialog(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
                 height: 180.0,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    buildTextRegularWidget("Statutory Due Date", blackColor, context, 20,align: TextAlign.left),const SizedBox(height: 10.0,),
-                    const SizedBox(height: 20.0,),
+                    buildTextRegularWidget(
+                        "Statutory Due Date", blackColor, context, 20,
+                        align: TextAlign.left),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                     ListView.builder(
                         shrinkWrap: true,
                         itemCount: dueDateList.length,
-                        itemBuilder: (context,index){
+                        itemBuilder: (context, index) {
                           return Container(
                             color: Colors.red,
-                            child: buildTextMediumWidget(dueDateList[index].triggerDate!, blackColor, context, 14.0,align: TextAlign.left),
+                            child: buildTextMediumWidget(
+                                dueDateList[index].triggerDate!,
+                                blackColor,
+                                context,
+                                14.0,
+                                align: TextAlign.left),
                           );
                         }),
                   ],
@@ -299,18 +325,18 @@ class CalenderViewController extends GetxController {
     update();
   }
 
-  navigateToBottomScreen(){
+  navigateToBottomScreen() {
     typeToSendApi = "";
     appointments.clear();
     dueDateList.clear();
     calenderDataList.clear();
     selectedYear = todayDate.year.toString();
     Get.offAllNamed(AppRoutes.bottomNav);
-   // callCalender();
+    // callCalender();
     update();
   }
 
-  navigateToCalenderScreen(){
+  navigateToCalenderScreen() {
     typeToSendApi = "";
     appointments.clear();
     dueDateList.clear();
@@ -321,7 +347,7 @@ class CalenderViewController extends GetxController {
     Get.offAllNamed(AppRoutes.calenderDemoScreen);
   }
 
-  callLogout(){
+  callLogout() {
     Utils.showLoadingDialog();
     GetStorage().remove("userId");
     GetStorage().remove("userName");

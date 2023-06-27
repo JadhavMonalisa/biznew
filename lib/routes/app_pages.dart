@@ -1,4 +1,3 @@
-
 import 'package:biznew/screens/attendance/attendance_binding.dart';
 import 'package:biznew/screens/attendance/attendance_screen.dart';
 import 'package:biznew/screens/bottom_nav/bottom_nav_binding.dart';
@@ -75,9 +74,18 @@ class AppPages {
     GetPage(
       name: AppRoutes.bottomNav,
       page: () => const BottomNavigationScreen(),
-      bindings: [BottomNavBinding(),TimesheetNewFormBinding(),ClaimFormBinding(),
-        LeaveBinding(),DashboardBinding(),HomeBinding(),EmployeeBinding(),ClientBinding()],
+      bindings: [
+        BottomNavBinding(),
+        TimesheetNewFormBinding(),
+        ClaimFormBinding(),
+        LeaveBinding(),
+        DashboardBinding(),
+        HomeBinding(),
+        EmployeeBinding(),
+        ClientBinding()
+      ],
     ),
+
     ///home module
     GetPage(
       name: AppRoutes.home,

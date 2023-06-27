@@ -77,6 +77,7 @@ class LeaveListModel {
     return data;
   }
 }
+
 var inputFormat = DateFormat('dd/MM/yyyy HH:mm');
 
 class LeaveListData {
@@ -105,53 +106,56 @@ class LeaveListData {
 
   LeaveListData(
       {this.id,
-        this.totalDays,
-        this.leaveType,
-        this.startDate,
-        this.endDate,
-        this.dayLeave,
-        this.reason,
-        this.firmId,
-        this.mastId,
-        this.addedOn,
-        this.addedBy,
-        this.modifiedOn,
-        this.modifiedBy,
-        this.leaveStatus,
-        this.remark,
-        this.groupg,
-        this.attempts,
-        this.isDelete,
-        this.reportTo,
-        this.firmEmployeeName,
-        this.startDateToShow,
-        this.endDateToShow});
+      this.totalDays,
+      this.leaveType,
+      this.startDate,
+      this.endDate,
+      this.dayLeave,
+      this.reason,
+      this.firmId,
+      this.mastId,
+      this.addedOn,
+      this.addedBy,
+      this.modifiedOn,
+      this.modifiedBy,
+      this.leaveStatus,
+      this.remark,
+      this.groupg,
+      this.attempts,
+      this.isDelete,
+      this.reportTo,
+      this.firmEmployeeName,
+      this.startDateToShow,
+      this.endDateToShow});
 
   LeaveListData.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    totalDays = json['total_days']??"";
-    leaveType = json['leave_type']??"";
-    startDate = json['start_date']??"";
-    endDate = json['end_date']??"";
-    dayLeave = json['day_leave']??"";
-    reason = json['reason']??"";
-    firmId = json['firm_id']??"";
-    mastId = json['mast_id']??"";
-    addedOn = json['added_on']??"";
-    addedBy = json['added_by']??"";
-    modifiedOn =  json['modified_on'] == null || json['modified_on'] == "" ? ""
+    id = json['id'] ?? "";
+    totalDays = json['total_days'] ?? "";
+    leaveType = json['leave_type'] ?? "";
+    startDate = json['start_date'] ?? "";
+    endDate = json['end_date'] ?? "";
+    dayLeave = json['day_leave'] ?? "";
+    reason = json['reason'] ?? "";
+    firmId = json['firm_id'] ?? "";
+    mastId = json['mast_id'] ?? "";
+    addedOn = json['added_on'] ?? "";
+    addedBy = json['added_by'] ?? "";
+    modifiedOn = json['modified_on'] == null || json['modified_on'] == ""
+        ? ""
         : DateFormat("dd-MM-yyyy").format(DateTime.parse(json['modified_on']));
-    modifiedBy = json['modified_by']??"";
-    leaveStatus = json['leave_status']??"";
-    remark = json['remark']??"";
-    groupg = json['groupg']??"";
-    attempts = json['attempts']??"";
-    isDelete = json['isDelete']??"";
-    reportTo = json['report_to']??"";
-    firmEmployeeName = json['firm_employee_name']??"";
-    startDateToShow = json['start_date'] == null || json['start_date'] == "" ? ""
+    modifiedBy = json['modified_by'] ?? "";
+    leaveStatus = json['leave_status'] ?? "";
+    remark = json['remark'] ?? "";
+    groupg = json['groupg'] ?? "";
+    attempts = json['attempts'] ?? "";
+    isDelete = json['isDelete'] ?? "";
+    reportTo = json['report_to'] ?? "";
+    firmEmployeeName = json['firm_employee_name'] ?? "";
+    startDateToShow = json['start_date'] == null || json['start_date'] == ""
+        ? ""
         : DateFormat("dd-MM-yyyy").format(DateTime.parse(json['start_date']));
-    endDateToShow = json['end_date'] == null || json['start_date'] == "" ? ""
+    endDateToShow = json['end_date'] == null || json['start_date'] == ""
+        ? ""
         : DateFormat("dd-MM-yyyy").format(DateTime.parse(json['end_date']));
   }
 
@@ -180,6 +184,7 @@ class LeaveListData {
     return data;
   }
 }
+
 class LeaveEditModel {
   String? message;
   bool? success;
@@ -234,57 +239,59 @@ class LeaveEditDetails {
   String? startDateToShow;
   String? endDateToShow;
 
-  LeaveEditDetails(
-      {this.id,
-        this.totalDays,
-        this.leaveType,
-        this.startDate,
-        this.endDate,
-        this.dayLeave,
-        this.reason,
-        this.firmId,
-        this.mastId,
-        this.addedOn,
-        this.addedBy,
-        this.modifiedOn,
-        this.modifiedBy,
-        this.leaveStatus,
-        this.remark,
-        this.groupg,
-        this.attempts,
-        this.isDelete,
-        this.reportTo,
-        this.firmEmployeeName,
-        this.leaveTypeName,
-        this.startDateToShow,
-        this.endDateToShow,
-      });
+  LeaveEditDetails({
+    this.id,
+    this.totalDays,
+    this.leaveType,
+    this.startDate,
+    this.endDate,
+    this.dayLeave,
+    this.reason,
+    this.firmId,
+    this.mastId,
+    this.addedOn,
+    this.addedBy,
+    this.modifiedOn,
+    this.modifiedBy,
+    this.leaveStatus,
+    this.remark,
+    this.groupg,
+    this.attempts,
+    this.isDelete,
+    this.reportTo,
+    this.firmEmployeeName,
+    this.leaveTypeName,
+    this.startDateToShow,
+    this.endDateToShow,
+  });
 
   LeaveEditDetails.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    totalDays = json['total_days']??"";
-    leaveType = json['leave_type']??"";
-    startDate = json['start_date']??"";
-    endDate = json['end_date']??"";
-    dayLeave = json['day_leave']??"";
-    reason = json['reason']??"";
-    firmId = json['firm_id']??"";
-    mastId = json['mast_id']??"";
-    addedOn = json['added_on']??"";
-    addedBy = json['added_by']??"";
-    modifiedOn = json['modified_on']??"";
-    modifiedBy = json['modified_by']??"";
-    leaveStatus = json['leave_status']??"";
-    remark = json['remark']??"";
-    groupg = json['groupg']??"";
-    attempts = json['attempts']??"";
-    isDelete = json['isDelete']??"";
-    reportTo = json['report_to']??"";
-    firmEmployeeName = json['firm_employee_name']??"";
-    leaveTypeName = json['leave_type_name']??"";
-    startDateToShow = json['start_date'] == null || json['start_date'] == "" ? ""
+    id = json['id'] ?? "";
+    totalDays = json['total_days'] ?? "";
+    leaveType = json['leave_type'] ?? "";
+    startDate = json['start_date'] ?? "";
+    endDate = json['end_date'] ?? "";
+    dayLeave = json['day_leave'] ?? "";
+    reason = json['reason'] ?? "";
+    firmId = json['firm_id'] ?? "";
+    mastId = json['mast_id'] ?? "";
+    addedOn = json['added_on'] ?? "";
+    addedBy = json['added_by'] ?? "";
+    modifiedOn = json['modified_on'] ?? "";
+    modifiedBy = json['modified_by'] ?? "";
+    leaveStatus = json['leave_status'] ?? "";
+    remark = json['remark'] ?? "";
+    groupg = json['groupg'] ?? "";
+    attempts = json['attempts'] ?? "";
+    isDelete = json['isDelete'] ?? "";
+    reportTo = json['report_to'] ?? "";
+    firmEmployeeName = json['firm_employee_name'] ?? "";
+    leaveTypeName = json['leave_type_name'] ?? "";
+    startDateToShow = json['start_date'] == null || json['start_date'] == ""
+        ? ""
         : DateFormat("dd-MM-yyyy").format(DateTime.parse(json['start_date']));
-    endDateToShow = json['end_date'] == null || json['end_date'] == "" ?""
+    endDateToShow = json['end_date'] == null || json['end_date'] == ""
+        ? ""
         : DateFormat("dd-MM-yyyy").format(DateTime.parse(json['end_date']));
   }
 

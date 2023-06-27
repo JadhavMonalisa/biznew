@@ -42,14 +42,20 @@ class CalenderData {
   //Color? ranColor;
   Color? formattedColor;
 
-  CalenderData({this.title, this.start, this.constraint, this.color, this.newColor, this.formattedColor});
+  CalenderData(
+      {this.title,
+      this.start,
+      this.constraint,
+      this.color,
+      this.newColor,
+      this.formattedColor});
 
   CalenderData.fromJson(Map<String, dynamic> json) {
-    title = json['title']??"";
-    start = json['start']??'';
-    constraint = json['constraint']??"";
-    color = json['color']??"";
-    newColor =  int.parse("0xFF${json['color'].toString().replaceAll("#", "")}");
+    title = json['title'] ?? "";
+    start = json['start'] ?? '';
+    constraint = json['constraint'] ?? "";
+    color = json['color'] ?? "";
+    newColor = int.parse("0xFF${json['color'].toString().replaceAll("#", "")}");
   }
 
   Map<String, dynamic> toJson() {
@@ -106,16 +112,16 @@ class CalendarDueData {
 
   CalendarDueData(
       {this.name,
-        this.service,
-        this.client,
-        this.clientCode,
-        this.triggerDate,
-        this.targetDate,
-        this.satDate,
-        this.priority,
-        this.status,
-        this.completion,
-        this.total});
+      this.service,
+      this.client,
+      this.clientCode,
+      this.triggerDate,
+      this.targetDate,
+      this.satDate,
+      this.priority,
+      this.status,
+      this.completion,
+      this.total});
 
   CalendarDueData.fromJson(Map<String, dynamic> json) {
     name = json['name'];

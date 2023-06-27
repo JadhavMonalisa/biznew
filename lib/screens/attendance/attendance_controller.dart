@@ -1,4 +1,3 @@
-
 import 'package:biznew/constant/repository/api_repository.dart';
 import 'package:biznew/routes/app_pages.dart';
 import 'package:biznew/utils/utils.dart';
@@ -15,17 +14,18 @@ class AttendanceController extends GetxController {
   AttendanceController({required this.repository}) : assert(repository != null);
 
   bool isLoading = true;
+
   ///common
-  String userId="";
-  String userName="";
-  String name="";
+  String userId = "";
+  String userName = "";
+  String name = "";
 
   @override
   void onInit() {
     super.onInit();
-    userId = GetStorage().read("userId")??"";
-    userName = GetStorage().read("userName")??"";
-    name = GetStorage().read("name")??"";
+    userId = GetStorage().read("userId") ?? "";
+    userName = GetStorage().read("userName") ?? "";
+    name = GetStorage().read("name") ?? "";
     repository.getData();
     getCurrentPosition();
   }
@@ -39,7 +39,8 @@ class AttendanceController extends GetxController {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      Utils.showErrorSnackBar("Location services are disabled. Please enable the services");
+      Utils.showErrorSnackBar(
+          "Location services are disabled. Please enable the services");
       update();
       return false;
     }
@@ -53,7 +54,8 @@ class AttendanceController extends GetxController {
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      Utils.showErrorSnackBar("Location permissions are permanently denied, we cannot request permissions.");
+      Utils.showErrorSnackBar(
+          "Location permissions are permanently denied, we cannot request permissions.");
       update();
       return false;
     }
@@ -68,7 +70,8 @@ class AttendanceController extends GetxController {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       currentPosition = position;
-      print("lat : ${currentPosition!.latitude}, long : ${currentPosition!.longitude},");
+      print(
+          "lat : ${currentPosition!.latitude}, long : ${currentPosition!.longitude},");
       update();
       getAddressFromLatLng(currentPosition!);
     }).catchError((e) {
@@ -78,7 +81,8 @@ class AttendanceController extends GetxController {
   }
 
   Future<void> getAddressFromLatLng(Position position) async {
-    await placemarkFromCoordinates(currentPosition!.latitude, currentPosition!.longitude)
+    await placemarkFromCoordinates(
+            currentPosition!.latitude, currentPosition!.longitude)
         .then((List<Placemark> placemarks) {
       Placemark place = placemarks[0];
       currentAddress = '${place.street}, ${place.subLocality}, '
@@ -119,7 +123,7 @@ class AttendanceController extends GetxController {
     update();
   }
 
-  callLogout(){
+  callLogout() {
     Utils.showLoadingDialog();
     GetStorage().remove("userId");
     GetStorage().remove("userName");

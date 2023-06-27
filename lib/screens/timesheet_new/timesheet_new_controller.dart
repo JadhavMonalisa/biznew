@@ -20,12 +20,13 @@ class TimesheetNewFormController extends GetxController {
   final ApiRepository repository;
 
   // ignore: unnecessary_null_comparison
-  TimesheetNewFormController({required this.repository}) : assert(repository != null);
+  TimesheetNewFormController({required this.repository})
+      : assert(repository != null);
 
   ///common
-  String userId="";
-  String userName="";
-  String name="";
+  String userId = "";
+  String userName = "";
+  String name = "";
   bool loader = false;
   DateTime todayDate = DateTime.now();
 
@@ -59,7 +60,7 @@ class TimesheetNewFormController extends GetxController {
   ///stepper one
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
-  TimeOfDay selectedTimeForCalculation = const TimeOfDay(hour: 24,minute: 0);
+  TimeOfDay selectedTimeForCalculation = const TimeOfDay(hour: 24, minute: 0);
   TimeOfDay selectedStartTime24 = TimeOfDay.now();
   TimeOfDay selectedEndTime24 = TimeOfDay.now();
   String selectedDateToSend = "";
@@ -78,7 +79,12 @@ class TimesheetNewFormController extends GetxController {
   String totalTimeToShow = "";
   String selectedWorkAt = "";
   List<String> noDataList = ["No Data Found!"];
-  List<String> workAtList = ["Office","Client Location","Work From Home","Govt. Department"];
+  List<String> workAtList = [
+    "Office",
+    "Client Location",
+    "Work From Home",
+    "Govt. Department"
+  ];
   //static List<String> workAtItems = [];
   List<MultiSelectItem<String>> workAtItems = [];
 
@@ -89,13 +95,15 @@ class TimesheetNewFormController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    userId = GetStorage().read("userId")??"";
-    userName = GetStorage().read("userName")??"";
-    name = GetStorage().read("name")??"";
+    userId = GetStorage().read("userId") ?? "";
+    userName = GetStorage().read("userName") ?? "";
+    name = GetStorage().read("name") ?? "";
     repository.getData();
 
-    selectedDateToShow = "${todayDate.day}-${todayDate.month}-${todayDate.year}";
-    selectedDateToSend = "${todayDate.year}-${todayDate.month}-${todayDate.day}";
+    selectedDateToShow =
+        "${todayDate.day}-${todayDate.month}-${todayDate.year}";
+    selectedDateToSend =
+        "${todayDate.year}-${todayDate.month}-${todayDate.day}";
 
     workAtItems = workAtList
         .map((value) => MultiSelectItem<String>(value, value))
@@ -106,28 +114,37 @@ class TimesheetNewFormController extends GetxController {
 
   //--------------------------------------Stepper One------------------------------------------//
 
-  updateSelectedWorkAt(String value){
+  updateSelectedWorkAt(String value) {
     selectedWorkAt = value;
-    if(selectedWorkAt==""){validateWorkAt=true;update();}
-    else{validateWorkAt=false;update();}
+    if (selectedWorkAt == "") {
+      validateWorkAt = true;
+      update();
+    } else {
+      validateWorkAt = false;
+      update();
+    }
   }
 
-  onSelectionForMultipleWorkAt(List<String> workAtList){
+  onSelectionForMultipleWorkAt(List<String> workAtList) {
     updateLoader(true);
     timesheetSelectedWorkAt = workAtList;
     for (var element in workAtList) {
-      removeFirstBracketFromWorkAt = timesheetSelectedWorkAt.toString().replaceAll("[", "");
-      removeSecondBracketFromWorkAt = removeFirstBracketFromWorkAt.replaceAll("]", "");
+      removeFirstBracketFromWorkAt =
+          timesheetSelectedWorkAt.toString().replaceAll("[", "");
+      removeSecondBracketFromWorkAt =
+          removeFirstBracketFromWorkAt.replaceAll("]", "");
       update();
     }
     validateWorkAt = false;
   }
 
-  onDeleteMultipleWorkAt(String value){
+  onDeleteMultipleWorkAt(String value) {
     updateLoader(true);
     timesheetSelectedWorkAt.remove(value);
-    removeFirstBracketFromWorkAt = timesheetSelectedWorkAt.toString().replaceAll("[", "");
-    removeSecondBracketFromWorkAt = removeFirstBracketFromWorkAt.replaceAll("]", "");
+    removeFirstBracketFromWorkAt =
+        timesheetSelectedWorkAt.toString().replaceAll("[", "");
+    removeSecondBracketFromWorkAt =
+        removeFirstBracketFromWorkAt.replaceAll("]", "");
     update();
   }
 
@@ -140,9 +157,12 @@ class TimesheetNewFormController extends GetxController {
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
     }
-    selectedDateToShow = "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
-    selectedDateToSend = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
-    validateStartDate = false; validateStartDate = false;
+    selectedDateToShow =
+        "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+    selectedDateToSend =
+        "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+    validateStartDate = false;
+    validateStartDate = false;
     update();
   }
 
@@ -160,7 +180,7 @@ class TimesheetNewFormController extends GetxController {
   var hrOfficeSum = 0;
   var minOfficeSum = 0;
 
-  Future<void> selectTime(BuildContext context,String timeFor) async {
+  Future<void> selectTime(BuildContext context, String timeFor) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: const TimeOfDay(hour: 12, minute: 00),
@@ -173,40 +193,46 @@ class TimesheetNewFormController extends GetxController {
     );
     update();
     if (picked != null && picked != selectedDate) {
-      timeFor == "start" ? selectedStartTime24 = picked :
-      timeFor == "end" ? selectedEndTime24 = picked :
-      selectedTime = picked;
+      timeFor == "start"
+          ? selectedStartTime24 = picked
+          : timeFor == "end"
+              ? selectedEndTime24 = picked
+              : selectedTime = picked;
       Utils.dismissKeyboard();
       update();
     }
-    if(timeFor == "start"){
+    if (timeFor == "start") {
       //selectedStartTime24 = selectedTime;
-      selectedStartTimeToShow = "${selectedStartTime24.hour}:${selectedStartTime24.minute}";
+      selectedStartTimeToShow =
+          "${selectedStartTime24.hour}:${selectedStartTime24.minute}";
       stepper1InTime.text = selectedStartTimeToShow;
-      stepper1InTime.text.isEmpty ? validateInTime = true : validateInTime = false;update();
+      stepper1InTime.text.isEmpty
+          ? validateInTime = true
+          : validateInTime = false;
+      update();
 
       ///difference
       calculateTotalTime();
       Utils.dismissKeyboard();
       update();
-    }
-    else if(timeFor=="end"){
-      selectedEndTimeToShow = "${selectedEndTime24.hour}:${selectedEndTime24.minute}";
+    } else if (timeFor == "end") {
+      selectedEndTimeToShow =
+          "${selectedEndTime24.hour}:${selectedEndTime24.minute}";
       stepper1OutTime.text = selectedEndTimeToShow;
 
-      if(selectedEndTime24.hour < selectedStartTime24.hour){
-        validateOutTime = true; update();
-      }
-      else{
+      if (selectedEndTime24.hour < selectedStartTime24.hour) {
+        validateOutTime = true;
+        update();
+      } else {
         validateOutTime = false;
+
         ///difference
         calculateTotalTime();
         update();
       }
       Utils.dismissKeyboard();
       update();
-    }
-    else if (timeFor == "office"){
+    } else if (timeFor == "office") {
       selectedOfficeTime = "${selectedTime.hour}:${selectedTime.minute}";
 
       hrOfficeList.add(selectedTime.hour);
@@ -215,7 +241,7 @@ class TimesheetNewFormController extends GetxController {
       hrOfficeSum = hrOfficeList.reduce((a, b) => a + b);
       minOfficeSum = minOfficeList.reduce((a, b) => a + b);
 
-      if(minOfficeSum>=60){
+      if (minOfficeSum >= 60) {
         remainingFromMinOffice = minOfficeSum ~/ 60;
         minOfficeSum = minOfficeSum % 60;
       }
@@ -226,8 +252,7 @@ class TimesheetNewFormController extends GetxController {
       print(hrOfficeSum);
       Utils.dismissKeyboard();
       update();
-    }
-    else if (timeFor == "nonAllotted"){
+    } else if (timeFor == "nonAllotted") {
       selectedNonAllottedTime = "${selectedTime.hour}:${selectedTime.minute}";
 
       hrNonAllottedList.add(selectedTime.hour);
@@ -236,7 +261,7 @@ class TimesheetNewFormController extends GetxController {
       hrNonAllottedSum = hrNonAllottedList.reduce((a, b) => a + b);
       minNonAllottedSum = minNonAllottedList.reduce((a, b) => a + b);
 
-      if(minNonAllottedSum>=60){
+      if (minNonAllottedSum >= 60) {
         remainingFromMinNonAllotted = minNonAllottedSum ~/ 60;
         minNonAllottedSum = minNonAllottedSum % 60;
       }
@@ -251,17 +276,23 @@ class TimesheetNewFormController extends GetxController {
     update();
   }
 
-  checkTotalTimeValidation(){
-    if(timesheetTotalTime.text.isEmpty){validateTotalTime=true;update();}
-    else{validateTotalTime=false;update();}
+  checkTotalTimeValidation() {
+    if (timesheetTotalTime.text.isEmpty) {
+      validateTotalTime = true;
+      update();
+    } else {
+      validateTotalTime = false;
+      update();
+    }
   }
 
-  calculateTotalTime(){
+  calculateTotalTime() {
     var format = DateFormat("HH:mm");
     var one = format.parse(stepper1InTime.text);
     var two = format.parse(stepper1OutTime.text);
     difference = two.difference(one);
-    totalTimeToShow = "${difference!.inHours}:${difference!.inMinutes.remainder(60)}";
+    totalTimeToShow =
+        "${difference!.inHours}:${difference!.inMinutes.remainder(60)}";
     timesheetTotalTime.text = totalTimeToShow;
     update();
   }
@@ -277,21 +308,23 @@ class TimesheetNewFormController extends GetxController {
   bool showOffice = false;
   bool isAddingMoreAllotted = false;
 
+  String allottedSelectedClientName = "";
+
   ///allotted employee list
   void callEmployeeList() async {
     allottedEmployeeList.clear();
     updateLoader(true);
     try {
-      TimesheetClientListModel? response = (await repository.getTimesheetClientNameList());
+      TimesheetClientListModel? response =
+          (await repository.getTimesheetClientNameList());
 
       if (response.success!) {
         if (response.data!.isEmpty) {
-        }
-        else{
+        } else {
           allottedEmployeeList.addAll(response.data!);
-          items = allottedEmployeeList
-              .map((value) => MultiSelectItem<ClientListData>(value, value.firmClientFirmName!))
-              .toList();
+          // items = allottedEmployeeList
+          //     .map((value) => MultiSelectItem<ClientListData>(value, value.firmClientFirmName!))
+          //     .toList();
 
           update();
         }
@@ -310,38 +343,53 @@ class TimesheetNewFormController extends GetxController {
     }
   }
 
-  onSelectionForMultipleEmployee(List<ClientListData> selectedEmpListFromDesign){
-    updateLoader(true);
-    //allottedTimesheetSelectedServiceList.clear();
-    allottedTimesheetSelectedEmpList.clear();
-    //detailsControllerList.clear();
-    //timesheetTaskListData.clear();
-    allottedTimesheetSelectedEmpList = selectedEmpListFromDesign;
 
-    for (var element in allottedTimesheetSelectedEmpList) {
-      callServiceListForAllotted(element.firmClientId!,element.firmClientFirmName!);
-    }
+  // onSelectionForMultipleEmployee(List<ClientListData> selectedEmpListFromDesign){
+  //   updateLoader(true);
+  //   //allottedTimesheetSelectedServiceList.clear();
+  //   allottedTimesheetSelectedEmpList.clear();
+  //   //detailsControllerList.clear();
+  //   //timesheetTaskListData.clear();
+  //   allottedTimesheetSelectedEmpList = selectedEmpListFromDesign;
+  //
+  //   for (var element in allottedTimesheetSelectedEmpList) {
+  //     callServiceListForAllotted(element.firmClientId!,element.firmClientFirmName!);
+  //   }
+  //
+  //   // for (var element in selectedEmpListFromDesign) {
+  //   //   allottedTimesheetSelectedMultipleEmpIdList.add(element.id!);
+  //   //   update();
+  //   // }
+  //   update();
+  // }
+  //
+  // onDeleteMultipleEmployee(ClientListData value){
+  //   updateLoader(true);
+  //   allottedServiceList.clear();
+  //   allottedTimesheetSelectedServiceList.clear();
+  //   allottedTimesheetSelectedEmpList.remove(value);
+  //   allottedTimesheetSelectedMultipleEmpIdList.remove(value.id!);
+  //   removeFirstBracket = allottedTimesheetSelectedMultipleEmpIdList.toString().replaceAll("[", "");
+  //   removeSecondBracket = removeFirstBracket.replaceAll("]", "");
+  //
+  //   for (var element in allottedTimesheetSelectedEmpList) {
+  //     callServiceListForAllotted(element.firmClientId!,element.firmClientFirmName!);
+  //   }
+  //
+  //   update();
+  // }
 
-    // for (var element in selectedEmpListFromDesign) {
-    //   allottedTimesheetSelectedMultipleEmpIdList.add(element.id!);
-    //   update();
-    // }
+  onSelectionAllottedEmp(String value) {
+    allottedSelectedClientName = value;
     update();
   }
 
-  onDeleteMultipleEmployee(ClientListData value){
-    updateLoader(true);
-    allottedServiceList.clear();
-    allottedTimesheetSelectedServiceList.clear();
-    allottedTimesheetSelectedEmpList.remove(value);
-    allottedTimesheetSelectedMultipleEmpIdList.remove(value.id!);
-    removeFirstBracket = allottedTimesheetSelectedMultipleEmpIdList.toString().replaceAll("[", "");
-    removeSecondBracket = removeFirstBracket.replaceAll("]", "");
+  addAllottedClientNameAndId(String id, String name) {
+    allottedSelectedClientName = name;
+    allottedTimesheetSelectedMultipleEmpIdList.add(id);
+    callServiceListForAllotted(id, name);
 
-    for (var element in allottedTimesheetSelectedEmpList) {
-      callServiceListForAllotted(element.firmClientId!,element.firmClientFirmName!);
-    }
-
+    print(allottedSelectedClientName);
     update();
   }
 
@@ -349,16 +397,17 @@ class TimesheetNewFormController extends GetxController {
   List<String> allottedClientApplicableServiceIdList = [];
 
   /// allotted service list
-  void callServiceListForAllotted(String selectedClientId,String selectedClient) async {
+  void callServiceListForAllotted(
+      String selectedClientId, String selectedClient) async {
     //allottedServiceList.clear();
     //allottedTimesheetSelectedEmpList.clear();
     try {
-      TimesheetServiceListModel? response = (await repository.getTimesheetServicesList(selectedClientId));
+      TimesheetServiceListModel? response =
+          (await repository.getTimesheetServicesList(selectedClientId));
 
       if (response.success!) {
         if (response.data!.isEmpty) {
-        }
-        else{
+        } else {
           //serviceList.addAll(response.data!);
 
           for (var element in response.data!) {
@@ -369,12 +418,12 @@ class TimesheetNewFormController extends GetxController {
                 serviceName: element.serviceName,
                 selectedClientName: selectedClient,
                 period: element.period,
-                serviceDueDatePeriodicity: element.serviceDueDatePeriodicity
-            ));
+                serviceDueDatePeriodicity: element.serviceDueDatePeriodicity));
           }
 
           serviceItems = allottedServiceList
-              .map((value) => MultiSelectItem<TimesheetServicesListData>(value, value.serviceName!))
+              .map((value) => MultiSelectItem<TimesheetServicesListData>(
+                  value, value.serviceName!))
               .toList();
         }
 
@@ -388,28 +437,33 @@ class TimesheetNewFormController extends GetxController {
       update();
     }
   }
+
   /// allotted task list
   List<TimesheetTaskListData> taskList = [];
-  List<TextEditingController> detailsControllerList = [];
+  //List<TextEditingController> detailsControllerList = [];
   List<TextEditingController> timeSpentControllerList = [];
-  List<String> timeSpentList = [];
+  //List<String> timeSpentList = [];
   List<String> taskIdList = [];
   List<String> addedAllottedStatusNameList = [];
 
   List<TimesheetTaskListData> timesheetTaskListData = [];
+  List<TimesheetTaskDetailsData> timesheetTaskDetailsListData = [];
   int totalTaskLength = 0;
 
-  void callTaskListForAllotted(String selectedServiceId,String clientApplicableServiceId,
-      String serviceName,String clientId,String clientName) async {
+  void callTaskListForAllotted(
+      String selectedServiceId,
+      String clientApplicableServiceId,
+      String serviceName,
+      String clientId,
+      String clientName) async {
     //taskList.clear();
     try {
-      TimesheetTaskListData? response = (await repository.getTimesheetNewTaskList(selectedServiceId,clientApplicableServiceId));
+      TimesheetTaskListData? response =
+      (await repository.getTimesheetNewTaskList(
+          selectedServiceId, clientApplicableServiceId));
 
       if (response.success!) {
-        if (response.timesheetTaskDetailsData!.isEmpty) {
-        }
-
-        else{
+        if (response.timesheetTaskDetailsData!.isEmpty) {} else {
           timesheetTaskListData.add(TimesheetTaskListData(
             timesheetTaskDetailsData: response.timesheetTaskDetailsData,
             clientName: clientName,
@@ -420,96 +474,163 @@ class TimesheetNewFormController extends GetxController {
             success: response.success,
           ));
 
-          totalTaskLength = response.timesheetTaskDetailsData!.length;
 
-
-          for (var element in response.timesheetTaskDetailsData!) {
-            TimesheetTaskDetailsData(testTaskDetails: TextEditingController(text: ""));
-          }
-
-          for (var element in response.timesheetTaskDetailsData!) {
-            detailsControllerList.add(TextEditingController(text: ""));
-            timeSpentControllerList.add(TextEditingController(text: ""));
-            timeSpentList.add("");
-            addedAllottedStatusNameList.add("");
-            taskIdList.add(element.taskId!);
-
-            allottedTimesheetSelectedMultipleServiceIdList.add(selectedServiceId);
-            allottedClientApplicableServiceIdList.add(clientApplicableServiceId);
-            allottedTimesheetSelectedMultipleEmpIdList.add(clientId);
-          }
-
-          // for (var element in allottedTimesheetSelectedEmpList) {
-          //   allottedTimesheetSelectedMultipleEmpIdList.add(element.id!);
-          // }
-
-          print("totalTaskLength before");
-          print(totalTaskLength);
-
-          totalTaskLength = totalTaskLength + timesheetTaskListData.length;
-          print("totalTaskLength after");
-          print(totalTaskLength);
+          // for (var element in response.timesheetTaskDetailsData!) {
+          //   TimesheetTaskDetailsData(
+          //     testTaskDetails: TextEditingController(text: ""),
+          //     timeSpent: "",
+          //   );
         }
 
-        clientAppServiceId = clientApplicableServiceId;
+        // response.timesheetTaskDetailsData!.forEach((element) {
+        //   timesheetTaskDetailsListData.add(
+        //       TimesheetTaskDetailsData(
+        //         testTaskDetails: TextEditingController(text: ""),
+        //         timeSpent: "",
+        //       )
+        //   );
+        // });
 
-        // for (var element in response.timesheetTaskDetailsData!) {
-        //   callStatusList(element.taskId!,clientApplicableServiceId);
+        totalTaskLength = response.timesheetTaskDetailsData!.length;
+
+        print("totalTaskLength");
+        print(totalTaskLength);
+        for (var element in response.timesheetTaskDetailsData!) {
+          //detailsControllerList.add(TextEditingController(text: ""));
+          timeSpentControllerList.add(TextEditingController(text: ""));
+          //timeSpentList.add("");
+          addedAllottedStatusNameList.add("");
+          taskIdList.add(element.taskId!);
+
+          allottedTimesheetSelectedMultipleServiceIdList.add(selectedServiceId);
+          allottedClientApplicableServiceIdList.add(clientApplicableServiceId);
+          allottedTimesheetSelectedMultipleEmpIdList.add(clientId);
+        }
+
+        // for (var element in allottedTimesheetSelectedEmpList) {
+        //   allottedTimesheetSelectedMultipleEmpIdList.add(element.id!);
         // }
 
-        for (var element in taskIdList) {
-          callStatusList(element,clientApplicableServiceId);
-        }
+        print("totalTaskLength before");
+        print(totalTaskLength);
 
-        update();
-      } else {
-        update();
+        //totalTaskLength = totalTaskLength + timesheetTaskListData.length;
+        print("totalTaskLength after");
+        print(totalTaskLength);
       }
-    } on CustomException {
+
+      clientAppServiceId = clientApplicableServiceId;
+
+      // for (var element in response.timesheetTaskDetailsData!) {
+      //   callStatusList(element.taskId!,clientApplicableServiceId);
+      // }
+
+      for (var element in taskIdList) {
+        callStatusList(element, clientApplicableServiceId);
+      }
+
       update();
-    } catch (error) {
-      update();
+    }
+  catch (error) {
+  update();
+  }
+  }
+
+  List<String> dataList=[];
+  onSaveAllottedDetails(TextEditingController value, int listIndex, int taskIndex) {
+    // timesheetTaskListData[listIndex]
+    //     .timesheetTaskDetailsData![taskIndex]
+    //     .testTaskDetails!
+    //     .text = value;
+
+    // timesheetTaskListData[listIndex]
+    //     .timesheetTaskDetailsData![taskIndex].testTaskDetails!.value = TextEditingValue(text: value);
+
+    // for(int i =0; i<timesheetTaskListData.length; i++){
+    //   for(int j=0; j < timesheetTaskListData[listIndex]
+    //       .timesheetTaskDetailsData!.length; j++){
+    //     print(timesheetTaskListData[i].timesheetTaskDetailsData![j].timeSpent);
+    //     timesheetTaskListData[i].timesheetTaskDetailsData!.removeAt(j);
+    //     timesheetTaskListData[i].timesheetTaskDetailsData!.insert(j, TimesheetTaskDetailsData(
+    //       testTaskDetails: TextEditingController(text: value)
+    //     ));
+    //   }
+    // }
+
+    print("value");
+    print(value.text);
+    //timesheetTaskListData[listIndex].timesheetTaskDetailsData![taskIndex].testTaskDetails!.text = value;
+
+    // print("taskkk");
+    // print(timesheetTaskListData[listIndex].timesheetTaskDetailsData![taskIndex]);
+    // print("details change");
+    // print(timesheetTaskListData[listIndex].timesheetTaskDetailsData![taskIndex].testTaskDetails!.text);
+    //update();
+  }
+
+  printAllotted(){
+    print("timesheetTaskListData.length");
+    print(timesheetTaskListData.length);
+
+    for (var element1 in timesheetTaskListData) {
+      print(element1.clientName);
+      print(element1.serviceName);
+      print("element1.timesheetTaskDetailsData!.length");
+      print(element1.timesheetTaskDetailsData!.length);
+
+      for (var element2 in element1.timesheetTaskDetailsData!) {
+        print(element2.testTaskDetails!.text);
+        print(element2.timeSpent);
+      }
+
     }
   }
 
   List<StatusList> statusList = [];
   List<StatusList> statusListToShow = [];
-  List<String> allottedStartedStatusList = ["Inprocess","Awaiting for Client Input","Submitted for Checking","Put on Hold","Completed","Cancel","Sent for rework"];
+  List<String> allottedStartedStatusList = [
+    "Inprocess",
+    "Awaiting for Client Input",
+    "Submitted for Checking",
+    "Put on Hold",
+    "Completed",
+    "Cancel",
+    "Sent for rework"
+  ];
   String selectedAllottedStatus = "";
   List<int> addedAllottedStatus = [];
   TextEditingController allottedStatusRemarkText = TextEditingController();
 
-  updateSelectedAllottedStatus(BuildContext context,String val,int index){
+  updateSelectedAllottedStatus(BuildContext context, String val, int index) {
     selectedAllottedStatus = val;
-    selectedTaskId = taskIdList[index];//to pass for remark
+    selectedTaskId = taskIdList[index]; //to pass for remark
 
     print("selectedTaskId");
     print(selectedTaskId);
     print(selectedTaskId);
-    if(selectedAllottedStatus == "Inprocess" || selectedAllottedStatus == "Completed" || selectedAllottedStatus == "Sent for rework"){
-      if(addedAllottedStatus.contains(index)){
+    if (selectedAllottedStatus == "Inprocess" ||
+        selectedAllottedStatus == "Completed" ||
+        selectedAllottedStatus == "Sent for rework") {
+      if (addedAllottedStatus.contains(index)) {
         addedAllottedStatus.remove(index);
         update();
-      }
-      else{
+      } else {
         addedAllottedStatus.add(index);
         update();
       }
 
-      if(addedAllottedStatusNameList.asMap().containsKey(index)){
+      if (addedAllottedStatusNameList.asMap().containsKey(index)) {
         addedAllottedStatusNameList.removeAt(index);
         addedAllottedStatusNameList.insert(index, val);
         update();
-      }
-      else{
+      } else {
         addedAllottedStatusNameList.add(val);
         update();
       }
 
       update();
-    }
-    else {
-      showStatusRemarkDialog(context,index,val);
+    } else {
+      showStatusRemarkDialog(context, index, val);
       update();
     }
 
@@ -517,33 +638,46 @@ class TimesheetNewFormController extends GetxController {
   }
 
   bool validateRemark = false;
-  showStatusRemarkDialog(BuildContext context,int index,String val){
+  showStatusRemarkDialog(BuildContext context, int index, String val) {
     showDialog(
       barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
-        return StatefulBuilder(builder: (context,setter){
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setter) {
           return Dialog(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))
-            ),
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
                 height: 180.0,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    buildTextRegularWidget("Remark", blackColor, context, 20,align: TextAlign.left),const SizedBox(height: 10.0,),
-                    const SizedBox(height: 20.0,),
-                    const Divider(color: Colors.grey,),
-                    const SizedBox(height: 10.0,),
+                    buildTextRegularWidget("Remark", blackColor, context, 20,
+                        align: TextAlign.left),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(4)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4)),
                         color: textFormBgColor,
-                        border: Border.all(color: textFormBgColor),),
+                        border: Border.all(color: textFormBgColor),
+                      ),
                       child: TextFormField(
                         controller: allottedStatusRemarkText,
                         keyboardType: TextInputType.text,
@@ -551,12 +685,16 @@ class TimesheetNewFormController extends GetxController {
                         textAlignVertical: TextAlignVertical.center,
                         textInputAction: TextInputAction.done,
                         onTap: () {},
-                        style:const TextStyle(fontSize: 15.0),
+                        style: const TextStyle(fontSize: 15.0),
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.all(10),
                           hintText: "Enter remark",
-                          hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
-                            color: subTitleTextColor, fontSize: 15,),),
+                          hintStyle: GoogleFonts.rubik(
+                            textStyle: TextStyle(
+                              color: subTitleTextColor,
+                              fontSize: 15,
+                            ),
+                          ),
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           enabledBorder: InputBorder.none,
@@ -564,46 +702,51 @@ class TimesheetNewFormController extends GetxController {
                           disabledBorder: InputBorder.none,
                         ),
                         onChanged: (text) {
-                          setter((){
+                          setter(() {
                             checkRemarkValidation();
                           });
                         },
                       ),
                     ),
                     validateRemark == true
-                        ? ErrorText(errorMessage: "Please enter valid remark",)
+                        ? ErrorText(
+                            errorMessage: "Please enter valid remark",
+                          )
                         : const Opacity(opacity: 0.0),
                     Row(
                       children: [
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 allottedStatusRemarkText.clear();
                                 Navigator.pop(context);
                               });
                             },
                             child: buildButtonWidget(context, "Close"),
                           ),
-                        ),const SizedBox(width: 5.0,),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              if(addedAllottedStatus.contains(index)){
+                            onTap: () {
+                              if (addedAllottedStatus.contains(index)) {
                                 addedAllottedStatus.remove(index);
                                 update();
-                              }
-                              else{
+                              } else {
                                 addedAllottedStatus.add(index);
                                 update();
                               }
 
-                              if(addedAllottedStatusNameList.asMap().containsKey(index)){
+                              if (addedAllottedStatusNameList
+                                  .asMap()
+                                  .containsKey(index)) {
                                 addedAllottedStatusNameList.removeAt(index);
                                 addedAllottedStatusNameList.insert(index, val);
                                 update();
-                              }
-                              else{
+                              } else {
                                 addedAllottedStatusNameList.add(val);
                                 update();
                               }
@@ -624,22 +767,27 @@ class TimesheetNewFormController extends GetxController {
       },
     );
   }
-  checkRemarkValidation(){
-    if(allottedStatusRemarkText.text.isEmpty){
-      validateRemark = true;update();
-    }
-    else{
-      validateRemark = false;update();
+
+  checkRemarkValidation() {
+    if (allottedStatusRemarkText.text.isEmpty) {
+      validateRemark = true;
+      update();
+    } else {
+      validateRemark = false;
+      update();
     }
   }
 
-  String clientAppServiceId = "" ;
+  String clientAppServiceId = "";
   String selectedTaskId = "";
 
   void callTimesheetUpdate(BuildContext context) async {
     try {
       ApiResponse? response = (await repository.getTimesheetStatusUpdate(
-          clientAppServiceId,selectedTaskId,allottedStatusRemarkText.text,"statusStart"));
+          clientAppServiceId,
+          selectedTaskId,
+          allottedStatusRemarkText.text,
+          "statusStart"));
       if (response.success!) {
         if (context.mounted) Navigator.pop(context);
         Utils.showSuccessSnackBar(response.message);
@@ -647,7 +795,8 @@ class TimesheetNewFormController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -662,14 +811,14 @@ class TimesheetNewFormController extends GetxController {
   }
 
   List<String> checkStartList = [];
-  void callStatusList(String taskId,String clientApplicableServiceId) async {
+  void callStatusList(String taskId, String clientApplicableServiceId) async {
     try {
-      TimesheetStatusModel? response = (await repository.getTimesheetStatusList(clientApplicableServiceId,taskId));
+      TimesheetStatusModel? response = (await repository.getTimesheetStatusList(
+          clientApplicableServiceId, taskId));
 
       if (response.success!) {
         if (response.list!.isEmpty) {
-        }
-        else{
+        } else {
           //statusList.addAll(response.list!);
           for (var element in response.list!) {
             statusList.add(StatusList(
@@ -693,9 +842,11 @@ class TimesheetNewFormController extends GetxController {
   }
 
   /// start timesheet
-  void callTimesheetStart(BuildContext context,String clientApplicableIdToStart,String selectedTaskIdToStart) async {
+  void callTimesheetStart(BuildContext context,
+      String clientApplicableIdToStart, String selectedTaskIdToStart) async {
     try {
-      ApiResponse? response = (await repository.getTimesheetStart(clientApplicableIdToStart,selectedTaskIdToStart));
+      ApiResponse? response = (await repository.getTimesheetStart(
+          clientApplicableIdToStart, selectedTaskIdToStart));
       if (response.success!) {
         callStatusList(selectedTaskIdToStart, clientApplicableIdToStart);
         Utils.showSuccessSnackBar(response.message);
@@ -703,7 +854,8 @@ class TimesheetNewFormController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -717,7 +869,8 @@ class TimesheetNewFormController extends GetxController {
     }
   }
 
-  onSelectionForMultipleService(List<TimesheetServicesListData> selectedServiceListFromDesign){
+  onSelectionForMultipleService(
+      List<TimesheetServicesListData> selectedServiceListFromDesign) {
     updateLoader(true);
 
     allottedTimesheetSelectedServiceList = selectedServiceListFromDesign;
@@ -725,8 +878,12 @@ class TimesheetNewFormController extends GetxController {
     print("allottedTimesheetSelectedServiceList.length");
     print(allottedTimesheetSelectedServiceList.length);
     for (var element in allottedTimesheetSelectedServiceList) {
-      callTaskListForAllotted(element.serviceId!,element.id!,element.serviceName!,
-          element.selectedClientId!,element.selectedClientName!);
+      callTaskListForAllotted(
+          element.serviceId!,
+          element.id!,
+          element.serviceName!,
+          element.selectedClientId!,
+          element.selectedClientName!);
     }
 
     // for (var element in selectedServiceListFromDesign) {
@@ -742,7 +899,7 @@ class TimesheetNewFormController extends GetxController {
     // }
   }
 
-  onDeleteMultipleService(TimesheetServicesListData value){
+  onDeleteMultipleService(TimesheetServicesListData value) {
     updateLoader(true);
     print("value");
     print(value.serviceName);
@@ -755,48 +912,62 @@ class TimesheetNewFormController extends GetxController {
     //timesheetTaskListData.remove(value);
     allottedTimesheetSelectedServiceList.remove(value);
     allottedTimesheetSelectedMultipleServiceIdList.remove(value.serviceId!);
-    removeFirstBracketForService = allottedTimesheetSelectedMultipleServiceIdList.toString().replaceAll("[", "");
-    removeSecondBracketForService = removeFirstBracketForService.replaceAll("]", "");
+    removeFirstBracketForService =
+        allottedTimesheetSelectedMultipleServiceIdList
+            .toString()
+            .replaceAll("[", "");
+    removeSecondBracketForService =
+        removeFirstBracketForService.replaceAll("]", "");
 
     allottedClientApplicableServiceIdList.remove(value.id!);
-    removeFirstBracketForClientApplicableService = allottedClientApplicableServiceIdList.toString().replaceAll("[", "");
-    removeSecondBracketForClientApplicableService = removeFirstBracketForClientApplicableService.replaceAll("]", "");
+    removeFirstBracketForClientApplicableService =
+        allottedClientApplicableServiceIdList.toString().replaceAll("[", "");
+    removeSecondBracketForClientApplicableService =
+        removeFirstBracketForClientApplicableService.replaceAll("]", "");
 
-    taskList.removeWhere((element) => value.serviceId==element.serviceId);
+    taskList.removeWhere((element) => value.serviceId == element.serviceId);
 
     for (var element in allottedTimesheetSelectedServiceList) {
-      callTaskListForAllotted(element.serviceId!,element.id!,element.serviceName!,
-          element.selectedClientId!,element.selectedClientName!);
+      callTaskListForAllotted(
+          element.serviceId!,
+          element.id!,
+          element.serviceName!,
+          element.selectedClientId!,
+          element.selectedClientName!);
     }
     update();
   }
 
-  updateNonAllottedCheckBox(bool selectNonAllotted){
-    if(selectNonAllotted){
-      stepsList.add("Non Allotted"); update();
+  updateNonAllottedCheckBox(bool selectNonAllotted) {
+    if (selectNonAllotted) {
+      stepsList.add("Non Allotted");
+      update();
     }
 
     cbNonAllotted = selectNonAllotted;
     update();
   }
 
-  updateOfficeCheckBox(bool selectOffice){
-    if(selectOffice){
-      stepsList.add("Office"); update();
+  updateOfficeCheckBox(bool selectOffice) {
+    if (selectOffice) {
+      stepsList.add("Office");
+      update();
     }
 
-    cbOffice = selectOffice; update();
+    cbOffice = selectOffice;
+    update();
   }
 
-  fillTimesheet(){
-    if(allottedTimesheetSelectedEmpList.isEmpty){
-      Utils.showErrorSnackBar("Please select employee"); update();
-    }
-    else if(allottedTimesheetSelectedServiceList.isEmpty){
-      Utils.showErrorSnackBar("Please select service"); update();
-    }
-    else{
-      isFillTimesheetSelected = true; update();
+  fillTimesheet() {
+    if (allottedSelectedClientName == "") {
+      Utils.showErrorSnackBar("Please select client");
+      update();
+    } else if (allottedTimesheetSelectedServiceList.isEmpty) {
+      Utils.showErrorSnackBar("Please select service");
+      update();
+    } else {
+      isFillTimesheetSelected = true;
+      update();
     }
   }
 
@@ -813,7 +984,10 @@ class TimesheetNewFormController extends GetxController {
   var minSum = 0;
   int prevIndex = 0;
 
-  Future<void> selectTimeForTask(BuildContext context,int index) async {
+  List<AllottedStepperOneTestModel> testingAllotted = [];
+
+  Future<void> selectTimeForTask(
+      BuildContext context, int listIndex, int index) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: const TimeOfDay(hour: 12, minute: 00),
@@ -832,9 +1006,21 @@ class TimesheetNewFormController extends GetxController {
       selectedTimeForAllList.add(selectedTime);
       selectedStartTimeToShow = "${selectedTime.hour}:${selectedTime.minute}";
 
-      timeSpentList.removeAt(index);
-      timeSpentList.insert(index,selectedStartTimeToShow);
+      // timeSpentList.removeAt(index);
+      // timeSpentList.insert(index,selectedStartTimeToShow);
 
+      //1, 2, 3
+      //timesheetTaskListData[listIndex].timesheetTaskDetailsData!.removeAt(index);
+      timesheetTaskListData[listIndex]
+          .timesheetTaskDetailsData![index]
+          .timeSpent = selectedStartTimeToShow;
+
+      // timesheetTaskListData[listIndex].timesheetTaskDetailsData!.insert(index,TimesheetTaskDetailsData(
+      //   timeSpent: selectedStartTimeToShow
+      // ));
+
+      print("timesheetTaskListData[listIndex].timesheetTaskDetailsData");
+      print(timesheetTaskListData[listIndex].timesheetTaskDetailsData);
       // if(allottedLocalStoreTimeSpentList.isEmpty){
       //   allottedLocalStoreTimeSpentList.add(selectedStartTimeToShow);
       // }
@@ -843,10 +1029,9 @@ class TimesheetNewFormController extends GetxController {
       //   allottedLocalStoreTimeSpentList.insert(allottedLocalStoreTimeSpentList.length+index,selectedStartTimeToShow);
       // }
 
-      if(isAddingMoreAllotted = true){
+      if (isAddingMoreAllotted = true) {
         index = hrList.length + index;
-      }
-      else{
+      } else {
         index = index;
       }
 
@@ -855,9 +1040,9 @@ class TimesheetNewFormController extends GetxController {
 
       if (hrList.asMap().containsKey(index)) {
         hrList.removeAt(index);
-        hrList.insert(index,selectedTime.hour);
+        hrList.insert(index, selectedTime.hour);
         minList.removeAt(index);
-        minList.insert(index,selectedTime.minute);
+        minList.insert(index, selectedTime.minute);
       } else {
         hrList.add(selectedTime.hour);
         minList.add(selectedTime.minute);
@@ -866,7 +1051,7 @@ class TimesheetNewFormController extends GetxController {
       hrSum = hrList.reduce((a, b) => a + b);
       minSum = minList.reduce((a, b) => a + b);
 
-      if(minSum>=60){
+      if (minSum >= 60) {
         remainingFromMin = minSum ~/ 60;
         minSum = minSum % 60;
       }
@@ -883,68 +1068,91 @@ class TimesheetNewFormController extends GetxController {
     update();
   }
 
-  showConfirmationDialog(BuildContext context){
+  showConfirmationDialog(BuildContext context) {
     showDialog(
       barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
-        return StatefulBuilder(builder: (context,setter){
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setter) {
           return Dialog(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))
-            ),
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
                 height: 100.0,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-
-                    buildTextRegularWidget("Do you want to add more ?", blackColor, context, 16.0,align: TextAlign.left),
-                    const Divider(color: Colors.grey,),
-                    const SizedBox(height: 10.0,),
-
+                    buildTextRegularWidget(
+                        "Do you want to add more ?", blackColor, context, 16.0,
+                        align: TextAlign.left),
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     Row(
                       children: [
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 Navigator.of(context).pop();
 
-                                if(currentService == "allotted") {
+                                if (currentService == "allotted") {
                                   stepsList.add("Allotted");
                                   saveCurrentAllottedList();
-                                }
-                                else{
+                                } else {
                                   currentService = "nonAllotted";
                                   saveCurrentNonAllottedList();
                                 }
                               });
                             },
-                            child: buildButtonWidget(context, "Yes",height: 40.0,buttonColor: approveColor),
+                            child: buildButtonWidget(context, "Yes",
+                                height: 40.0, buttonColor: approveColor),
                           ),
-                        ),const SizedBox(width: 5.0,),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
-                                Navigator.of(context).pop();
-                                if(currentService == "allotted"){
-                                  currentService = "nonAllotted";
-                                  stepsList.add("Allotted");
-                                  saveCurrentAllottedList();
-                                }
-                                else{
-                                  cbNonAllotted = false;
-                                  clearNonAllotted();
-                                }
+                            onTap: () {
+                              setter(() {
+                                // Navigator.of(context).pop();
+                                // if(currentService == "allotted"){
+                                //   currentService = "nonAllotted";
+                                //   stepsList.add("Allotted");
+                                //   saveCurrentAllottedList();
+                                // }
+                                // else{
+                                //   cbNonAllotted = false;
+                                //   clearNonAllotted();
+                                // }
+
+                                print("timesheetTaskListData.length");
+                                print(timesheetTaskListData.length);
+                                print("details");
+                                print(timesheetTaskListData[0].timesheetTaskDetailsData!.length);
+
+                                // for (var element in timesheetTaskListData) {
+                                //   for (var element
+                                //       in element.timesheetTaskDetailsData!) {
+                                //     print("task data");
+                                //     print(element.testTaskDetails!.text);
+                                //     print(element.timeSpent);
+                                //   }
+                                // }
                                 update();
                               });
                             },
-                            child: buildButtonWidget(context, "No",height: 40.0,buttonColor: errorColor),
+                            child: buildButtonWidget(context, "No",
+                                height: 40.0, buttonColor: errorColor),
                           ),
                         )
                       ],
@@ -959,72 +1167,87 @@ class TimesheetNewFormController extends GetxController {
     );
   }
 
-  List<TimesheetTaskDetailsData> allottedLocalStoreTaskList =[];
-  List<String> allottedLocalStoreDetailsList =[];
-  List<String> allottedLocalStoreTimeSpentList =[];
-  List<String> allottedLocalStoreStatusList =[];
+  List<TimesheetTaskDetailsData> allottedLocalStoreTaskList = [];
+  List<String> allottedLocalStoreDetailsList = [];
+  List<String> allottedLocalStoreTimeSpentList = [];
+  List<String> allottedLocalStoreStatusList = [];
+  bool isDetailsFill = false;
 
-  checkValidationForAllotted(BuildContext context){
-    if(allottedTimesheetSelectedEmpList.isEmpty){
-      Utils.showErrorSnackBar("Please select employee!"); update();
-    }
-    else if(allottedTimesheetSelectedServiceList.isEmpty){
-      Utils.showErrorSnackBar("Please select service!"); update();
-    }
-    else if(timesheetTaskListData.isEmpty){
-      Utils.showErrorSnackBar("Please select task!"); update();
-    }
-    // ignore: iterable_contains_unrelated_type
-    else if(detailsControllerList.isEmpty || detailsControllerList.contains("")){
-      Utils.showErrorSnackBar("Please fill all task details!"); update();
-    }
-    else if(timeSpentList.contains("")){
-      Utils.showErrorSnackBar("Please fill all task time spent!"); update();
-    }
-    else{
-      showConfirmationDialog(context);
-      update();
-    }
+  checkValidationForAllotted(BuildContext context) {
+    // if(allottedTimesheetSelectedEmpList.isEmpty){
+    //   Utils.showErrorSnackBar("Please select employee!"); update();
+    // }
+    // else if(allottedTimesheetSelectedServiceList.isEmpty){
+    //   Utils.showErrorSnackBar("Please select service!"); update();
+    // }
+    // else if(timesheetTaskListData.isEmpty){
+    //   Utils.showErrorSnackBar("Please select task!"); update();
+    // }
+    // // else if(detailsController.isEmpty || detailsController.contains("")){
+    // //   Utils.showErrorSnackBar("Please fill all task details!"); update();
+    // // }
+    // // else if(timeSpentList.contains("")){
+    // //   Utils.showErrorSnackBar("Please fill all task time spent!"); update();
+    // // }
+    // else{
+    //   // timesheetTaskListData.forEach((element1) {
+    //   //   element1.timesheetTaskDetailsData!.forEach((element2) {
+    //   //     element2.testTaskDetails!.text.contains("");
+    //   //     Utils.showErrorSnackBar("Please fill all task details!"); update();
+    //   //   });
+    //   // });
+    //   print("allottedLocalStoreDetailsList");
+    //   print(allottedLocalStoreDetailsList);
+    //   showConfirmationDialog(context);
+    //   update();
+    // }
+
+    showConfirmationDialog(context);
   }
 
-  String removeFirstDetailsBracket="";
-  String removeSecondDetailsBracket="";
-  String removeFirstTimeSpentBracket="";
-  String removeSecondTimeSpentBracket="";
-  String removeFirstStatusBracket="";
-  String removeSecondStatusBracket="";
-  String removeFirstTaskIdListBracket="";
-  String removeSecondTaskIdListBracket="";
+  String removeFirstDetailsBracket = "";
+  String removeSecondDetailsBracket = "";
+  String removeFirstTimeSpentBracket = "";
+  String removeSecondTimeSpentBracket = "";
+  String removeFirstStatusBracket = "";
+  String removeSecondStatusBracket = "";
+  String removeFirstTaskIdListBracket = "";
+  String removeSecondTaskIdListBracket = "";
 
-  saveCurrentAllottedList(){
+  saveCurrentAllottedList() {
     updateLoader(true);
     for (var element in timesheetTaskListData) {
       allottedLocalStoreTaskList = element.timesheetTaskDetailsData!;
     }
 
-    for (var element in detailsControllerList) {
-      if(element.text==""){
+    // for (var element in detailsControllerList) {
+    //   if(element.text==""){
+    //
+    //   }
+    //   else{
+    //     allottedLocalStoreDetailsList.add(element.text);
+    //   }
+    // }
 
-      }
-      else{
-        allottedLocalStoreDetailsList.add(element.text);
+    for (var element in allottedLocalStoreTaskList) {
+      if (element.testTaskDetails!.text == "") {
+      } else {
+        allottedLocalStoreDetailsList.add(element.testTaskDetails!.text);
       }
     }
 
-    for (var element in timeSpentList) {
-      if(element==""){
-
-      }
-      else{
-        allottedLocalStoreTimeSpentList.add(element);
-      }
-    }
+    // for (var element in timeSpentList) {
+    //   if(element==""){
+    //
+    //   }
+    //   else{
+    //     allottedLocalStoreTimeSpentList.add(element);
+    //   }
+    // }
 
     for (var element in allottedLocalStoreTimeSpentList) {
-      if(element==""){
-
-      }
-      else{
+      if (element == "") {
+      } else {
         //allottedLocalStoreTimeSpentList.add(element);
         print("test allottedLocalStoreTimeSpentList");
         print(allottedLocalStoreTimeSpentList);
@@ -1032,33 +1255,45 @@ class TimesheetNewFormController extends GetxController {
     }
 
     for (var element in addedAllottedStatusNameList) {
-      if(element==""){
-
-      }
-      else{
+      if (element == "") {
+      } else {
         allottedLocalStoreStatusList.add(element);
       }
     }
 
-    removeFirstDetailsBracket = allottedLocalStoreDetailsList.toString().replaceAll("[", "");
+    removeFirstDetailsBracket =
+        allottedLocalStoreDetailsList.toString().replaceAll("[", "");
     removeSecondDetailsBracket = removeFirstDetailsBracket.replaceAll("]", "");
 
-    removeFirstTimeSpentBracket = allottedLocalStoreTimeSpentList.toString().replaceAll("[", "");
-    removeSecondTimeSpentBracket = removeFirstTimeSpentBracket.replaceAll("]", "");
+    removeFirstTimeSpentBracket =
+        allottedLocalStoreTimeSpentList.toString().replaceAll("[", "");
+    removeSecondTimeSpentBracket =
+        removeFirstTimeSpentBracket.replaceAll("]", "");
 
     removeFirstTaskIdListBracket = taskIdList.toString().replaceAll("[", "");
-    removeSecondTaskIdListBracket = removeFirstTaskIdListBracket.replaceAll("]", "");
+    removeSecondTaskIdListBracket =
+        removeFirstTaskIdListBracket.replaceAll("]", "");
 
-    removeFirstBracket = allottedTimesheetSelectedMultipleEmpIdList.toString().replaceAll("[", "");
+    removeFirstBracket = allottedTimesheetSelectedMultipleEmpIdList
+        .toString()
+        .replaceAll("[", "");
     removeSecondBracket = removeFirstBracket.replaceAll("]", "");
 
-    removeFirstBracketForService = allottedTimesheetSelectedMultipleServiceIdList.toString().replaceAll("[", "");
-    removeSecondBracketForService = removeFirstBracketForService.replaceAll("]", "");
+    removeFirstBracketForService =
+        allottedTimesheetSelectedMultipleServiceIdList
+            .toString()
+            .replaceAll("[", "");
+    removeSecondBracketForService =
+        removeFirstBracketForService.replaceAll("]", "");
 
-    removeFirstBracketForClientApplicableService = allottedClientApplicableServiceIdList.toString().replaceAll("[", "");
-    removeSecondBracketForClientApplicableService = removeFirstBracketForClientApplicableService.replaceAll("]", "");
+    removeFirstBracketForClientApplicableService =
+        allottedClientApplicableServiceIdList.toString().replaceAll("[", "");
+    removeSecondBracketForClientApplicableService =
+        removeFirstBracketForClientApplicableService.replaceAll("]", "");
 
-    removeFirstBracket = allottedTimesheetSelectedMultipleEmpIdList.toString().replaceAll("[", "");
+    removeFirstBracket = allottedTimesheetSelectedMultipleEmpIdList
+        .toString()
+        .replaceAll("[", "");
     removeSecondBracket = removeFirstBracket.replaceAll("]", "");
 
     print("allottedLocalStoreDetailsList");
@@ -1077,11 +1312,15 @@ class TimesheetNewFormController extends GetxController {
     update();
   }
 
-  clearAllotted(){
+  clearAllotted() {
     timesheetTaskListData.clear();
-    detailsControllerList.clear();
+    // detailsControllerList.clear();
+
+    for (var element in timesheetTaskListData) {
+      element.timesheetTaskDetailsData!.clear();
+    }
     timeSpentControllerList.clear();
-    timeSpentList.clear();
+    //timeSpentList.clear();
     taskIdList.clear();
     statusList.clear();
     addedAllottedStatusNameList.clear();
@@ -1093,43 +1332,55 @@ class TimesheetNewFormController extends GetxController {
     allottedTimesheetSelectedServiceList.clear();
     serviceItems.clear();
 
-    if(currentService == "allotted"){
+    if (currentService == "allotted") {
       isAddingMoreAllotted = true;
       callEmployeeList();
-    }
-    else if(cbNonAllotted == true && cbOffice == true){
+    } else if (cbNonAllotted == true && cbOffice == true) {
       currentService = "nonAllotted";
       callEmployeeList();
       update();
-    }
-    else if(cbNonAllotted == true && cbOffice == false){
-      currentService = "nonAllotted";callEmployeeList(); update();
-    }
-    else if(cbNonAllotted == false && cbOffice == true){
-      currentService = "office"; callTimesheetTypeOfWork(); showOffice = true; update();
-    }
-    else if(cbNonAllotted == false && cbOffice == false){
-      currentService = ""; continued(); update();
+    } else if (cbNonAllotted == true && cbOffice == false) {
+      currentService = "nonAllotted";
+      callEmployeeList();
+      update();
+    } else if (cbNonAllotted == false && cbOffice == true) {
+      currentService = "office";
+      callTimesheetTypeOfWork();
+      showOffice = true;
+      update();
+    } else if (cbNonAllotted == false && cbOffice == false) {
+      currentService = "";
+      continued();
+      update();
     }
 
     updateLoader(false);
     update();
   }
 
-  checkValidationForStepper1(){
-    if(selectedDateToShow=="" || timesheetSelectedWorkAt.isEmpty ||  stepper1InTime.text.isEmpty
-        || stepper1OutTime.text.isEmpty || timesheetTotalTime.text.isEmpty){
-
-      selectedDateToShow=="" ? validateStartDate=true: validateStartDate=false;
-      timesheetSelectedWorkAt.isEmpty ? validateWorkAt=true: validateWorkAt=false;
-      stepper1InTime.text.isEmpty ? validateInTime=true: validateInTime=false;
-      stepper1OutTime.text.isEmpty ? validateOutTime=true: validateOutTime=false;
+  checkValidationForStepper1() {
+    if (selectedDateToShow == "" ||
+        timesheetSelectedWorkAt.isEmpty ||
+        stepper1InTime.text.isEmpty ||
+        stepper1OutTime.text.isEmpty ||
+        timesheetTotalTime.text.isEmpty) {
+      selectedDateToShow == ""
+          ? validateStartDate = true
+          : validateStartDate = false;
+      timesheetSelectedWorkAt.isEmpty
+          ? validateWorkAt = true
+          : validateWorkAt = false;
+      stepper1InTime.text.isEmpty
+          ? validateInTime = true
+          : validateInTime = false;
+      stepper1OutTime.text.isEmpty
+          ? validateOutTime = true
+          : validateOutTime = false;
 
       updateLoader(false);
       print("if");
       update();
-    }
-    else{
+    } else {
       callTimesheetCheck();
       update();
     }
@@ -1138,18 +1389,19 @@ class TimesheetNewFormController extends GetxController {
   /// check timesheet
   void callTimesheetCheck() async {
     try {
-      CheckTimesheetApiResponse? response = (await repository.getTimesheetCheck(selectedDateToSend));
+      CheckTimesheetApiResponse? response =
+          (await repository.getTimesheetCheck(selectedDateToSend));
 
       print("response");
       print(response);
       if (response.success!) {
-
         callTimesheetAdd();
         updateLoader(false);
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -1162,11 +1414,16 @@ class TimesheetNewFormController extends GetxController {
       update();
     }
   }
+
   /// add timesheet
   void callTimesheetAdd() async {
     try {
-      ApiResponse? response = (await repository.getTimesheetAdd(selectedDateToSend,stepper1InTime.text,
-          stepper1OutTime.text,timesheetTotalTime.text,selectedWorkAt));
+      ApiResponse? response = (await repository.getTimesheetAdd(
+          selectedDateToSend,
+          stepper1InTime.text,
+          stepper1OutTime.text,
+          timesheetTotalTime.text,
+          selectedWorkAt));
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
@@ -1174,7 +1431,8 @@ class TimesheetNewFormController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -1188,42 +1446,47 @@ class TimesheetNewFormController extends GetxController {
     }
   }
 
-  callApiToSaveAll(){
-    if(removeSecondNonAllottedDetailsListBracket==""){
-      removeSecondDetailsBracket = removeSecondDetailsBracket.replaceAll(", ", ",");
+  callApiToSaveAll() {
+    if (removeSecondNonAllottedDetailsListBracket == "") {
+      removeSecondDetailsBracket =
+          removeSecondDetailsBracket.replaceAll(", ", ",");
+    } else {
+      removeSecondDetailsBracket =
+          "${removeSecondDetailsBracket.replaceAll(", ", ",")},${removeSecondNonAllottedDetailsListBracket.replaceAll(", ", ",")}";
     }
-    else{
-      removeSecondDetailsBracket = "${removeSecondDetailsBracket.replaceAll(", ", ",")},${removeSecondNonAllottedDetailsListBracket.replaceAll(", ", ",")}";
-    }
-    if(removeSecondNonAllottedClientIdListBracket==""){
+    if (removeSecondNonAllottedClientIdListBracket == "") {
       removeSecondBracket = removeSecondBracket.replaceAll(", ", ",");
+    } else {
+      removeSecondBracket =
+          "${removeSecondBracket.replaceAll(", ", ",")},${removeSecondNonAllottedClientIdListBracket.replaceAll(", ", ",")}";
     }
-    else{
-      removeSecondBracket = "${removeSecondBracket.replaceAll(", ", ",")},${removeSecondNonAllottedClientIdListBracket.replaceAll(", ", ",")}";
+    if (removeSecondNonAllottedServiceIdListBracket == "") {
+      removeSecondBracketForService =
+          removeSecondBracketForService.replaceAll(", ", ",");
+    } else {
+      removeSecondBracketForService =
+          "${removeSecondBracketForService.replaceAll(", ", ",")},${removeSecondNonAllottedServiceIdListBracket.replaceAll(", ", ",")}";
     }
-    if(removeSecondNonAllottedServiceIdListBracket==""){
-      removeSecondBracketForService = removeSecondBracketForService.replaceAll(", ", ",");
+    if (removeSecondNonAllottedClientServiceIdListBracket == "") {
+      removeSecondBracketForClientApplicableService =
+          removeSecondBracketForClientApplicableService.replaceAll(", ", ",");
+    } else {
+      removeSecondBracketForClientApplicableService =
+          "${removeSecondBracketForClientApplicableService.replaceAll(", ", ",")},${removeSecondNonAllottedClientServiceIdListBracket.replaceAll(", ", ",")}";
     }
-    else{
-      removeSecondBracketForService = "${removeSecondBracketForService.replaceAll(", ", ",")},${removeSecondNonAllottedServiceIdListBracket.replaceAll(", ", ",")}";
+    if (removeSecondNonAllottedTaskIdBracket == "") {
+      removeSecondTaskIdListBracket =
+          removeSecondTaskIdListBracket.replaceAll(", ", ",");
+    } else {
+      removeSecondTaskIdListBracket =
+          "${removeSecondTaskIdListBracket.replaceAll(", ", ",")},${removeSecondNonAllottedTaskIdBracket.replaceAll(", ", ",")}";
     }
-    if(removeSecondNonAllottedClientServiceIdListBracket==""){
-      removeSecondBracketForClientApplicableService = removeSecondBracketForClientApplicableService.replaceAll(", ", ",");
-    }
-    else{
-      removeSecondBracketForClientApplicableService = "${removeSecondBracketForClientApplicableService.replaceAll(", ", ",")},${removeSecondNonAllottedClientServiceIdListBracket.replaceAll(", ", ",")}";
-    }
-    if(removeSecondNonAllottedTaskIdBracket==""){
-      removeSecondTaskIdListBracket = removeSecondTaskIdListBracket.replaceAll(", ", ",");
-    }
-    else{
-      removeSecondTaskIdListBracket = "${removeSecondTaskIdListBracket.replaceAll(", ", ",")},${removeSecondNonAllottedTaskIdBracket.replaceAll(", ", ",")}";
-    }
-    if(removeSecondNonAllottedTimeListBracket==""){
-      removeSecondTimeSpentBracket = removeSecondTimeSpentBracket.replaceAll(", ", ",");
-    }
-    else{
-      removeSecondTimeSpentBracket = "${removeSecondTimeSpentBracket.replaceAll(", ", ",")},${removeSecondNonAllottedTimeListBracket.replaceAll(", ", ",")}";
+    if (removeSecondNonAllottedTimeListBracket == "") {
+      removeSecondTimeSpentBracket =
+          removeSecondTimeSpentBracket.replaceAll(", ", ",");
+    } else {
+      removeSecondTimeSpentBracket =
+          "${removeSecondTimeSpentBracket.replaceAll(", ", ",")},${removeSecondNonAllottedTimeListBracket.replaceAll(", ", ",")}";
     }
 
     print(removeSecondBracket);
@@ -1237,10 +1500,12 @@ class TimesheetNewFormController extends GetxController {
     // callSaveOffice();
   }
 
-  callSaveAllotted() async{
+  callSaveAllotted() async {
     try {
-      ApiResponse? response = (await repository.getTimesheetAddAllotted(selectedDateToSend,
-          removeSecondBracket, removeSecondBracketForService,
+      ApiResponse? response = (await repository.getTimesheetAddAllotted(
+          selectedDateToSend,
+          removeSecondBracket,
+          removeSecondBracketForService,
           removeSecondBracketForClientApplicableService,
           removeSecondTaskIdListBracket,
           //allottedStatusRemarkText.text??"",
@@ -1253,23 +1518,20 @@ class TimesheetNewFormController extends GetxController {
         Utils.showSuccessSnackBar(response.message);
 
         ///if office is selected
-        if(stepsList.contains("Office")){
+        if (stepsList.contains("Office")) {
           callSaveOffice();
-        }
-        else {
+        } else {
           Get.offNamed(AppRoutes.bottomNav);
         }
 
         updateLoader(false);
-      }
-      else{
+      } else {
         Utils.showErrorSnackBar(response.message);
         updateLoader(false);
       }
       print("allotted response");
       print(response);
-    }
-    on CustomException catch (e) {
+    } on CustomException catch (e) {
       print("allotted exception");
       print(e);
       print(e.getMsg());
@@ -1277,8 +1539,7 @@ class TimesheetNewFormController extends GetxController {
       Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
-    }
-    catch (error) {
+    } catch (error) {
       print("allotted error");
       print(error);
       Utils.showErrorSnackBar(error.toString());
@@ -1287,8 +1548,10 @@ class TimesheetNewFormController extends GetxController {
     }
   }
 
-  nextFromAllotted(){
-    saveCurrentAllottedList(); continued();update();
+  nextFromAllotted() {
+    saveCurrentAllottedList();
+    continued();
+    update();
   }
 
   //-------non allotted------//
@@ -1305,110 +1568,127 @@ class TimesheetNewFormController extends GetxController {
   List<String> selectedNonAllottedTaskIdList = [];
 
   ///client
-  addNonAllottedClientNameAndId(String id, String name){
+  addNonAllottedClientNameAndId(String id, String name) {
     selectedNonAllottedClientNameList.add(name);
     selectedNonAllottedClientIdList.add(id);
 
-    callServiceListForNonAllotted(id,name);
+    callServiceListForNonAllotted(id, name);
 
     update();
   }
-  onNonAllottedClientName(String val){
-    nonAllottedSelectedClientName = val; update();
+
+  onNonAllottedClientName(String val) {
+    nonAllottedSelectedClientName = val;
+    update();
   }
+
   ///service
-  addNonAllottedServiceNameAndId(String id, String name,String clientId,String clientServiceId){
+  addNonAllottedServiceNameAndId(
+      String id, String name, String clientId, String clientServiceId) {
     selectedNonAllottedServiceNameList.add(name);
     selectedNonAllottedServiceIdList.add(id);
     selectedNonAllottedClientIdServiceIdList.add(clientServiceId);
 
-    callTaskListForNonAllotted(id,clientId);
+    callTaskListForNonAllotted(id, clientId);
     update();
   }
-  onNonAllottedServiceName(String val){
-    nonAllottedSelectedServiceName = val; update();
+
+  onNonAllottedServiceName(String val) {
+    nonAllottedSelectedServiceName = val;
+    update();
   }
+
   ///task
-  addNonAllottedTaskNameAndId(String id, String name){
+  addNonAllottedTaskNameAndId(String id, String name) {
     selectedNonAllottedTaskNameList.add(name);
     selectedNonAllottedTaskIdList.add(id);
-    print("non allotted task");
-    print(name);
-    print(id);
     update();
   }
-  onNonAllottedTaskName(String val){
-    nonAllottedSelectedTaskName = val; update();
+
+  onNonAllottedTaskName(String val) {
+    nonAllottedSelectedTaskName = val;
+    update();
   }
 
-  checkValidationForNonAllotted(BuildContext context){
-    if(nonAllottedSelectedClientName==""){
-      Utils.showErrorSnackBar("Please select client!"); update();
-    }
-    else if(nonAllottedSelectedServiceName==""){
-      Utils.showErrorSnackBar("Please select service!"); update();
-    }
-    else if(nonAllottedSelectedTaskName==""){
-      Utils.showErrorSnackBar("Please select task!"); update();
-    }
-    else if(nonAllottedDetailsController.text.isEmpty){
-      Utils.showErrorSnackBar("Please add details!"); update();
-    }
-    else if(selectedNonAllottedTime==""){
-      Utils.showErrorSnackBar("Please select time!"); update();
-    }
-    else{
-      showConfirmationDialogForNonAllotted(context); update();
+  checkValidationForNonAllotted(BuildContext context) {
+    if (nonAllottedSelectedClientName == "") {
+      Utils.showErrorSnackBar("Please select client!");
+      update();
+    } else if (nonAllottedSelectedServiceName == "") {
+      Utils.showErrorSnackBar("Please select service!");
+      update();
+    } else if (nonAllottedSelectedTaskName == "") {
+      Utils.showErrorSnackBar("Please select task!");
+      update();
+    } else if (nonAllottedDetailsController.text.isEmpty) {
+      Utils.showErrorSnackBar("Please add details!");
+      update();
+    } else if (selectedNonAllottedTime == "") {
+      Utils.showErrorSnackBar("Please select time!");
+      update();
+    } else {
+      showConfirmationDialogForNonAllotted(context);
+      update();
     }
   }
 
-  showConfirmationDialogForNonAllotted(BuildContext context){
+  showConfirmationDialogForNonAllotted(BuildContext context) {
     showDialog(
       barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
-        return StatefulBuilder(builder: (context,setter){
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setter) {
           return Dialog(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))
-            ),
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
                 height: 100.0,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-
-                    buildTextRegularWidget("Do you want to add more ?", blackColor, context, 16.0,align: TextAlign.left),
-                    const Divider(color: Colors.grey,),
-                    const SizedBox(height: 10.0,),
-
+                    buildTextRegularWidget(
+                        "Do you want to add more ?", blackColor, context, 16.0,
+                        align: TextAlign.left),
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     Row(
                       children: [
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 Navigator.of(context).pop();
                                 saveCurrentNonAllottedList();
                               });
                             },
-                            child: buildButtonWidget(context, "Yes",height: 40.0,buttonColor: approveColor),
+                            child: buildButtonWidget(context, "Yes",
+                                height: 40.0, buttonColor: approveColor),
                           ),
-                        ),const SizedBox(width: 5.0,),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 Navigator.of(context).pop();
                                 cbNonAllotted = false;
                                 nextFromNonAllottedOrOffice();
                                 update();
                               });
                             },
-                            child: buildButtonWidget(context, "No",height: 40.0,buttonColor: errorColor),
+                            child: buildButtonWidget(context, "No",
+                                height: 40.0, buttonColor: errorColor),
                           ),
                         )
                       ],
@@ -1436,14 +1716,14 @@ class TimesheetNewFormController extends GetxController {
   String removeFirstNonAllottedTaskIdBracket = "";
   String removeSecondNonAllottedTaskIdBracket = "";
 
-  saveCurrentNonAllottedList(){
+  saveCurrentNonAllottedList() {
     updateLoader(true);
 
     nonAllottedDetailsList.add(nonAllottedDetailsController.text);
     nonAllottedTimeList.add(selectedNonAllottedTime);
 
     nonAllottedDetailsController.clear();
-    selectedNonAllottedTime="";
+    selectedNonAllottedTime = "";
 
     prevIndex = hrList.length;
     print("allotted prevIndex");
@@ -1453,23 +1733,35 @@ class TimesheetNewFormController extends GetxController {
     print("nonAllottedDetailsList");
     print(nonAllottedDetailsList);
 
-    removeFirstNonAllottedDetailsListBracket = nonAllottedDetailsList.toString().replaceAll("[", "");
-    removeSecondNonAllottedDetailsListBracket = removeFirstNonAllottedDetailsListBracket.replaceAll("]", "");
+    removeFirstNonAllottedDetailsListBracket =
+        nonAllottedDetailsList.toString().replaceAll("[", "");
+    removeSecondNonAllottedDetailsListBracket =
+        removeFirstNonAllottedDetailsListBracket.replaceAll("]", "");
 
-    removeFirstNonAllottedTimeListBracket = nonAllottedTimeList.toString().replaceAll("[", "");
-    removeSecondNonAllottedTimeListBracket = removeFirstNonAllottedTimeListBracket.replaceAll("]", "");
+    removeFirstNonAllottedTimeListBracket =
+        nonAllottedTimeList.toString().replaceAll("[", "");
+    removeSecondNonAllottedTimeListBracket =
+        removeFirstNonAllottedTimeListBracket.replaceAll("]", "");
 
-    removeFirstNonAllottedClientIdListBracket = selectedNonAllottedClientIdList.toString().replaceAll("[", "");
-    removeSecondNonAllottedClientIdListBracket = removeFirstNonAllottedClientIdListBracket.replaceAll("]", "");
+    removeFirstNonAllottedClientIdListBracket =
+        selectedNonAllottedClientIdList.toString().replaceAll("[", "");
+    removeSecondNonAllottedClientIdListBracket =
+        removeFirstNonAllottedClientIdListBracket.replaceAll("]", "");
 
-    removeFirstNonAllottedServiceIdListBracket = selectedNonAllottedServiceIdList.toString().replaceAll("[", "");
-    removeSecondNonAllottedServiceIdListBracket = removeFirstNonAllottedServiceIdListBracket.replaceAll("]", "");
+    removeFirstNonAllottedServiceIdListBracket =
+        selectedNonAllottedServiceIdList.toString().replaceAll("[", "");
+    removeSecondNonAllottedServiceIdListBracket =
+        removeFirstNonAllottedServiceIdListBracket.replaceAll("]", "");
 
-    removeFirstNonAllottedClientServiceIdListBracket = selectedNonAllottedClientIdServiceIdList.toString().replaceAll("[", "");
-    removeSecondNonAllottedClientServiceIdListBracket = removeFirstNonAllottedClientServiceIdListBracket.replaceAll("]", "");
+    removeFirstNonAllottedClientServiceIdListBracket =
+        selectedNonAllottedClientIdServiceIdList.toString().replaceAll("[", "");
+    removeSecondNonAllottedClientServiceIdListBracket =
+        removeFirstNonAllottedClientServiceIdListBracket.replaceAll("]", "");
 
-    removeFirstNonAllottedTaskIdBracket = selectedNonAllottedTaskIdList.toString().replaceAll("[", "");
-    removeSecondNonAllottedTaskIdBracket = removeFirstNonAllottedTaskIdBracket.replaceAll("]", "");
+    removeFirstNonAllottedTaskIdBracket =
+        selectedNonAllottedTaskIdList.toString().replaceAll("[", "");
+    removeSecondNonAllottedTaskIdBracket =
+        removeFirstNonAllottedTaskIdBracket.replaceAll("]", "");
 
     print("removeSecondNonAllottedDetailsListBracket");
     print(removeSecondNonAllottedDetailsListBracket);
@@ -1487,7 +1779,7 @@ class TimesheetNewFormController extends GetxController {
     update();
   }
 
-  clearNonAllotted(){
+  clearNonAllotted() {
     allottedEmployeeList.clear();
     allottedServiceList.clear();
     nonAllottedTaskList.clear();
@@ -1495,48 +1787,60 @@ class TimesheetNewFormController extends GetxController {
     nonAllottedSelectedClientName = "";
     nonAllottedSelectedServiceName = "";
     nonAllottedSelectedTaskName = "";
-    selectedNonAllottedTime="";
+    selectedNonAllottedTime = "";
 
-    if(cbNonAllotted == true && cbOffice == true){
-      currentService = "nonAllotted";callEmployeeList(); update();
-    }
-    else if(cbNonAllotted == true && cbOffice == false){
-      currentService = "nonAllotted";callEmployeeList(); update();
-    }
-    else if(cbNonAllotted == false && cbOffice == true){
-      currentService = "office"; showOffice = true; callTimesheetTypeOfWork(); update();
-    }
-    else if(cbNonAllotted == false && cbOffice == false){
-      currentService = ""; continued(); update();
+    if (cbNonAllotted == true && cbOffice == true) {
+      currentService = "nonAllotted";
+      callEmployeeList();
+      update();
+    } else if (cbNonAllotted == true && cbOffice == false) {
+      currentService = "nonAllotted";
+      callEmployeeList();
+      update();
+    } else if (cbNonAllotted == false && cbOffice == true) {
+      currentService = "office";
+      showOffice = true;
+      callTimesheetTypeOfWork();
+      update();
+    } else if (cbNonAllotted == false && cbOffice == false) {
+      currentService = "";
+      continued();
+      update();
     }
 
     updateLoader(false);
     update();
   }
 
-  callSaveNonAllotted() async{
+  callSaveNonAllotted() async {
     try {
-      ApiResponse? response = (await repository.getTimesheetAddAllotted(selectedDateToSend,
-        removeSecondBracket.replaceAll(", ", ",") + removeSecondNonAllottedClientIdListBracket.replaceAll(", ", ","),
-        removeSecondBracketForService.replaceAll(", ", ",") + removeSecondNonAllottedServiceIdListBracket.replaceAll(", ", ","),
-        removeSecondBracketForClientApplicableService.replaceAll(", ", ",")+ removeSecondNonAllottedClientServiceIdListBracket.replaceAll(", ", ","),
-        removeSecondTaskIdListBracket.replaceAll(", ", ",") + removeSecondNonAllottedTaskIdBracket.replaceAll(", ", ","),
-        allottedStatusRemarkText.text??"",
+      ApiResponse? response = (await repository.getTimesheetAddAllotted(
+        selectedDateToSend,
+        removeSecondBracket.replaceAll(", ", ",") +
+            removeSecondNonAllottedClientIdListBracket.replaceAll(", ", ","),
+        removeSecondBracketForService.replaceAll(", ", ",") +
+            removeSecondNonAllottedServiceIdListBracket.replaceAll(", ", ","),
+        removeSecondBracketForClientApplicableService.replaceAll(", ", ",") +
+            removeSecondNonAllottedClientServiceIdListBracket.replaceAll(
+                ", ", ","),
+        removeSecondTaskIdListBracket.replaceAll(", ", ",") +
+            removeSecondNonAllottedTaskIdBracket.replaceAll(", ", ","),
+        allottedStatusRemarkText.text ?? "",
         //"${hrSum.toString()}: ${minSum.toString()}"
-        removeSecondTimeSpentBracket.replaceAll(", ", ",") + removeSecondNonAllottedTimeListBracket.replaceAll(", ", ","),));
+        removeSecondTimeSpentBracket.replaceAll(", ", ",") +
+            removeSecondNonAllottedTimeListBracket.replaceAll(", ", ","),
+      ));
       if (response.success!) {
         callSaveOffice();
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
-      }
-      else{
+      } else {
         Utils.showErrorSnackBar(response.message);
         updateLoader(false);
       }
       print("non allotted response");
       print(response);
-    }
-    on CustomException catch (e) {
+    } on CustomException catch (e) {
       print("non allotted exception");
       print(e.getMsg());
       Utils.showErrorSnackBar(e.getMsg());
@@ -1551,33 +1855,35 @@ class TimesheetNewFormController extends GetxController {
     }
   }
 
-  nextFromNonAllottedOrOffice(){
-    if(currentService == "nonAllotted"){
+  nextFromNonAllottedOrOffice() {
+    if (currentService == "nonAllotted") {
       saveCurrentNonAllottedList();
-    }
-    else {
+    } else {
       saveOfficeRelated();
     }
     update();
   }
 
-  nextFromOffice(){
+  nextFromOffice() {
     cbOffice = false;
     saveOfficeRelated();
-    currentService = ""; continued(); update();
+    currentService = "";
+    continued();
+    update();
     update();
   }
 
   /// service non allotted
-  void callServiceListForNonAllotted(String selectedClientId,String selectedClient) async {
+  void callServiceListForNonAllotted(
+      String selectedClientId, String selectedClient) async {
     allottedServiceList.clear();
     try {
-      TimesheetServiceListModel? response = (await repository.getTimesheetNonAllottedServicesList(selectedClientId));
+      TimesheetServiceListModel? response = (await repository
+          .getTimesheetNonAllottedServicesList(selectedClientId));
 
       if (response.success!) {
         if (response.data!.isEmpty) {
-        }
-        else{
+        } else {
           for (var element in response.data!) {
             allottedServiceList.add(TimesheetServicesListData(
                 id: element.id,
@@ -1586,12 +1892,12 @@ class TimesheetNewFormController extends GetxController {
                 serviceName: element.serviceName,
                 selectedClientName: selectedClient,
                 period: element.period,
-                serviceDueDatePeriodicity: element.serviceDueDatePeriodicity
-            ));
+                serviceDueDatePeriodicity: element.serviceDueDatePeriodicity));
           }
 
           serviceItems = allottedServiceList
-              .map((value) => MultiSelectItem<TimesheetServicesListData>(value, value.serviceName!))
+              .map((value) => MultiSelectItem<TimesheetServicesListData>(
+                  value, value.serviceName!))
               .toList();
         }
 
@@ -1607,17 +1913,19 @@ class TimesheetNewFormController extends GetxController {
   }
 
   List<TimesheetTaskDetailsData> nonAllottedTaskList = [];
+
   /// task non allotted
-  void callTaskListForNonAllotted(String selectedServiceId,String clientApplicableServiceId) async {
+  void callTaskListForNonAllotted(
+      String selectedServiceId, String clientApplicableServiceId) async {
     nonAllottedTaskList.clear();
     try {
-      TimesheetTaskListData? response = (await repository.getTimesheetNonAllottedNewTaskList(selectedServiceId,
-          clientApplicableServiceId));
+      TimesheetTaskListData? response =
+          (await repository.getTimesheetNonAllottedNewTaskList(
+              selectedServiceId, clientApplicableServiceId));
 
       if (response.success!) {
         if (response.timesheetTaskDetailsData!.isEmpty) {
-        }
-        else {
+        } else {
           nonAllottedTaskList.addAll(response.timesheetTaskDetailsData!);
         }
         update();
@@ -1654,12 +1962,13 @@ class TimesheetNewFormController extends GetxController {
       TypeOfWorkModel? response = (await repository.getTimesheetTypeOfWork());
       if (response.success!) {
         updateLoader(false);
-        if(response.typeOfWorkList!.isNotEmpty){
+        if (response.typeOfWorkList!.isNotEmpty) {
           workList.addAll(response.typeOfWorkList!);
         }
         update();
       } else {
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1672,74 +1981,86 @@ class TimesheetNewFormController extends GetxController {
   }
 
   ///type of work
-  addOfficeWorkNameAndId(String id, String name){
+  addOfficeWorkNameAndId(String id, String name) {
     selectedOfficeWorkId = id;
     selectedOfficeWorkName = name;
     officeWorkIdList.add(id);
     officeWorkNameList.add(name);
     update();
   }
-  onOfficeWorkType(String val){
-    selectedOfficeWorkName = val; update();
+
+  onOfficeWorkType(String val) {
+    selectedOfficeWorkName = val;
+    update();
   }
 
-  checkValidationForOffice(BuildContext context){
-    if(selectedOfficeWorkName == ""){
-      Utils.showErrorSnackBar("Please select work type!"); update();
-    }
-    else if(officeDetailsController.text.isEmpty){
-      Utils.showErrorSnackBar("Please add details!"); update();
-    }
-    else if(selectedOfficeTime==""){
-      Utils.showErrorSnackBar("Please select time!"); update();
-    }
-    else{
-      showConfirmationDialogForOffice(context); update();
+  checkValidationForOffice(BuildContext context) {
+    if (selectedOfficeWorkName == "") {
+      Utils.showErrorSnackBar("Please select work type!");
+      update();
+    } else if (officeDetailsController.text.isEmpty) {
+      Utils.showErrorSnackBar("Please add details!");
+      update();
+    } else if (selectedOfficeTime == "") {
+      Utils.showErrorSnackBar("Please select time!");
+      update();
+    } else {
+      showConfirmationDialogForOffice(context);
+      update();
     }
   }
 
-  showConfirmationDialogForOffice(BuildContext context){
+  showConfirmationDialogForOffice(BuildContext context) {
     showDialog(
       barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
-        return StatefulBuilder(builder: (context,setter){
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setter) {
           return Dialog(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))
-            ),
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
                 height: 100.0,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-
-                    buildTextRegularWidget("Do you want to add more ?", blackColor, context, 16.0,align: TextAlign.left),
-                    const Divider(color: Colors.grey,),
-                    const SizedBox(height: 10.0,),
-
+                    buildTextRegularWidget(
+                        "Do you want to add more ?", blackColor, context, 16.0,
+                        align: TextAlign.left),
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     Row(
                       children: [
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 Navigator.of(context).pop();
                                 cbOffice = true;
                                 callTimesheetTypeOfWork();
                                 saveOfficeRelated();
                               });
                             },
-                            child: buildButtonWidget(context, "Yes",height: 40.0,buttonColor: approveColor),
+                            child: buildButtonWidget(context, "Yes",
+                                height: 40.0, buttonColor: approveColor),
                           ),
-                        ),const SizedBox(width: 5.0,),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 Navigator.of(context).pop();
                                 cbOffice = false;
                                 //nextFromNonAllottedOrOffice();
@@ -1747,7 +2068,8 @@ class TimesheetNewFormController extends GetxController {
                                 update();
                               });
                             },
-                            child: buildButtonWidget(context, "No",height: 40.0,buttonColor: errorColor),
+                            child: buildButtonWidget(context, "No",
+                                height: 40.0, buttonColor: errorColor),
                           ),
                         )
                       ],
@@ -1771,21 +2093,29 @@ class TimesheetNewFormController extends GetxController {
   String removeFirstOfficeWorkNameListBracket = "";
   String removeSecondOfficeWorkNameListBracket = "";
 
-  saveOfficeRelated(){
+  saveOfficeRelated() {
     officeDetailsList.add(officeDetailsController.text);
     officeTimeList.add(selectedOfficeTime);
 
-    removeFirstOfficeDetailsListBracket = officeDetailsList.toString().replaceAll("[", "");
-    removeSecondOfficeDetailsListBracket = removeFirstOfficeDetailsListBracket.replaceAll("]", "");
+    removeFirstOfficeDetailsListBracket =
+        officeDetailsList.toString().replaceAll("[", "");
+    removeSecondOfficeDetailsListBracket =
+        removeFirstOfficeDetailsListBracket.replaceAll("]", "");
 
-    removeFirstOfficeTimeListBracket = officeTimeList.toString().replaceAll("[", "");
-    removeSecondOfficeTimeListBracket = removeFirstOfficeTimeListBracket.replaceAll("]", "");
+    removeFirstOfficeTimeListBracket =
+        officeTimeList.toString().replaceAll("[", "");
+    removeSecondOfficeTimeListBracket =
+        removeFirstOfficeTimeListBracket.replaceAll("]", "");
 
-    removeFirstOfficeWorkIdListBracket = officeWorkIdList.toString().replaceAll("[", "");
-    removeSecondOfficeWorkIdListBracket = removeFirstOfficeWorkIdListBracket.replaceAll("]", "");
+    removeFirstOfficeWorkIdListBracket =
+        officeWorkIdList.toString().replaceAll("[", "");
+    removeSecondOfficeWorkIdListBracket =
+        removeFirstOfficeWorkIdListBracket.replaceAll("]", "");
 
-    removeFirstOfficeWorkNameListBracket = officeWorkNameList.toString().replaceAll("[", "");
-    removeSecondOfficeWorkNameListBracket = removeFirstOfficeWorkNameListBracket.replaceAll("]", "");
+    removeFirstOfficeWorkNameListBracket =
+        officeWorkNameList.toString().replaceAll("[", "");
+    removeSecondOfficeWorkNameListBracket =
+        removeFirstOfficeWorkNameListBracket.replaceAll("]", "");
 
     print("removeSecondOfficeWorkIdListBracket");
     print(removeSecondOfficeWorkIdListBracket);
@@ -1794,18 +2124,17 @@ class TimesheetNewFormController extends GetxController {
     update();
   }
 
-  clearOfficeRelated(){
+  clearOfficeRelated() {
     selectedOfficeWorkId = "";
     selectedOfficeWorkName = "";
     officeDetailsController.clear();
-    selectedOfficeTime="";
+    selectedOfficeTime = "";
 
-    if(cbOffice == false){
-      currentService = ""; continued(); update();
-    }
-    else {
-
-    }
+    if (cbOffice == false) {
+      currentService = "";
+      continued();
+      update();
+    } else {}
 
     updateLoader(false);
     update();
@@ -1813,8 +2142,12 @@ class TimesheetNewFormController extends GetxController {
 
   void callSaveOffice() async {
     try {
-      ApiResponse? response = (await repository.getTimesheetAddOfficeRelated(selectedDateToSend,
-          removeSecondOfficeWorkIdListBracket,removeSecondOfficeWorkNameListBracket,totalTimeToShow,"save"));
+      ApiResponse? response = (await repository.getTimesheetAddOfficeRelated(
+          selectedDateToSend,
+          removeSecondOfficeWorkIdListBracket,
+          removeSecondOfficeWorkNameListBracket,
+          totalTimeToShow,
+          "save"));
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
@@ -1822,7 +2155,8 @@ class TimesheetNewFormController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       print("office response");
       print(response);
@@ -1840,72 +2174,73 @@ class TimesheetNewFormController extends GetxController {
   }
 
   ///previous click
-  goToPreviousFromStepper3(){
-    if(stepsList.contains("Office")){
-      showOffice = true; cancel(); update();
-    }
-    else if(stepsList.contains("Non Allotted")){
-      currentService = "nonAllotted"; cancel(); update();
-    }
-    else if(stepsList.contains("Allotted")){
+  goToPreviousFromStepper3() {
+    if (stepsList.contains("Office")) {
+      showOffice = true;
+      cancel();
+      update();
+    } else if (stepsList.contains("Non Allotted")) {
+      currentService = "nonAllotted";
+      cancel();
+      update();
+    } else if (stepsList.contains("Allotted")) {
       // print("allottedTimesheetSelectedEmpList on prev click from office");
       // print(allottedTimesheetSelectedEmpList.length);
       // print(allottedTimesheetSelectedEmpList[0].firmClientFirmName);
       // onSelectionForMultipleEmployee(allottedTimesheetSelectedEmpList);
       // onSelectionForMultipleService(allottedTimesheetSelectedServiceList);
-      currentService = "allotted"; cancel(); update();
-    }
-    else{
-      currentStep = 1 ;
+      currentService = "allotted";
+      cancel();
+      update();
+    } else {
+      currentStep = 1;
       cancel();
       update();
     }
     update();
   }
 
-  goToPreviousFromOffice(){
-    if(stepsList.contains("Non Allotted")){
+  goToPreviousFromOffice() {
+    if (stepsList.contains("Non Allotted")) {
       showOffice = false;
       currentService = "nonAllotted";
-      currentStep = 1 ;
+      currentStep = 1;
       update();
-    }
-    else if(stepsList.contains("Allotted")){
+    } else if (stepsList.contains("Allotted")) {
       showOffice = false;
       currentService = "allotted";
-      currentStep = 1 ;
+      currentStep = 1;
       update();
-    }
-    else{
-      cancel(); update();
+    } else {
+      cancel();
+      update();
     }
     update();
   }
 
-  goToPreviousFromNonAllotted(){
-    if(stepsList.contains("Allotted")){
-      currentService = "allotted"; update();
-    }
-    else{
+  goToPreviousFromNonAllotted() {
+    if (stepsList.contains("Allotted")) {
+      currentService = "allotted";
+      update();
+    } else {
       cancel();
     }
     update();
   }
 
-  goToPreviousFromAllotted(){
+  goToPreviousFromAllotted() {
     cancel();
     update();
   }
 
   ///common
 
-  onWillPopBackTimesheetList(){
+  onWillPopBackTimesheetList() {
     Get.offAllNamed(AppRoutes.bottomNav);
     update();
   }
 
-  calculateTimesheetHrMin(){
-
+  calculateTimesheetHrMin() {
     var format = DateFormat("HH:mm");
     // ignore: prefer_typing_uninitialized_variables
     var two;
@@ -1915,34 +2250,37 @@ class TimesheetNewFormController extends GetxController {
     // totalTimeToShow = "${difference!.inHours}:${difference!.inMinutes.remainder(60)}";
     // timesheetTotalTime.text = totalTimeToShow;
 
-    for (var element in timeSpentList) {
-      var one = format.parse(element);
-
-      one = two.difference(one);
-
-    }
+    // for (var element in timeSpentList) {
+    //   var one = format.parse(element);
+    //
+    //   one = two.difference(one);
+    //
+    // }
 
     update();
   }
 
-  continued(){
-    currentStep < 2 ? currentStep += 1: null;
+  continued() {
+    currentStep < 2 ? currentStep += 1 : null;
     update();
   }
 
-  cancel(){
+  cancel() {
     currentStep > 0 ? currentStep -= 1 : null;
     update();
   }
 
-  tapped(int step){
+  tapped(int step) {
     currentStep = step;
     update();
   }
 
-  updateLoader(bool val) { loader = val; update(); }
+  updateLoader(bool val) {
+    loader = val;
+    update();
+  }
 
-  callLogout(){
+  callLogout() {
     Utils.showLoadingDialog();
     GetStorage().remove("userId");
     GetStorage().remove("userName");
@@ -1954,5 +2292,4 @@ class TimesheetNewFormController extends GetxController {
     Get.offNamedUntil(AppRoutes.login, (route) => false);
     update();
   }
-
 }

@@ -3,7 +3,8 @@ class EmployeeDashboardModel {
   bool? success;
   List<EmployeeDashboardData>? employeeDashboardData;
 
-  EmployeeDashboardModel({this.message, this.success, this.employeeDashboardData});
+  EmployeeDashboardModel(
+      {this.message, this.success, this.employeeDashboardData});
 
   EmployeeDashboardModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -41,18 +42,18 @@ class EmployeeDashboardData {
 
   EmployeeDashboardData(
       {this.leaveStatus,
-        this.employee,
-        this.totalCnt,
-        this.allottedCnt,
-        this.pastdueCnt,
-        this.probableCnt,
-        this.highCnt,
-        this.mediumCnt,
-        this.lowCnt,
-        this.pendingClaims});
+      this.employee,
+      this.totalCnt,
+      this.allottedCnt,
+      this.pastdueCnt,
+      this.probableCnt,
+      this.highCnt,
+      this.mediumCnt,
+      this.lowCnt,
+      this.pendingClaims});
 
   EmployeeDashboardData.fromJson(Map<String, dynamic> json) {
-    leaveStatus = json['leave_status'].toString() == "P" ? "Present" : "Absent" ;
+    leaveStatus = json['leave_status'].toString() == "P" ? "Present" : "Absent";
     employee = json['employee'].toString();
     totalCnt = json['total_cnt'].toString();
     allottedCnt = json['allotted_cnt'].toString();

@@ -19,7 +19,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oktoast/oktoast.dart';
 
-
 class DashboardController extends GetxController {
   final ApiRepository repository;
 
@@ -27,22 +26,38 @@ class DashboardController extends GetxController {
   DashboardController({required this.repository}) : assert(repository != null);
 
   ///common
-  String userId="";
-  String userName="";
-  String name="";
-  String reportingHead="";
-  String roleId="";
-  String userType="";
+  String userId = "";
+  String userName = "";
+  String name = "";
+  String reportingHead = "";
+  String roleId = "";
+  String userType = "";
   int selectedFlag = 0;
   bool loader = false;
   int currentPos = 0;
 
-  List chartDetails = ["Triggered In Last 7 Days","More Than 7 Days","Past Due","Probable Overdue","High",];
+  List chartDetails = [
+    "Triggered In Last 7 Days",
+    "More Than 7 Days",
+    "Past Due",
+    "Probable Overdue",
+    "High",
+  ];
   //List chartColors = [Colors.blue,Colors.brown,const Color(0xFFffc000),const Color(0xff0000FF),const Color(0xffFF0000)];
-  List chartColors = [Colors.blue,Colors.brown,const Color(0xFFffc000),const Color(0xff0000FF),const Color(0xffFF0000)];
+  List chartColors = [
+    Colors.blue,
+    Colors.brown,
+    const Color(0xFFffc000),
+    const Color(0xff0000FF),
+    const Color(0xffFF0000)
+  ];
 
   final allColors = <pie_chart_color.Color>[
-    Colors.grey,Colors.brown,Colors.orangeAccent.shade100,Colors.indigo,Colors.red
+    Colors.grey,
+    Colors.brown,
+    Colors.orangeAccent.shade100,
+    Colors.indigo,
+    Colors.red
   ];
 
   /// 1. trigger not allotted
@@ -54,14 +69,21 @@ class DashboardController extends GetxController {
     //"Probable Overdue":0.0,
   };
   final triggerNotAllottedColors = <pie_chart_color.Color>[
-    Colors.blue,Colors.brown,
+    Colors.blue, Colors.brown,
     //const Color(0xFFffc000)
     //const Color(0xFFffc000)
     const Color(0xFFffc000)
   ];
   List<int> triggeredNotAllotted = [];
+
   /// 2. allotted not started
-  List allottedNotStartedDetails = ["Past Due","Probable Overdue","High","Medium","Low"];
+  List allottedNotStartedDetails = [
+    "Past Due",
+    "Probable Overdue",
+    "High",
+    "Medium",
+    "Low"
+  ];
 
   List<int> ownAllottedNotStarted = [];
   List<int> teamAllottedNotStarted = [];
@@ -76,34 +98,44 @@ class DashboardController extends GetxController {
   // };
   Map<String, double> allottedNotStartedValues = {
     "Past Due": 0.0,
-    "Probable Overdue":0.0,
-    "High":0.0,
-    "Medium":0.0,
-    "Low":0.0
+    "Probable Overdue": 0.0,
+    "High": 0.0,
+    "Medium": 0.0,
+    "Low": 0.0
   };
   final allottedNotStartedColors = <pie_chart_color.Color>[
     const Color(0xFFffc000),
-    const Color(0xff0000FF),const Color(0xffFF0000),Color(0xffF57C00),const Color(0xff008000)
+    const Color(0xff0000FF),
+    const Color(0xffFF0000),
+    Color(0xffF57C00),
+    const Color(0xff008000)
   ];
   List<AllottedNotStartedPastDueData> allottedNotStartedPastDueList = [];
 
   /// 3. started not completed
-  List startedNotCompletedDetails = ["Past Due","Probable Overdue","High","Medium","Low"];
+  List startedNotCompletedDetails = [
+    "Past Due",
+    "Probable Overdue",
+    "High",
+    "Medium",
+    "Low"
+  ];
   List<int> ownStartedNotCompleted = [];
   List<int> teamStartedNotCompleted = [];
   String startedNotCompletedRH = "0";
   String startedNotCompletedTotal = "";
   Map<String, double> startedNotCompletedValues = {
     "Past Due": 0.0,
-    "Probable Overdue":0.0,
-    "High":0.0,
-    "Medium":0.0,
-    "Low":0.0
+    "Probable Overdue": 0.0,
+    "High": 0.0,
+    "Medium": 0.0,
+    "Low": 0.0
   };
   final startedNotCompletedColors = <pie_chart_color.Color>[
     //const Color(0xFFffc000),
     const Color(0xFFffc000),
-    const Color(0xff0000FF),const Color(0xffFF0000),Color(0xffF57C00),const Color(0xff008000)
+    const Color(0xff0000FF), const Color(0xffFF0000), Color(0xffF57C00),
+    const Color(0xff008000)
   ];
   List<StartedNotCompletedPieList> startedNotCompletedPastDueList = [];
 
@@ -118,8 +150,11 @@ class DashboardController extends GetxController {
   // final completedIdPendingColors = <pie_chart_color.Color>[
   //   Colors.grey,
   // ];
-  final completedIdPendingColors = <pie_chart_color.Color>[ const Color(0xff6f42c1),];
+  final completedIdPendingColors = <pie_chart_color.Color>[
+    const Color(0xff6f42c1),
+  ];
   List<CompletedUdinPendingPieList> completedUdinPendingDataList = [];
+
   /// 5. completed not billed
   List<int> completedNotBilled = [];
   String completedNotBilledTotal = "";
@@ -129,28 +164,29 @@ class DashboardController extends GetxController {
   // final completedNotBilledColors = <pie_chart_color.Color>[
   //   Colors.grey,
   // ];
-  final completedNotBilledColors = <pie_chart_color.Color>[ const Color(0xff00c4ff),];
-  List<CompletedNotBilledPieList> completedNotBilledDataList= [];
+  final completedNotBilledColors = <pie_chart_color.Color>[
+    const Color(0xff00c4ff),
+  ];
+  List<CompletedNotBilledPieList> completedNotBilledDataList = [];
 
   ///work on hold
   List<int> ownWorkOnHold = [];
   List<int> teamWorkOnHold = [];
   String workOnHoldTotal = "0";
   String workOnHoldRH = "";
-  Map<String, double> workOnHoldValues = {
-    "Own": 0.0,"Team":0.0
-  };
-  final workOnHoldColors = <pie_chart_color.Color>[Colors.red,Colors.black];
+  Map<String, double> workOnHoldValues = {"Own": 0.0, "Team": 0.0};
+  final workOnHoldColors = <pie_chart_color.Color>[Colors.red, Colors.black];
 
   ///submitted for checking
   List<int> ownSubmittedForChecking = [];
   List<int> teamSubmittedForChecking = [];
   String submittedForCheckingRH = "0";
   String submittedForCheckingTotal = "";
-  Map<String, double> submittedForCheckingValues = {
-    "Own": 0.0,"Team":0.0
-  };
-  final submittedForCheckingColors = <pie_chart_color.Color>[ Colors.orange,Colors.black];
+  Map<String, double> submittedForCheckingValues = {"Own": 0.0, "Team": 0.0};
+  final submittedForCheckingColors = <pie_chart_color.Color>[
+    Colors.orange,
+    Colors.black
+  ];
 
   ///all tasks submitted
   List<int> ownAllTaskCompleted = [];
@@ -160,10 +196,11 @@ class DashboardController extends GetxController {
   // Map<String, double> allTasksCompletedValues = {
   //   "Triggered In Last 7 Days": 0.0,
   // };
-  Map<String, double> allTasksCompletedValues = {
-    "Own": 0.0,"Team":0.0
-  };
-  final allTasksCompletedColors = <pie_chart_color.Color>[ Colors.green, Colors.black ];
+  Map<String, double> allTasksCompletedValues = {"Own": 0.0, "Team": 0.0};
+  final allTasksCompletedColors = <pie_chart_color.Color>[
+    Colors.green,
+    Colors.black
+  ];
 
   String selectedMainType = "";
   bool validateBranchName = false;
@@ -188,25 +225,31 @@ class DashboardController extends GetxController {
   String selectedLow = "";
 
   ///allotted -> past due -> own
-  String selectedPieChartTitle = "" ;
-  String selectedType = "" ;
-  String selectedCount = "" ;
+  String selectedPieChartTitle = "";
+  String selectedType = "";
+  String selectedCount = "";
   DateTime selectedDateForCurrent = DateTime.now();
   DateTime selectedDateForAll = DateTime.now();
-  String selectedDateToShowForCurrent = ""; String selectedDateToSendForCurrent = "";
-  String selectedDateToShowForAll = ""; String selectedDateToSendForAll = "";
+  String selectedDateToShowForCurrent = "";
+  String selectedDateToSendForCurrent = "";
+  String selectedDateToShowForAll = "";
+  String selectedDateToSendForAll = "";
   String selectedCurrentPriority = "";
   String selectedServiceStatus = "";
   String selectedCurrentStatusId = "";
   String selectedCurrentPriorityId = "";
   String selectedAllPriority = "";
-  List<String> changeStatusList = ["Inprocess","Hold",];
-  List<String> priorityList = ["Low","Medium","High"];
+  List<String> changeStatusList = [
+    "Inprocess",
+    "Hold",
+  ];
+  List<String> priorityList = ["Low", "Medium", "High"];
 
   ///check password and reason dialog
   TextEditingController checkPassword = TextEditingController();
   TextEditingController reason = TextEditingController();
-  bool validatePassword = false;bool showPass = true;
+  bool validatePassword = false;
+  bool showPass = true;
   bool hideReasonContent = true;
   bool validateReason = false;
 
@@ -231,13 +274,13 @@ class DashboardController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    userId = GetStorage().read("userId")??"";
-    userName = GetStorage().read("userName")??"";
-    name = GetStorage().read("name")??"";
-    reportingHead = GetStorage().read("reportingHead")??"";
-    roleId = GetStorage().read("roleId")??"";
-    userType = GetStorage().read("userType")??"";
-    ownServiceStatusValue = GetStorage().read("OwnServiceStatus")??"";
+    userId = GetStorage().read("userId") ?? "";
+    userName = GetStorage().read("userName") ?? "";
+    name = GetStorage().read("name") ?? "";
+    reportingHead = GetStorage().read("reportingHead") ?? "";
+    roleId = GetStorage().read("roleId") ?? "";
+    userType = GetStorage().read("userType") ?? "";
+    ownServiceStatusValue = GetStorage().read("OwnServiceStatus") ?? "";
 
     repository.getData();
 
@@ -253,20 +296,20 @@ class DashboardController extends GetxController {
     callAllTasksCompleted();
     callEmployeeList();
   }
+
   List<ClaimSubmittedByList> employeeList = [];
   List<String> idInEmp = [];
 
   List<int> addedIndex = [];
   bool isExpanded = false;
 
-  onExpanded(bool expanded,int index){
+  onExpanded(bool expanded, int index) {
     isExpanded = expanded;
 
-    if(addedIndex.contains(index)){
+    if (addedIndex.contains(index)) {
       addedIndex.remove(index);
       update();
-    }
-    else{
+    } else {
       addedIndex.add(index);
       update();
     }
@@ -277,12 +320,12 @@ class DashboardController extends GetxController {
     employeeList.clear();
     updateLoader(true);
     try {
-      ClaimSubmittedByResponse? response = (await repository.getClaimSubmittedByList());
+      ClaimSubmittedByResponse? response =
+          (await repository.getClaimSubmittedByList());
 
       if (response.success!) {
         if (response.claimSubmittedByListDetails!.isEmpty) {
-        }
-        else{
+        } else {
           employeeList.addAll(response.claimSubmittedByListDetails!);
 
           for (var element in employeeList) {
@@ -303,6 +346,7 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   List<NotificationList> notificationListData = [];
 
   void callNotificationList() async {
@@ -314,8 +358,7 @@ class DashboardController extends GetxController {
 
       if (response.success!) {
         if (response.notificationList!.isEmpty) {
-        }
-        else{
+        } else {
           notificationListData.addAll(response.notificationList!);
         }
         updateLoader(false);
@@ -358,11 +401,13 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///mark selected read
   void callNotificationMarkSelectedRead(String notificationId) async {
     try {
       updateLoader(true);
-      ApiResponse? response = (await repository.getNotificationMarkSelectedRead(notificationId));
+      ApiResponse? response =
+          (await repository.getNotificationMarkSelectedRead(notificationId));
 
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
@@ -382,6 +427,7 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   /// branch name list
   void callBranchNameList() async {
     branchNameList.clear();
@@ -392,7 +438,8 @@ class DashboardController extends GetxController {
         updateLoader(false);
         update();
       } else {
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -403,55 +450,107 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///branch name
-  updateSelectedBranchId(String val){
-    if(branchNameList.isNotEmpty){
-      selectedBranchId = val; update();
-    }
-  }
-  checkBranchNameValidation(String val){
-    if(branchNameList.isNotEmpty){
-      selectedBranchName = val; update();
-      if(selectedBranchName==""){ validateBranchName = true; update(); }
-      else{validateBranchName = false; update(); }
+  updateSelectedBranchId(String val) {
+    if (branchNameList.isNotEmpty) {
+      selectedBranchId = val;
+      update();
     }
   }
 
-  onWillPopBack(){
+  checkBranchNameValidation(String val) {
+    if (branchNameList.isNotEmpty) {
+      selectedBranchName = val;
+      update();
+      if (selectedBranchName == "") {
+        validateBranchName = true;
+        update();
+      } else {
+        validateBranchName = false;
+        update();
+      }
+    }
+  }
+
+  onWillPopBack() {
     Get.offNamedUntil(AppRoutes.bottomNav, (route) => false);
     update();
   }
 
-  updateSlider(int index){ currentPos = index;update();}
+  updateSlider(int index) {
+    currentPos = index;
+    update();
+  }
 
-  goToNextSlider(){carouselController.nextPage(); update();}
+  goToNextSlider() {
+    carouselController.nextPage();
+    update();
+  }
 
-  goToPrevSlider(){carouselController.previousPage(); update();}
+  goToPrevSlider() {
+    carouselController.previousPage();
+    update();
+  }
 
-  updateSelectedFlag(int val,BuildContext context){ selectedFlag = val; update();}
+  updateSelectedFlag(int val, BuildContext context) {
+    selectedFlag = val;
+    update();
+  }
 
-  updateLoader(bool val) { loader = val; update(); }
+  updateLoader(bool val) {
+    loader = val;
+    update();
+  }
 
   ///service trigger not allotted
   void callServiceTriggerNotAllotted() async {
     triggeredNotAllotted.clear();
     try {
-      TriggerNotAllottedModel? response = (await repository.getServiceTriggerNotAllottedPieChart());
+      TriggerNotAllottedModel? response =
+          (await repository.getServiceTriggerNotAllottedPieChart());
       if (response.success!) {
-        triggerNotAllottedTotal = response.triggeredNotAllottedData!.serviceTriggeredButNotAllotted![4].toString();
-        triggerNotAllottedValues.update("Triggered In Last 7 Days", (value) => value + response.triggeredNotAllottedData!.serviceTriggeredButNotAllotted![0].toDouble());
-        triggerNotAllottedValues.update("More Than 7 Days", (value) => value + response.triggeredNotAllottedData!.serviceTriggeredButNotAllotted![1].toDouble());
-        triggerNotAllottedValues.update("Past Due", (value) => value + response.triggeredNotAllottedData!.serviceTriggeredButNotAllotted![2].toDouble());
+        triggerNotAllottedTotal = response
+            .triggeredNotAllottedData!.serviceTriggeredButNotAllotted![4]
+            .toString();
+        triggerNotAllottedValues.update(
+            "Triggered In Last 7 Days",
+            (value) =>
+                value +
+                response.triggeredNotAllottedData!
+                    .serviceTriggeredButNotAllotted![0]
+                    .toDouble());
+        triggerNotAllottedValues.update(
+            "More Than 7 Days",
+            (value) =>
+                value +
+                response.triggeredNotAllottedData!
+                    .serviceTriggeredButNotAllotted![1]
+                    .toDouble());
+        triggerNotAllottedValues.update(
+            "Past Due",
+            (value) =>
+                value +
+                response.triggeredNotAllottedData!
+                    .serviceTriggeredButNotAllotted![2]
+                    .toDouble());
         //triggerNotAllottedValues.update("Probable Overdue", (value) => value + response.triggeredNotAllottedData!.serviceTriggeredButNotAllotted![3].toDouble());
 
-        for(int i = 0; i<response.triggeredNotAllottedData!.serviceTriggeredButNotAllotted!.length - 1; i ++){
-         triggeredNotAllotted.add(response.triggeredNotAllottedData!.serviceTriggeredButNotAllotted![i]);
+        for (int i = 0;
+            i <
+                response.triggeredNotAllottedData!
+                        .serviceTriggeredButNotAllotted!.length -
+                    1;
+            i++) {
+          triggeredNotAllotted.add(response
+              .triggeredNotAllottedData!.serviceTriggeredButNotAllotted![i]);
         }
 
         updateLoader(false);
         update();
       } else {
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -462,21 +561,52 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///allotted not started
   void callAllottedNotStarted() async {
-    ownAllottedNotStarted.clear(); teamAllottedNotStarted.clear();
+    ownAllottedNotStarted.clear();
+    teamAllottedNotStarted.clear();
     try {
-      AllottedNotStartedModel? response = (await repository.getAllottedNotStartedPieChart());
+      AllottedNotStartedModel? response =
+          (await repository.getAllottedNotStartedPieChart());
       if (response.success!) {
-        allottedNotStartedTotal = response.allottedNotStartedData!.allottedButNotStarted![5].toString();
+        allottedNotStartedTotal = response
+            .allottedNotStartedData!.allottedButNotStarted![5]
+            .toString();
         // allottedNotStartedValues.update("Triggered In Last 7 Days", (value) => value + response.allottedNotStartedData!.allottedButNotStarted![0].toDouble());
         // allottedNotStartedValues.update("More Than 7 Days", (value) => value + response.allottedNotStartedData!.allottedButNotStarted![1].toDouble());
-        allottedNotStartedValues.update("Past Due", (value) => value + response.allottedNotStartedData!.allottedButNotStarted![0].toDouble());
-        allottedNotStartedValues.update("Probable Overdue", (value) => value + response.allottedNotStartedData!.allottedButNotStarted![1].toDouble());
-        allottedNotStartedValues.update("High", (value) => value + response.allottedNotStartedData!.allottedButNotStarted![2].toDouble());
-        allottedNotStartedValues.update("Medium", (value) => value + response.allottedNotStartedData!.allottedButNotStarted![3].toDouble());
-        allottedNotStartedValues.update("Low", (value) => value + response.allottedNotStartedData!.allottedButNotStarted![4].toDouble());
-        allottedNotStartedRH = response.allottedNotStartedData!.isReportingHead![0];
+        allottedNotStartedValues.update(
+            "Past Due",
+            (value) =>
+                value +
+                response.allottedNotStartedData!.allottedButNotStarted![0]
+                    .toDouble());
+        allottedNotStartedValues.update(
+            "Probable Overdue",
+            (value) =>
+                value +
+                response.allottedNotStartedData!.allottedButNotStarted![1]
+                    .toDouble());
+        allottedNotStartedValues.update(
+            "High",
+            (value) =>
+                value +
+                response.allottedNotStartedData!.allottedButNotStarted![2]
+                    .toDouble());
+        allottedNotStartedValues.update(
+            "Medium",
+            (value) =>
+                value +
+                response.allottedNotStartedData!.allottedButNotStarted![3]
+                    .toDouble());
+        allottedNotStartedValues.update(
+            "Low",
+            (value) =>
+                value +
+                response.allottedNotStartedData!.allottedButNotStarted![4]
+                    .toDouble());
+        allottedNotStartedRH =
+            response.allottedNotStartedData!.isReportingHead![0];
 
         for (var element in response.allottedNotStartedData!.own!) {
           ownAllottedNotStarted.add(element);
@@ -485,14 +615,13 @@ class DashboardController extends GetxController {
           teamAllottedNotStarted.add(element);
         }
 
-        if(selectedType == "Own"){
+        if (selectedType == "Own") {
           selectedPastDue = ownAllottedNotStarted[0].toString();
           selectedProbable = ownAllottedNotStarted[1].toString();
           selectedHigh = ownAllottedNotStarted[2].toString();
           selectedMedium = ownAllottedNotStarted[3].toString();
           selectedLow = ownAllottedNotStarted[4].toString();
-        }
-        else{
+        } else {
           selectedPastDue = teamAllottedNotStarted[0].toString();
           selectedProbable = teamAllottedNotStarted[1].toString();
           selectedHigh = teamAllottedNotStarted[2].toString();
@@ -502,7 +631,8 @@ class DashboardController extends GetxController {
         updateLoader(false);
         update();
       } else {
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -513,22 +643,53 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///started not completed
   void callStartedNotCompleted() async {
-    ownStartedNotCompleted.clear(); teamStartedNotCompleted.clear();
+    ownStartedNotCompleted.clear();
+    teamStartedNotCompleted.clear();
     try {
-      StartedNotCompletedModel? response = (await repository.getStartedNotCompletedPieChart());
+      StartedNotCompletedModel? response =
+          (await repository.getStartedNotCompletedPieChart());
       if (response.success!) {
-        startedNotCompletedTotal = response.startedNotCompletedData!.startedButNotCompleted![5].toString();
+        startedNotCompletedTotal = response
+            .startedNotCompletedData!.startedButNotCompleted![5]
+            .toString();
         // startedNotCompletedValues.update("Triggered In Last 7 Days", (value) => value + response.startedNotCompletedData!.startedButNotCompleted![0].toDouble());
         // startedNotCompletedValues.update("More Than 7 Days", (value) => value + response.startedNotCompletedData!.startedButNotCompleted![1].toDouble());
-        startedNotCompletedValues.update("Past Due", (value) => value + response.startedNotCompletedData!.startedButNotCompleted![0].toDouble());
-        startedNotCompletedValues.update("Probable Overdue", (value) => value + response.startedNotCompletedData!.startedButNotCompleted![1].toDouble());
-        startedNotCompletedValues.update("High", (value) => value + response.startedNotCompletedData!.startedButNotCompleted![2].toDouble());
-        startedNotCompletedValues.update("Medium", (value) => value + response.startedNotCompletedData!.startedButNotCompleted![3].toDouble());
-        startedNotCompletedValues.update("Low", (value) => value + response.startedNotCompletedData!.startedButNotCompleted![4].toDouble());
+        startedNotCompletedValues.update(
+            "Past Due",
+            (value) =>
+                value +
+                response.startedNotCompletedData!.startedButNotCompleted![0]
+                    .toDouble());
+        startedNotCompletedValues.update(
+            "Probable Overdue",
+            (value) =>
+                value +
+                response.startedNotCompletedData!.startedButNotCompleted![1]
+                    .toDouble());
+        startedNotCompletedValues.update(
+            "High",
+            (value) =>
+                value +
+                response.startedNotCompletedData!.startedButNotCompleted![2]
+                    .toDouble());
+        startedNotCompletedValues.update(
+            "Medium",
+            (value) =>
+                value +
+                response.startedNotCompletedData!.startedButNotCompleted![3]
+                    .toDouble());
+        startedNotCompletedValues.update(
+            "Low",
+            (value) =>
+                value +
+                response.startedNotCompletedData!.startedButNotCompleted![4]
+                    .toDouble());
 
-        startedNotCompletedRH = response.startedNotCompletedData!.isReportingHead![0];
+        startedNotCompletedRH =
+            response.startedNotCompletedData!.isReportingHead![0];
 
         for (var element in response.startedNotCompletedData!.own!) {
           ownStartedNotCompleted.add(element);
@@ -537,14 +698,13 @@ class DashboardController extends GetxController {
           teamStartedNotCompleted.add(element);
         }
 
-        if(selectedType == "Own"){
+        if (selectedType == "Own") {
           selectedPastDue = ownStartedNotCompleted[0].toString();
           selectedProbable = ownStartedNotCompleted[1].toString();
           selectedHigh = ownStartedNotCompleted[2].toString();
           selectedMedium = ownStartedNotCompleted[3].toString();
           selectedLow = ownStartedNotCompleted[4].toString();
-        }
-        else{
+        } else {
           selectedPastDue = teamStartedNotCompleted[0].toString();
           selectedProbable = teamStartedNotCompleted[1].toString();
           selectedHigh = teamStartedNotCompleted[2].toString();
@@ -555,7 +715,8 @@ class DashboardController extends GetxController {
         updateLoader(false);
         update();
       } else {
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -566,16 +727,27 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///completed but UDIN pending
   void callCompletedUDINPending() async {
-    ownCompletedUdinPending.clear(); teamCompletedUdinPending.clear();
+    ownCompletedUdinPending.clear();
+    teamCompletedUdinPending.clear();
     try {
-      CompletedUdinPendingModel? response = (await repository.getCompletedUDINPendingPieChart());
+      CompletedUdinPendingModel? response =
+          (await repository.getCompletedUDINPendingPieChart());
       if (response.success!) {
-        completedIdPendingTotal = response.completedUdinPendingData!.completedButUdinPending![1].toString();
-        completedIdPendingValues.update("Triggered In Last 7 Days", (value) => value + response.completedUdinPendingData!.completedButUdinPending![0].toDouble());
+        completedIdPendingTotal = response
+            .completedUdinPendingData!.completedButUdinPending![1]
+            .toString();
+        completedIdPendingValues.update(
+            "Triggered In Last 7 Days",
+            (value) =>
+                value +
+                response.completedUdinPendingData!.completedButUdinPending![0]
+                    .toDouble());
 
-        completedIdPendingRH = response.completedUdinPendingData!.isReportingHead![0];
+        completedIdPendingRH =
+            response.completedUdinPendingData!.isReportingHead![0];
 
         for (var element in response.completedUdinPendingData!.own!) {
           ownCompletedUdinPending.add(element);
@@ -587,7 +759,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -600,24 +773,39 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///completed not billed
   void callCompletedNotBilled() async {
     completedNotBilled.clear();
     try {
-      CompletedNotBilledModel? response = (await repository.getCompletedNotBilledPieChart());
+      CompletedNotBilledModel? response =
+          (await repository.getCompletedNotBilledPieChart());
 
       if (response.success!) {
-        completedNotBilledTotal = response.completedNotBilledData!.completedButNotBilled![1].toString();
-        completedNotBilledValues.update("Triggered In Last 7 Days", (value) => value + response.completedNotBilledData!.completedButNotBilled![0].toDouble());
+        completedNotBilledTotal = response
+            .completedNotBilledData!.completedButNotBilled![1]
+            .toString();
+        completedNotBilledValues.update(
+            "Triggered In Last 7 Days",
+            (value) =>
+                value +
+                response.completedNotBilledData!.completedButNotBilled![0]
+                    .toDouble());
 
-        for(int i = 0; i<response.completedNotBilledData!.completedButNotBilled!.length-1; i ++){
-          completedNotBilled.add(response.completedNotBilledData!.completedButNotBilled![i]);
+        for (int i = 0;
+            i <
+                response.completedNotBilledData!.completedButNotBilled!.length -
+                    1;
+            i++) {
+          completedNotBilled
+              .add(response.completedNotBilledData!.completedButNotBilled![i]);
         }
         updateLoader(false);
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -630,6 +818,7 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///work on hold
   void callWorkOnHold() async {
     try {
@@ -638,8 +827,10 @@ class DashboardController extends GetxController {
       if (response.success!) {
         workOnHoldTotal = response.workOnHoldData!.workOnHold![0].toString();
         //workOnHoldValues.update("Triggered In Last 7 Days", (value) => value + response.workOnHoldData!.workOnHold![0].toDouble());
-        workOnHoldValues.update("Own", (value) => value + response.workOnHoldData!.own![0].toDouble());
-        workOnHoldValues.update("Team", (value) => value + response.workOnHoldData!.team![0].toDouble());
+        workOnHoldValues.update("Own",
+            (value) => value + response.workOnHoldData!.own![0].toDouble());
+        workOnHoldValues.update("Team",
+            (value) => value + response.workOnHoldData!.team![0].toDouble());
 
         workOnHoldRH = response.workOnHoldData!.isReportingHead![0];
 
@@ -653,7 +844,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -666,18 +858,29 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///submitted for checking
   void callSubmittedForChecking() async {
     try {
-      SubmittedForCheckingModel? response = (await repository.getSubmittedForCheckingPieChart());
+      SubmittedForCheckingModel? response =
+          (await repository.getSubmittedForCheckingPieChart());
 
-      if (response.success==true) {
-        submittedForCheckingTotal = response.submittedForCheckingData!.submittedForChecking![0].toString();
+      if (response.success == true) {
+        submittedForCheckingTotal = response
+            .submittedForCheckingData!.submittedForChecking![0]
+            .toString();
         //submittedForCheckingValues.update("Triggered In Last 7 Days", (value) => value + response.submittedForCheckingData!.submittedForChecking![0].toDouble());
-        submittedForCheckingValues.update("Own", (value) => value + response.submittedForCheckingData!.own![0].toDouble());
-        submittedForCheckingValues.update("Team", (value) => value + response.submittedForCheckingData!.team![0].toDouble());
+        submittedForCheckingValues.update(
+            "Own",
+            (value) =>
+                value + response.submittedForCheckingData!.own![0].toDouble());
+        submittedForCheckingValues.update(
+            "Team",
+            (value) =>
+                value + response.submittedForCheckingData!.team![0].toDouble());
 
-        submittedForCheckingRH = response.submittedForCheckingData!.isReportingHead![0];
+        submittedForCheckingRH =
+            response.submittedForCheckingData!.isReportingHead![0];
 
         for (var element in response.submittedForCheckingData!.own!) {
           ownSubmittedForChecking.add(element);
@@ -689,7 +892,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -702,18 +906,28 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///all tasks completed
   void callAllTasksCompleted() async {
     try {
-      AllTaskCompletedModel? response = (await repository.getAllTaskCompletedPieChart());
+      AllTaskCompletedModel? response =
+          (await repository.getAllTaskCompletedPieChart());
 
       if (response.success!) {
-        allTasksCompletedTotal = response.allTaskCompletedData!.alltasksCompleteChart![0].toString();
+        allTasksCompletedTotal =
+            response.allTaskCompletedData!.alltasksCompleteChart![0].toString();
         //allTasksCompletedValues.update("Triggered In Last 7 Days", (value) => value + response.allTaskCompletedData!.alltasksCompleteChart![0].toDouble());
-        allTasksCompletedValues.update("Own", (value) => value + response.allTaskCompletedData!.own![0].toDouble());
-        allTasksCompletedValues.update("Team", (value) => value + response.allTaskCompletedData!.team![0].toDouble());
+        allTasksCompletedValues.update(
+            "Own",
+            (value) =>
+                value + response.allTaskCompletedData!.own![0].toDouble());
+        allTasksCompletedValues.update(
+            "Team",
+            (value) =>
+                value + response.allTaskCompletedData!.team![0].toDouble());
 
-        allTasksCompletedRH = response.allTaskCompletedData!.isReportingHead![0];
+        allTasksCompletedRH =
+            response.allTaskCompletedData!.isReportingHead![0];
 
         for (var element in response.allTaskCompletedData!.own!) {
           ownAllTaskCompleted.add(element);
@@ -725,7 +939,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -740,12 +955,13 @@ class DashboardController extends GetxController {
   }
 
   ///due data api
-  callDueDataApi(String title,String type, String count){
+  callDueDataApi(String title, String type, String count) {
     updateLoader(true);
     selectedPieChartTitle = title;
-    selectedType = type ; selectedCount = count ;
+    selectedType = type;
+    selectedCount = count;
     selectedMainType = "AllottedNotStarted";
-    if(title == "Past Due"){
+    if (title == "Past Due") {
       // if(selectedMainType == "AllottedNotStarted")
       //   {
       //    type == "Own" ? callAllottedNotStartedPastDueOwn() : callAllottedNotStartedPastDueTeam();
@@ -754,8 +970,7 @@ class DashboardController extends GetxController {
       //     type == "Own" ? callStartedNotCompletedPastOwn() : callStartedNotCompletedPastTeam();
       // }
       onPasDueSelected();
-    }
-    else if(title == "Probable Overdue"){
+    } else if (title == "Probable Overdue") {
       // if(selectedMainType == "AllottedNotStarted")
       // {
       //  type == "Own" ?  callAllottedNotStartedProbableOwn() :  callAllottedNotStartedPortableDueTeam();
@@ -764,8 +979,7 @@ class DashboardController extends GetxController {
       //   type == "Own" ? callStartedNotCompletedProbableOwn() : callStartedNotCompletedProbableTeam();
       // }
       onPortableOverdueSelected();
-    }
-    else if(title == "High"){
+    } else if (title == "High") {
       // if(selectedMainType == "AllottedNotStarted")
       // {
       //  type == "Own" ?  callAllottedNotStartedHighOwn() :  callAllottedNotStartedHighDueTeam();
@@ -774,8 +988,7 @@ class DashboardController extends GetxController {
       //   type == "Own" ? callStartedNotCompletedHighOwn() : callStartedNotCompletedHighTeam();
       // }
       onHighSelected();
-    }
-    else if(title == "Medium"){
+    } else if (title == "Medium") {
       // if(selectedMainType == "AllottedNotStarted")
       // {
       //  type == "Own" ?  callAllottedNotStartedMediumOwn() :  callAllottedNotStartedMediumDueTeam();
@@ -784,8 +997,7 @@ class DashboardController extends GetxController {
       //   type == "Own" ? callStartedNotCompletedMediumOwn() : callStartedNotCompletedMediumTeam();
       // }
       onHMediumSelected();
-    }
-    else if(title == "Low"){
+    } else if (title == "Low") {
       // if(selectedMainType == "AllottedNotStarted")
       // {
       //  type == "Own" ?  callAllottedNotStartedLowOwn() :  callAllottedNotStartedLowDueTeam();
@@ -797,29 +1009,28 @@ class DashboardController extends GetxController {
     }
     update();
   }
+
   ///due data started but nor completed
-  callDueDataForStartedNotCompletedApi(String title,String type, String count){
+  callDueDataForStartedNotCompletedApi(
+      String title, String type, String count) {
     updateLoader(true);
     selectedPieChartTitle = title;
-    selectedType = type ; selectedCount = count ;
+    selectedType = type;
+    selectedCount = count;
     selectedMainType = "StartedNotCompleted";
-    if(title == "Past Due"){
+    if (title == "Past Due") {
       //type == "Own" ?  callStartedNotCompletedPastOwn() :  callStartedNotCompletedPastTeam();
       onPasDueSelected();
-    }
-    else if(title == "Probable Overdue"){
+    } else if (title == "Probable Overdue") {
       //type == "Own" ?  callStartedNotCompletedProbableOwn() :  callStartedNotCompletedProbableTeam();
       onPortableOverdueSelected();
-    }
-    else if(title == "High"){
+    } else if (title == "High") {
       //type == "Own" ?  callStartedNotCompletedHighOwn() :  callStartedNotCompletedHighTeam();
       onHighSelected();
-    }
-    else if(title == "Medium"){
+    } else if (title == "Medium") {
       //type == "Own" ?  callStartedNotCompletedMediumOwn() :  callStartedNotCompletedMediumTeam();
       onHMediumSelected();
-    }
-    else if(title == "Low"){
+    } else if (title == "Low") {
       //type == "Own" ?  callStartedNotCompletedLowOwn() :  callStartedNotCompletedLowTeam();
       onLowSelected();
     }
@@ -832,75 +1043,81 @@ class DashboardController extends GetxController {
 
     update();
   }
+
   ///due data completed but udin pending
-  callDueDataForCompletedUdinPendingApi(String title,String type, String count){
+  callDueDataForCompletedUdinPendingApi(
+      String title, String type, String count) {
     updateLoader(true);
     selectedPieChartTitle = title;
-    selectedType = type ; selectedCount = count ;
+    selectedType = type;
+    selectedCount = count;
     selectedMainType = "CompletedUdinPending";
-    if(type == "Own"){
+    if (type == "Own") {
       callCompletedUdinPendingOwn();
-    }
-    else{
+    } else {
       callCompletedUdinPendingTeam();
     }
 
     update();
   }
+
   ///due data completed not billed
-  callDueDataForCompletedNotBilled(String title,String count){
+  callDueDataForCompletedNotBilled(String title, String count) {
     updateLoader(true);
     selectedPieChartTitle = title;
-    selectedCount = count ;
+    selectedCount = count;
     selectedMainType = "CompletedNotBilled";
 
     callCompletedNotBilledDueData();
 
     update();
   }
+
   ///due data submitted for checking
-  callDueDataForSubmittedForChecking(String title,String type,String count){
+  callDueDataForSubmittedForChecking(String title, String type, String count) {
     updateLoader(true);
     selectedPieChartTitle = title;
-    selectedType = type ; selectedCount = count ;
+    selectedType = type;
+    selectedCount = count;
     selectedMainType = "SubmittedForChecking";
 
-    if(type == "Own"){
+    if (type == "Own") {
       callSubmittedForCheckingOwnData();
-    }
-    else{
+    } else {
       callSubmittedForCheckingTeamData();
     }
 
     update();
   }
+
   ///due data work on hold
-  callDueDataForWorkOnHold(String title,String type,String count){
+  callDueDataForWorkOnHold(String title, String type, String count) {
     updateLoader(true);
     selectedPieChartTitle = title;
-    selectedType = type ; selectedCount = count ;
+    selectedType = type;
+    selectedCount = count;
     selectedMainType = "WorkOnHold";
 
-    if(type == "Own"){
+    if (type == "Own") {
       callWorkOnHoldOwnData();
-    }
-    else{
+    } else {
       callWorkOnHoldTeamData();
     }
 
     update();
   }
+
   ///due data all tasks
-  callDueDataForAllTasks(String title,String type,String count){
+  callDueDataForAllTasks(String title, String type, String count) {
     updateLoader(true);
     selectedPieChartTitle = title;
-    selectedType = type ; selectedCount = count ;
+    selectedType = type;
+    selectedCount = count;
     selectedMainType = "AllTasks";
 
-    if(type == "Own"){
+    if (type == "Own") {
       callAllTasksOwnData();
-    }
-    else{
+    } else {
       callAllTasksTeamData();
     }
 
@@ -909,171 +1126,208 @@ class DashboardController extends GetxController {
 
   ///cancel service => check password dialog
   String selectedCliId = "";
-  showCheckPasswordOrReasonDialog(String serviceName,BuildContext context){
+  showCheckPasswordOrReasonDialog(String serviceName, BuildContext context) {
     showDialog(
       barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
-        return StatefulBuilder(builder: (context,setter){
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setter) {
           return Dialog(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))
-            ),
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
-                height: selectedCancelType==1 ? 200.0:hideReasonContent ? 200.0 : 300.0,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                height: selectedCancelType == 1
+                    ? 200.0
+                    : hideReasonContent
+                        ? 200.0
+                        : 300.0,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    buildTextRegularWidget(serviceName, blackColor, context, 16.0,align: TextAlign.left),
-                    const Divider(color: Colors.grey,),
-                    const SizedBox(height: 10.0,),
-
+                    buildTextRegularWidget(
+                        serviceName, blackColor, context, 16.0,
+                        align: TextAlign.left),
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     hideReasonContent
                         ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(4)),
-                        color: textFormBgColor,
-                        border: Border.all(color: textFormBgColor),),
-                      child: TextFormField(
-                        controller: checkPassword,
-                        obscureText: showPass,
-                        keyboardType: TextInputType.text,
-                        textAlign: TextAlign.left,
-                        textAlignVertical: TextAlignVertical.center,
-                        textInputAction: TextInputAction.done,
-                        onTap: () {},
-                        style:const TextStyle(fontSize: 15.0),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(10),
-                          hintText: "Enter password",
-                          hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
-                            color: subTitleTextColor, fontSize: 15,),),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              setter((){
-                                onPassChange();
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: showPass ? const Icon(
-                                  Icons.visibility_off) : const Icon(
-                                Icons.visibility, color: primaryColor,),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(4)),
+                              color: textFormBgColor,
+                              border: Border.all(color: textFormBgColor),
+                            ),
+                            child: TextFormField(
+                              controller: checkPassword,
+                              obscureText: showPass,
+                              keyboardType: TextInputType.text,
+                              textAlign: TextAlign.left,
+                              textAlignVertical: TextAlignVertical.center,
+                              textInputAction: TextInputAction.done,
+                              onTap: () {},
+                              style: const TextStyle(fontSize: 15.0),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(10),
+                                hintText: "Enter password",
+                                hintStyle: GoogleFonts.rubik(
+                                  textStyle: TextStyle(
+                                    color: subTitleTextColor,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    setter(() {
+                                      onPassChange();
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: showPass
+                                        ? const Icon(Icons.visibility_off)
+                                        : const Icon(
+                                            Icons.visibility,
+                                            color: primaryColor,
+                                          ),
+                                  ),
+                                ),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                              ),
+                              onChanged: (text) {
+                                setter(() {
+                                  checkPasswordValidation();
+                                });
+                              },
+                            ),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(4)),
+                              color: textFormBgColor,
+                              border: Border.all(color: textFormBgColor),
+                            ),
+                            child: TextFormField(
+                              controller: reason,
+                              keyboardType: TextInputType.text,
+                              textAlign: TextAlign.left,
+                              textAlignVertical: TextAlignVertical.center,
+                              textInputAction: TextInputAction.done,
+                              onTap: () {},
+                              style: const TextStyle(fontSize: 15.0),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(10),
+                                hintText: "Enter reason",
+                                hintStyle: GoogleFonts.rubik(
+                                  textStyle: TextStyle(
+                                    color: subTitleTextColor,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                              ),
+                              onChanged: (text) {
+                                setter(() {
+                                  checkReasonValidation();
+                                });
+                              },
                             ),
                           ),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                        ),
-                        onChanged: (text) {
-                          setter((){
-                            checkPasswordValidation();
-                          });
-                        },
-                      ),
-                    )
-                        : Container(
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(4)),
-                        color: textFormBgColor,
-                        border: Border.all(color: textFormBgColor),),
-                      child: TextFormField(
-                        controller: reason,
-                        keyboardType: TextInputType.text,
-                        textAlign: TextAlign.left,
-                        textAlignVertical: TextAlignVertical.center,
-                        textInputAction: TextInputAction.done,
-                        onTap: () {},
-                        style:const TextStyle(fontSize: 15.0),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(10),
-                          hintText: "Enter reason",
-                          hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
-                            color: subTitleTextColor, fontSize: 15,),),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                        ),
-                        onChanged: (text) {
-                          setter((){
-                            checkReasonValidation();
-                          });
-                        },
-                      ),
+                    hideReasonContent
+                        ? validatePassword == true
+                            ? ErrorText(
+                                errorMessage: "Please enter valid password",
+                              )
+                            : const Opacity(opacity: 0.0)
+                        : validateReason == true
+                            ? ErrorText(
+                                errorMessage: "Please enter valid reason",
+                              )
+                            : const Opacity(opacity: 0.0),
+                    const SizedBox(
+                      height: 10.0,
                     ),
-
-                    hideReasonContent
-                      ? validatePassword == true
-                          ? ErrorText(errorMessage: "Please enter valid password",)
-                          : const Opacity(opacity: 0.0)
-                      : validateReason == true
-                          ? ErrorText(errorMessage: "Please enter valid reason",)
-                          : const Opacity(opacity: 0.0),
-
-                    const SizedBox(height: 10.0,),
-
-                    selectedCancelType == 1 ? const Opacity(opacity: 0.0):
-                    hideReasonContent
+                    selectedCancelType == 1
                         ? const Opacity(opacity: 0.0)
-                        : Column(
-                      children: [
-                        Row(
-                          children: [
-                            Radio<int>(
-                              value: 0,
-                              groupValue: selectedCancelType,
-                              activeColor: primaryColor,
-                              onChanged: (int? value) {
-                                updateSelectedCancelType(value!,context);
-                              },
-                            ),
-                            buildTextRegularWidget("Current period", blackColor, context, 15.0),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Radio<int>(
-                              value: 1,
-                              groupValue: selectedCancelType,
-                              activeColor: primaryColor,
-                              onChanged: (int? value) {
-                                updateSelectedCancelType(value!,context);
-                              },
-                            ),
-                            buildTextRegularWidget("All", blackColor, context, 15.0),
-                          ],
-                        ),
-                      ],
-                    ),
-
+                        : hideReasonContent
+                            ? const Opacity(opacity: 0.0)
+                            : Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Radio<int>(
+                                        value: 0,
+                                        groupValue: selectedCancelType,
+                                        activeColor: primaryColor,
+                                        onChanged: (int? value) {
+                                          updateSelectedCancelType(
+                                              value!, context);
+                                        },
+                                      ),
+                                      buildTextRegularWidget("Current period",
+                                          blackColor, context, 15.0),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Radio<int>(
+                                        value: 1,
+                                        groupValue: selectedCancelType,
+                                        activeColor: primaryColor,
+                                        onChanged: (int? value) {
+                                          updateSelectedCancelType(
+                                              value!, context);
+                                        },
+                                      ),
+                                      buildTextRegularWidget(
+                                          "All", blackColor, context, 15.0),
+                                    ],
+                                  ),
+                                ],
+                              ),
                     Row(
                       children: [
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 hideReasonContent
-                                ? checkPasswordNextClickValidation(context)
-                                : checkReasonNextClickValidation(context);
+                                    ? checkPasswordNextClickValidation(context)
+                                    : checkReasonNextClickValidation(context);
                               });
                             },
-                            child: buildButtonWidget(context, "Next",height: 40.0,buttonColor: approveColor),
+                            child: buildButtonWidget(context, "Next",
+                                height: 40.0, buttonColor: approveColor),
                           ),
-                        ),const SizedBox(width: 5.0,),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               clearDialog();
                               Navigator.pop(context);
                             },
-                            child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor),
+                            child: buildButtonWidget(context, "Cancel",
+                                height: 40.0, buttonColor: errorColor),
                           ),
                         )
                       ],
@@ -1087,93 +1341,124 @@ class DashboardController extends GetxController {
       },
     );
   }
-  updateSelectedCancelType(int val,BuildContext context){
-     selectedCancelType = val;
-     if(selectedCancelType==1){
-       Get.toNamed(AppRoutes.serviceCancelAll);
-     }
-     update();
+
+  updateSelectedCancelType(int val, BuildContext context) {
+    selectedCancelType = val;
+    if (selectedCancelType == 1) {
+      Get.toNamed(AppRoutes.serviceCancelAll);
+    }
+    update();
   }
 
   ///show hide password
-  void onPassChange(){ showPass = !showPass; update();}
+  void onPassChange() {
+    showPass = !showPass;
+    update();
+  }
+
   ///clear check password dialog
-  clearDialog(){
-    showPass = true; validatePassword=false;
+  clearDialog() {
+    showPass = true;
+    validatePassword = false;
     checkPassword.clear();
-    validateReason =false;
+    validateReason = false;
     reason.clear();
     hideReasonContent = true;
     update();
   }
+
   ///password validation
-  checkPasswordValidation(){
-    if(checkPassword.text.isEmpty){ validatePassword = true; update(); }
-    else{ validatePassword = false; update(); }
+  checkPasswordValidation() {
+    if (checkPassword.text.isEmpty) {
+      validatePassword = true;
+      update();
+    } else {
+      validatePassword = false;
+      update();
+    }
   }
+
   ///reason validation
-  checkReasonValidation(){
-    if(reason.text.isEmpty){ validateReason = true; update(); }
-    else{ validateReason = false; update(); }
+  checkReasonValidation() {
+    if (reason.text.isEmpty) {
+      validateReason = true;
+      update();
+    } else {
+      validateReason = false;
+      update();
+    }
   }
+
   ///password next click validation
-  checkPasswordNextClickValidation(BuildContext context){
+  checkPasswordNextClickValidation(BuildContext context) {
     updateLoader(true);
-    if(checkPassword.text.isEmpty){
-      checkPassword.text.isEmpty ? validatePassword = true : validatePassword = false;
+    if (checkPassword.text.isEmpty) {
+      checkPassword.text.isEmpty
+          ? validatePassword = true
+          : validatePassword = false;
       updateLoader(false);
       update();
-    }else{
-     callCheckPassword(context);
-   }
+    } else {
+      callCheckPassword(context);
+    }
     update();
   }
+
   ///reason next click validation
-  checkReasonNextClickValidation(BuildContext context){
-    if(reason.text.isEmpty){
+  checkReasonNextClickValidation(BuildContext context) {
+    if (reason.text.isEmpty) {
       reason.text.isEmpty ? validateReason = true : validateReason = false;
       updateLoader(true);
       update();
-    }else{
-      selectedCancelType == 1 ? callConfirmCancelService(context) :callCancelService(context);
-   }
+    } else {
+      selectedCancelType == 1
+          ? callConfirmCancelService(context)
+          : callCancelService(context);
+    }
     update();
   }
 
   ///change date from current
-  Future<void> selectTargetDateForCurrent(BuildContext context,String id,DateTime firstDate,DateTime targetDate,String apiAfterChangeDate,
+  Future<void> selectTargetDateForCurrent(
+      BuildContext context,
+      String id,
+      DateTime firstDate,
+      DateTime targetDate,
+      String apiAfterChangeDate,
       DateTime endDate) async {
     DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: firstDate,
-        firstDate: firstDate,
-        currentDate: targetDate,
-        lastDate: endDate,
+      context: context,
+      initialDate: firstDate,
+      firstDate: firstDate,
+      currentDate: targetDate,
+      lastDate: endDate,
     );
 
     if (picked != null && picked != selectedDateForCurrent) {
       selectedDateForCurrent = picked;
-      selectedDateToShowForCurrent = "${selectedDateForCurrent.day}-${selectedDateForCurrent.month}-${selectedDateForCurrent.year}";
-      selectedDateToSendForCurrent = "${selectedDateForCurrent.year}-${selectedDateForCurrent.month}-${selectedDateForCurrent.day}";
+      selectedDateToShowForCurrent =
+          "${selectedDateForCurrent.day}-${selectedDateForCurrent.month}-${selectedDateForCurrent.year}";
+      selectedDateToSendForCurrent =
+          "${selectedDateForCurrent.year}-${selectedDateForCurrent.month}-${selectedDateForCurrent.day}";
     }
 
-    if(addedDateListForCurrent.contains(id)){
+    if (addedDateListForCurrent.contains(id)) {
       addedDateListForCurrent.remove(id);
       update();
-    }
-    else{
+    } else {
       addedDateListForCurrent.add(id);
       update();
     }
 
-    if(picked==null){}
-    else{
-      callUpdateTargetDate(id,apiAfterChangeDate);
+    if (picked == null) {
+    } else {
+      callUpdateTargetDate(id, apiAfterChangeDate);
     }
     update();
   }
+
   ///change date from all
-  Future<void> selectTargetDateForAll(BuildContext context,String id) async {
+  Future<void> selectTargetDateForAll(BuildContext context, String id) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDateForAll,
@@ -1182,14 +1467,15 @@ class DashboardController extends GetxController {
     if (picked != null && picked != selectedDateForAll) {
       selectedDateForAll = picked;
     }
-    selectedDateToShowForAll = "${selectedDateForAll.day}-${selectedDateForAll.month}-${selectedDateForAll.year}";
-    selectedDateToSendForAll = "${selectedDateForAll.year}-${selectedDateForAll.month}-${selectedDateForAll.day}";
+    selectedDateToShowForAll =
+        "${selectedDateForAll.day}-${selectedDateForAll.month}-${selectedDateForAll.year}";
+    selectedDateToSendForAll =
+        "${selectedDateForAll.year}-${selectedDateForAll.month}-${selectedDateForAll.day}";
 
-    if(addedDateListForCurrent.contains(id)){
+    if (addedDateListForCurrent.contains(id)) {
       addedDateListForCurrent.remove(id);
       update();
-    }
-    else{
+    } else {
       addedDateListForCurrent.add(id);
       update();
     }
@@ -1197,45 +1483,42 @@ class DashboardController extends GetxController {
   }
 
   /// priority change for current
-  updatePriorityForCurrent(String priority,String id){
+  updatePriorityForCurrent(String priority, String id) {
     selectedCurrentPriority = priority;
     selectedCurrentPriorityId = id;
-    if(addedPriorityListForCurrent.contains(id)){
+    if (addedPriorityListForCurrent.contains(id)) {
       addedPriorityListForCurrent.remove(id);
       update();
-    }
-    else{
+    } else {
       addedPriorityListForCurrent.add(id);
       update();
     }
     callUpdatePriority();
     update();
   }
+
   ///status change for current
-  updateStatusForCurrent(String status,String id,BuildContext context){
+  updateStatusForCurrent(String status, String id, BuildContext context) {
     selectedServiceStatus = status;
     selectedCurrentStatusId = id;
 
-    if(addedStatusListForCurrent.contains(id)){
+    if (addedStatusListForCurrent.contains(id)) {
       addedStatusListForCurrent.remove(id);
       update();
-    }
-    else{
+    } else {
       addedStatusListForCurrent.add(id);
       update();
     }
 
-    if(selectedServiceStatus == "Complete"){
+    if (selectedServiceStatus == "Complete") {
       showDialogToCompleteAllTask(context);
       showRemarkDialog = false;
       showAllTaskCompletedDialog = true;
-    }
-    else if(selectedServiceStatus == "Hold"){
+    } else if (selectedServiceStatus == "Hold") {
       showRemarkDialog = true;
       showAllTaskCompletedDialog = false;
-      showRemarkDialogForHoldStatus(selectedServiceName,context);
-    }
-    else{
+      showRemarkDialogForHoldStatus(selectedServiceName, context);
+    } else {
       callCheckCompletedTaskService(context);
       update();
     }
@@ -1245,32 +1528,41 @@ class DashboardController extends GetxController {
   bool validateRemark = false;
   String addedRemark = "";
 
-  showRemarkDialogForHoldStatus(String serviceName,BuildContext context){
+  showRemarkDialogForHoldStatus(String serviceName, BuildContext context) {
     showDialog(
       barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
-        return StatefulBuilder(builder: (context,setter){
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setter) {
           return Dialog(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))
-            ),
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
                 height: 300.0,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    buildTextRegularWidget(serviceName, blackColor, context, 16.0,align: TextAlign.left),
-                    const Divider(color: Colors.grey,),
-                    const SizedBox(height: 10.0,),
+                    buildTextRegularWidget(
+                        serviceName, blackColor, context, 16.0,
+                        align: TextAlign.left),
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(4)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4)),
                         color: textFormBgColor,
-                        border: Border.all(color: textFormBgColor),),
+                        border: Border.all(color: textFormBgColor),
+                      ),
                       child: TextFormField(
                         controller: remarkController,
                         keyboardType: TextInputType.text,
@@ -1278,12 +1570,16 @@ class DashboardController extends GetxController {
                         textAlignVertical: TextAlignVertical.center,
                         textInputAction: TextInputAction.done,
                         onTap: () {},
-                        style:const TextStyle(fontSize: 15.0),
+                        style: const TextStyle(fontSize: 15.0),
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.all(10),
                           hintText: "Enter remark",
-                          hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
-                            color: subTitleTextColor, fontSize: 15,),),
+                          hintStyle: GoogleFonts.rubik(
+                            textStyle: TextStyle(
+                              color: subTitleTextColor,
+                              fontSize: 15,
+                            ),
+                          ),
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           enabledBorder: InputBorder.none,
@@ -1291,40 +1587,47 @@ class DashboardController extends GetxController {
                           disabledBorder: InputBorder.none,
                         ),
                         onChanged: (text) {
-                          setter((){
+                          setter(() {
                             checkRemarkValidation();
                           });
                         },
                       ),
                     ),
                     validateRemark == true
-                        ? ErrorText(errorMessage: "Please enter valid remark",)
+                        ? ErrorText(
+                            errorMessage: "Please enter valid remark",
+                          )
                         : const Opacity(opacity: 0.0),
-
-                    const SizedBox(height: 10.0,),
-
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     Row(
                       children: [
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 callUpdateTaskServiceStatus(context);
                               });
                             },
-                            child: buildButtonWidget(context, "Add",height: 40.0,buttonColor: approveColor),
+                            child: buildButtonWidget(context, "Add",
+                                height: 40.0, buttonColor: approveColor),
                           ),
-                        ),const SizedBox(width: 5.0,),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 updateLoader(true);
                                 clearRemarkDialog();
                                 Navigator.pop(context);
                               });
                             },
-                            child: buildButtonWidget(context, "Close",height: 40.0,buttonColor: errorColor),
+                            child: buildButtonWidget(context, "Close",
+                                height: 40.0, buttonColor: errorColor),
                           ),
                         )
                       ],
@@ -1339,172 +1642,212 @@ class DashboardController extends GetxController {
     );
   }
 
-  checkRemarkValidation(){
-    if(remarkController.text.isEmpty){
-      validateRemark = true;update();
-    }
-    else{
-      validateRemark = false;update();
+  checkRemarkValidation() {
+    if (remarkController.text.isEmpty) {
+      validateRemark = true;
+      update();
+    } else {
+      validateRemark = false;
+      update();
     }
   }
 
-  addRemark(){
-    addedRemark = remarkController.text;update();
+  addRemark() {
+    addedRemark = remarkController.text;
+    update();
   }
 
-  clearRemarkDialog(){
+  clearRemarkDialog() {
     addedRh1TaskStatus.clear();
-    remarkController.clear(); selectedTaskStatusId=""; selectedTaskStatus = "";
+    remarkController.clear();
+    selectedTaskStatusId = "";
+    selectedTaskStatus = "";
     updateLoader(false);
     update();
   }
 
   ///priority change for all
-  updatePriorityForAll(String priority,String id){
+  updatePriorityForAll(String priority, String id) {
     selectedAllPriority = priority;
-    if(addedPriorityListForCurrent.contains(id)){
+    if (addedPriorityListForCurrent.contains(id)) {
       addedPriorityListForCurrent.remove(id);
       update();
-    }
-    else{
+    } else {
       addedPriorityListForCurrent.add(id);
       update();
     }
     update();
   }
 
-  onTabIndexSelect(int index){
-    addedIndex.clear(); isExpanded = false;
-    addedDateListForAll.clear(); selectedDateToShowForCurrent = "";
-    if(index == 0){
+  onTabIndexSelect(int index) {
+    addedIndex.clear();
+    isExpanded = false;
+    addedDateListForAll.clear();
+    selectedDateToShowForCurrent = "";
+    if (index == 0) {
       onPasDueSelected();
-    }
-    else if(index == 1){
+    } else if (index == 1) {
       onPortableOverdueSelected();
-    }
-    else if(index == 2){
+    } else if (index == 2) {
       onHighSelected();
-    }
-    else if(index == 3){
+    } else if (index == 3) {
       onHMediumSelected();
-    }
-    else if(index == 4){
+    } else if (index == 4) {
       onLowSelected();
     }
     update();
   }
 
-  onPasDueSelected(){
+  onPasDueSelected() {
     selectedPieChartTitle == "Past Due";
     updateLoader(true);
     initialIndex = 0;
-    if(selectedMainType == "AllottedNotStarted")
-      {
-        selectedType == "Own" ? callAllottedNotStartedPastDueOwn() : callAllottedNotStartedPastDueTeam();
-      }
-    else if(selectedMainType == "StartedNotCompleted"){
-        selectedType == "Own" ? callStartedNotCompletedPastOwn() : callStartedNotCompletedPastTeam();
-
+    if (selectedMainType == "AllottedNotStarted") {
+      selectedType == "Own"
+          ? callAllottedNotStartedPastDueOwn()
+          : callAllottedNotStartedPastDueTeam();
+    } else if (selectedMainType == "StartedNotCompleted") {
+      selectedType == "Own"
+          ? callStartedNotCompletedPastOwn()
+          : callStartedNotCompletedPastTeam();
     }
 
-    isPastDueSelected = true; isPortableOverdueSelected = false; isHighSelected = false;
-    isMediumSelected = false; isLowSelected = false;
+    isPastDueSelected = true;
+    isPortableOverdueSelected = false;
+    isHighSelected = false;
+    isMediumSelected = false;
+    isLowSelected = false;
     update();
   }
-  onPortableOverdueSelected(){
+
+  onPortableOverdueSelected() {
     initialIndex = 1;
     selectedPieChartTitle == "Probable Overdue";
     updateLoader(true);
-    if(selectedMainType == "AllottedNotStarted")
-    {
-      selectedType == "Own" ? callAllottedNotStartedPortableDueTeam() : callAllottedNotStartedPortableDueTeam();
-    }
-    else{
-      selectedType == "Own" ? callStartedNotCompletedProbableOwn() : callStartedNotCompletedProbableTeam();
+    if (selectedMainType == "AllottedNotStarted") {
+      selectedType == "Own"
+          ? callAllottedNotStartedPortableDueTeam()
+          : callAllottedNotStartedPortableDueTeam();
+    } else {
+      selectedType == "Own"
+          ? callStartedNotCompletedProbableOwn()
+          : callStartedNotCompletedProbableTeam();
     }
 
-    isPastDueSelected = false; isPortableOverdueSelected = true; isHighSelected = false;
-    isMediumSelected = false; isLowSelected = false;
+    isPastDueSelected = false;
+    isPortableOverdueSelected = true;
+    isHighSelected = false;
+    isMediumSelected = false;
+    isLowSelected = false;
     update();
   }
-  onHighSelected(){
+
+  onHighSelected() {
     initialIndex = 2;
     selectedPieChartTitle == "High";
     updateLoader(true);
     //callAllottedNotStartedHighDueTeam();
-    if(selectedMainType == "AllottedNotStarted")
-    {
-      selectedType == "Own" ? callAllottedNotStartedHighOwn() : callAllottedNotStartedHighDueTeam();
+    if (selectedMainType == "AllottedNotStarted") {
+      selectedType == "Own"
+          ? callAllottedNotStartedHighOwn()
+          : callAllottedNotStartedHighDueTeam();
+    } else {
+      selectedType == "Own"
+          ? callStartedNotCompletedHighOwn()
+          : callStartedNotCompletedHighTeam();
     }
-    else{
-      selectedType == "Own" ? callStartedNotCompletedHighOwn() : callStartedNotCompletedHighTeam();
-    }
-    isPastDueSelected = false; isPortableOverdueSelected = false; isHighSelected = true;
-    isMediumSelected = false; isLowSelected = false;
+    isPastDueSelected = false;
+    isPortableOverdueSelected = false;
+    isHighSelected = true;
+    isMediumSelected = false;
+    isLowSelected = false;
     update();
   }
-  onHMediumSelected(){
+
+  onHMediumSelected() {
     initialIndex = 3;
     selectedPieChartTitle == "Medium";
     updateLoader(true);
     //callAllottedNotStartedMediumDueTeam();
-    if(selectedMainType == "AllottedNotStarted")
-    {
-      selectedType == "Own" ? callAllottedNotStartedMediumOwn() : callAllottedNotStartedMediumDueTeam();
+    if (selectedMainType == "AllottedNotStarted") {
+      selectedType == "Own"
+          ? callAllottedNotStartedMediumOwn()
+          : callAllottedNotStartedMediumDueTeam();
+    } else {
+      selectedType == "Own"
+          ? callStartedNotCompletedMediumOwn()
+          : callStartedNotCompletedMediumTeam();
     }
-    else{
-      selectedType == "Own" ? callStartedNotCompletedMediumOwn() : callStartedNotCompletedMediumTeam();
-    }
-    isPastDueSelected = false; isPortableOverdueSelected = false; isHighSelected = false;
-    isMediumSelected = true; isLowSelected = false;
+    isPastDueSelected = false;
+    isPortableOverdueSelected = false;
+    isHighSelected = false;
+    isMediumSelected = true;
+    isLowSelected = false;
     update();
   }
-  onLowSelected(){
+
+  onLowSelected() {
     initialIndex = 4;
     selectedPieChartTitle == "Low";
     updateLoader(true);
     //callAllottedNotStartedLowDueTeam();
-    if(selectedMainType == "AllottedNotStarted")
-    {
-      selectedType == "Own" ? callAllottedNotStartedLowOwn() : callAllottedNotStartedLowDueTeam();
+    if (selectedMainType == "AllottedNotStarted") {
+      selectedType == "Own"
+          ? callAllottedNotStartedLowOwn()
+          : callAllottedNotStartedLowDueTeam();
+    } else {
+      selectedType == "Own"
+          ? callStartedNotCompletedLowOwn()
+          : callStartedNotCompletedLowTeam();
     }
-    else{
-      selectedType == "Own" ? callStartedNotCompletedLowOwn() : callStartedNotCompletedLowTeam();
-    }
-    isPastDueSelected = false; isPortableOverdueSelected = false; isHighSelected = false;
-    isMediumSelected = false; isLowSelected = true;
+    isPastDueSelected = false;
+    isPortableOverdueSelected = false;
+    isHighSelected = false;
+    isMediumSelected = false;
+    isLowSelected = true;
     update();
   }
 
-  navigateToBottom(){
+  navigateToBottom() {
     //currentPos = 1;
     // currentPos = position;
 
-    addedIndex.clear(); isExpanded = false;
-    selectedServiceStatus = ""; selectedCurrentPriority="";
+    addedIndex.clear();
+    isExpanded = false;
+    selectedServiceStatus = "";
+    selectedCurrentPriority = "";
     //updateSlider(1);
-
 
     //carouselController.jumpToPage(1);
     Get.toNamed(AppRoutes.bottomNav);
 
     reportingHead == "0"
-        ?
-    selectedMainType == "AllottedNotStarted"? currentPos = 0 :
-    selectedMainType == "StartedNotCompleted" ? currentPos = 1 :
-    selectedMainType == "CompletedUdinPending"? currentPos = 2 :
-    selectedMainType == "WorkOnHold"? currentPos = 3 : currentPos = 4
-        :
-    selectedMainType == "AllottedNotStarted"? currentPos = 1 :
-    selectedMainType == "StartedNotCompleted" ? currentPos = 2 :
-    selectedMainType == "CompletedUdinPending"? currentPos = 3 :
-    selectedMainType == "CompletedNotBilled"? currentPos = 4 :
-    selectedMainType == "WorkOnHold"? currentPos = 5 :
-    selectedMainType == "SubmittedForChecking"? currentPos = 6 :
-    selectedMainType == "AllTasks"? currentPos = 7 : currentPos = 0;
+        ? selectedMainType == "AllottedNotStarted"
+            ? currentPos = 0
+            : selectedMainType == "StartedNotCompleted"
+                ? currentPos = 1
+                : selectedMainType == "CompletedUdinPending"
+                    ? currentPos = 2
+                    : selectedMainType == "WorkOnHold"
+                        ? currentPos = 3
+                        : currentPos = 4
+        : selectedMainType == "AllottedNotStarted"
+            ? currentPos = 1
+            : selectedMainType == "StartedNotCompleted"
+                ? currentPos = 2
+                : selectedMainType == "CompletedUdinPending"
+                    ? currentPos = 3
+                    : selectedMainType == "CompletedNotBilled"
+                        ? currentPos = 4
+                        : selectedMainType == "WorkOnHold"
+                            ? currentPos = 5
+                            : selectedMainType == "SubmittedForChecking"
+                                ? currentPos = 6
+                                : selectedMainType == "AllTasks"
+                                    ? currentPos = 7
+                                    : currentPos = 0;
 
-
-    if(selectedMainType == "AllottedNotStarted"){
+    if (selectedMainType == "AllottedNotStarted") {
       callStartedNotCompleted();
     }
     updateSlider(currentPos);
@@ -1512,27 +1855,33 @@ class DashboardController extends GetxController {
 
     update();
   }
+
   ///allotted not started past due -> own
   void callAllottedNotStartedOwn() async {
     allottedNotStartedPastDueList.clear();
     try {
-
       AllottedNotStartedPastDueTeam? response =
-      selectedPieChartTitle == "Past Due" ? (await repository.getAllottedNotStartedPastDueOwn()) :
-      selectedPieChartTitle == "Probable Overdue" ? (await repository.getAllottedNotStartedProbableOwn()) :
-      selectedPieChartTitle == "High" ? (await repository.getAllottedNotStartedHighOwn()) :
-      selectedPieChartTitle == "Medium" ? (await repository.getAllottedNotStartedMediumOwn()) :
-       (await repository.getAllottedNotStartedLowOwn());
+          selectedPieChartTitle == "Past Due"
+              ? (await repository.getAllottedNotStartedPastDueOwn())
+              : selectedPieChartTitle == "Probable Overdue"
+                  ? (await repository.getAllottedNotStartedProbableOwn())
+                  : selectedPieChartTitle == "High"
+                      ? (await repository.getAllottedNotStartedHighOwn())
+                      : selectedPieChartTitle == "Medium"
+                          ? (await repository.getAllottedNotStartedMediumOwn())
+                          : (await repository.getAllottedNotStartedLowOwn());
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
         updateLoader(false);
         // isPastDueSelected = true;
         //Get.toNamed(AppRoutes.serviceDashboardNext);
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1545,28 +1894,36 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
-    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
-    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
-    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
-    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[0]}";
+    selectedProbable =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[1]}";
+    selectedHigh =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[2]}";
+    selectedMedium =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[3]}";
+    selectedLow =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[4]}";
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callAllottedNotStartedPastDueOwn() async {
     allottedNotStartedPastDueList.clear();
     try {
-
-      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedPastDueOwn();
+      AllottedNotStartedPastDueTeam? response =
+          await repository.getAllottedNotStartedPastDueOwn();
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
         updateLoader(false);
         Utils.dismissLoadingDialog();
         update();
       } else {
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1579,24 +1936,31 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
-    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
-    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
-    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
-    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[0]}";
+    selectedProbable =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[1]}";
+    selectedHigh =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[2]}";
+    selectedMedium =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[3]}";
+    selectedLow =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[4]}";
 
     update();
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callAllottedNotStartedProbableOwn() async {
     allottedNotStartedPastDueList.clear();
     try {
-
-      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedProbableOwn();
+      AllottedNotStartedPastDueTeam? response =
+          await repository.getAllottedNotStartedProbableOwn();
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
         updateLoader(false);
         Utils.dismissLoadingDialog();
         // isPastDueSelected = true;
@@ -1605,7 +1969,8 @@ class DashboardController extends GetxController {
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1620,23 +1985,30 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
-    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
-    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
-    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
-    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[0]}";
+    selectedProbable =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[1]}";
+    selectedHigh =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[2]}";
+    selectedMedium =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[3]}";
+    selectedLow =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[4]}";
 
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callAllottedNotStartedHighOwn() async {
     allottedNotStartedPastDueList.clear();
     try {
-
-      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedHighOwn();
+      AllottedNotStartedPastDueTeam? response =
+          await repository.getAllottedNotStartedHighOwn();
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
         updateLoader(false);
         Utils.dismissLoadingDialog();
         // isPastDueSelected = true;
@@ -1645,7 +2017,8 @@ class DashboardController extends GetxController {
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1660,24 +2033,31 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
-    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
-    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
-    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
-    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[0]}";
+    selectedProbable =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[1]}";
+    selectedHigh =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[2]}";
+    selectedMedium =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[3]}";
+    selectedLow =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[4]}";
 
     update();
 
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callAllottedNotStartedMediumOwn() async {
     allottedNotStartedPastDueList.clear();
     try {
-
-      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedMediumOwn();
+      AllottedNotStartedPastDueTeam? response =
+          await repository.getAllottedNotStartedMediumOwn();
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
         updateLoader(false);
         Utils.dismissLoadingDialog();
         // isPastDueSelected = true;
@@ -1686,7 +2066,8 @@ class DashboardController extends GetxController {
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1701,22 +2082,29 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
-    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
-    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
-    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
-    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[0]}";
+    selectedProbable =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[1]}";
+    selectedHigh =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[2]}";
+    selectedMedium =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[3]}";
+    selectedLow =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callAllottedNotStartedLowOwn() async {
     allottedNotStartedPastDueList.clear();
     try {
-
-      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedLowOwn();
+      AllottedNotStartedPastDueTeam? response =
+          await repository.getAllottedNotStartedLowOwn();
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
         updateLoader(false);
         Utils.dismissLoadingDialog();
         // isPastDueSelected = true;
@@ -1725,7 +2113,8 @@ class DashboardController extends GetxController {
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1740,19 +2129,26 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[0]}";
-    selectedProbable = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[1]}";
-    selectedHigh = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[2]}";
-    selectedMedium = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[3]}";
-    selectedLow = "${ownAllottedNotStarted.isEmpty?"":ownAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[0]}";
+    selectedProbable =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[1]}";
+    selectedHigh =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[2]}";
+    selectedMedium =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[3]}";
+    selectedLow =
+        "${ownAllottedNotStarted.isEmpty ? "" : ownAllottedNotStarted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   ///allotted not started past due -> team
   void callAllottedNotStartedPastDueTeam() async {
     allottedNotStartedPastDueList.clear();
     try {
-      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedPastDueTeam();
+      AllottedNotStartedPastDueTeam? response =
+          await repository.getAllottedNotStartedPastDueTeam();
       // selectedPieChartTitle == "Past Due" ? (await repository.getAllottedNotStartedPastDueTeam()) :
       // selectedPieChartTitle == "Probable Overdue" ? (await repository.getAllottedNotStartedProbableTeam()) :
       // selectedPieChartTitle == "High" ? (await repository.getAllottedNotStartedHighTeam()) :
@@ -1760,18 +2156,22 @@ class DashboardController extends GetxController {
       // (await repository.getAllottedNotStartedLowTeam());
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
       //Utils.showErrorSnackBar(e.getMsg());
-      updateLoader(false);  Utils.dismissLoadingDialog();
+      updateLoader(false);
+      Utils.dismissLoadingDialog();
       update();
     } catch (error) {
       //Utils.showErrorSnackBar(error.toString());
@@ -1780,27 +2180,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[0]}";
-    selectedProbable = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[1]}";
-    selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
-    selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
-    selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[0]}";
+    selectedProbable =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[1]}";
+    selectedHigh =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[2]}";
+    selectedMedium =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[3]}";
+    selectedLow =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callAllottedNotStartedPortableDueTeam() async {
     allottedNotStartedPastDueList.clear();
     try {
-      AllottedNotStartedPastDueTeam? response = (await repository.getAllottedNotStartedProbableTeam()) ;
+      AllottedNotStartedPastDueTeam? response =
+          (await repository.getAllottedNotStartedProbableTeam());
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1815,28 +2225,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[0]}";
-    selectedProbable = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[1]}";
-    selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
-    selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
-    selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[0]}";
+    selectedProbable =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[1]}";
+    selectedHigh =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[2]}";
+    selectedMedium =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[3]}";
+    selectedLow =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callAllottedNotStartedHighDueTeam() async {
     allottedNotStartedPastDueList.clear();
     try {
-
-      AllottedNotStartedPastDueTeam? response = (await repository.getAllottedNotStartedHighTeam()) ;
+      AllottedNotStartedPastDueTeam? response =
+          (await repository.getAllottedNotStartedHighTeam());
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1851,28 +2270,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[0]}";
-    selectedProbable = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[1]}";
-    selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
-    selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
-    selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[0]}";
+    selectedProbable =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[1]}";
+    selectedHigh =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[2]}";
+    selectedMedium =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[3]}";
+    selectedLow =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callAllottedNotStartedMediumDueTeam() async {
     allottedNotStartedPastDueList.clear();
     try {
-
-      AllottedNotStartedPastDueTeam? response = (await repository.getAllottedNotStartedMediumTeam()) ;
+      AllottedNotStartedPastDueTeam? response =
+          (await repository.getAllottedNotStartedMediumTeam());
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1887,28 +2315,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[0]}";
-    selectedProbable = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[1]}";
-    selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
-    selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
-    selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[0]}";
+    selectedProbable =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[1]}";
+    selectedHigh =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[2]}";
+    selectedMedium =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[3]}";
+    selectedLow =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callAllottedNotStartedLowDueTeam() async {
     allottedNotStartedPastDueList.clear();
     try {
-
-      AllottedNotStartedPastDueTeam? response = (await repository.getAllottedNotStartedLowTeam()) ;
+      AllottedNotStartedPastDueTeam? response =
+          (await repository.getAllottedNotStartedLowTeam());
 
       if (response.success!) {
-        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        allottedNotStartedPastDueList
+            .addAll(response.allottedNotStartedPastDueData!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1923,11 +2360,16 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[0]}";
-    selectedProbable = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[1]}";
-    selectedHigh = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[2]}";
-    selectedMedium = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[3]}";
-    selectedLow = "${teamAllottedNotStarted.isEmpty?"":teamAllottedNotStarted[4]}";
+    selectedPastDue =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[0]}";
+    selectedProbable =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[1]}";
+    selectedHigh =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[2]}";
+    selectedMedium =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[3]}";
+    selectedLow =
+        "${teamAllottedNotStarted.isEmpty ? "" : teamAllottedNotStarted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
@@ -1936,11 +2378,12 @@ class DashboardController extends GetxController {
   void callStartedNotCompletedPastTeam() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedPastDueTeam();
-
+      StartedButCompletedPieModel? response =
+          await repository.getStartedNotCompletedPastDueTeam();
 
       if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
+        startedNotCompletedPastDueList
+            .addAll(response.startedNotCompletedList!);
 
         updateLoader(false);
         Utils.dismissLoadingDialog();
@@ -1964,27 +2407,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
-    selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
-    selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
-    selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
-    selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+    selectedPastDue =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[0]}";
+    selectedProbable =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[1]}";
+    selectedHigh =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[2]}";
+    selectedMedium =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[3]}";
+    selectedLow =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callStartedNotCompletedProbableTeam() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedProbableTeam();
+      StartedButCompletedPieModel? response =
+          await repository.getStartedNotCompletedProbableTeam();
 
       if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        startedNotCompletedPastDueList
+            .addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -1999,27 +2452,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
-    selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
-    selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
-    selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
-    selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+    selectedPastDue =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[0]}";
+    selectedProbable =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[1]}";
+    selectedHigh =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[2]}";
+    selectedMedium =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[3]}";
+    selectedLow =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callStartedNotCompletedHighTeam() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedHighTeam();
+      StartedButCompletedPieModel? response =
+          await repository.getStartedNotCompletedHighTeam();
 
       if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        startedNotCompletedPastDueList
+            .addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2034,27 +2497,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
-    selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
-    selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
-    selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
-    selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+    selectedPastDue =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[0]}";
+    selectedProbable =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[1]}";
+    selectedHigh =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[2]}";
+    selectedMedium =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[3]}";
+    selectedLow =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callStartedNotCompletedMediumTeam() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedMediumTeam();
+      StartedButCompletedPieModel? response =
+          await repository.getStartedNotCompletedMediumTeam();
 
       if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        startedNotCompletedPastDueList
+            .addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2069,27 +2542,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
-    selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
-    selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
-    selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
-    selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+    selectedPastDue =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[0]}";
+    selectedProbable =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[1]}";
+    selectedHigh =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[2]}";
+    selectedMedium =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[3]}";
+    selectedLow =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callStartedNotCompletedLowTeam() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedLowTeam();
+      StartedButCompletedPieModel? response =
+          await repository.getStartedNotCompletedLowTeam();
 
       if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        startedNotCompletedPastDueList
+            .addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2104,28 +2587,38 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[0]}";
-    selectedProbable = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[1]}";
-    selectedHigh = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[2]}";
-    selectedMedium = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[3]}";
-    selectedLow = "${teamStartedNotCompleted.isEmpty?"":teamStartedNotCompleted[4]}";
+    selectedPastDue =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[0]}";
+    selectedProbable =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[1]}";
+    selectedHigh =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[2]}";
+    selectedMedium =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[3]}";
+    selectedLow =
+        "${teamStartedNotCompleted.isEmpty ? "" : teamStartedNotCompleted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   ///started not completed own
   void callStartedNotCompletedPastOwn() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedPastDueOwn();
+      StartedButCompletedPieModel? response =
+          await repository.getStartedNotCompletedPastDueOwn();
 
       if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        startedNotCompletedPastDueList
+            .addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
 
       update();
@@ -2141,27 +2634,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
-    selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
-    selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
-    selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
-    selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+    selectedPastDue =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[0]}";
+    selectedProbable =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[1]}";
+    selectedHigh =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[2]}";
+    selectedMedium =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[3]}";
+    selectedLow =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callStartedNotCompletedProbableOwn() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedProbableOwn();
+      StartedButCompletedPieModel? response =
+          await repository.getStartedNotCompletedProbableOwn();
 
       if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        startedNotCompletedPastDueList
+            .addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2176,27 +2679,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
-    selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
-    selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
-    selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
-    selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+    selectedPastDue =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[0]}";
+    selectedProbable =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[1]}";
+    selectedHigh =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[2]}";
+    selectedMedium =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[3]}";
+    selectedLow =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callStartedNotCompletedHighOwn() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedHighOwn();
+      StartedButCompletedPieModel? response =
+          await repository.getStartedNotCompletedHighOwn();
 
       if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        startedNotCompletedPastDueList
+            .addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2211,27 +2724,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
-    selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
-    selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
-    selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
-    selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+    selectedPastDue =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[0]}";
+    selectedProbable =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[1]}";
+    selectedHigh =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[2]}";
+    selectedMedium =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[3]}";
+    selectedLow =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callStartedNotCompletedMediumOwn() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedMediumOwn();
+      StartedButCompletedPieModel? response =
+          await repository.getStartedNotCompletedMediumOwn();
 
       if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        startedNotCompletedPastDueList
+            .addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2246,27 +2769,37 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
-    selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
-    selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
-    selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
-    selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+    selectedPastDue =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[0]}";
+    selectedProbable =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[1]}";
+    selectedHigh =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[2]}";
+    selectedMedium =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[3]}";
+    selectedLow =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
+
   void callStartedNotCompletedLowOwn() async {
     startedNotCompletedPastDueList.clear();
     try {
-      StartedButCompletedPieModel? response = await repository.getStartedNotCompletedLowOwn();
+      StartedButCompletedPieModel? response =
+          await repository.getStartedNotCompletedLowOwn();
 
       if (response.success!) {
-        startedNotCompletedPastDueList.addAll(response.startedNotCompletedList!);
-        updateLoader(false);  Utils.dismissLoadingDialog();
+        startedNotCompletedPastDueList
+            .addAll(response.startedNotCompletedList!);
+        updateLoader(false);
+        Utils.dismissLoadingDialog();
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
         Utils.dismissLoadingDialog();
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2281,11 +2814,16 @@ class DashboardController extends GetxController {
       update();
     }
 
-    selectedPastDue = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[0]}";
-    selectedProbable = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[1]}";
-    selectedHigh = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[2]}";
-    selectedMedium = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[3]}";
-    selectedLow = "${ownStartedNotCompleted.isEmpty?"":ownStartedNotCompleted[4]}";
+    selectedPastDue =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[0]}";
+    selectedProbable =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[1]}";
+    selectedHigh =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[2]}";
+    selectedMedium =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[3]}";
+    selectedLow =
+        "${ownStartedNotCompleted.isEmpty ? "" : ownStartedNotCompleted[4]}";
     update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
@@ -2294,14 +2832,17 @@ class DashboardController extends GetxController {
   void callCompletedUdinPendingTeam() async {
     completedUdinPendingDataList.clear();
     try {
-      CompletedUdinPendingPieModel? response = await repository.getCompletedUdinPendingTeam();
+      CompletedUdinPendingPieModel? response =
+          await repository.getCompletedUdinPendingTeam();
       if (response.success!) {
-        completedUdinPendingDataList.addAll(response.completedUdinPendingPieList!);
+        completedUdinPendingDataList
+            .addAll(response.completedUdinPendingPieList!);
         updateLoader(false);
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2316,19 +2857,23 @@ class DashboardController extends GetxController {
     update();
     Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
+
   /// completed udin pending own
   void callCompletedUdinPendingOwn() async {
     completedUdinPendingDataList.clear();
     try {
-      CompletedUdinPendingPieModel? response = await repository.getCompletedUdinPendingOwn();
+      CompletedUdinPendingPieModel? response =
+          await repository.getCompletedUdinPendingOwn();
 
       if (response.success!) {
-        completedUdinPendingDataList.addAll(response.completedUdinPendingPieList!);
+        completedUdinPendingDataList
+            .addAll(response.completedUdinPendingPieList!);
         updateLoader(false);
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2348,7 +2893,8 @@ class DashboardController extends GetxController {
   void callCompletedNotBilledDueData() async {
     completedNotBilledDataList.clear();
     try {
-      CompletedNotBilledPieModel? response = await repository.getCompletedNotBilled();
+      CompletedNotBilledPieModel? response =
+          await repository.getCompletedNotBilled();
 
       if (response.success!) {
         completedNotBilledDataList.addAll(response.completedNotBilledPieList!);
@@ -2356,7 +2902,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2373,19 +2920,23 @@ class DashboardController extends GetxController {
   }
 
   List<SubmittedForCheckingPieList> submittedForCheckingPieDataList = [];
+
   ///submitted for checking team
   void callSubmittedForCheckingTeamData() async {
     submittedForCheckingPieDataList.clear();
     try {
-      SubmittedForCheckingPieModel? response = await repository.getSubmittedForCheckingTeam();
+      SubmittedForCheckingPieModel? response =
+          await repository.getSubmittedForCheckingTeam();
 
       if (response.success!) {
-        submittedForCheckingPieDataList.addAll(response.submittedForCheckingPieList!);
+        submittedForCheckingPieDataList
+            .addAll(response.submittedForCheckingPieList!);
         updateLoader(false);
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2400,19 +2951,23 @@ class DashboardController extends GetxController {
 
     Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
+
   ///submitted for checking own
   void callSubmittedForCheckingOwnData() async {
     submittedForCheckingPieDataList.clear();
     try {
-      SubmittedForCheckingPieModel? response = await repository.getSubmittedForCheckingOwn();
+      SubmittedForCheckingPieModel? response =
+          await repository.getSubmittedForCheckingOwn();
 
       if (response.success!) {
-        submittedForCheckingPieDataList.addAll(response.submittedForCheckingPieList!);
+        submittedForCheckingPieDataList
+            .addAll(response.submittedForCheckingPieList!);
         updateLoader(false);
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2429,6 +2984,7 @@ class DashboardController extends GetxController {
   }
 
   List<WorkOnHoldPieList> workOnHoldPieDataList = [];
+
   ///work on hold team
   void callWorkOnHoldTeamData() async {
     workOnHoldPieDataList.clear();
@@ -2441,7 +2997,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2456,6 +3013,7 @@ class DashboardController extends GetxController {
 
     Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
+
   ///work on hold own
   void callWorkOnHoldOwnData() async {
     workOnHoldPieDataList.clear();
@@ -2468,7 +3026,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2485,6 +3044,7 @@ class DashboardController extends GetxController {
   }
 
   List<AllTasksPieList> allTasksDataList = [];
+
   ///all tasks team
   void callAllTasksTeamData() async {
     allTasksDataList.clear();
@@ -2497,7 +3057,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2512,6 +3073,7 @@ class DashboardController extends GetxController {
 
     Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
+
   ///all tasks own
   void callAllTasksOwnData() async {
     allTasksDataList.clear();
@@ -2524,7 +3086,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         //Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2540,37 +3103,39 @@ class DashboardController extends GetxController {
     Get.toNamed(AppRoutes.serviceDashboardNextOther);
   }
 
-  navigateToTriggeredNotAllottedNext(String type,String count){
+  navigateToTriggeredNotAllottedNext(String type, String count) {
     updateLoader(true);
     selectedType = type;
     selectedCount = count;
     update();
-    if(selectedType == "Triggered In Last 7 Days"){
+    if (selectedType == "Triggered In Last 7 Days") {
       callTriggeredNotAllottedLast7Days();
-    }
-    else if(selectedType == "More Than 7 Days"){
+    } else if (selectedType == "More Than 7 Days") {
       callTriggeredNotAllottedMoreThan7Days();
-    }
-    else{
+    } else {
       callTriggeredNotAllottedPastDue();
     }
     update();
   }
 
-  List<TriggeredNotAllottedPieChartList> triggeredNotAllottedPieChartDetails = [];
+  List<TriggeredNotAllottedPieChartList> triggeredNotAllottedPieChartDetails =
+      [];
 
   ///services triggered not allotted past due
   void callTriggeredNotAllottedPastDue() async {
     triggeredNotAllottedPieChartDetails.clear();
     try {
-      TriggeredNotAllottedModel? response = await repository.getTriggeredNotAllottedPastDue();
+      TriggeredNotAllottedModel? response =
+          await repository.getTriggeredNotAllottedPastDue();
 
       if (response.success!) {
-        triggeredNotAllottedPieChartDetails.addAll(response.triggeredNotAllottedPieChartList!);
+        triggeredNotAllottedPieChartDetails
+            .addAll(response.triggeredNotAllottedPieChartList!);
         updateLoader(false);
         update();
       } else {
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2583,18 +3148,22 @@ class DashboardController extends GetxController {
 
     Get.toNamed(AppRoutes.triggeredNotAllottedPieChartList);
   }
+
   ///services triggered not allotted more than 7 days
   void callTriggeredNotAllottedMoreThan7Days() async {
     triggeredNotAllottedPieChartDetails.clear();
     try {
-      TriggeredNotAllottedModel? response = await repository.getTriggeredNotAllottedMore7Days();
+      TriggeredNotAllottedModel? response =
+          await repository.getTriggeredNotAllottedMore7Days();
 
       if (response.success!) {
-        triggeredNotAllottedPieChartDetails.addAll(response.triggeredNotAllottedPieChartList!);
+        triggeredNotAllottedPieChartDetails
+            .addAll(response.triggeredNotAllottedPieChartList!);
         updateLoader(false);
         update();
       } else {
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2607,18 +3176,22 @@ class DashboardController extends GetxController {
 
     Get.toNamed(AppRoutes.triggeredNotAllottedPieChartList);
   }
+
   ///services triggered not allotted last 7 days
   void callTriggeredNotAllottedLast7Days() async {
     triggeredNotAllottedPieChartDetails.clear();
     try {
-      TriggeredNotAllottedModel? response = await repository.getTriggeredNotAllottedLast7Days();
+      TriggeredNotAllottedModel? response =
+          await repository.getTriggeredNotAllottedLast7Days();
 
       if (response.success!) {
-        triggeredNotAllottedPieChartDetails.addAll(response.triggeredNotAllottedPieChartList!);
+        triggeredNotAllottedPieChartDetails
+            .addAll(response.triggeredNotAllottedPieChartList!);
         updateLoader(false);
         update();
       } else {
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2631,19 +3204,24 @@ class DashboardController extends GetxController {
 
     Get.toNamed(AppRoutes.triggeredNotAllottedPieChartList);
   }
+
   ///services triggered not allotted load all
-  List<TriggeredNotAllottedLoadAllList> triggeredNotAllottedLoadAll= [];
-  void callTriggeredNotAllottedLoadAll(String cliId,String clientName,String serviceName) async {
+  List<TriggeredNotAllottedLoadAllList> triggeredNotAllottedLoadAll = [];
+  void callTriggeredNotAllottedLoadAll(
+      String cliId, String clientName, String serviceName) async {
     triggeredNotAllottedLoadAll.clear();
     updateLoader(true);
     selectedCliId = cliId;
     selectedClientCode = "";
-    selectedClientName = clientName; selectedServiceName = serviceName;
+    selectedClientName = clientName;
+    selectedServiceName = serviceName;
     try {
-      TriggeredNotAllottedLoadAllModel? response = await repository.getTriggeredNotAllottedLoadAll(cliId);
+      TriggeredNotAllottedLoadAllModel? response =
+          await repository.getTriggeredNotAllottedLoadAll(cliId);
 
       if (response.success!) {
-        triggeredNotAllottedLoadAll.addAll(response.triggeredNotAllottedLoadAllList!);
+        triggeredNotAllottedLoadAll
+            .addAll(response.triggeredNotAllottedLoadAllList!);
 
         for (var element in triggeredNotAllottedLoadAll) {
           taskNameList.add(TextEditingController(text: element.taskName));
@@ -2673,7 +3251,8 @@ class DashboardController extends GetxController {
         updateLoader(false);
         update();
       } else {
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException {
@@ -2687,84 +3266,104 @@ class DashboardController extends GetxController {
   }
 
   int selectedPeriod = 0;
-  updateSelectedPeriod(int val,BuildContext context){ selectedPeriod = val; update();}
+  updateSelectedPeriod(int val, BuildContext context) {
+    selectedPeriod = val;
+    update();
+  }
 
-  saveTriggeredNotAllottedLoadAll(){
-    if(totalCompletion != 100){
-      Utils.showErrorSnackBar("Completion should be 100 %");update();
-    }
-    else if(selectedEmployee == ""){
-      Utils.showErrorSnackBar("Please select employee");update();
-    }
-    else if(selectedCurrentPriority==""){
-      Utils.showErrorSnackBar("Please select priority");update();
-    }
-    else{
-    for(var element in forTaskNames){
-      taskNameListToSendApi.add(element.toString());
-    }
-    for(var element in forCompletionCalculation){
-      completionListToSendApi.add(element.toString());
-    }
-    for(var element in forDaysCalculation){
-      daysListToSendApi.add(element.toString());
-    }
-    for(var element in forHrCalculation){
-      hoursListToSendApi.add(element.toString());
-    }
-    for(var element in forMinCalculation){
-      minuteListToSendApi.add(element.toString());
-    }
+  saveTriggeredNotAllottedLoadAll() {
+    if (totalCompletion != 100) {
+      Utils.showErrorSnackBar("Completion should be 100 %");
+      update();
+    } else if (selectedEmployee == "") {
+      Utils.showErrorSnackBar("Please select employee");
+      update();
+    } else if (selectedCurrentPriority == "") {
+      Utils.showErrorSnackBar("Please select priority");
+      update();
+    } else {
+      for (var element in forTaskNames) {
+        taskNameListToSendApi.add(element.toString());
+      }
+      for (var element in forCompletionCalculation) {
+        completionListToSendApi.add(element.toString());
+      }
+      for (var element in forDaysCalculation) {
+        daysListToSendApi.add(element.toString());
+      }
+      for (var element in forHrCalculation) {
+        hoursListToSendApi.add(element.toString());
+      }
+      for (var element in forMinCalculation) {
+        minuteListToSendApi.add(element.toString());
+      }
 
-    taskNameFirstBracketRemove =  taskNameListToSendApi.toString().replaceAll("[", "");
-    taskNameSecondBracketRemove = taskNameFirstBracketRemove.toString().replaceAll("]", "");
+      taskNameFirstBracketRemove =
+          taskNameListToSendApi.toString().replaceAll("[", "");
+      taskNameSecondBracketRemove =
+          taskNameFirstBracketRemove.toString().replaceAll("]", "");
 
-    completionFirstBracketRemove =  completionListToSendApi.toString().replaceAll("[", "");
-    completionSecondBracketRemove = completionFirstBracketRemove.toString().replaceAll("]", "");
+      completionFirstBracketRemove =
+          completionListToSendApi.toString().replaceAll("[", "");
+      completionSecondBracketRemove =
+          completionFirstBracketRemove.toString().replaceAll("]", "");
 
-    daysFirstBracketRemove =  daysListToSendApi.toString().replaceAll("[", "");
-    daysSecondBracketRemove = daysFirstBracketRemove.toString().replaceAll("]", "");
+      daysFirstBracketRemove = daysListToSendApi.toString().replaceAll("[", "");
+      daysSecondBracketRemove =
+          daysFirstBracketRemove.toString().replaceAll("]", "");
 
-    hoursFirstBracketRemove =  hoursListToSendApi.toString().replaceAll("[", "");
-    hoursSecondBracketRemove = hoursFirstBracketRemove.toString().replaceAll("]", "");
+      hoursFirstBracketRemove =
+          hoursListToSendApi.toString().replaceAll("[", "");
+      hoursSecondBracketRemove =
+          hoursFirstBracketRemove.toString().replaceAll("]", "");
 
-    minuteFirstBracketRemove =  minuteListToSendApi.toString().replaceAll("[", "");
-    minuteSecondBracketRemove = minuteFirstBracketRemove.toString().replaceAll("]", "");
+      minuteFirstBracketRemove =
+          minuteListToSendApi.toString().replaceAll("[", "");
+      minuteSecondBracketRemove =
+          minuteFirstBracketRemove.toString().replaceAll("]", "");
 
-    taskEmpFirstBracketRemove =  triggerSelectedEmpIdList.toString().replaceAll("[", "");
-    taskEmpSecondBracketRemove = taskEmpFirstBracketRemove.toString().replaceAll("]", "");
+      taskEmpFirstBracketRemove =
+          triggerSelectedEmpIdList.toString().replaceAll("[", "");
+      taskEmpSecondBracketRemove =
+          taskEmpFirstBracketRemove.toString().replaceAll("]", "");
 
-    taskIdFirstBracketRemove =  taskId.toString().replaceAll("[", "");
-    taskIdSecondBracketRemove = taskIdFirstBracketRemove.toString().replaceAll("]", "");
+      taskIdFirstBracketRemove = taskId.toString().replaceAll("[", "");
+      taskIdSecondBracketRemove =
+          taskIdFirstBracketRemove.toString().replaceAll("]", "");
 
-    srNoFirstBracketRemove =  srNo.toString().replaceAll("[", "");
-    srNoSecondBracketRemove = srNoFirstBracketRemove.toString().replaceAll("]", "");
-    callReassignTriggeredNotAllotted();
+      srNoFirstBracketRemove = srNo.toString().replaceAll("[", "");
+      srNoSecondBracketRemove =
+          srNoFirstBracketRemove.toString().replaceAll("]", "");
+      callReassignTriggeredNotAllotted();
     }
   }
 
-  removeFromSelectedTriggered(int index){
-    if(completionList[index].text=="0" || completionList[index].text.isEmpty || totalCompletion == 0){
-    }
-    else{
+  removeFromSelectedTriggered(int index) {
+    if (completionList[index].text == "0" ||
+        completionList[index].text.isEmpty ||
+        totalCompletion == 0) {
+    } else {
       totalCompletion = totalCompletion - int.parse(completionList[index].text);
     }
 
-    if(daysList[index].text=="0" || daysList[index].text.isEmpty || totalDays == 0){
-    }
-    else{
+    if (daysList[index].text == "0" ||
+        daysList[index].text.isEmpty ||
+        totalDays == 0) {
+    } else {
       totalDays = totalDays - int.parse(daysList[index].text);
     }
 
-    if(hoursList[index].text=="0" || hoursList[index].text.isEmpty || totalHours == 0){
-    }
-    else{
+    if (hoursList[index].text == "0" ||
+        hoursList[index].text.isEmpty ||
+        totalHours == 0) {
+    } else {
       totalHours = totalHours - int.parse(hoursList[index].text);
     }
 
-    if(minuteList[index].text=="0" || minuteList[index].text.isEmpty || totalMins == 0){
-    }
-    else{
+    if (minuteList[index].text == "0" ||
+        minuteList[index].text.isEmpty ||
+        totalMins == 0) {
+    } else {
       totalMins = totalMins - int.parse(minuteList[index].text);
     }
 
@@ -2794,34 +3393,37 @@ class DashboardController extends GetxController {
     update();
   }
 
-  removeFromSelectedAllotted(int index){
-
-    if(allottedCompletionList[index].text=="0" || allottedCompletionList[index].text.isEmpty
-    || allottedTotalCompletion == 0){
-    }
-    else{
-      allottedTotalCompletion = allottedTotalCompletion - int.parse(allottedCompletionList[index].text);
-    }
-
-    if(allottedDaysList[index].text=="0" || allottedDaysList[index].text.isEmpty
-        || allottedTotalDays == 0){
-    }
-    else{
-      allottedTotalDays = allottedTotalDays - int.parse(allottedDaysList[index].text);
+  removeFromSelectedAllotted(int index) {
+    if (allottedCompletionList[index].text == "0" ||
+        allottedCompletionList[index].text.isEmpty ||
+        allottedTotalCompletion == 0) {
+    } else {
+      allottedTotalCompletion = allottedTotalCompletion -
+          int.parse(allottedCompletionList[index].text);
     }
 
-    if(allottedHoursList[index].text=="0" || allottedHoursList[index].text.isEmpty
-        || allottedTotalHours == 0){
-    }
-    else{
-      allottedTotalHours = allottedTotalHours - int.parse(allottedHoursList[index].text);
+    if (allottedDaysList[index].text == "0" ||
+        allottedDaysList[index].text.isEmpty ||
+        allottedTotalDays == 0) {
+    } else {
+      allottedTotalDays =
+          allottedTotalDays - int.parse(allottedDaysList[index].text);
     }
 
-    if(allottedMinuteList[index].text=="0" || allottedMinuteList[index].text.isEmpty
-        || allottedTotalMins == 0){
+    if (allottedHoursList[index].text == "0" ||
+        allottedHoursList[index].text.isEmpty ||
+        allottedTotalHours == 0) {
+    } else {
+      allottedTotalHours =
+          allottedTotalHours - int.parse(allottedHoursList[index].text);
     }
-    else{
-      allottedTotalMins = allottedTotalMins - int.parse(allottedMinuteList[index].text);
+
+    if (allottedMinuteList[index].text == "0" ||
+        allottedMinuteList[index].text.isEmpty ||
+        allottedTotalMins == 0) {
+    } else {
+      allottedTotalMins =
+          allottedTotalMins - int.parse(allottedMinuteList[index].text);
     }
 
     loadAllTaskList.removeAt(index);
@@ -2858,8 +3460,11 @@ class DashboardController extends GetxController {
     updateLoader(true);
     try {
       ApiResponse? response = (await repository.getUpdatePriority(
-          selectedCurrentPriority == "High" ? "1" :
-          selectedCurrentPriority == "Medium" ? "2" : "3",
+          selectedCurrentPriority == "High"
+              ? "1"
+              : selectedCurrentPriority == "Medium"
+                  ? "2"
+                  : "3",
           selectedCurrentPriorityId));
 
       if (response.success!) {
@@ -2870,7 +3475,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -2885,71 +3491,87 @@ class DashboardController extends GetxController {
   }
 
   ///update target date
-  void callUpdateTargetDate(String id,String apiAfterChangeDate) async {
+  void callUpdateTargetDate(String id, String apiAfterChangeDate) async {
     updateLoader(true);
     try {
       //ApiResponse? response = (await repository.getUpdateTargetDate(selectedDateToSendForCurrent, selectedCurrentPriorityId));
-      ApiResponse? response = (await repository.getUpdateTargetDate(selectedDateToSendForCurrent, id));
+      ApiResponse? response = (await repository.getUpdateTargetDate(
+          selectedDateToSendForCurrent, id));
 
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
 
-
-        if(apiAfterChangeDate=="triggerApi"){
-          selectedType == "Triggered in Last 7 Days" ? callTriggeredNotAllottedLast7Days()
-          : selectedType == "More Than 7 Days" ? callTriggeredNotAllottedMoreThan7Days() :  callTriggeredNotAllottedPastDue();
+        if (apiAfterChangeDate == "triggerApi") {
+          selectedType == "Triggered in Last 7 Days"
+              ? callTriggeredNotAllottedLast7Days()
+              : selectedType == "More Than 7 Days"
+                  ? callTriggeredNotAllottedMoreThan7Days()
+                  : callTriggeredNotAllottedPastDue();
           update();
-        }
-        else if(apiAfterChangeDate == "allottedApiPastDue"){
-          selectedType == "Team" ? callAllottedNotStartedPastDueTeam() : callAllottedNotStartedPastDueOwn();
+        } else if (apiAfterChangeDate == "allottedApiPastDue") {
+          selectedType == "Team"
+              ? callAllottedNotStartedPastDueTeam()
+              : callAllottedNotStartedPastDueOwn();
           update();
-        }
-        else if(apiAfterChangeDate == "allottedApiProbable"){
-          selectedType == "Team" ? callAllottedNotStartedPortableDueTeam() : callAllottedNotStartedProbableOwn();
+        } else if (apiAfterChangeDate == "allottedApiProbable") {
+          selectedType == "Team"
+              ? callAllottedNotStartedPortableDueTeam()
+              : callAllottedNotStartedProbableOwn();
           update();
-        }
-        else if(apiAfterChangeDate == "allottedApiHigh"){
-          selectedType == "Team" ? callAllottedNotStartedHighDueTeam() : callAllottedNotStartedHighOwn();
+        } else if (apiAfterChangeDate == "allottedApiHigh") {
+          selectedType == "Team"
+              ? callAllottedNotStartedHighDueTeam()
+              : callAllottedNotStartedHighOwn();
           update();
-        }
-        else if(apiAfterChangeDate == "allottedApiMedium"){
-          selectedType == "Team" ? callAllottedNotStartedMediumDueTeam() : callAllottedNotStartedMediumOwn();
+        } else if (apiAfterChangeDate == "allottedApiMedium") {
+          selectedType == "Team"
+              ? callAllottedNotStartedMediumDueTeam()
+              : callAllottedNotStartedMediumOwn();
           update();
-        }
-        else if(apiAfterChangeDate == "allottedApiLow"){
-          selectedType == "Team" ? callAllottedNotStartedLowDueTeam() : callAllottedNotStartedLowOwn();
+        } else if (apiAfterChangeDate == "allottedApiLow") {
+          selectedType == "Team"
+              ? callAllottedNotStartedLowDueTeam()
+              : callAllottedNotStartedLowOwn();
           update();
-        }
-        else if(apiAfterChangeDate == "startedNotCompletedApiPastDue"){
-          selectedType == "Team" ? callStartedNotCompletedPastTeam() : callStartedNotCompletedPastOwn();
+        } else if (apiAfterChangeDate == "startedNotCompletedApiPastDue") {
+          selectedType == "Team"
+              ? callStartedNotCompletedPastTeam()
+              : callStartedNotCompletedPastOwn();
           update();
-        }
-        else if(apiAfterChangeDate == "startedNotCompletedApiProbable"){
-          selectedType == "Team" ? callStartedNotCompletedProbableTeam() : callStartedNotCompletedProbableOwn();
+        } else if (apiAfterChangeDate == "startedNotCompletedApiProbable") {
+          selectedType == "Team"
+              ? callStartedNotCompletedProbableTeam()
+              : callStartedNotCompletedProbableOwn();
           update();
-        }
-        else if(apiAfterChangeDate == "startedNotCompletedApiHigh"){
-          selectedType == "Team" ? callStartedNotCompletedHighTeam() : callStartedNotCompletedHighOwn();
+        } else if (apiAfterChangeDate == "startedNotCompletedApiHigh") {
+          selectedType == "Team"
+              ? callStartedNotCompletedHighTeam()
+              : callStartedNotCompletedHighOwn();
           update();
-        }
-        else if(apiAfterChangeDate == "startedNotCompletedApiMedium"){
-          selectedType == "Team" ? callStartedNotCompletedMediumTeam() : callStartedNotCompletedMediumOwn();
+        } else if (apiAfterChangeDate == "startedNotCompletedApiMedium") {
+          selectedType == "Team"
+              ? callStartedNotCompletedMediumTeam()
+              : callStartedNotCompletedMediumOwn();
           update();
-        }
-        else if(apiAfterChangeDate == "startedNotCompletedApiLow"){
-          selectedType == "Team" ? callStartedNotCompletedLowTeam() : callStartedNotCompletedLowOwn();
+        } else if (apiAfterChangeDate == "startedNotCompletedApiLow") {
+          selectedType == "Team"
+              ? callStartedNotCompletedLowTeam()
+              : callStartedNotCompletedLowOwn();
           update();
-        }
-        else if(apiAfterChangeDate == "workOnHoldApi"){
-          selectedType == "Team" ? callWorkOnHoldTeamData() : callWorkOnHoldOwnData();
+        } else if (apiAfterChangeDate == "workOnHoldApi") {
+          selectedType == "Team"
+              ? callWorkOnHoldTeamData()
+              : callWorkOnHoldOwnData();
           update();
-        }
-        else if(apiAfterChangeDate == "submittedForCheckingApi"){
-          selectedType == "Team" ? callSubmittedForCheckingTeamData() : callSubmittedForCheckingOwnData();
+        } else if (apiAfterChangeDate == "submittedForCheckingApi") {
+          selectedType == "Team"
+              ? callSubmittedForCheckingTeamData()
+              : callSubmittedForCheckingOwnData();
           update();
-        }
-        else if(apiAfterChangeDate == "allTasksApi"){
-          selectedType == "Team" ? callAllTasksTeamData() : callAllTasksOwnData();
+        } else if (apiAfterChangeDate == "allTasksApi") {
+          selectedType == "Team"
+              ? callAllTasksTeamData()
+              : callAllTasksOwnData();
           update();
         }
 
@@ -2957,7 +3579,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -2970,15 +3593,14 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///start service
-  void callStartService(String id,String serviceName) async {
+  void callStartService(String id, String serviceName) async {
     updateLoader(true);
     try {
       ApiResponse? response = (await repository.getStartService(id));
 
       if (response.success!) {
-
-
         // if(selectedPieChartTitle == "Past Due"){
         //   onPasDueSelected();
         // }
@@ -2995,10 +3617,9 @@ class DashboardController extends GetxController {
         //   onLowSelected();
         // }
 
-        if(serviceName == "AllottedNotStarted"){
+        if (serviceName == "AllottedNotStarted") {
           callAllottedNotStarted();
-        }
-        else{
+        } else {
           callStartedNotCompleted();
         }
 
@@ -3007,7 +3628,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -3020,6 +3642,7 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   List<TextEditingController> allottedTaskNameList = [];
   List<TextEditingController> allottedCompletionList = [];
   List<TextEditingController> allottedDaysList = [];
@@ -3084,15 +3707,18 @@ class DashboardController extends GetxController {
     loadAllTaskList.clear();
     updateLoader(true);
     try {
-      LoadAllTaskModel? response = (await repository.getLoadAllTaskService(cliId));
+      LoadAllTaskModel? response =
+          (await repository.getLoadAllTaskService(cliId));
 
       if (response.success!) {
         loadAllTaskList.addAll(response.loadAllTaskData!);
 
         selectedReassignId = cliId;
         for (var element in loadAllTaskList) {
-          allottedTaskNameList.add(TextEditingController(text: element.taskName));
-          allottedCompletionList.add(TextEditingController(text: element.completion));
+          allottedTaskNameList
+              .add(TextEditingController(text: element.taskName));
+          allottedCompletionList
+              .add(TextEditingController(text: element.completion));
           allottedDaysList.add(TextEditingController(text: element.days));
           allottedHoursList.add(TextEditingController(text: element.hours));
           allottedMinuteList.add(TextEditingController(text: element.mins));
@@ -3109,7 +3735,8 @@ class DashboardController extends GetxController {
           forHrCalculationAllotted.add(int.parse(element.hours!));
           forMinCalculationAllotted.add(int.parse(element.mins!));
 
-          allottedTotalCompletion = allottedTotalCompletion + int.parse(element.completion!);
+          allottedTotalCompletion =
+              allottedTotalCompletion + int.parse(element.completion!);
           allottedTotalDays = allottedTotalDays + int.parse(element.days!);
           allottedTotalHours = allottedTotalHours + int.parse(element.hours!);
           allottedTotalMins = allottedTotalMins + int.parse(element.mins!);
@@ -3118,7 +3745,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -3135,27 +3763,25 @@ class DashboardController extends GetxController {
   List<String> triggerSelectedEmpList = [];
   List<String> triggerSelectedEmpIdList = [];
 
-  updateAssignedTo(int index,String assignTo,String id,String taskId){
+  updateAssignedTo(int index, String assignTo, String id, String taskId) {
     selectedEmpFromDashboardNext = assignTo;
     selectedEmpIdFromDashboardNext = taskId;
 
-    if(addedAssignedTo.contains(taskId)){
+    if (addedAssignedTo.contains(taskId)) {
       addedAssignedTo.remove(taskId);
       update();
-    }
-    else{
+    } else {
       addedAssignedTo.add(taskId);
       update();
     }
 
-    if(triggerSelectedEmpIdList.asMap().containsKey(index)){
+    if (triggerSelectedEmpIdList.asMap().containsKey(index)) {
       triggerSelectedEmpIdList.removeAt(index);
       triggerSelectedEmpList.removeAt(index);
       triggerSelectedEmpIdList.insert(index, id);
       triggerSelectedEmpList.insert(index, assignTo);
       update();
-    }
-    else{
+    } else {
       //triggerSelectedEmpIdList.insert(index,id);
       triggerSelectedEmpIdList.add(id);
       triggerSelectedEmpList.add(assignTo);
@@ -3169,27 +3795,26 @@ class DashboardController extends GetxController {
   List<String> allottedSelectedEmpIdList = [];
   List<String> allottedSelectedEmpList = [];
 
-  updateAssignedToAllotted(int index,String assignTo,String id,String taskId){
+  updateAssignedToAllotted(
+      int index, String assignTo, String id, String taskId) {
     selectedEmpFromDashboardNextAllotted = assignTo;
     selectedEmpIdFromDashboardNextAllotted = id;
 
-    if(addedAssignedToAllotted.contains(taskId)){
+    if (addedAssignedToAllotted.contains(taskId)) {
       addedAssignedToAllotted.remove(taskId);
       update();
-    }
-    else{
+    } else {
       addedAssignedToAllotted.add(taskId);
       update();
     }
 
-    if(allottedSelectedEmpIdList.asMap().containsKey(index)){
+    if (allottedSelectedEmpIdList.asMap().containsKey(index)) {
       allottedSelectedEmpIdList.removeAt(index);
       allottedSelectedEmpList.removeAt(index);
       allottedSelectedEmpIdList.insert(index, id);
       allottedSelectedEmpList.insert(index, assignTo);
       update();
-    }
-    else{
+    } else {
       allottedSelectedEmpIdList.add(id);
       allottedSelectedEmpList.add(assignTo);
       update();
@@ -3225,18 +3850,18 @@ class DashboardController extends GetxController {
 
   bool showLoadingText = false;
 
-  checkAll(){
+  checkAll() {
     // if(totalCompletion != 100) {
     //   Utils.showErrorSnackBar("Not able to reassign, Task is not 100 % completed.");
     // }
     //else{
-    if(allottedTotalCompletion != 100){
-      Utils.showErrorSnackBar("Completion should be 100 %");update();
-    }
-    else if(selectedEmployee == ""){
-      Utils.showErrorSnackBar("Please select employee");update();
-    }
-    else {
+    if (allottedTotalCompletion != 100) {
+      Utils.showErrorSnackBar("Completion should be 100 %");
+      update();
+    } else if (selectedEmployee == "") {
+      Utils.showErrorSnackBar("Please select employee");
+      update();
+    } else {
       for (var element in allottedTaskNameList) {
         allottedTaskNameListToSendApi.add(element.text);
       }
@@ -3253,29 +3878,45 @@ class DashboardController extends GetxController {
         allottedMinuteListToSendApi.add(element.text);
       }
 
-      allottedTaskNameFirstBracketRemove = allottedTaskNameListToSendApi.toString().replaceAll("[", "");
-      allottedTaskNameSecondBracketRemove = allottedTaskNameFirstBracketRemove.toString().replaceAll("]", "");
+      allottedTaskNameFirstBracketRemove =
+          allottedTaskNameListToSendApi.toString().replaceAll("[", "");
+      allottedTaskNameSecondBracketRemove =
+          allottedTaskNameFirstBracketRemove.toString().replaceAll("]", "");
 
-      allottedCompletionFirstBracketRemove = allottedCompletionListToSendApi.toString().replaceAll("[", "");
-      allottedCompletionSecondBracketRemove = allottedCompletionFirstBracketRemove.toString().replaceAll("]", "");
+      allottedCompletionFirstBracketRemove =
+          allottedCompletionListToSendApi.toString().replaceAll("[", "");
+      allottedCompletionSecondBracketRemove =
+          allottedCompletionFirstBracketRemove.toString().replaceAll("]", "");
 
-      allottedDaysFirstBracketRemove = allottedDaysListToSendApi.toString().replaceAll("[", "");
-      allottedDaysSecondBracketRemove = allottedDaysFirstBracketRemove.toString().replaceAll("]", "");
+      allottedDaysFirstBracketRemove =
+          allottedDaysListToSendApi.toString().replaceAll("[", "");
+      allottedDaysSecondBracketRemove =
+          allottedDaysFirstBracketRemove.toString().replaceAll("]", "");
 
-      allottedHoursFirstBracketRemove = allottedHoursListToSendApi.toString().replaceAll("[", "");
-      allottedHoursSecondBracketRemove = allottedHoursFirstBracketRemove.toString().replaceAll("]", "");
+      allottedHoursFirstBracketRemove =
+          allottedHoursListToSendApi.toString().replaceAll("[", "");
+      allottedHoursSecondBracketRemove =
+          allottedHoursFirstBracketRemove.toString().replaceAll("]", "");
 
-      allottedMinuteFirstBracketRemove = allottedMinuteListToSendApi.toString().replaceAll("[", "");
-      allottedMinuteSecondBracketRemove = allottedMinuteFirstBracketRemove.toString().replaceAll("]", "");
+      allottedMinuteFirstBracketRemove =
+          allottedMinuteListToSendApi.toString().replaceAll("[", "");
+      allottedMinuteSecondBracketRemove =
+          allottedMinuteFirstBracketRemove.toString().replaceAll("]", "");
 
-      allottedTaskEmpFirstBracketRemove = allottedSelectedEmpIdList.toString().replaceAll("[", "");
-      allottedTaskEmpSecondBracketRemove = allottedTaskEmpFirstBracketRemove.toString().replaceAll("]", "");
+      allottedTaskEmpFirstBracketRemove =
+          allottedSelectedEmpIdList.toString().replaceAll("[", "");
+      allottedTaskEmpSecondBracketRemove =
+          allottedTaskEmpFirstBracketRemove.toString().replaceAll("]", "");
 
-      allottedTaskIdFirstBracketRemove = allottedTaskId.toString().replaceAll("[", "");
-      allottedTaskIdSecondBracketRemove = allottedTaskIdFirstBracketRemove.toString().replaceAll("]", "");
+      allottedTaskIdFirstBracketRemove =
+          allottedTaskId.toString().replaceAll("[", "");
+      allottedTaskIdSecondBracketRemove =
+          allottedTaskIdFirstBracketRemove.toString().replaceAll("]", "");
 
-      allottedSrNoFirstBracketRemove = allottedSrNo.toString().replaceAll("[", "");
-      allottedSrNoSecondBracketRemove = allottedSrNoFirstBracketRemove.toString().replaceAll("]", "");
+      allottedSrNoFirstBracketRemove =
+          allottedSrNo.toString().replaceAll("[", "");
+      allottedSrNoSecondBracketRemove =
+          allottedSrNoFirstBracketRemove.toString().replaceAll("]", "");
 
       callReassignServices();
     }
@@ -3283,13 +3924,18 @@ class DashboardController extends GetxController {
     //update();
   }
 
-  addMoreForAllottedNotCompleted(){
+  addMoreForAllottedNotCompleted() {
     updateLoader(true);
-    allottedTaskNameList.insert(allottedTaskNameList.length, TextEditingController(text: ""));
-    allottedCompletionList.insert(allottedCompletionList.length, TextEditingController(text: ""));
-    allottedDaysList.insert(allottedDaysList.length, TextEditingController(text: ""));
-    allottedHoursList.insert(allottedHoursList.length, TextEditingController(text: ""));
-    allottedMinuteList.insert(allottedMinuteList.length, TextEditingController(text: ""));
+    allottedTaskNameList.insert(
+        allottedTaskNameList.length, TextEditingController(text: ""));
+    allottedCompletionList.insert(
+        allottedCompletionList.length, TextEditingController(text: ""));
+    allottedDaysList.insert(
+        allottedDaysList.length, TextEditingController(text: ""));
+    allottedHoursList.insert(
+        allottedHoursList.length, TextEditingController(text: ""));
+    allottedMinuteList.insert(
+        allottedMinuteList.length, TextEditingController(text: ""));
     allottedTaskEmp.insert(allottedTaskEmp.length, "0");
     allottedTaskId.insert(allottedTaskId.length, "0");
     allottedSrNo.insert(allottedSrNo.length, "0");
@@ -3302,18 +3948,29 @@ class DashboardController extends GetxController {
     forHrCalculationAllotted.add(0);
     forMinCalculationAllotted.add(0);
 
-    loadAllTaskList.insert(loadAllTaskList.length, LoadAllTaskData(
-      completion: "",days: "",firmEmployeeName: "",hours: "",
-      id: "",mins: "",srno: "0",start: "0",status: "0",targetDate: "0",
-      taskEmp: "0",taskId: "0",taskName: ""
-    ));
+    loadAllTaskList.insert(
+        loadAllTaskList.length,
+        LoadAllTaskData(
+            completion: "",
+            days: "",
+            firmEmployeeName: "",
+            hours: "",
+            id: "",
+            mins: "",
+            srno: "0",
+            start: "0",
+            status: "0",
+            targetDate: "0",
+            taskEmp: "0",
+            taskId: "0",
+            taskName: ""));
 
     showToast("New entry added !");
     updateLoader(false);
     update();
   }
 
-  addMoreForTriggeredNotAllotted(int index){
+  addMoreForTriggeredNotAllotted(int index) {
     updateLoader(true);
     taskNameList.insert(index, TextEditingController(text: ""));
     completionList.insert(index, TextEditingController(text: ""));
@@ -3333,11 +3990,27 @@ class DashboardController extends GetxController {
     forHrCalculation.add(0);
     forMinCalculation.add(0);
 
-    triggeredNotAllottedLoadAll.insert(index, TriggeredNotAllottedLoadAllList(
-     taskName: "",taskId: "",hours: "",days: "",completion: "",addedBy: "",addOnDate: "",bizAdminId: "",
-      firmId: "",mastId: "",minutes: "",modifiedBy: "",modifiedOnDate: "",sortno: "",taskOndate: "",
-      taskServiceId: "",taskServiceMainCategoryId: "",
-    ));
+    triggeredNotAllottedLoadAll.insert(
+        index,
+        TriggeredNotAllottedLoadAllList(
+          taskName: "",
+          taskId: "",
+          hours: "",
+          days: "",
+          completion: "",
+          addedBy: "",
+          addOnDate: "",
+          bizAdminId: "",
+          firmId: "",
+          mastId: "",
+          minutes: "",
+          modifiedBy: "",
+          modifiedOnDate: "",
+          sortno: "",
+          taskOndate: "",
+          taskServiceId: "",
+          taskServiceMainCategoryId: "",
+        ));
 
     showToast("New entry added !");
     updateLoader(false);
@@ -3356,81 +4029,75 @@ class DashboardController extends GetxController {
   List<int> forHrCalculationAllotted = [];
   List<int> forMinCalculationAllotted = [];
 
-  checkAllAddedValues(int index){
-    if(taskNameList[index].text=="" ||
+  checkAllAddedValues(int index) {
+    if (taskNameList[index].text == "" ||
         completionList[index].text.isEmpty ||
         daysList[index].text.isEmpty ||
         hoursList[index].text.isEmpty ||
         minuteList[index].text.isEmpty ||
-        triggerSelectedEmpList[index] == ""
-    ){
+        triggerSelectedEmpList[index] == "") {
       Utils.showAlertSnackBar("Please enter all details");
-    }
-    else{
-      saveTasks(index,taskNameList[index].text);
-      saveCompletion(index,int.parse(completionList[index].text));
-      saveDays(index,int.parse(daysList[index].text));
-      saveHours(index,int.parse(hoursList[index].text));
-      saveMinute(index,int.parse(minuteList[index].text));
+    } else {
+      saveTasks(index, taskNameList[index].text);
+      saveCompletion(index, int.parse(completionList[index].text));
+      saveDays(index, int.parse(daysList[index].text));
+      saveHours(index, int.parse(hoursList[index].text));
+      saveMinute(index, int.parse(minuteList[index].text));
       showToast("Added !");
     }
     update();
   }
 
-  checkAllAddedValuesForAllotted(int index){
-    if(allottedTaskNameList[index].text=="" ||
+  checkAllAddedValuesForAllotted(int index) {
+    if (allottedTaskNameList[index].text == "" ||
         allottedCompletionList[index].text.isEmpty ||
         allottedDaysList[index].text.isEmpty ||
         allottedHoursList[index].text.isEmpty ||
         allottedMinuteList[index].text.isEmpty ||
-        allottedSelectedEmpList[index] == ""
-    )
-    {
+        allottedSelectedEmpList[index] == "") {
       Utils.showAlertSnackBar("Please enter all details");
-    }
-    else{
-      allottedSaveTasks(index,allottedTaskNameList[index].text);
-      allottedSaveCompletion(index,int.parse(allottedCompletionList[index].text));
-      allottedSaveDays(index,int.parse(allottedDaysList[index].text));
-      allottedSaveHours(index,int.parse(allottedHoursList[index].text));
-      allottedSaveMinute(index,int.parse(allottedMinuteList[index].text));
+    } else {
+      allottedSaveTasks(index, allottedTaskNameList[index].text);
+      allottedSaveCompletion(
+          index, int.parse(allottedCompletionList[index].text));
+      allottedSaveDays(index, int.parse(allottedDaysList[index].text));
+      allottedSaveHours(index, int.parse(allottedHoursList[index].text));
+      allottedSaveMinute(index, int.parse(allottedMinuteList[index].text));
       showToast("Added !");
     }
     update();
   }
 
-  saveTasks(int index,String minutes){
-    if(forTaskNames.asMap().containsKey(index)){
+  saveTasks(int index, String minutes) {
+    if (forTaskNames.asMap().containsKey(index)) {
       forTaskNames.removeAt(index);
       forTaskNames.insert(index, minutes);
       update();
-    }
-    else{
+    } else {
       forTaskNames.add(minutes);
       update();
     }
     update();
   }
-  allottedSaveTasks(int index,String minutes){
-    if(forTaskNamesAllotted.asMap().containsKey(index)){
+
+  allottedSaveTasks(int index, String minutes) {
+    if (forTaskNamesAllotted.asMap().containsKey(index)) {
       forTaskNamesAllotted.removeAt(index);
       forTaskNamesAllotted.insert(index, minutes);
       update();
-    }
-    else{
+    } else {
       forTaskNamesAllotted.add(minutes);
       update();
     }
     update();
   }
 
-  saveCompletion(int index,int minutes){
-    if(forCompletionCalculation.asMap().containsKey(index)){
+  saveCompletion(int index, int minutes) {
+    if (forCompletionCalculation.asMap().containsKey(index)) {
       forCompletionCalculation.removeAt(index);
       forCompletionCalculation.insert(index, minutes);
       update();
-    }
-    else{
+    } else {
       forCompletionCalculation.add(minutes);
       update();
     }
@@ -3438,14 +4105,13 @@ class DashboardController extends GetxController {
     totalCompletion = sum;
     update();
   }
-  allottedSaveCompletion(int index,int minutes){
-    if(forCompletionCalculationAllotted.asMap().containsKey(index)){
+
+  allottedSaveCompletion(int index, int minutes) {
+    if (forCompletionCalculationAllotted.asMap().containsKey(index)) {
       forCompletionCalculationAllotted.removeAt(index);
       forCompletionCalculationAllotted.insert(index, minutes);
       update();
-    }
-
-    else{
+    } else {
       forCompletionCalculationAllotted.add(minutes);
       update();
     }
@@ -3455,13 +4121,12 @@ class DashboardController extends GetxController {
     update();
   }
 
-  saveDays(int index,int minutes){
-    if(forDaysCalculation.asMap().containsKey(index)){
+  saveDays(int index, int minutes) {
+    if (forDaysCalculation.asMap().containsKey(index)) {
       forDaysCalculation.removeAt(index);
       forDaysCalculation.insert(index, minutes);
       update();
-    }
-    else{
+    } else {
       forDaysCalculation.add(minutes);
       update();
     }
@@ -3469,13 +4134,13 @@ class DashboardController extends GetxController {
     totalDays = sum;
     update();
   }
-  allottedSaveDays(int index,int minutes){
-    if(forDaysCalculationAllotted.asMap().containsKey(index)){
+
+  allottedSaveDays(int index, int minutes) {
+    if (forDaysCalculationAllotted.asMap().containsKey(index)) {
       forDaysCalculationAllotted.removeAt(index);
       forDaysCalculationAllotted.insert(index, minutes);
       update();
-    }
-    else{
+    } else {
       forDaysCalculationAllotted.add(minutes);
       update();
     }
@@ -3484,13 +4149,12 @@ class DashboardController extends GetxController {
     update();
   }
 
-  saveHours(int index,int minutes){
-    if(forHrCalculation.asMap().containsKey(index)){
+  saveHours(int index, int minutes) {
+    if (forHrCalculation.asMap().containsKey(index)) {
       forHrCalculation.removeAt(index);
       forHrCalculation.insert(index, minutes);
       update();
-    }
-    else{
+    } else {
       forHrCalculation.add(minutes);
       update();
     }
@@ -3498,13 +4162,13 @@ class DashboardController extends GetxController {
     totalHours = sum;
     update();
   }
-  allottedSaveHours(int index,int minutes){
-    if(forHrCalculationAllotted.asMap().containsKey(index)){
+
+  allottedSaveHours(int index, int minutes) {
+    if (forHrCalculationAllotted.asMap().containsKey(index)) {
       forHrCalculationAllotted.removeAt(index);
       forHrCalculationAllotted.insert(index, minutes);
       update();
-    }
-    else{
+    } else {
       forHrCalculationAllotted.add(minutes);
       update();
     }
@@ -3513,33 +4177,32 @@ class DashboardController extends GetxController {
     update();
   }
 
-  saveMinute(int index,int minutes){
-      if(forMinCalculation.asMap().containsKey(index)){
-        forMinCalculation.removeAt(index);
-        forMinCalculation.insert(index, minutes);
-        update();
-      }
-      else{
-        forMinCalculation.add(minutes);
-        update();
-      }
-      int sum = forMinCalculation.fold(0, (p, c) => p + c);
-      totalMins = sum;
+  saveMinute(int index, int minutes) {
+    if (forMinCalculation.asMap().containsKey(index)) {
+      forMinCalculation.removeAt(index);
+      forMinCalculation.insert(index, minutes);
       update();
+    } else {
+      forMinCalculation.add(minutes);
+      update();
+    }
+    int sum = forMinCalculation.fold(0, (p, c) => p + c);
+    totalMins = sum;
+    update();
   }
-  allottedSaveMinute(int index,int minutes){
-      if(forMinCalculationAllotted.asMap().containsKey(index)){
-        forMinCalculationAllotted.removeAt(index);
-        forMinCalculationAllotted.insert(index, minutes);
-        update();
-      }
-      else{
-        forMinCalculationAllotted.add(minutes);
-        update();
-      }
-      int sum = forMinCalculationAllotted.fold(0, (p, c) => p + c);
-      allottedTotalMins = sum;
+
+  allottedSaveMinute(int index, int minutes) {
+    if (forMinCalculationAllotted.asMap().containsKey(index)) {
+      forMinCalculationAllotted.removeAt(index);
+      forMinCalculationAllotted.insert(index, minutes);
       update();
+    } else {
+      forMinCalculationAllotted.add(minutes);
+      update();
+    }
+    int sum = forMinCalculationAllotted.fold(0, (p, c) => p + c);
+    allottedTotalMins = sum;
+    update();
   }
 
   // addDetailsClickForTriggeredNotAllotted(int index,String taskName, String completion,
@@ -3618,52 +4281,51 @@ class DashboardController extends GetxController {
   //   update();
   // }
 
-  List<int> addedCompletion = [] ;
-  List<int> addedDays = [] ;
-  List<int> addedHours = [] ;
-  List<int> addedMinute = [] ;
+  List<int> addedCompletion = [];
+  List<int> addedDays = [];
+  List<int> addedHours = [];
+  List<int> addedMinute = [];
 
   int addedDaysValue = 0;
   int addedHoursValue = 0;
   int addedMinValue = 0;
 
-  addCompletion(int index,String value){
-    if(addedCompletion.contains(index)){
+  addCompletion(int index, String value) {
+    if (addedCompletion.contains(index)) {
       addedCompletion.clear();
       addedCompletion.add(index);
       completionList.insert(index, TextEditingController(text: value));
       totalCompletion = totalCompletion + int.parse(value);
-    }
-    else{
+    } else {
       addedCompletion.add(index);
     }
     update();
   }
 
-  addDays(int index,String value){
+  addDays(int index, String value) {
     addedDaysValue = int.parse(value);
     totalDays = totalDays + addedDaysValue;
     update();
   }
 
-  minusDays(int index,String value){
+  minusDays(int index, String value) {
     totalDays = totalDays - addedDaysValue;
     update();
   }
 
-  addHours(int index,String value){
+  addHours(int index, String value) {
     addedHoursValue = int.parse(value);
     totalHours = totalHours + addedHoursValue;
     update();
   }
 
-  addMinutes(int index,String value){
+  addMinutes(int index, String value) {
     addedMinValue = int.parse(value);
     totalMins = totalMins + addedMinValue;
     update();
   }
 
-  clearAllFromAllottedReassign(){
+  clearAllFromAllottedReassign() {
     loadAllTaskList.clear();
     taskNameList.clear();
     completionList.clear();
@@ -3697,11 +4359,11 @@ class DashboardController extends GetxController {
     allottedSrNo.clear();
     allottedTaskEmp.clear();
 
-    allottedTotalCompletion=0;
-    allottedTotalDays=0;
-    allottedTotalHours=0;
-    allottedTotalMins=0;
-    selectedEmployee="";
+    allottedTotalCompletion = 0;
+    allottedTotalDays = 0;
+    allottedTotalHours = 0;
+    allottedTotalMins = 0;
+    selectedEmployee = "";
     allottedSelectedReassignId = "";
 
     forCompletionCalculationAllotted.clear();
@@ -3711,7 +4373,7 @@ class DashboardController extends GetxController {
     update();
   }
 
-  clearAllFromTriggeredNotAllottedReassign(){
+  clearAllFromTriggeredNotAllottedReassign() {
     triggeredNotAllottedLoadAll.clear();
     taskNameList.clear();
     completionList.clear();
@@ -3738,11 +4400,11 @@ class DashboardController extends GetxController {
     triggerSelectedEmpList.clear();
     triggerSelectedEmpIdList.clear();
 
-    totalCompletion=0;
-    totalDays=0;
-    totalHours=0;
-    totalMins=0;
-    selectedCurrentPriority ="";
+    totalCompletion = 0;
+    totalDays = 0;
+    totalHours = 0;
+    totalMins = 0;
+    selectedCurrentPriority = "";
     selectedCliId = "";
     selectedEmployee = "";
     selectedEmployeeId = "";
@@ -3755,12 +4417,12 @@ class DashboardController extends GetxController {
     update();
   }
 
-  navigateFromAllotted(){
+  navigateFromAllotted() {
     clearAllFromAllottedReassign();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
 
-  navigateFromTrigger(){
+  navigateFromTrigger() {
     clearAllFromTriggeredNotAllottedReassign();
     Get.toNamed(AppRoutes.triggeredNotAllottedPieChartList);
   }
@@ -3778,8 +4440,7 @@ class DashboardController extends GetxController {
           allottedMinuteSecondBracketRemove.replaceAll(" ", ""),
           allottedTaskEmpSecondBracketRemove.replaceAll(" ", ""),
           allottedTaskIdSecondBracketRemove.replaceAll(" ", ""),
-          allottedSrNoSecondBracketRemove.replaceAll(" ", "")
-      ));
+          allottedSrNoSecondBracketRemove.replaceAll(" ", "")));
 
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
@@ -3789,7 +4450,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -3821,7 +4483,7 @@ class DashboardController extends GetxController {
           taskIdSecondBracketRemove.replaceAll(" ", ""),
           srNoSecondBracketRemove.replaceAll(" ", ""),
           selectedCurrentPriorityId,
-          selectedPeriod==0?"1":"2"));
+          selectedPeriod == 0 ? "1" : "2"));
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         //clearAllFromAllottedReassign();
@@ -3832,7 +4494,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -3847,9 +4510,11 @@ class DashboardController extends GetxController {
   }
 
   String allottedSelectedReassignId = "";
-  navigateToDetails(String cliId,String clientName,String serviceName, String assignTo){
+  navigateToDetails(
+      String cliId, String clientName, String serviceName, String assignTo) {
     allottedSelectedReassignId = cliId;
-    selectedClientName = clientName; selectedServiceName = serviceName;
+    selectedClientName = clientName;
+    selectedServiceName = serviceName;
     selectedEmployee = assignTo;
     update();
     callLoadAllTaskService(cliId);
@@ -3857,8 +4522,10 @@ class DashboardController extends GetxController {
   }
 
   String selectedClientIdForOpenLog = "";
-  navigateToServiceView(String cliId,String clientName,String serviceName,String clientCode){
-    selectedClientName = clientName; selectedServiceName = serviceName;
+  navigateToServiceView(
+      String cliId, String clientName, String serviceName, String clientCode) {
+    selectedClientName = clientName;
+    selectedServiceName = serviceName;
     selectedClientCode = clientCode;
 
     selectedClientIdForOpenLog = cliId;
@@ -3870,7 +4537,7 @@ class DashboardController extends GetxController {
         : Get.toNamed(AppRoutes.startedNotCompletedViewScreen);
   }
 
-  startSelectedTask(String id){
+  startSelectedTask(String id) {
     updateLoader(true);
     callStartTask(id);
     update();
@@ -3880,7 +4547,8 @@ class DashboardController extends GetxController {
   void callStartTask(String id) async {
     updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getStartTask(selectedClientIdForOpenLog,id));
+      ApiResponse? response =
+          (await repository.getStartTask(selectedClientIdForOpenLog, id));
 
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
@@ -3889,7 +4557,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -3907,20 +4576,23 @@ class DashboardController extends GetxController {
   void callCheckPassword(BuildContext context) async {
     updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getCheckPassword(checkPassword.text));
+      ApiResponse? response =
+          (await repository.getCheckPassword(checkPassword.text));
 
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
         if (context.mounted) Navigator.of(context).pop();
         hideReasonContent = false;
-        if (context.mounted) showCheckPasswordOrReasonDialog("Reason for cancel",context);
+        if (context.mounted)
+          showCheckPasswordOrReasonDialog("Reason for cancel", context);
         callAllottedNotStarted();
         callStartedNotCompleted();
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -3933,12 +4605,15 @@ class DashboardController extends GetxController {
       update();
     }
   }
+
   ///cancel current period
   void callCancelService(BuildContext context) async {
     updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getCancelCurrentPeriodService(selectedCliId,checkPassword.text,
-          selectedCancelType == 0 ? "1":"2"));
+      ApiResponse? response = (await repository.getCancelCurrentPeriodService(
+          selectedCliId,
+          checkPassword.text,
+          selectedCancelType == 0 ? "1" : "2"));
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
@@ -3949,7 +4624,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -3964,25 +4640,27 @@ class DashboardController extends GetxController {
   }
 
   bool checkBoxValue = false;
-  List<String> addedId= [];
+  List<String> addedId = [];
+
   ///on checkbox click
-  onCheckBoxSelect(BuildContext context,String id){
+  onCheckBoxSelect(BuildContext context, String id) {
     checkBoxValue = !checkBoxValue;
-    if(addedId.contains(id)){
+    if (addedId.contains(id)) {
       addedId.remove(id);
       update();
-    }
-    else{
+    } else {
       addedId.add(id);
       update();
     }
     update();
   }
+
   ///confirm cancel service
   void callConfirmCancelService(BuildContext context) async {
     updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getConfirmCancelService(addedId.toString(),checkPassword.text));
+      ApiResponse? response = (await repository.getConfirmCancelService(
+          addedId.toString(), checkPassword.text));
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
@@ -3993,7 +4671,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -4009,12 +4688,18 @@ class DashboardController extends GetxController {
 
   bool showRemarkDialog = false;
   bool showAllTaskCompletedDialog = false;
+
   ///check complete task service
   void callCheckCompletedTaskService(BuildContext context) async {
     //updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getCheckCompletedTaskService(selectedCurrentStatusId,
-          selectedServiceStatus=="Inprocess" ? "1" : selectedServiceStatus == "Hold" ? "2" : "4"));
+      ApiResponse? response = (await repository.getCheckCompletedTaskService(
+          selectedCurrentStatusId,
+          selectedServiceStatus == "Inprocess"
+              ? "1"
+              : selectedServiceStatus == "Hold"
+                  ? "2"
+                  : "4"));
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
@@ -4026,8 +4711,7 @@ class DashboardController extends GetxController {
         //           showRemarkDialogForHoldStatus(selectedServiceName,context);
         // }
         update();
-      }
-      else {
+      } else {
         // if(response.message == "All tasks are not marked as completed"){
         //   //updateLoader(false);
         //   //showDialogToCompleteAllTask(context);
@@ -4035,12 +4719,12 @@ class DashboardController extends GetxController {
         //
         // }
         // else{
-          Utils.showErrorSnackBar(response.message);
-          updateLoader(false);
-          update();
-      //  }
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);
+        update();
+        //  }
       }
-     // update();
+      // update();
     } on CustomException catch (e) {
       Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
@@ -4053,49 +4737,63 @@ class DashboardController extends GetxController {
   }
   //BuildContext? context;
 
-  showDialogToCompleteAllTask(BuildContext context){
+  showDialogToCompleteAllTask(BuildContext context) {
     showDialog(
       barrierDismissible: false,
-      context:context,
-      builder:(context){
-        return StatefulBuilder(builder: (context,setter){
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(builder: (context, setter) {
           return Dialog(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))
-            ),
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
                 height: 150.0,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     // buildTextRegularWidget("Confirm ?", blackColor, context, 16.0,align: TextAlign.left),
                     // const Divider(color: Colors.grey,),
-                    const SizedBox(height: 10.0,),
-                    buildTextRegularWidget("There are pending tasks and they will be marked complete. Do you want to proceed?",
-                        blackColor, context, 16.0,align: TextAlign.left),
-                    const SizedBox(height: 20.0,),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    buildTextRegularWidget(
+                        "There are pending tasks and they will be marked complete. Do you want to proceed?",
+                        blackColor,
+                        context,
+                        16.0,
+                        align: TextAlign.left),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
                     Row(
                       children: [
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 callUpdateTaskServiceStatus(context);
                               });
                             },
-                            child: buildButtonWidget(context, "Confirm",height: 40.0,buttonColor: approveColor),
+                            child: buildButtonWidget(context, "Confirm",
+                                height: 40.0, buttonColor: approveColor),
                           ),
-                        ),const SizedBox(width: 5.0,),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               Navigator.pop(context);
                               updateLoader(false);
                             },
-                            child: buildButtonWidget(context, "Cancel",height: 40.0,buttonColor: errorColor),
+                            child: buildButtonWidget(context, "Cancel",
+                                height: 40.0, buttonColor: errorColor),
                           ),
                         )
                       ],
@@ -4114,16 +4812,23 @@ class DashboardController extends GetxController {
   void callUpdateTaskServiceStatus(BuildContext context) async {
     updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getUpdateTaskService(selectedCurrentStatusId,
-          selectedServiceStatus=="Inprocess" ? "1" : selectedServiceStatus == "Hold" ? "2" : "4",
-          selectedServiceStatus,remarkController.text??""));
+      ApiResponse? response = (await repository.getUpdateTaskService(
+          selectedCurrentStatusId,
+          selectedServiceStatus == "Inprocess"
+              ? "1"
+              : selectedServiceStatus == "Hold"
+                  ? "2"
+                  : "4",
+          selectedServiceStatus,
+          remarkController.text ?? ""));
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       if (context.mounted) Navigator.pop(context);
       update();
@@ -4138,8 +4843,22 @@ class DashboardController extends GetxController {
     }
   }
 
-  List<String> rh1taskStatusList = ["Inprocess","Awaiting for Client Input","Submitted for checking","Put on Hold","Completed","Cancel","Sent for Rework"];
-  List<String> rh0taskStatusList = ["Inprocess","Awaiting for Client Input","Submitted for checking","Put on Hold","Completed"];
+  List<String> rh1taskStatusList = [
+    "Inprocess",
+    "Awaiting for Client Input",
+    "Submitted for checking",
+    "Put on Hold",
+    "Completed",
+    "Cancel",
+    "Sent for Rework"
+  ];
+  List<String> rh0taskStatusList = [
+    "Inprocess",
+    "Awaiting for Client Input",
+    "Submitted for checking",
+    "Put on Hold",
+    "Completed"
+  ];
   List<String> addedRh1TaskStatus = [];
   String selectedTaskStatus = "";
   String selectedTaskStatusId = "";
@@ -4148,83 +4867,95 @@ class DashboardController extends GetxController {
   //
   // }
 
-  navigateFromStartedNotCompleted(){
-    selectedTaskStatus = ""; update();
+  navigateFromStartedNotCompleted() {
+    selectedTaskStatus = "";
+    update();
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
 
-  updateRh1TaskStatus(String status,String id,BuildContext context,assignId,String taskName){
+  updateRh1TaskStatus(String status, String id, BuildContext context, assignId,
+      String taskName) {
     selectedTaskStatus = status;
 
     selectedTaskStatusId = (rh1taskStatusList.indexOf(status) + 1).toString();
 
-    if(addedRh1TaskStatus.contains(id)){
+    if (addedRh1TaskStatus.contains(id)) {
       addedRh1TaskStatus.remove(id);
       update();
-    }
-    else{
+    } else {
       addedRh1TaskStatus.add(id);
       update();
     }
 
-    if(selectedTaskStatus == "Inprocess" || selectedTaskStatus == "Completed"){
-    }
-    else{
-      showRemarkDialogForTaskStatus(context,id,assignId,selectedTaskStatusId,selectedTaskStatus,taskName);
+    if (selectedTaskStatus == "Inprocess" ||
+        selectedTaskStatus == "Completed") {
+    } else {
+      showRemarkDialogForTaskStatus(context, id, assignId, selectedTaskStatusId,
+          selectedTaskStatus, taskName);
     }
 
     update();
   }
 
   List<String> addedRh0TaskStatus = [];
-  updateRh0TaskStatus(String status,String id,BuildContext context,assignId,String taskName){
+  updateRh0TaskStatus(String status, String id, BuildContext context, assignId,
+      String taskName) {
     selectedTaskStatus = status;
     selectedTaskStatusId = (rh0taskStatusList.indexOf(status) + 1).toString();
-    if(addedRh0TaskStatus.contains(id)){
+    if (addedRh0TaskStatus.contains(id)) {
       addedRh0TaskStatus.remove(id);
       update();
-    }
-    else{
+    } else {
       addedRh0TaskStatus.add(id);
       update();
     }
 
-    if(selectedTaskStatus == "Inprocess" || selectedTaskStatus == "Completed"){
-    }
-    else{
-      showRemarkDialogForTaskStatus(context,id,assignId,selectedTaskStatusId,selectedTaskStatus,taskName);
+    if (selectedTaskStatus == "Inprocess" ||
+        selectedTaskStatus == "Completed") {
+    } else {
+      showRemarkDialogForTaskStatus(context, id, assignId, selectedTaskStatusId,
+          selectedTaskStatus, taskName);
     }
 
     update();
   }
 
-  showRemarkDialogForTaskStatus(BuildContext context,String assignId,String id, String statusId, String status,
-      String taskName){
+  showRemarkDialogForTaskStatus(BuildContext context, String assignId,
+      String id, String statusId, String status, String taskName) {
     showDialog(
       barrierDismissible: false,
-      context:context,
-      builder:(BuildContext context){
-        return StatefulBuilder(builder: (context,setter){
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context, setter) {
           return Dialog(
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))
-            ),
+                borderRadius: BorderRadius.all(Radius.circular(15.0))),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Container(
-                height: 200.0,width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+                height: 200.0,
+                width: MediaQuery.of(context).size.width,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    buildTextRegularWidget(taskName, blackColor, context, 16.0,align: TextAlign.left),
-                    const Divider(color: Colors.grey,),
-                    const SizedBox(height: 10.0,),
+                    buildTextRegularWidget(taskName, blackColor, context, 16.0,
+                        align: TextAlign.left),
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(4)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4)),
                         color: textFormBgColor,
-                        border: Border.all(color: textFormBgColor),),
+                        border: Border.all(color: textFormBgColor),
+                      ),
                       child: TextFormField(
                         controller: remarkController,
                         keyboardType: TextInputType.text,
@@ -4232,12 +4963,16 @@ class DashboardController extends GetxController {
                         textAlignVertical: TextAlignVertical.center,
                         textInputAction: TextInputAction.done,
                         onTap: () {},
-                        style:const TextStyle(fontSize: 15.0),
+                        style: const TextStyle(fontSize: 15.0),
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.all(10),
                           hintText: "Enter remark",
-                          hintStyle: GoogleFonts.rubik(textStyle: TextStyle(
-                            color: subTitleTextColor, fontSize: 15,),),
+                          hintStyle: GoogleFonts.rubik(
+                            textStyle: TextStyle(
+                              color: subTitleTextColor,
+                              fontSize: 15,
+                            ),
+                          ),
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           enabledBorder: InputBorder.none,
@@ -4245,42 +4980,49 @@ class DashboardController extends GetxController {
                           disabledBorder: InputBorder.none,
                         ),
                         onChanged: (text) {
-                          setter((){
+                          setter(() {
                             checkRemarkValidation();
                           });
                         },
                       ),
                     ),
                     validateRemark == true
-                        ? ErrorText(errorMessage: "Please enter valid remark",)
+                        ? ErrorText(
+                            errorMessage: "Please enter valid remark",
+                          )
                         : const Opacity(opacity: 0.0),
-
-                    const SizedBox(height: 10.0,),
-
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     Row(
                       children: [
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 //callUpdateTaskStatus(context,assignId,id,taskName);
                                 selectedTaskStatus = status;
                                 Navigator.pop(context);
                               });
                             },
-                            child: buildButtonWidget(context, "Add",height: 40.0,buttonColor: approveColor),
+                            child: buildButtonWidget(context, "Add",
+                                height: 40.0, buttonColor: approveColor),
                           ),
-                        ),const SizedBox(width: 5.0,),
+                        ),
+                        const SizedBox(
+                          width: 5.0,
+                        ),
                         Flexible(
                           child: GestureDetector(
-                            onTap: (){
-                              setter((){
+                            onTap: () {
+                              setter(() {
                                 updateLoader(true);
                                 clearRemarkDialog();
                                 Navigator.pop(context);
                               });
                             },
-                            child: buildButtonWidget(context, "Close",height: 40.0,buttonColor: errorColor),
+                            child: buildButtonWidget(context, "Close",
+                                height: 40.0, buttonColor: errorColor),
                           ),
                         )
                       ],
@@ -4296,11 +5038,17 @@ class DashboardController extends GetxController {
   }
 
   ///update task status
-  void callUpdateTaskStatus(BuildContext context,String assignId,String id,String taskName) async {
+  void callUpdateTaskStatus(
+      BuildContext context, String assignId, String id, String taskName) async {
     updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getUpdateTaskStatus(assignId,id,selectedTaskStatusId,selectedTaskStatus,
-          remarkController.text,taskName));
+      ApiResponse? response = (await repository.getUpdateTaskStatus(
+          assignId,
+          id,
+          selectedTaskStatusId,
+          selectedTaskStatus,
+          remarkController.text,
+          taskName));
       if (response.success!) {
         clearRemarkDialog();
         Utils.showSuccessSnackBar(response.message);
@@ -4310,7 +5058,8 @@ class DashboardController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {
@@ -4325,17 +5074,20 @@ class DashboardController extends GetxController {
   }
 
   /// priority change for current
-  updatePriorityForTriggeredNotAllotted(String priority){
+  updatePriorityForTriggeredNotAllotted(String priority) {
     selectedCurrentPriority = priority;
-    priority == "Low" ? selectedCurrentPriorityId = "3" :
-    priority == "Medium" ? selectedCurrentPriorityId = "2": selectedCurrentPriorityId = "1" ;
+    priority == "Low"
+        ? selectedCurrentPriorityId = "3"
+        : priority == "Medium"
+            ? selectedCurrentPriorityId = "2"
+            : selectedCurrentPriorityId = "1";
     update();
   }
 
-  String selectedEmployee="";
-  String selectedEmployeeId="";
+  String selectedEmployee = "";
+  String selectedEmployeeId = "";
 
-  updateEmployeeFromTriggered(String priority,String id){
+  updateEmployeeFromTriggered(String priority, String id) {
     selectedEmployee = priority;
     selectedEmployeeId = id;
 
@@ -4347,10 +5099,10 @@ class DashboardController extends GetxController {
       update();
     }
 
-
     update();
   }
-  updateEmployeeFromAllotted(String priority,String id){
+
+  updateEmployeeFromAllotted(String priority, String id) {
     selectedEmployee = priority;
     selectedEmployeeId = id;
 
@@ -4365,7 +5117,7 @@ class DashboardController extends GetxController {
     update();
   }
 
-  callLogout(){
+  callLogout() {
     Utils.showLoadingDialog();
     GetStorage().remove("userId");
     GetStorage().remove("userName");
@@ -4377,5 +5129,4 @@ class DashboardController extends GetxController {
     Get.offNamedUntil(AppRoutes.login, (route) => false);
     update();
   }
-
 }

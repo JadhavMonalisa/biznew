@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 class ClientBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(ClientDashboardController(repository: ApiRepository(apiClient: ApiClient())));
+    Get.put(ClientDashboardController(
+        repository: ApiRepository(apiClient: ApiClient())));
   }
 }

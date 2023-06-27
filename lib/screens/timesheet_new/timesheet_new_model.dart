@@ -1,7 +1,7 @@
 import 'package:biznew/screens/timesheet_form/timesheet_model.dart';
 import 'package:flutter/material.dart';
 
-class TimesheetNewModel{
+class TimesheetNewModel {
   String? clientListClientId;
   String? clientListClientStatus;
   String? clientListClientFirmName;
@@ -12,10 +12,16 @@ class TimesheetNewModel{
   String? taskListTaskId;
   String? taskListTaskName;
 
-
-  TimesheetNewModel(this.clientListClientId, this.clientListClientStatus, this.clientListClientFirmName,
-      this.clientListId, this.serviceListServiceId, this.serviceListServiceName, this.serviceListId,
-      this.taskListTaskId, this.taskListTaskName);
+  TimesheetNewModel(
+      this.clientListClientId,
+      this.clientListClientStatus,
+      this.clientListClientFirmName,
+      this.clientListId,
+      this.serviceListServiceId,
+      this.serviceListServiceName,
+      this.serviceListId,
+      this.taskListTaskId,
+      this.taskListTaskName);
 }
 
 class TimesheetServicesListData {
@@ -27,22 +33,22 @@ class TimesheetServicesListData {
   String? selectedClientId;
   String? selectedClientName;
 
-  TimesheetServicesListData(
-      {this.serviceDueDatePeriodicity,
-        this.serviceName,
-        this.period,
-        this.serviceId,
-        this.id,
-        this.selectedClientId,
-        this.selectedClientName,
-      });
+  TimesheetServicesListData({
+    this.serviceDueDatePeriodicity,
+    this.serviceName,
+    this.period,
+    this.serviceId,
+    this.id,
+    this.selectedClientId,
+    this.selectedClientName,
+  });
 
   TimesheetServicesListData.fromJson(Map<String, dynamic> json) {
-    serviceDueDatePeriodicity = json['service_due_date_periodicity']??"";
-    serviceName = json['service_name']??"";
-    period = json['period']??"";
-    serviceId = json['service_id']??"";
-    id = json['id']??"";
+    serviceDueDatePeriodicity = json['service_due_date_periodicity'] ?? "";
+    serviceName = json['service_name'] ?? "";
+    period = json['period'] ?? "";
+    serviceId = json['service_id'] ?? "";
+    id = json['id'] ?? "";
     selectedClientId = "";
     selectedClientName = "";
   }
@@ -97,15 +103,15 @@ class TimesheetTaskListData {
   String? clientName;
   List<TimesheetTaskDetailsData>? timesheetTaskDetailsData;
 
-  TimesheetTaskListData(
-      {this.message,
-        this.success,
-        this.serviceId,
-        this.serviceName,
-        this.clientId,
-        this.clientName,
-        this.timesheetTaskDetailsData,
-      });
+  TimesheetTaskListData({
+    this.message,
+    this.success,
+    this.serviceId,
+    this.serviceName,
+    this.clientId,
+    this.clientName,
+    this.timesheetTaskDetailsData,
+  });
 
   TimesheetTaskListData.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -143,7 +149,8 @@ class TimesheetTaskDetailsData {
   TextEditingController? testTaskDetails;
   String? timeSpent;
 
-  TimesheetTaskDetailsData({this.taskId, this.taskName,this.testTaskDetails,this.timeSpent});
+  TimesheetTaskDetailsData(
+      {this.taskId, this.taskName, this.testTaskDetails, this.timeSpent});
 
   TimesheetTaskDetailsData.fromJson(Map<String, dynamic> json) {
     taskId = json['task_id'];
@@ -158,9 +165,15 @@ class TimesheetTaskDetailsData {
   }
 }
 
-class TestTextEditingController{
+class TestTextEditingController {
   TextEditingController? textEditingController;
 
   TestTextEditingController(this.textEditingController);
+}
 
+class AllottedStepperOneTestModel{
+  String serviceName;
+  String taskName;
+  TextEditingController testDetails;
+  AllottedStepperOneTestModel(this.serviceName,this.taskName,this.testDetails);
 }

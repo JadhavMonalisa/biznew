@@ -20,29 +20,38 @@ class BottomNavController extends GetxController {
 
   ///bottom navigation
   int selectedTabIndex = 0;
-  var userId="";
-  String userName="";
-  String name="";
-  String firmId="";
+  var userId = "";
+  String userName = "";
+  String name = "";
+  String firmId = "";
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    userId = GetStorage().read("userId")??"";
-    userName = GetStorage().read("userName")??"";
-    name = GetStorage().read("name")??"";
+    userId = GetStorage().read("userId") ?? "";
+    userName = GetStorage().read("userName") ?? "";
+    name = GetStorage().read("name") ?? "";
   }
 
-  bool noData = false; bool loader = false;
-  updateLoader(bool val) { loader = val; update(); }
+  bool noData = false;
+  bool loader = false;
+  updateLoader(bool val) {
+    loader = val;
+    update();
+  }
 
   ///set pages in body
-  buildWidget(){
-    return selectedTabIndex == 0 ? const ServiceDashboardScreen() :
-    selectedTabIndex == 1 ? const EmployeeDashboardScreen() :
-    selectedTabIndex == 2 ?  const ClientDashboard() :
-    selectedTabIndex == 3 ? const TimesheetNewForm() : const ServiceDashboardScreen();
+  buildWidget() {
+    return selectedTabIndex == 0
+        ? const ServiceDashboardScreen()
+        : selectedTabIndex == 1
+            ? const EmployeeDashboardScreen()
+            : selectedTabIndex == 2
+                ? const ClientDashboard()
+                : selectedTabIndex == 3
+                    ? const TimesheetNewForm()
+                    : const ServiceDashboardScreen();
   }
 
   ///on tap index change
@@ -57,44 +66,64 @@ class BottomNavController extends GetxController {
     update();
   }
 
-  onWillPopBack(){
+  onWillPopBack() {
     Get.offNamedUntil(AppRoutes.bottomNav, (route) => false);
     update();
   }
 
-  showExitDialog(BuildContext context){
-    showDialog(barrierDismissible: true,
-      context:context,
-      builder:(BuildContext context){
+  showExitDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
         return AlertDialog(
           shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15.0))
-          ),
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
           content: Container(
             height: 150.0,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildTextRegularWidget("Exit!", blackColor, context, 20,align: TextAlign.left),const SizedBox(height: 10.0,),
-                buildTextRegularWidget("Do you want to exit from an app?", blackColor, context, 16.0,align: TextAlign.left,),
-                const SizedBox(height: 20.0,),
+                buildTextRegularWidget("Exit!", blackColor, context, 20,
+                    align: TextAlign.left),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                buildTextRegularWidget(
+                  "Do you want to exit from an app?",
+                  blackColor,
+                  context,
+                  16.0,
+                  align: TextAlign.left,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
                 Row(
                   children: [
-                    Flexible(child:
-                    GestureDetector(
-                      onTap: (){
+                    Flexible(
+                        child: GestureDetector(
+                      onTap: () {
                         exit(0);
                       },
-                      child: buildButtonWidget(context, "Yes",radius: 5.0,width: MediaQuery.of(context).size.width),
-                    )
+                      child: buildButtonWidget(context, "Yes",
+                          radius: 5.0,
+                          width: MediaQuery.of(context).size.width),
+                    )),
+                    const SizedBox(
+                      width: 3.0,
                     ),
-                    const SizedBox(width: 3.0,),
-                    Flexible(child:GestureDetector(
-                      onTap: (){
+                    Flexible(
+                        child: GestureDetector(
+                      onTap: () {
                         Navigator.pop(context);
                       },
-                      child: buildButtonWidget(context, "No",radius: 5.0,width: MediaQuery.of(context).size.width),
+                      child: buildButtonWidget(context, "No",
+                          radius: 5.0,
+                          width: MediaQuery.of(context).size.width),
                     )),
                   ],
                 )

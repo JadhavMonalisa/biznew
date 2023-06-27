@@ -5,17 +5,20 @@ class Validators {
   static const passwordError = "Password should be minimum 4 characters";
   static const passwordMatchError = "Password mismatch";
   static const emailError = "Please enter valid email Id";
-  static const emailPhoneNumberError = "Please enter valid email Id or phone number";
+  static const emailPhoneNumberError =
+      "Please enter valid email Id or phone number";
   static const phoneError = "Please enter valid phone number";
   static const nameError = "Please enter valid name";
   static const passCodeError = "Field cannot be empty";
 
-  static checkValidation(String controller, bool validator){
-    if(controller.isEmpty){ validator = true;}
-    else{
+  static checkValidation(String controller, bool validator) {
+    if (controller.isEmpty) {
+      validator = true;
+    } else {
       validator = false;
     }
   }
+
   static String isValidUserName(String username) {
     String msg;
     if (username.isNotEmpty &&

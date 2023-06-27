@@ -1,5 +1,3 @@
-
-
 // final ThemeData appThemeData = ThemeData(
 //   brightness: Brightness.light,
 //   primarySwatch: MaterialColor(colors.blue[500]!.value, colors.blue),

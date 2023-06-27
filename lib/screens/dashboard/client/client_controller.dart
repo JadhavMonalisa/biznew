@@ -10,14 +10,15 @@ class ClientDashboardController extends GetxController {
   final ApiRepository repository;
 
   // ignore: unnecessary_null_comparison
-  ClientDashboardController({required this.repository}) : assert(repository != null);
+  ClientDashboardController({required this.repository})
+      : assert(repository != null);
 
-  String userId="";
-  String userName="";
-  String name="";
-  String reportingHead="";
-  String roleId="";
-  String userType="";
+  String userId = "";
+  String userName = "";
+  String name = "";
+  String reportingHead = "";
+  String roleId = "";
+  String userType = "";
   bool loader = false;
 
   List<ClientDashboardList> clientDashboardListData = [];
@@ -28,25 +29,28 @@ class ClientDashboardController extends GetxController {
     // TODO: implement onInit
     super.onInit();
 
-    userId = GetStorage().read("userId")??"";
-    userName = GetStorage().read("userName")??"";
-    name = GetStorage().read("name")??"";
-    reportingHead = GetStorage().read("reportingHead")??"";
-    roleId = GetStorage().read("roleId")??"";
-    userType = GetStorage().read("userType")??"";
+    userId = GetStorage().read("userId") ?? "";
+    userName = GetStorage().read("userName") ?? "";
+    name = GetStorage().read("name") ?? "";
+    reportingHead = GetStorage().read("reportingHead") ?? "";
+    roleId = GetStorage().read("roleId") ?? "";
+    userType = GetStorage().read("userType") ?? "";
     repository.getData();
 
     callClientDashboardList();
   }
 
-  onWillPopBack(){
+  onWillPopBack() {
     Get.offNamedUntil(AppRoutes.bottomNav, (route) => false);
     update();
   }
 
-  updateLoader(bool val) { loader = val; update(); }
+  updateLoader(bool val) {
+    loader = val;
+    update();
+  }
 
-  callLogout(){
+  callLogout() {
     Utils.showLoadingDialog();
     GetStorage().remove("userId");
     GetStorage().remove("userName");
@@ -64,12 +68,12 @@ class ClientDashboardController extends GetxController {
 
     try {
       updateLoader(true);
-      ClientDashboardModel? response = await repository.getClientDashboardList();
+      ClientDashboardModel? response =
+          await repository.getClientDashboardList();
 
       if (response.success!) {
         if (response.clientDashboardList!.isEmpty) {
-        }
-        else{
+        } else {
           clientDashboardListData.addAll(response.clientDashboardList!);
         }
 
@@ -90,14 +94,13 @@ class ClientDashboardController extends GetxController {
 
   List<int> addedIndex = [];
 
-  onExpanded(bool expanded,int index){
+  onExpanded(bool expanded, int index) {
     isExpanded = expanded;
 
-    if(addedIndex.contains(index)){
+    if (addedIndex.contains(index)) {
       addedIndex.remove(index);
       update();
-    }
-    else{
+    } else {
       addedIndex.add(index);
       update();
     }

@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import '../../theme/app_colors.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-
   const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
@@ -24,7 +23,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         return await Get.toNamed(AppRoutes.login);
       },
       child: Scaffold(
-        backgroundColor: Colors.transparent, resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
           child: Stack(
             children: [
@@ -32,19 +32,24 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
-                decoration: const BoxDecoration(color: primaryColor,),
+                decoration: const BoxDecoration(
+                  color: primaryColor,
+                ),
               ),
               Container(
                   width: MediaQuery.of(context).size.width,
                   height: 300.0,
-                  decoration: const BoxDecoration(borderRadius: BorderRadius.only(bottomRight:Radius.circular(25.0),bottomLeft: Radius.circular(25.0)),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(25.0),
+                        bottomLeft: Radius.circular(25.0)),
                     color: Colors.white54,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(120.0),
-                    child: Image.asset(Assets.splashLogo,fit: BoxFit.fill),
-                  )
-              ),
+                    child: Image.asset(Assets.splashLogo, fit: BoxFit.fill),
+                  )),
+
               ///card container
               Positioned(
                 top: MediaQuery.of(context).size.height * 0.25,
@@ -54,51 +59,76 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Card(
-                        elevation: 5, color: whiteColor,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),),
-                        child: GetBuilder<LoginController>(builder: (loginController)
-                        {
+                        elevation: 5,
+                        color: whiteColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: GetBuilder<LoginController>(
+                            builder: (loginController) {
                           return ListView(
                             physics: const AlwaysScrollableScrollPhysics(),
-                            padding: const EdgeInsets.only(left: 20.0,right: 20.0,top: 30.0),
+                            padding: const EdgeInsets.only(
+                                left: 20.0, right: 20.0, top: 30.0),
                             children: [
                               Column(
                                 children: [
                                   Align(
                                     alignment: Alignment.center,
                                     child: buildTextMediumWidget(
-                                        "Forgot Password", Colors.indigo, context, 26),
+                                        "Forgot Password",
+                                        Colors.indigo,
+                                        context,
+                                        26),
                                   ),
-                                  const SizedBox(height: 20,),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
 
                                   ///email address
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 3.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 3.0),
                                         child: buildTextRegularWidget(
-                                          "Email", titleTextColor, context, 14,),
+                                          "Email",
+                                          titleTextColor,
+                                          context,
+                                          14,
+                                        ),
                                       ),
-                                      const SizedBox(height: 10,),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
                                       Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: const BorderRadius.all(Radius.circular(4)),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(4)),
                                           color: textFormBgColor,
-                                          border: Border.all(color: textFormBgColor),),
+                                          border: Border.all(
+                                              color: textFormBgColor),
+                                        ),
                                         child: TextFormField(
-                                          controller: loginController.forgotEmailController,
+                                          controller: loginController
+                                              .forgotEmailController,
                                           obscureText: false,
-                                          keyboardType: TextInputType.emailAddress,
+                                          keyboardType:
+                                              TextInputType.emailAddress,
                                           textAlign: TextAlign.left,
-                                          textAlignVertical: TextAlignVertical.center,
+                                          textAlignVertical:
+                                              TextAlignVertical.center,
                                           textInputAction: TextInputAction.done,
                                           onTap: () {},
-                                          style:const TextStyle(fontSize: 15.0),
+                                          style:
+                                              const TextStyle(fontSize: 15.0),
                                           decoration: const InputDecoration(
                                             contentPadding: EdgeInsets.all(10),
                                             hintText: "Email",
-                                            hintStyle: TextStyle(fontSize: 15.0),
+                                            hintStyle:
+                                                TextStyle(fontSize: 15.0),
                                             prefixIcon: Padding(
                                               padding: EdgeInsets.only(top: 2),
                                               child: Icon(Icons.email),
@@ -110,31 +140,41 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                             disabledBorder: InputBorder.none,
                                           ),
                                           onChanged: (text) {
-                                            loginController.checkForgetEmailValidation(context);
+                                            loginController
+                                                .checkForgetEmailValidation(
+                                                    context);
                                           },
                                         ),
                                       ),
-                                      loginController.validateForgetEmail == true
+                                      loginController.validateForgetEmail ==
+                                              true
                                           ? ErrorText(
-                                        errorMessage: "Please enter valid email address",)
+                                              errorMessage:
+                                                  "Please enter valid email address",
+                                            )
                                           : const Opacity(opacity: 0.0),
                                     ],
                                   ),
-                                  const SizedBox(height: 15,),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
 
                                   GestureDetector(
                                     onTap: () {
-                                      loginController.checkForgetPasswordValidation(context);
+                                      loginController
+                                          .checkForgetPasswordValidation(
+                                              context);
                                     },
                                     child: buildButtonWidget(context, "Submit"),
                                   ),
-                                  const SizedBox(height: 30,),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
                                 ],
                               )
                             ],
                           );
-                        })
-                    ),
+                        })),
                   ),
                 ),
               ),

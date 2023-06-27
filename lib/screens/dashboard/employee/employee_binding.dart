@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 class EmployeeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(EmployeeDashboardController(repository: ApiRepository(apiClient: ApiClient())));
+    Get.put(EmployeeDashboardController(
+        repository: ApiRepository(apiClient: ApiClient())));
   }
 }

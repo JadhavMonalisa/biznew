@@ -67,7 +67,4 @@ class PrefData {
   void setToken() {
     GetStorage().write("token", true);
   }
-
-
-
 }

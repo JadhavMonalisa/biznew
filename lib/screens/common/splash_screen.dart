@@ -14,9 +14,9 @@ class SplashScreen extends StatefulWidget {
   SplashScreenState createState() => SplashScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-
-  String userId="";
+class SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  String userId = "";
   @override
   void initState() {
     super.initState();
@@ -25,22 +25,23 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
     getAppTransparency();
   }
 
-  getData(){
-    userId = GetStorage().read("userId")??"";
+  getData() {
+    userId = GetStorage().read("userId") ?? "";
   }
+
   getAppTransparency() async {
     final status = await AppTrackingTransparency.requestTrackingAuthorization();
   }
+
   startTime() async {
     var duration = const Duration(seconds: 3);
     return Timer(duration, navigationPage);
   }
 
   Future<void> navigationPage() async {
-    if(userId==""){
+    if (userId == "") {
       Get.toNamed(AppRoutes.login);
-    }
-    else{
+    } else {
       Get.toNamed(AppRoutes.bottomNav);
     }
   }
@@ -48,14 +49,14 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child:Scaffold(
+      child: Scaffold(
         backgroundColor: whiteColor,
         body: Center(
             child: SizedBox(
-              height: MediaQuery.of(context).size.height/7,width: MediaQuery.of(context).size.width/1.3,
-              child: Image.asset(Assets.splashLogo,fit: BoxFit.fill),
-            )
-        ),
+          height: MediaQuery.of(context).size.height / 7,
+          width: MediaQuery.of(context).size.width / 1.3,
+          child: Image.asset(Assets.splashLogo, fit: BoxFit.fill),
+        )),
       ),
     );
   }

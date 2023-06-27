@@ -3,7 +3,8 @@ class MainCategoryModel {
   bool? success;
   List<ServicesMainCategoryList>? servicesMainCategoryList;
 
-  MainCategoryModel({this.message, this.success, this.servicesMainCategoryList});
+  MainCategoryModel(
+      {this.message, this.success, this.servicesMainCategoryList});
 
   MainCategoryModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -53,7 +54,8 @@ class ServicesFromMainCategoryModel {
   bool? success;
   List<ServicesList>? servicesList;
 
-  ServicesFromMainCategoryModel({this.message, this.success, this.servicesList});
+  ServicesFromMainCategoryModel(
+      {this.message, this.success, this.servicesList});
 
   ServicesFromMainCategoryModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -101,7 +103,8 @@ class ManualAssignmentTaskModel {
   bool? success;
   List<ManualAssignmentTaskDetails>? manualAssignmentTaskDetails;
 
-  ManualAssignmentTaskModel({this.message, this.success, this.manualAssignmentTaskDetails});
+  ManualAssignmentTaskModel(
+      {this.message, this.success, this.manualAssignmentTaskDetails});
 
   ManualAssignmentTaskModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -109,7 +112,8 @@ class ManualAssignmentTaskModel {
     if (json['data'] != null) {
       manualAssignmentTaskDetails = <ManualAssignmentTaskDetails>[];
       json['data'].forEach((v) {
-        manualAssignmentTaskDetails!.add(ManualAssignmentTaskDetails.fromJson(v));
+        manualAssignmentTaskDetails!
+            .add(ManualAssignmentTaskDetails.fromJson(v));
       });
     }
   }
@@ -119,7 +123,8 @@ class ManualAssignmentTaskModel {
     data['Message'] = message;
     data['Success'] = success;
     if (manualAssignmentTaskDetails != null) {
-      data['data'] = manualAssignmentTaskDetails!.map((v) => v.toJson()).toList();
+      data['data'] =
+          manualAssignmentTaskDetails!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -136,12 +141,12 @@ class ManualAssignmentTaskDetails {
 
   ManualAssignmentTaskDetails(
       {this.taskName,
-        this.taskId,
-        this.sortno,
-        this.completion,
-        this.days,
-        this.hours,
-        this.minutes});
+      this.taskId,
+      this.sortno,
+      this.completion,
+      this.days,
+      this.hours,
+      this.minutes});
 
   ManualAssignmentTaskDetails.fromJson(Map<String, dynamic> json) {
     taskName = json['task_name'];

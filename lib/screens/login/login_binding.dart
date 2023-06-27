@@ -1,4 +1,3 @@
-
 import 'package:biznew/constant/provider/api.dart';
 import 'package:get/get.dart';
 import '../../constant/repository/api_repository.dart';

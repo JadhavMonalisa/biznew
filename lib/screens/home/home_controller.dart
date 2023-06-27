@@ -12,50 +12,73 @@ class HomeController extends GetxController {
   HomeController({required this.repository}) : assert(repository != null);
 
   ///common
-  String userId="";
-  String userName="";
-  String name="";
+  String userId = "";
+  String userName = "";
+  String name = "";
   bool loader = false;
 
   ///home screen menu
-  List<String> menuNameList = ["Dashboard","Leaves","Claim","Timesheet","Appointment","Reports","Petty Task"];
-  List<String> menuDescriptionList = ["Show recent activities","Manage your leaves","Manage your claims","Manage your timesheet","Book your appointment","Display all reports","Add petty task"];
-  List<IconData> menuIconList = [Icons.dashboard,Icons.calendar_today,Icons.filter_frames,Icons.timer,Icons.edit,Icons.file_copy_outlined,Icons.task];
+  List<String> menuNameList = [
+    "Dashboard",
+    "Leaves",
+    "Claim",
+    "Timesheet",
+    "Appointment",
+    "Reports",
+    "Petty Task"
+  ];
+  List<String> menuDescriptionList = [
+    "Show recent activities",
+    "Manage your leaves",
+    "Manage your claims",
+    "Manage your timesheet",
+    "Book your appointment",
+    "Display all reports",
+    "Add petty task"
+  ];
+  List<IconData> menuIconList = [
+    Icons.dashboard,
+    Icons.calendar_today,
+    Icons.filter_frames,
+    Icons.timer,
+    Icons.edit,
+    Icons.file_copy_outlined,
+    Icons.task
+  ];
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    userId = GetStorage().read("userId")??"";
-    userName = GetStorage().read("userName")??"";
-    name = GetStorage().read("name")??"";
+    userId = GetStorage().read("userId") ?? "";
+    userName = GetStorage().read("userName") ?? "";
+    name = GetStorage().read("name") ?? "";
   }
 
-  updateLoader(bool val) { loader = val; update(); }
+  updateLoader(bool val) {
+    loader = val;
+    update();
+  }
 
-  navigateFromMenuScreen(String title){
+  navigateFromMenuScreen(String title) {
     updateLoader(true);
-    if(title=="Claim"){
+    if (title == "Claim") {
       Get.toNamed(AppRoutes.claimList);
-    }
-    else if(title=="Timesheet"){
+    } else if (title == "Timesheet") {
       Get.toNamed(AppRoutes.timesheetList);
       //Get.toNamed(AppRoutes.tryScreen);
-    }
-    else if(title=="Leaves"){
+    } else if (title == "Leaves") {
       Get.toNamed(AppRoutes.leaveList);
-    }
-    else if(title=="Petty Task"){
+    } else if (title == "Petty Task") {
       Get.toNamed(AppRoutes.pettyTaskFrom);
-    }
-    else{
-      Get.toNamed(AppRoutes.serviceDashboard,arguments: [title]);
+    } else {
+      Get.toNamed(AppRoutes.serviceDashboard, arguments: [title]);
     }
     updateLoader(false);
     update();
   }
 
-  callLogout(){
+  callLogout() {
     Utils.showLoadingDialog();
     GetStorage().remove("userId");
     GetStorage().remove("userName");
@@ -67,5 +90,4 @@ class HomeController extends GetxController {
     Get.offNamedUntil(AppRoutes.login, (route) => false);
     update();
   }
-
 }

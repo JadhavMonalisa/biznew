@@ -14,12 +14,12 @@ class CalenderScreen extends StatefulWidget {
 }
 
 class _CalenderScreenState extends State<CalenderScreen> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>(debugLabel: 'GlobalKey');
+  final GlobalKey<ScaffoldState> scaffoldKey =
+      GlobalKey<ScaffoldState>(debugLabel: 'GlobalKey');
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CalenderViewController>(builder: (cont)
-    {
+    return GetBuilder<CalenderViewController>(builder: (cont) {
       return WillPopScope(
           onWillPop: () async {
             return await cont.navigateToBottomScreen();
@@ -28,53 +28,76 @@ class _CalenderScreenState extends State<CalenderScreen> {
               key: scaffoldKey,
               backgroundColor: whiteColor,
               appBar: AppBar(
-                elevation: 0, backgroundColor: primaryColor, centerTitle: true,
-                title: buildTextMediumWidget("Calendar", whiteColor,context, 16,align: TextAlign.center),
+                elevation: 0,
+                backgroundColor: primaryColor,
+                centerTitle: true,
+                title: buildTextMediumWidget(
+                    "Calendar", whiteColor, context, 16,
+                    align: TextAlign.center),
                 leading: Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: GestureDetector(
-                      onTap:(){
+                      onTap: () {
                         scaffoldKey.currentState?.openDrawer();
                       },
-                      child:const Icon(Icons.dehaze)
-                  ),
+                      child: const Icon(Icons.dehaze)),
                 ),
               ),
               drawer: Drawer(
                 child: SizedBox(
                     height: double.infinity,
                     child: ListView(
-                      physics:const NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       children: [
                         Center(
                           child: SizedBox(
-                            height: MediaQuery.of(context).size.height/1.1,
+                            height: MediaQuery.of(context).size.height / 1.1,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                buildDrawer(context,cont.name),
+                                buildDrawer(context, cont.name),
                                 const Spacer(),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 30.0,left: 10.0,bottom: 50.0,right: 10.0),
+                                  padding: const EdgeInsets.only(
+                                      top: 30.0,
+                                      left: 10.0,
+                                      bottom: 50.0,
+                                      right: 10.0),
                                   child: Row(
                                     children: [
                                       GestureDetector(
-                                        onTap: (){
-                                          showCalenderDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
+                                        onTap: () {
+                                          showCalenderDialog(
+                                              context,
+                                              "Confirm Logout...!!!",
+                                              "Do you want to logout from an app?",
+                                              logoutFeature: true,
+                                              cont);
                                         },
                                         child: const Icon(Icons.logout),
                                       ),
-                                      const SizedBox(width: 7.0,),
+                                      const SizedBox(
+                                        width: 7.0,
+                                      ),
                                       GestureDetector(
-                                          onTap:(){
-                                            showCalenderDialog(context,"Confirm Logout...!!!","Do you want to logout from an app?",logoutFeature:true,cont);
+                                          onTap: () {
+                                            showCalenderDialog(
+                                                context,
+                                                "Confirm Logout...!!!",
+                                                "Do you want to logout from an app?",
+                                                logoutFeature: true,
+                                                cont);
                                           },
-                                          child:buildTextBoldWidget("Logout", blackColor, context, 15.0)
-                                      ),const Spacer(),
+                                          child: buildTextBoldWidget("Logout",
+                                              blackColor, context, 15.0)),
+                                      const Spacer(),
                                       GestureDetector(
-                                        onTap:(){
-                                        },
-                                        child: buildTextRegularWidget("App Version 1.0", grey, context, 14.0),
+                                        onTap: () {},
+                                        child: buildTextRegularWidget(
+                                            "App Version 1.0",
+                                            grey,
+                                            context,
+                                            14.0),
                                       )
                                     ],
                                   ),
@@ -84,62 +107,76 @@ class _CalenderScreenState extends State<CalenderScreen> {
                           ),
                         ),
                       ],
-                    )
-                ),
+                    )),
               ),
-              body:
-              cont.loader == true ? Center(child: buildCircularIndicator(),) :
-              SingleChildScrollView(
-                  child:Column(
-                    mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: SfCalendar(
-                              view: CalendarView.month,
-                              firstDayOfWeek: 1,
-                              dataSource: cont.getCalendarDataSource(),
-                              onViewChanged: (ViewChangedDetails viewChangedDetails)
-                              {
-                                cont.selectedYear = viewChangedDetails.visibleDates[0].year.toString();
-                                cont.callCalender();
-                              },
-                              appointmentBuilder: (BuildContext context,
-                                  CalendarAppointmentDetails calendarAppointmentDetails){
-                                final Appointment appointment = calendarAppointmentDetails.appointments.first;
+              body: cont.loader == true
+                  ? Center(
+                      child: buildCircularIndicator(),
+                    )
+                  : SingleChildScrollView(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: SfCalendar(
+                                view: CalendarView.month,
+                                firstDayOfWeek: 1,
+                                dataSource: cont.getCalendarDataSource(),
+                                onViewChanged:
+                                    (ViewChangedDetails viewChangedDetails) {
+                                  cont.selectedYear = viewChangedDetails
+                                      .visibleDates[0].year
+                                      .toString();
+                                  cont.callCalender();
+                                },
+                                appointmentBuilder: (BuildContext context,
+                                    CalendarAppointmentDetails
+                                        calendarAppointmentDetails) {
+                                  final Appointment appointment =
+                                      calendarAppointmentDetails
+                                          .appointments.first;
 
-                                return GestureDetector(
-                                  onTap: (){
-                                    cont.addParameter(appointment.location!, appointment.notes!);
-                                  },
-                                  child: Container(
-                                    width: calendarAppointmentDetails.bounds.width,
-                                    height: calendarAppointmentDetails.bounds.height / 2,
-                                    decoration: BoxDecoration(color: appointment.color,borderRadius: BorderRadius.circular(10.0)),
-                                    child: Center(
-                                      child: buildTextBoldWidget(appointment.subject, whiteColor, context, 14.0),
-                                    )
-                                  ),
-                                );
-                              },
-                              controller: cont.canController,
-                              monthViewSettings:const MonthViewSettings(
-                                showAgenda: true,
-                                showTrailingAndLeadingDates: false,
-                                agendaItemHeight: 70.0,
-                                agendaViewHeight: 230.0,
-                                appointmentDisplayMode: MonthAppointmentDisplayMode.indicator,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      cont.addParameter(appointment.location!,
+                                          appointment.notes!);
+                                    },
+                                    child: Container(
+                                        width: calendarAppointmentDetails
+                                            .bounds.width,
+                                        height: calendarAppointmentDetails
+                                                .bounds.height /
+                                            2,
+                                        decoration: BoxDecoration(
+                                            color: appointment.color,
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        child: Center(
+                                          child: buildTextBoldWidget(
+                                              appointment.subject,
+                                              whiteColor,
+                                              context,
+                                              14.0),
+                                        )),
+                                  );
+                                },
+                                controller: cont.canController,
+                                monthViewSettings: const MonthViewSettings(
+                                  showAgenda: true,
+                                  showTrailingAndLeadingDates: false,
+                                  agendaItemHeight: 70.0,
+                                  agendaViewHeight: 230.0,
+                                  appointmentDisplayMode:
+                                      MonthAppointmentDisplayMode.indicator,
+                                ),
                               ),
-                            ),
-                          )
-                      ),
-                    ],
-                  )
-              )
-          )
-      );
+                            )),
+                      ],
+                    ))));
     });
   }
 }
@@ -189,4 +226,3 @@ class Tile extends StatelessWidget {
     );
   }
 }
-

@@ -50,4 +50,3 @@ const Color faintGrey = Color(0xffeceff1);
 const Color faintGrey2 = Color(0xffcfd8dc);
 const Color editColor = Colors.orange;
 const Color approveColor = Colors.green;
-

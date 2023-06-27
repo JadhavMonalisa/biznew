@@ -14,12 +14,13 @@ class ManualAssignmentController extends GetxController {
   final ApiRepository repository;
 
   // ignore: unnecessary_null_comparison
-  ManualAssignmentController({required this.repository}) : assert(repository != null);
+  ManualAssignmentController({required this.repository})
+      : assert(repository != null);
 
   ///common
-  String userId="";
-  String userName="";
-  String name="";
+  String userId = "";
+  String userName = "";
+  String name = "";
   bool loader = false;
   List<String> noDataList = ["No Data Found!"];
   bool validateClientYear = false;
@@ -28,9 +29,9 @@ class ManualAssignmentController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    userId = GetStorage().read("userId")??"";
-    userName = GetStorage().read("userName")??"";
-    name = GetStorage().read("name")??"";
+    userId = GetStorage().read("userId") ?? "";
+    userName = GetStorage().read("userName") ?? "";
+    name = GetStorage().read("name") ?? "";
     repository.getData();
 
     callClientNameList();
@@ -39,7 +40,7 @@ class ManualAssignmentController extends GetxController {
     callMainCategoryList();
   }
 
-  callLogout(){
+  callLogout() {
     Utils.showLoadingDialog();
     GetStorage().remove("userId");
     GetStorage().remove("userName");
@@ -57,21 +58,30 @@ class ManualAssignmentController extends GetxController {
   String selectedYearId = "";
 
   ///dropdown for year
-  updateSelectedYear(String val,BuildContext context){
-    if(yearList.isNotEmpty){selectedYear= val; checkClientYearValidation(context); update();}
+  updateSelectedYear(String val, BuildContext context) {
+    if (yearList.isNotEmpty) {
+      selectedYear = val;
+      checkClientYearValidation(context);
+      update();
+    }
   }
 
-  updateSelectedYearId(String valId){
-    if(yearList.isNotEmpty){
+  updateSelectedYearId(String valId) {
+    if (yearList.isNotEmpty) {
       selectedYearId = valId;
       callServicesList();
       update();
     }
   }
 
-  checkClientYearValidation(BuildContext context){
-    if(selectedYear.isEmpty){ validateClientYear = true; update(); }
-    else{validateClientYear = false; update(); }
+  checkClientYearValidation(BuildContext context) {
+    if (selectedYear.isEmpty) {
+      validateClientYear = true;
+      update();
+    } else {
+      validateClientYear = false;
+      update();
+    }
   }
 
   /// year list
@@ -82,8 +92,7 @@ class ManualAssignmentController extends GetxController {
 
       if (response.success!) {
         if (response.yearList!.isEmpty) {
-        }
-        else{
+        } else {
           yearList.addAll(response.yearList!);
         }
         update();
@@ -104,20 +113,30 @@ class ManualAssignmentController extends GetxController {
   bool validateClientName = false;
 
   ///dropdown for client name
-  updateSelectedClientName(String val,BuildContext context){
-    if(clientNameList.isNotEmpty){
-      selectedClientName= val;checkClientNameValidation(context); update();
-    }
-  }
-  updateSelectedClientId(String valId,String id){
-    if(clientNameList.isNotEmpty){
-      clientFirmId = id;selectedClientId = valId;update();
+  updateSelectedClientName(String val, BuildContext context) {
+    if (clientNameList.isNotEmpty) {
+      selectedClientName = val;
+      checkClientNameValidation(context);
+      update();
     }
   }
 
-  checkClientNameValidation(BuildContext context){
-    if(selectedClientName.isEmpty){ validateClientName = true; update(); }
-    else{validateClientName = false; update(); }
+  updateSelectedClientId(String valId, String id) {
+    if (clientNameList.isNotEmpty) {
+      clientFirmId = id;
+      selectedClientId = valId;
+      update();
+    }
+  }
+
+  checkClientNameValidation(BuildContext context) {
+    if (selectedClientName.isEmpty) {
+      validateClientName = true;
+      update();
+    } else {
+      validateClientName = false;
+      update();
+    }
   }
 
   /// client name list
@@ -128,8 +147,7 @@ class ManualAssignmentController extends GetxController {
 
       if (response.success!) {
         if (response.nameList!.isEmpty) {
-        }
-        else{
+        } else {
           clientNameList.addAll(response.nameList!);
         }
         update();
@@ -153,11 +171,11 @@ class ManualAssignmentController extends GetxController {
   void callServicesList() async {
     serviceList.clear();
     try {
-      ClaimServiceResponse? response = (await repository.getClaimServicesList(clientFirmId,selectedYearId));
+      ClaimServiceResponse? response =
+          (await repository.getClaimServicesList(clientFirmId, selectedYearId));
       if (response.success!) {
         if (response.serviceList!.isEmpty) {
-        }
-        else{
+        } else {
           serviceList.addAll(response.serviceList!);
         }
         update();
@@ -170,12 +188,18 @@ class ManualAssignmentController extends GetxController {
       update();
     }
   }
+
   ///dropdown for service
-  updateSelectedService(String val,BuildContext context){
-    if(servicesFromCategoryList.isNotEmpty){selectedService= val; checkClientServiceValidation(context); update();}
+  updateSelectedService(String val, BuildContext context) {
+    if (servicesFromCategoryList.isNotEmpty) {
+      selectedService = val;
+      checkClientServiceValidation(context);
+      update();
+    }
   }
-  updateSelectedServiceId(String id,String serviceName){
-    if(servicesFromCategoryList.isNotEmpty){
+
+  updateSelectedServiceId(String id, String serviceName) {
+    if (servicesFromCategoryList.isNotEmpty) {
       selectedServiceId = id;
       selectedService = serviceName;
       callTasksList();
@@ -183,9 +207,14 @@ class ManualAssignmentController extends GetxController {
     }
   }
 
-  checkClientServiceValidation(BuildContext context){
-    if(selectedService.isEmpty){ validateClientService = true; update(); }
-    else{validateClientService = false; update(); }
+  checkClientServiceValidation(BuildContext context) {
+    if (selectedService.isEmpty) {
+      validateClientService = true;
+      update();
+    } else {
+      validateClientService = false;
+      update();
+    }
   }
 
   List<ClaimSubmittedByList> employeeList = [];
@@ -195,12 +224,12 @@ class ManualAssignmentController extends GetxController {
     employeeList.clear();
     updateLoader(true);
     try {
-      ClaimSubmittedByResponse? response = (await repository.getClaimSubmittedByList());
+      ClaimSubmittedByResponse? response =
+          (await repository.getClaimSubmittedByList());
 
       if (response.success!) {
         if (response.claimSubmittedByListDetails!.isEmpty) {
-        }
-        else{
+        } else {
           employeeList.addAll(response.claimSubmittedByListDetails!);
         }
         updateLoader(false);
@@ -217,7 +246,8 @@ class ManualAssignmentController extends GetxController {
       update();
     }
   }
-  updateSelectedEmployee(String empName,String empMastId){
+
+  updateSelectedEmployee(String empName, String empMastId) {
     selectedEmployee = empName;
     selectedEmployeeId = empMastId;
 
@@ -243,8 +273,7 @@ class ManualAssignmentController extends GetxController {
 
       if (response.success!) {
         if (response.servicesMainCategoryList!.isEmpty) {
-        }
-        else{
+        } else {
           mainCategoryList.addAll(response.servicesMainCategoryList!);
         }
         update();
@@ -257,31 +286,43 @@ class ManualAssignmentController extends GetxController {
       update();
     }
   }
-  updateSelectedMainCategory(String val,BuildContext context){
-    if(mainCategoryList.isNotEmpty){selectedMainCategory= val; checkMainCategoryValidation(context); update();}
+
+  updateSelectedMainCategory(String val, BuildContext context) {
+    if (mainCategoryList.isNotEmpty) {
+      selectedMainCategory = val;
+      checkMainCategoryValidation(context);
+      update();
+    }
   }
-  updateSelectedMainCategoryId(String id){
-    if(mainCategoryList.isNotEmpty){
+
+  updateSelectedMainCategoryId(String id) {
+    if (mainCategoryList.isNotEmpty) {
       selectedMainCategoryId = id;
       callServicesFromMainCategoryList();
       update();
     }
   }
-  checkMainCategoryValidation(BuildContext context){
-    if(mainCategoryList.isEmpty){ validateMainCategory = true; update(); }
-    else{validateMainCategory = false; update(); }
+
+  checkMainCategoryValidation(BuildContext context) {
+    if (mainCategoryList.isEmpty) {
+      validateMainCategory = true;
+      update();
+    } else {
+      validateMainCategory = false;
+      update();
+    }
   }
 
   List<ServicesList> servicesFromCategoryList = [];
   void callServicesFromMainCategoryList() async {
     servicesFromCategoryList.clear();
     try {
-      ServicesFromMainCategoryModel? response = (await repository.getServicesFromMainCategoryList(selectedMainCategoryId));
+      ServicesFromMainCategoryModel? response = (await repository
+          .getServicesFromMainCategoryList(selectedMainCategoryId));
 
       if (response.success!) {
         if (response.servicesList!.isEmpty) {
-        }
-        else{
+        } else {
           servicesFromCategoryList.addAll(response.servicesList!);
         }
         update();
@@ -295,7 +336,10 @@ class ManualAssignmentController extends GetxController {
     }
   }
 
-  updateLoader(bool val) { loader = val; update(); }
+  updateLoader(bool val) {
+    loader = val;
+    update();
+  }
 
   DateTime selectedDate = DateTime.now();
   String selectedTriggerDate = "";
@@ -305,11 +349,11 @@ class ManualAssignmentController extends GetxController {
   bool validateTriggerDate = false;
   bool validateTargetDate = false;
 
-  Future<void> selectDate(BuildContext context,String dateFor) async {
+  Future<void> selectDate(BuildContext context, String dateFor) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: dateFor=="triggerDate" ? DateTime.now() : selectedDate,
+        firstDate: dateFor == "triggerDate" ? DateTime.now() : selectedDate,
         lastDate: DateTime(2100, 1));
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
@@ -318,56 +362,59 @@ class ManualAssignmentController extends GetxController {
     String formattedMonth = "";
     String formattedDay = "";
 
-    if(dateFor=="triggerDate"){
-
+    if (dateFor == "triggerDate") {
       ///format month
-      if(selectedDate.month.toString().length==1){
+      if (selectedDate.month.toString().length == 1) {
         formattedMonth = selectedDate.month.toString().padLeft(2, '0');
-      }
-      else{
+      } else {
         formattedMonth = selectedDate.month.toString();
       }
 
       ///format date
-      if(selectedDate.day.toString().length==1){
+      if (selectedDate.day.toString().length == 1) {
         formattedDay = selectedDate.day.toString().padLeft(2, '0');
-      }
-      else{
+      } else {
         formattedDay = selectedDate.day.toString();
       }
 
-      selectedTriggerDate = "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
-      selectedTriggerDateToSend = "${selectedDate.year}-$formattedMonth-$formattedDay";
-      selectedTriggerDate=="" ? validateTriggerDate = true: validateTriggerDate = false;
+      selectedTriggerDate =
+          "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+      selectedTriggerDateToSend =
+          "${selectedDate.year}-$formattedMonth-$formattedDay";
+      selectedTriggerDate == ""
+          ? validateTriggerDate = true
+          : validateTriggerDate = false;
       update();
-    }
-    else if(dateFor=="targetDate"){
+    } else if (dateFor == "targetDate") {
       ///format month
-      if(selectedDate.month.toString().length==1){
+      if (selectedDate.month.toString().length == 1) {
         formattedMonth = selectedDate.month.toString().padLeft(2, '0');
-      }
-      else{
+      } else {
         formattedMonth = selectedDate.month.toString();
       }
 
       ///format date
-      if(selectedDate.day.toString().length==1){
+      if (selectedDate.day.toString().length == 1) {
         formattedDay = selectedDate.day.toString().padLeft(2, '0');
-      }
-      else{
+      } else {
         formattedDay = selectedDate.day.toString();
       }
 
-      selectedTargetDate = "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
-      selectedTargetDateToSend = "${selectedDate.year}-$formattedMonth-$formattedDay";
-      selectedTargetDate=="" ? validateTargetDate = true: validateTargetDate = false;
+      selectedTargetDate =
+          "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+      selectedTargetDateToSend =
+          "${selectedDate.year}-$formattedMonth-$formattedDay";
+      selectedTargetDate == ""
+          ? validateTargetDate = true
+          : validateTargetDate = false;
       update();
     }
     update();
   }
 
-  navigateToHomeScreen(){
-    selectedYear = "" ; selectedYearId = "";
+  navigateToHomeScreen() {
+    selectedYear = "";
+    selectedYearId = "";
     Get.toNamed(AppRoutes.bottomNav);
     update();
   }
@@ -376,14 +423,20 @@ class ManualAssignmentController extends GetxController {
   String selectedPriority = "";
   bool validatePriority = false;
 
-  updateSelectedPriority(String value,BuildContext context){
-    selectedPriority = value; checkPriorityValidation(context);
+  updateSelectedPriority(String value, BuildContext context) {
+    selectedPriority = value;
+    checkPriorityValidation(context);
     update();
   }
 
-  checkPriorityValidation(BuildContext context){
-    if(selectedPriority.isEmpty){ validatePriority = true; update(); }
-    else{validatePriority = false; update(); }
+  checkPriorityValidation(BuildContext context) {
+    if (selectedPriority.isEmpty) {
+      validatePriority = true;
+      update();
+    } else {
+      validatePriority = false;
+      update();
+    }
   }
 
   TextEditingController feesController = TextEditingController();
@@ -391,9 +444,14 @@ class ManualAssignmentController extends GetxController {
   TextEditingController remarkController = TextEditingController();
 
   ///fees
-  checkFeesValidation(BuildContext context){
-    if(feesController.text.isEmpty){ validateFees = true; update(); }
-    else{validateFees = false; update(); }
+  checkFeesValidation(BuildContext context) {
+    if (feesController.text.isEmpty) {
+      validateFees = true;
+      update();
+    } else {
+      validateFees = false;
+      update();
+    }
   }
 
   List<TextEditingController> taskNameList = [];
@@ -406,7 +464,7 @@ class ManualAssignmentController extends GetxController {
   List<String> taskSelectedEmpIdList = [];
   List<String> srNo = [];
   String selectedReassignId = "";
-  List<ManualAssignmentTaskDetails> tasksList  = [];
+  List<ManualAssignmentTaskDetails> tasksList = [];
   int totalCompletion = 0;
   int totalDays = 0;
   int totalHours = 0;
@@ -447,18 +505,19 @@ class ManualAssignmentController extends GetxController {
   void callTasksList() async {
     tasksList.clear();
     try {
-      ManualAssignmentTaskModel? response = (await repository.getManualAssignmentTaskList(selectedServiceId));
+      ManualAssignmentTaskModel? response =
+          (await repository.getManualAssignmentTaskList(selectedServiceId));
 
       if (response.success!) {
         if (response.manualAssignmentTaskDetails!.isEmpty) {
-        }
-        else{
+        } else {
           tasksList.addAll(response.manualAssignmentTaskDetails!);
 
           for (var element in tasksList) {
             taskIdList.add(element.taskId!);
             taskNameList.add(TextEditingController(text: element.taskName));
-            taskCompletionList.add(TextEditingController(text: element.completion));
+            taskCompletionList
+                .add(TextEditingController(text: element.completion));
             taskDaysList.add(TextEditingController(text: element.days));
             taskHoursList.add(TextEditingController(text: element.hours));
             taskMinuteList.add(TextEditingController(text: element.minutes));
@@ -492,26 +551,24 @@ class ManualAssignmentController extends GetxController {
   List<String> addedEmp = [];
   String selectedEmpId = "";
 
-  updateEmployee(int index,String assignTo,String id,String taskId){
+  updateEmployee(int index, String assignTo, String id, String taskId) {
     selectedEmpId = taskId;
 
-    if(addedEmp.contains(taskId)){
+    if (addedEmp.contains(taskId)) {
       addedEmp.remove(taskId);
       update();
-    }
-    else{
+    } else {
       addedEmp.add(taskId);
       update();
     }
 
-    if(taskSelectedEmpIdList.asMap().containsKey(index)){
+    if (taskSelectedEmpIdList.asMap().containsKey(index)) {
       taskSelectedEmpIdList.removeAt(index);
       taskSelectedEmpList.removeAt(index);
       taskSelectedEmpIdList.insert(index, id);
       taskSelectedEmpList.insert(index, assignTo);
       update();
-    }
-    else{
+    } else {
       taskSelectedEmpIdList.add(id);
       taskSelectedEmpList.add(assignTo);
       update();
@@ -520,28 +577,33 @@ class ManualAssignmentController extends GetxController {
     update();
   }
 
-  removeFromSelected(int index){
-    if(taskCompletionList[index].text=="0" || taskCompletionList[index].text.isEmpty || totalCompletion == 0){
-    }
-    else{
-      totalCompletion = totalCompletion - int.parse(taskCompletionList[index].text);
+  removeFromSelected(int index) {
+    if (taskCompletionList[index].text == "0" ||
+        taskCompletionList[index].text.isEmpty ||
+        totalCompletion == 0) {
+    } else {
+      totalCompletion =
+          totalCompletion - int.parse(taskCompletionList[index].text);
     }
 
-    if(taskDaysList[index].text=="0" || taskDaysList[index].text.isEmpty || totalDays == 0){
-    }
-    else{
+    if (taskDaysList[index].text == "0" ||
+        taskDaysList[index].text.isEmpty ||
+        totalDays == 0) {
+    } else {
       totalDays = totalDays - int.parse(taskDaysList[index].text);
     }
 
-    if(taskHoursList[index].text=="0" || taskHoursList[index].text.isEmpty || totalHours == 0){
-    }
-    else{
+    if (taskHoursList[index].text == "0" ||
+        taskHoursList[index].text.isEmpty ||
+        totalHours == 0) {
+    } else {
       totalHours = totalHours - int.parse(taskHoursList[index].text);
     }
 
-    if(taskMinuteList[index].text=="0" || taskMinuteList[index].text.isEmpty || totalMins == 0){
-    }
-    else{
+    if (taskMinuteList[index].text == "0" ||
+        taskMinuteList[index].text.isEmpty ||
+        totalMins == 0) {
+    } else {
       totalMins = totalMins - int.parse(taskMinuteList[index].text);
     }
 
@@ -568,47 +630,43 @@ class ManualAssignmentController extends GetxController {
     update();
   }
 
-  checkAllAddedValues(int index){
-    if(taskNameList[index].text=="" ||
+  checkAllAddedValues(int index) {
+    if (taskNameList[index].text == "" ||
         taskCompletionList[index].text.isEmpty ||
         taskDaysList[index].text.isEmpty ||
         taskHoursList[index].text.isEmpty ||
         taskMinuteList[index].text.isEmpty ||
-        taskSelectedEmpList[index] == ""
-    ){
+        taskSelectedEmpList[index] == "") {
       Utils.showAlertSnackBar("Please enter all details");
-    }
-    else{
-      saveTaskName(index,taskNameList[index].text);
-      saveCompletion(index,int.parse(taskCompletionList[index].text));
-      saveDays(index,int.parse(taskDaysList[index].text));
-      saveHours(index,int.parse(taskHoursList[index].text));
-      saveMinute(index,int.parse(taskMinuteList[index].text));
+    } else {
+      saveTaskName(index, taskNameList[index].text);
+      saveCompletion(index, int.parse(taskCompletionList[index].text));
+      saveDays(index, int.parse(taskDaysList[index].text));
+      saveHours(index, int.parse(taskHoursList[index].text));
+      saveMinute(index, int.parse(taskMinuteList[index].text));
       showToast("Added !");
     }
     update();
   }
 
-  saveTaskName(int index,String taskName){
-    if(forTaskNames.asMap().containsKey(index)){
+  saveTaskName(int index, String taskName) {
+    if (forTaskNames.asMap().containsKey(index)) {
       forTaskNames.removeAt(index);
       forTaskNames.insert(index, taskName);
       update();
-    }
-    else{
+    } else {
       forTaskNames.add(taskName);
       update();
     }
     update();
   }
 
-  saveCompletion(int index,int completion){
-    if(forCompletionCalculation.asMap().containsKey(index)){
+  saveCompletion(int index, int completion) {
+    if (forCompletionCalculation.asMap().containsKey(index)) {
       forCompletionCalculation.removeAt(index);
       forCompletionCalculation.insert(index, completion);
       update();
-    }
-    else{
+    } else {
       forCompletionCalculation.add(completion);
       update();
     }
@@ -617,13 +675,12 @@ class ManualAssignmentController extends GetxController {
     update();
   }
 
-  saveDays(int index,int days){
-    if(forDaysCalculation.asMap().containsKey(index)){
+  saveDays(int index, int days) {
+    if (forDaysCalculation.asMap().containsKey(index)) {
       forDaysCalculation.removeAt(index);
       forDaysCalculation.insert(index, days);
       update();
-    }
-    else{
+    } else {
       forDaysCalculation.add(days);
       update();
     }
@@ -632,13 +689,12 @@ class ManualAssignmentController extends GetxController {
     update();
   }
 
-  saveHours(int index,int hours){
-    if(forHrCalculation.asMap().containsKey(index)){
+  saveHours(int index, int hours) {
+    if (forHrCalculation.asMap().containsKey(index)) {
       forHrCalculation.removeAt(index);
       forHrCalculation.insert(index, hours);
       update();
-    }
-    else{
+    } else {
       forHrCalculation.add(hours);
       update();
     }
@@ -647,13 +703,12 @@ class ManualAssignmentController extends GetxController {
     update();
   }
 
-  saveMinute(int index,int minutes){
-    if(forMinCalculation.asMap().containsKey(index)){
+  saveMinute(int index, int minutes) {
+    if (forMinCalculation.asMap().containsKey(index)) {
       forMinCalculation.removeAt(index);
       forMinCalculation.insert(index, minutes);
       update();
-    }
-    else{
+    } else {
       forMinCalculation.add(minutes);
       update();
     }
@@ -662,7 +717,7 @@ class ManualAssignmentController extends GetxController {
     update();
   }
 
-  addMoreForManualAssignment(int index){
+  addMoreForManualAssignment(int index) {
     updateLoader(true);
 
     taskNameList.insert(index, TextEditingController(text: ""));
@@ -670,7 +725,7 @@ class ManualAssignmentController extends GetxController {
     taskDaysList.insert(index, TextEditingController(text: ""));
     taskHoursList.insert(index, TextEditingController(text: ""));
     taskMinuteList.insert(index, TextEditingController(text: ""));
-    taskIdList.insert(index,"");
+    taskIdList.insert(index, "");
     srNo.insert(index, "0");
 
     taskSelectedEmpIdList.insert(taskSelectedEmpIdList.length, "0");
@@ -682,62 +737,82 @@ class ManualAssignmentController extends GetxController {
     forHrCalculation.add(0);
     forMinCalculation.add(0);
 
-    tasksList.insert(index, ManualAssignmentTaskDetails(
-      taskName: "",taskId: "",hours: "",days: "",completion: "",sortno: "",minutes: ""
-    ));
+    tasksList.insert(
+        index,
+        ManualAssignmentTaskDetails(
+            taskName: "",
+            taskId: "",
+            hours: "",
+            days: "",
+            completion: "",
+            sortno: "",
+            minutes: ""));
 
     showToast("New entry added !");
     updateLoader(false);
     update();
   }
 
-  saveTasks(){
-    if(totalCompletion != 100){
-      Utils.showErrorSnackBar("Completion should be 100 %");update();
-    }
-    else if(selectedEmployee == ""){
-      Utils.showErrorSnackBar("Please select employee");update();
-    }
-    else{
-      for(var element in forTaskNames){
+  saveTasks() {
+    if (totalCompletion != 100) {
+      Utils.showErrorSnackBar("Completion should be 100 %");
+      update();
+    } else if (selectedEmployee == "") {
+      Utils.showErrorSnackBar("Please select employee");
+      update();
+    } else {
+      for (var element in forTaskNames) {
         taskNameListToSendApi.add(element.toString());
       }
-      for(var element in forCompletionCalculation){
+      for (var element in forCompletionCalculation) {
         completionListToSendApi.add(element.toString());
       }
-      for(var element in forDaysCalculation){
+      for (var element in forDaysCalculation) {
         daysListToSendApi.add(element.toString());
       }
-      for(var element in forHrCalculation){
+      for (var element in forHrCalculation) {
         hoursListToSendApi.add(element.toString());
       }
-      for(var element in forMinCalculation){
+      for (var element in forMinCalculation) {
         minuteListToSendApi.add(element.toString());
       }
 
-      taskNameFirstBracketRemove =  taskNameListToSendApi.toString().replaceAll("[", "");
-      taskNameSecondBracketRemove = taskNameFirstBracketRemove.toString().replaceAll("]", "");
+      taskNameFirstBracketRemove =
+          taskNameListToSendApi.toString().replaceAll("[", "");
+      taskNameSecondBracketRemove =
+          taskNameFirstBracketRemove.toString().replaceAll("]", "");
 
-      completionFirstBracketRemove =  completionListToSendApi.toString().replaceAll("[", "");
-      completionSecondBracketRemove = completionFirstBracketRemove.toString().replaceAll("]", "");
+      completionFirstBracketRemove =
+          completionListToSendApi.toString().replaceAll("[", "");
+      completionSecondBracketRemove =
+          completionFirstBracketRemove.toString().replaceAll("]", "");
 
-      daysFirstBracketRemove =  daysListToSendApi.toString().replaceAll("[", "");
-      daysSecondBracketRemove = daysFirstBracketRemove.toString().replaceAll("]", "");
+      daysFirstBracketRemove = daysListToSendApi.toString().replaceAll("[", "");
+      daysSecondBracketRemove =
+          daysFirstBracketRemove.toString().replaceAll("]", "");
 
-      hoursFirstBracketRemove =  hoursListToSendApi.toString().replaceAll("[", "");
-      hoursSecondBracketRemove = hoursFirstBracketRemove.toString().replaceAll("]", "");
+      hoursFirstBracketRemove =
+          hoursListToSendApi.toString().replaceAll("[", "");
+      hoursSecondBracketRemove =
+          hoursFirstBracketRemove.toString().replaceAll("]", "");
 
-      minuteFirstBracketRemove =  minuteListToSendApi.toString().replaceAll("[", "");
-      minuteSecondBracketRemove = minuteFirstBracketRemove.toString().replaceAll("]", "");
+      minuteFirstBracketRemove =
+          minuteListToSendApi.toString().replaceAll("[", "");
+      minuteSecondBracketRemove =
+          minuteFirstBracketRemove.toString().replaceAll("]", "");
 
-      taskEmpFirstBracketRemove =  taskSelectedEmpIdList.toString().replaceAll("[", "");
-      taskEmpSecondBracketRemove = taskEmpFirstBracketRemove.toString().replaceAll("]", "");
+      taskEmpFirstBracketRemove =
+          taskSelectedEmpIdList.toString().replaceAll("[", "");
+      taskEmpSecondBracketRemove =
+          taskEmpFirstBracketRemove.toString().replaceAll("]", "");
 
-      srNoFirstBracketRemove =  srNo.toString().replaceAll("[", "");
-      srNoSecondBracketRemove = srNoFirstBracketRemove.toString().replaceAll("]", "");
+      srNoFirstBracketRemove = srNo.toString().replaceAll("[", "");
+      srNoSecondBracketRemove =
+          srNoFirstBracketRemove.toString().replaceAll("]", "");
 
-      taskIdFirstBracketRemove =  taskIdList.toString().replaceAll("[", "");
-      taskIdSecondBracketRemove = taskIdFirstBracketRemove.toString().replaceAll("]", "");
+      taskIdFirstBracketRemove = taskIdList.toString().replaceAll("[", "");
+      taskIdSecondBracketRemove =
+          taskIdFirstBracketRemove.toString().replaceAll("]", "");
 
       callManualAssignment();
     }
@@ -748,21 +823,28 @@ class ManualAssignmentController extends GetxController {
 
     try {
       ApiResponse? response = (await repository.getManualAssignment(
-        completionSecondBracketRemove.replaceAll(" ", ""),
-        taskNameSecondBracketRemove.replaceAll(", ", ","),
-        daysSecondBracketRemove.replaceAll(" ", ""),
-        hoursSecondBracketRemove.replaceAll(" ", ""),
-        minuteSecondBracketRemove.replaceAll(" ", ""),
-        taskEmpSecondBracketRemove.replaceAll(" ", ""),
-        taskIdSecondBracketRemove.replaceAll(" ", ""),
-        srNoSecondBracketRemove.replaceAll(" ", ""),
-        selectedPriority == "High" ? "1" : selectedPriority == "Medium" ? "2" : "3",
-        selectedYearId,selectedYear,
-        selectedMainCategoryId,selectedServiceId,selectedClientId,
-        selectedTriggerDateToSend,selectedTargetDateToSend,
-        feesController.text.isEmpty ? "": feesController.text,
-        remarkController.text.isEmpty ? "": remarkController.text
-      ));
+          completionSecondBracketRemove.replaceAll(" ", ""),
+          taskNameSecondBracketRemove.replaceAll(", ", ","),
+          daysSecondBracketRemove.replaceAll(" ", ""),
+          hoursSecondBracketRemove.replaceAll(" ", ""),
+          minuteSecondBracketRemove.replaceAll(" ", ""),
+          taskEmpSecondBracketRemove.replaceAll(" ", ""),
+          taskIdSecondBracketRemove.replaceAll(" ", ""),
+          srNoSecondBracketRemove.replaceAll(" ", ""),
+          selectedPriority == "High"
+              ? "1"
+              : selectedPriority == "Medium"
+                  ? "2"
+                  : "3",
+          selectedYearId,
+          selectedYear,
+          selectedMainCategoryId,
+          selectedServiceId,
+          selectedClientId,
+          selectedTriggerDateToSend,
+          selectedTargetDateToSend,
+          feesController.text.isEmpty ? "" : feesController.text,
+          remarkController.text.isEmpty ? "" : remarkController.text));
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
@@ -770,7 +852,8 @@ class ManualAssignmentController extends GetxController {
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
-        updateLoader(false);update();
+        updateLoader(false);
+        update();
       }
       update();
     } on CustomException catch (e) {

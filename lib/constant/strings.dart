@@ -1,7 +1,7 @@
 class Strings {
   Strings._();
 
-  static const String rupees ="₹ ";
+  static const String rupees = "₹ ";
   static const String appName = "Bizalys";
 
   ///Razor pay key-------------------------------------------------

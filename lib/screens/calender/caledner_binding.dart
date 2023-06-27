@@ -6,6 +6,7 @@ import '../../constant/repository/api_repository.dart';
 class CalenderBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(CalenderViewController(repository: ApiRepository(apiClient: ApiClient())));
+    Get.put(CalenderViewController(
+        repository: ApiRepository(apiClient: ApiClient())));
   }
 }

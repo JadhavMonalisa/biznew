@@ -18,10 +18,11 @@ class LeaveController extends GetxController {
   LeaveController({required this.repository}) : assert(repository != null);
 
   ///common
-  String userId="";
-  String userName="";
-  String name="";
-  String reportingHead="";
+  String userId = "";
+  String userName = "";
+  String name = "";
+  String reportingHead = "";
+
   ///form
   DateTime selectedDate = DateTime.now();
   DateTime startDate = DateTime.now();
@@ -44,8 +45,8 @@ class LeaveController extends GetxController {
   String nameOfLeaveFor = "";
   String nameOfLeaveForExam = "";
   String firmEmployeeName = "";
-  int selectedLeaveIndex =0;
-  int selectedLeaveForExamIndex =0;
+  int selectedLeaveIndex = 0;
+  int selectedLeaveForExamIndex = 0;
   final leaveForList = ["Full Day", "First Half", "Second Half"];
   final leaveForExamList = ["1st group", "2nd group", "Both"];
   TextEditingController noOfAttempt = TextEditingController();
@@ -58,16 +59,25 @@ class LeaveController extends GetxController {
   bool validateLeaveFor = false;
   bool validateNoOfAttempt = false;
   bool validateLeaveForExam = false;
+
   ///leave list
   int selectedLeaveFlag = 2;
   List<LeaveListData> leaveList = [];
   String selectedLeaveId = "";
   String selectedEmployee = "";
   String selectedLeaveStatus = "None";
-  List<String> leaveStatusList = ["All","Approved","Pending for approval","Cancelled","Apply For Cancel"];
+  List<String> leaveStatusList = [
+    "All",
+    "Approved",
+    "Pending for approval",
+    "Cancelled",
+    "Apply For Cancel"
+  ];
+
   ///leave edit
   String selectedLeaveIdForEdit = "";
   List<LeaveEditDetails> leaveEditList = [];
+
   ///leave update status
   String statusAction = "";
   String idForStatusUpdate = "";
@@ -76,16 +86,15 @@ class LeaveController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    userId = GetStorage().read("userId")??"";
-    userName = GetStorage().read("userName")??"";
-    name = GetStorage().read("name")??"";
-    reportingHead = GetStorage().read("reportingHead")??"";
+    userId = GetStorage().read("userId") ?? "";
+    userName = GetStorage().read("userName") ?? "";
+    name = GetStorage().read("name") ?? "";
+    reportingHead = GetStorage().read("reportingHead") ?? "";
     repository.getData();
     callEmployeeList();
     callLeaveCountList();
     callLeaveTypeList();
     //callLeaveList();
-
   }
 
   ///employee list
@@ -101,13 +110,14 @@ class LeaveController extends GetxController {
   //     .map((value) => MultiSelectItem<ClaimSubmittedByList>(value, value.firmEmployeeName!))
   //     .toList();
 
-
-  onSelectionForMultipleEmployee(List<ClaimSubmittedByList> selectedEmpListFromDesign){
+  onSelectionForMultipleEmployee(
+      List<ClaimSubmittedByList> selectedEmpListFromDesign) {
     updateLoader(true);
     selectedEmpList = selectedEmpListFromDesign;
     for (var element in selectedEmpListFromDesign) {
       selectedMultipleEmpIdList.add(element.mastId!);
-      removeFirstBracket = selectedMultipleEmpIdList.toString().replaceAll("[", "");
+      removeFirstBracket =
+          selectedMultipleEmpIdList.toString().replaceAll("[", "");
       removeSecondBracket = removeFirstBracket.replaceAll("]", "");
       update();
     }
@@ -115,86 +125,101 @@ class LeaveController extends GetxController {
     //update();
   }
 
-  onDeleteMultipleEmployee(ClaimSubmittedByList value){
+  onDeleteMultipleEmployee(ClaimSubmittedByList value) {
     updateLoader(true);
     selectedEmpList.remove(value);
     selectedMultipleEmpIdList.remove(value.mastId!);
-    removeFirstBracket = selectedMultipleEmpIdList.toString().replaceAll("[", "");
+    removeFirstBracket =
+        selectedMultipleEmpIdList.toString().replaceAll("[", "");
     removeSecondBracket = removeFirstBracket.replaceAll("]", "");
     callLeaveList();
     //update();
   }
 
-  onWillPopBack(){
+  onWillPopBack() {
     clearForm();
     Get.offNamedUntil(AppRoutes.bottomNav, (route) => false);
     update();
   }
 
-  onBackPressToLeaveList(){
+  onBackPressToLeaveList() {
     clearForm();
     Get.toNamed(AppRoutes.leaveList);
     update();
   }
 
-  functionCall(String screenName){
-    if(screenName=="add"){
+  functionCall(String screenName) {
+    if (screenName == "add") {
       checkLeaveFormValidation();
-    }
-    else if(screenName=="edit"){
+    } else if (screenName == "edit") {
       callLeaveUpdate();
     }
   }
 
-  navigateToLeaveEdit(String leaveId,String screenFrom){
+  navigateToLeaveEdit(String leaveId, String screenFrom) {
     selectedLeaveId = leaveId;
     callLeaveEditList();
 
-    screenFrom == "form" ? Get.toNamed(AppRoutes.leaveForm,arguments: ["edit"])
+    screenFrom == "form"
+        ? Get.toNamed(AppRoutes.leaveForm, arguments: ["edit"])
         : Get.toNamed(AppRoutes.leaveDetails);
 
     update();
   }
 
-  updateSelectedClaimStatus(String val){ selectedEmployee = val;callLeaveList(); update();}
+  updateSelectedClaimStatus(String val) {
+    selectedEmployee = val;
+    callLeaveList();
+    update();
+  }
 
-  updateSelectedLeaveStatus(String val){
+  updateSelectedLeaveStatus(String val) {
+    selectedLeaveStatus = val == "All" ? "All" : val;
+    updateLoader(true);
+    callLeaveList();
+    update();
+  }
 
-    selectedLeaveStatus = val=="All" ? "All" : val;
-  updateLoader(true);
-  callLeaveList(); update();}
-
-  updateSelectedLeaveFlag(int val,BuildContext context){
-    selectedEmployee = "";selectedLeaveStatus="";
+  updateSelectedLeaveFlag(int val, BuildContext context) {
+    selectedEmployee = "";
+    selectedLeaveStatus = "";
     updateLoader(true);
     selectedLeaveFlag = val;
-    if(selectedLeaveFlag != 2 && selectedLeaveStatus == ""){
-      selectedLeaveStatus = "All"; update();
+    if (selectedLeaveFlag != 2 && selectedLeaveStatus == "") {
+      selectedLeaveStatus = "All";
+      update();
     }
-    callLeaveList(); update();
+    callLeaveList();
+    update();
   }
 
   List<ClaimSubmittedByList> employeeList = [];
+
   ///update emp list
-  updateSelectedEmployee(String val){
-    if(employeeList.isNotEmpty){
-      selectedEmployee = val; updateLoader(true); callLeaveList();update();
+  updateSelectedEmployee(String val) {
+    if (employeeList.isNotEmpty) {
+      selectedEmployee = val;
+      updateLoader(true);
+      callLeaveList();
+      update();
     }
   }
+
   ///employee list
   void callEmployeeList() async {
     employeeList.clear();
     updateLoader(true);
     try {
-      ClaimSubmittedByResponse? response = (await repository.getClaimSubmittedByList());
+      ClaimSubmittedByResponse? response =
+          (await repository.getClaimSubmittedByList());
 
       if (response.success!) {
         if (response.claimSubmittedByListDetails!.isEmpty) {
-        }
-        else{
+        } else {
           employeeList.addAll(response.claimSubmittedByListDetails!);
           items = employeeList
-              .map((value) => MultiSelectItem<ClaimSubmittedByList>(value, value.firmEmployeeName!))
+              .map((value) => MultiSelectItem<ClaimSubmittedByList>(
+                  value, value.firmEmployeeName!))
               .toList();
 
           update();
@@ -220,17 +245,23 @@ class LeaveController extends GetxController {
     //updateLoader(true);
     try {
       LeaveListModel? response = (await repository.getLeaveList(
-        selectedLeaveFlag==0 ? "own" : selectedLeaveFlag==1 ? "team" :"",
-          selectedLeaveStatus=="All" ? "":selectedLeaveStatus,
-          selectedLeaveFlag == 0 ? "" :
-          selectedMultipleEmpIdList.isEmpty ? "" : removeSecondBracket
-      ));
+          selectedLeaveFlag == 0
+              ? "own"
+              : selectedLeaveFlag == 1
+                  ? "team"
+                  : "",
+          selectedLeaveStatus == "All" ? "" : selectedLeaveStatus,
+          selectedLeaveFlag == 0
+              ? ""
+              : selectedMultipleEmpIdList.isEmpty
+                  ? ""
+                  : removeSecondBracket));
 
       if (response.success!) {
         if (response.leaveListDetails!.isEmpty) {
-        }
-        else{
-          leaveList.addAll(response.leaveListDetails!);update();
+        } else {
+          leaveList.addAll(response.leaveListDetails!);
+          update();
         }
         updateLoader(false);
         update();
@@ -247,44 +278,59 @@ class LeaveController extends GetxController {
     }
   }
 
-  Future<void> selectDate(BuildContext context,String forWhat) async {
+  Future<void> selectDate(BuildContext context, String forWhat) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: forWhat=="start" ? DateTime.now() :
-                   forWhat=="end" ? startDate : DateTime(1700, 1),
+        firstDate: forWhat == "start"
+            ? DateTime.now()
+            : forWhat == "end"
+                ? startDate
+                : DateTime(1700, 1),
         lastDate: DateTime(2100, 1));
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
     }
-    if(forWhat=="start")
-    {
+    if (forWhat == "start") {
       startDate = selectedDate;
-      selectedStartDateToSend = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
-      selectedStartDateToShow = "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+      selectedStartDateToSend =
+          "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+      selectedStartDateToShow =
+          "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
 
-      if(endDate.isAfter(startDate)){
+      if (endDate.isAfter(startDate)) {
         DateDuration duration;
-        duration = AgeCalculator.dateDifference(fromDate: startDate, toDate: endDate);
+        duration =
+            AgeCalculator.dateDifference(fromDate: startDate, toDate: endDate);
 
-        year = duration.years; month = duration.months;
-        days = duration.days == 0 ? 1 :
-               duration.days == 1 ? 2 : duration.days;
+        year = duration.years;
+        month = duration.months;
+        days = duration.days == 0
+            ? 1
+            : duration.days == 1
+                ? 2
+                : duration.days;
       }
       checkStartDateValidation();
       update();
-    }
-    else if(forWhat=="end"){
+    } else if (forWhat == "end") {
       endDate = selectedDate;
-      selectedEndDateToSend = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
-      selectedEndDateToShow = "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+      selectedEndDateToSend =
+          "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+      selectedEndDateToShow =
+          "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
 
       DateDuration duration;
-      duration = AgeCalculator.dateDifference(fromDate: startDate, toDate: endDate);
+      duration =
+          AgeCalculator.dateDifference(fromDate: startDate, toDate: endDate);
 
-      year = duration.years; month = duration.months;
-      days = duration.days == 0 ? 1 :
-             duration.days == 1 ? 2 : duration.days;
+      year = duration.years;
+      month = duration.months;
+      days = duration.days == 0
+          ? 1
+          : duration.days == 1
+              ? 2
+              : duration.days;
 
       checkEndDateValidation();
       update();
@@ -292,115 +338,180 @@ class LeaveController extends GetxController {
     update();
   }
 
-  changeSelectedIndex(v,String leaveName) {
+  changeSelectedIndex(v, String leaveName) {
     selectedLeave = v;
     nameOfLeaveFor = leaveName;
-    if(selectedStartDateToShow!=selectedEndDateToShow){
-
-    }
-    else{
+    if (selectedStartDateToShow != selectedEndDateToShow) {
+    } else {
       checkLeaveForValidation();
       update();
     }
     update();
   }
 
-  changeSelectedIndexForExam(v,String nameForExam) {
+  changeSelectedIndexForExam(v, String nameForExam) {
     selectedLeaveForExam = v;
     nameOfLeaveForExam = nameForExam;
 
-    if(selectedLeaveType=="Exam Leave"){
+    if (selectedLeaveType == "Exam Leave") {
       checkLeaveForExamValidation();
       update();
-    }
-    else{
-
-    }
+    } else {}
     update();
   }
 
-  updateSelectedLeaveTypeId(String val,String leaveType){
-    if(leaveTypeList.isNotEmpty){
-      selectedLeaveTypeId = val; selectedLeaveType = leaveType;
-      if(selectedLeaveType == "Exam Leave"){
-        leaveReason.text = "Examination Attempt"; edit = false; update();
-      }
-      else{
+  updateSelectedLeaveTypeId(String val, String leaveType) {
+    if (leaveTypeList.isNotEmpty) {
+      selectedLeaveTypeId = val;
+      selectedLeaveType = leaveType;
+      if (selectedLeaveType == "Exam Leave") {
+        leaveReason.text = "Examination Attempt";
+        edit = false;
+        update();
+      } else {
         leaveReason.clear();
-        edit = true; update();
+        edit = true;
+        update();
       }
       checkLeaveTypeValidation();
-      callLeaveTypeList(); update();
+      callLeaveTypeList();
+      update();
     }
   }
 
-  updateSelectedLeave(String val,BuildContext context){
-    if(leaveTypeList.isNotEmpty){
+  updateSelectedLeave(String val, BuildContext context) {
+    if (leaveTypeList.isNotEmpty) {
       selectedLeaveType = val;
-      if(selectedLeaveType == "Exam Leave"){
-        leaveReason.text = "Examination Attempt"; edit = false; update();
-      }
-      else{
+      if (selectedLeaveType == "Exam Leave") {
+        leaveReason.text = "Examination Attempt";
+        edit = false;
+        update();
+      } else {
         leaveReason.clear();
-        edit = true; update();
+        edit = true;
+        update();
       }
       checkLeaveTypeValidation();
       update();
     }
   }
 
-  checkLeaveTypeValidation(){
-    if(leaveTypeList.isEmpty){ validateLeaveType = true; update(); }
-    else{validateLeaveType = false; update(); }
+  checkLeaveTypeValidation() {
+    if (leaveTypeList.isEmpty) {
+      validateLeaveType = true;
+      update();
+    } else {
+      validateLeaveType = false;
+      update();
+    }
   }
-  checkStartDateValidation(){
-    if(selectedStartDateToShow.isEmpty){ validateStartDate = true; update(); }
-    else if(endDate.isBefore(startDate)){validateEndDate = true; update();}
-    else{validateStartDate = false; update(); }
+
+  checkStartDateValidation() {
+    if (selectedStartDateToShow.isEmpty) {
+      validateStartDate = true;
+      update();
+    } else if (endDate.isBefore(startDate)) {
+      validateEndDate = true;
+      update();
+    } else {
+      validateStartDate = false;
+      update();
+    }
   }
-  checkEndDateValidation(){
-    if(selectedEndDateToShow.isEmpty){ validateEndDate = true; update(); }
-    else{validateEndDate = false; update(); }
+
+  checkEndDateValidation() {
+    if (selectedEndDateToShow.isEmpty) {
+      validateEndDate = true;
+      update();
+    } else {
+      validateEndDate = false;
+      update();
+    }
   }
-  checkReasonValidation(BuildContext context){
-    if(selectedLeaveType == "Exam Leave"){}
-    else{
-      if(leaveReason.text.isEmpty){ validateReason = true; update(); }
-      else{validateReason = false; update(); }
+
+  checkReasonValidation(BuildContext context) {
+    if (selectedLeaveType == "Exam Leave") {
+    } else {
+      if (leaveReason.text.isEmpty) {
+        validateReason = true;
+        update();
+      } else {
+        validateReason = false;
+        update();
+      }
     }
     update();
   }
-  checkLeaveForValidation(){
-    if(nameOfLeaveFor==""){ validateLeaveFor = true; update(); }
-    else{validateLeaveFor = false; update(); }
+
+  checkLeaveForValidation() {
+    if (nameOfLeaveFor == "") {
+      validateLeaveFor = true;
+      update();
+    } else {
+      validateLeaveFor = false;
+      update();
+    }
   }
-  checkNoOfThisAttemptValidation(BuildContext context){
-    if(noOfAttempt.text.isEmpty){ validateNoOfAttempt = true; update(); }
-    else{validateNoOfAttempt = false; update(); }
+
+  checkNoOfThisAttemptValidation(BuildContext context) {
+    if (noOfAttempt.text.isEmpty) {
+      validateNoOfAttempt = true;
+      update();
+    } else {
+      validateNoOfAttempt = false;
+      update();
+    }
   }
-  checkLeaveForExamValidation(){
-    if(nameOfLeaveForExam==""){ validateLeaveForExam = true; update(); }
-    else{validateLeaveForExam = false; update(); }
+
+  checkLeaveForExamValidation() {
+    if (nameOfLeaveForExam == "") {
+      validateLeaveForExam = true;
+      update();
+    } else {
+      validateLeaveForExam = false;
+      update();
+    }
   }
-  updateLoader(bool val) { loader = val; update(); }
-  checkLeaveFormValidation(){
+
+  updateLoader(bool val) {
+    loader = val;
+    update();
+  }
+
+  checkLeaveFormValidation() {
     updateLoader(true);
-    if(selectedLeaveType == "" ||  selectedStartDateToShow == "" || selectedEndDateToShow == ""
-        || (selectedLeaveType!="Exam Leave" && leaveReason.text.isEmpty)
-        || (selectedEndDateToShow == selectedStartDateToShow && nameOfLeaveFor == "")
-        || (selectedLeaveType=="Exam Leave" && noOfAttempt.text.isEmpty)
-        || (selectedLeaveType=="Exam Leave" && nameOfLeaveForExam == "")
-    ){
-      selectedLeaveType == ""  ? validateLeaveType = true : validateLeaveType = false;
-      selectedStartDateToShow == ""  ? validateStartDate = true : validateStartDate = false;
-      selectedEndDateToShow == ""  ? validateEndDate = true : validateEndDate = false;
-      (selectedLeaveType!="Exam Leave" && leaveReason.text.isEmpty) ? validateReason = true : validateReason = false;
-      (selectedEndDateToShow == selectedStartDateToShow && nameOfLeaveFor == "")   ? validateLeaveFor = true : validateLeaveFor = false;
-      (selectedLeaveType=="Exam Leave" && noOfAttempt.text.isEmpty)  ? validateNoOfAttempt = true : validateNoOfAttempt = false;
-      (selectedLeaveType=="Exam Leave" && nameOfLeaveForExam == "")   ? validateLeaveForExam = true : validateLeaveForExam = false;
+    if (selectedLeaveType == "" ||
+        selectedStartDateToShow == "" ||
+        selectedEndDateToShow == "" ||
+        (selectedLeaveType != "Exam Leave" && leaveReason.text.isEmpty) ||
+        (selectedEndDateToShow == selectedStartDateToShow &&
+            nameOfLeaveFor == "") ||
+        (selectedLeaveType == "Exam Leave" && noOfAttempt.text.isEmpty) ||
+        (selectedLeaveType == "Exam Leave" && nameOfLeaveForExam == "")) {
+      selectedLeaveType == ""
+          ? validateLeaveType = true
+          : validateLeaveType = false;
+      selectedStartDateToShow == ""
+          ? validateStartDate = true
+          : validateStartDate = false;
+      selectedEndDateToShow == ""
+          ? validateEndDate = true
+          : validateEndDate = false;
+      (selectedLeaveType != "Exam Leave" && leaveReason.text.isEmpty)
+          ? validateReason = true
+          : validateReason = false;
+      (selectedEndDateToShow == selectedStartDateToShow && nameOfLeaveFor == "")
+          ? validateLeaveFor = true
+          : validateLeaveFor = false;
+      (selectedLeaveType == "Exam Leave" && noOfAttempt.text.isEmpty)
+          ? validateNoOfAttempt = true
+          : validateNoOfAttempt = false;
+      (selectedLeaveType == "Exam Leave" && nameOfLeaveForExam == "")
+          ? validateLeaveForExam = true
+          : validateLeaveForExam = false;
       updateLoader(false);
       update();
-    }else{
+    } else {
       updateLoader(false);
       callLeaveAdd();
     }
@@ -410,11 +521,12 @@ class LeaveController extends GetxController {
   ///leave count
   void callLeaveCountList() async {
     try {
-      TotalLeaveCountResponse? response = (await repository.getLeaveCountList());
+      TotalLeaveCountResponse? response =
+          (await repository.getLeaveCountList());
 
       if (response.success!) {
-        if(response.totalLeaves==null || response.totalLeaves==""){}
-        else{
+        if (response.totalLeaves == null || response.totalLeaves == "") {
+        } else {
           totalDays = int.parse(response.totalLeaves!);
         }
         updateLoader(false);
@@ -429,6 +541,7 @@ class LeaveController extends GetxController {
       update();
     }
   }
+
   ///leave type api
   void callLeaveTypeList() async {
     leaveTypeList.clear();
@@ -437,8 +550,7 @@ class LeaveController extends GetxController {
 
       if (response.success!) {
         if (response.leaveTypeDetailsList!.isEmpty) {
-        }
-        else{
+        } else {
           leaveTypeList.addAll(response.leaveTypeDetailsList!);
         }
         update();
@@ -451,13 +563,20 @@ class LeaveController extends GetxController {
       update();
     }
   }
+
   ///leave add
   void callLeaveAdd() async {
     updateLoader(true);
     try {
       ApiResponse? response = (await repository.getAddLeave(
-          selectedLeaveTypeId, days.toString(), selectedStartDateToSend, selectedEndDateToSend,
-          leaveReason.text, nameOfLeaveFor??"",noOfAttempt.text??"",nameOfLeaveForExam??""));
+          selectedLeaveTypeId,
+          days.toString(),
+          selectedStartDateToSend,
+          selectedEndDateToSend,
+          leaveReason.text,
+          nameOfLeaveFor ?? "",
+          noOfAttempt.text ?? "",
+          nameOfLeaveForExam ?? ""));
 
       if (response.success!) {
         clearForm();
@@ -483,28 +602,40 @@ class LeaveController extends GetxController {
       update();
     }
   }
-  ///clear all fields
-  clearForm(){
-    selectedLeaveTypeId = "";
-    selectedLeaveFlag = 0; selectedEmployee = "";selectedLeave="";
-    year=0; month=0; days=0; leaveReason.clear(); selectedLeaveType = "";
-    nameOfLeaveFor="";selectedLeaveStatus = "";
-    selectedStartDateToShow = ""; selectedEndDateToShow = "";
 
-    selectedMultipleEmpIdList.clear(); removeFirstBracket = ""; removeSecondBracket = "";
+  ///clear all fields
+  clearForm() {
+    selectedLeaveTypeId = "";
+    selectedLeaveFlag = 0;
+    selectedEmployee = "";
+    selectedLeave = "";
+    year = 0;
+    month = 0;
+    days = 0;
+    leaveReason.clear();
+    selectedLeaveType = "";
+    nameOfLeaveFor = "";
+    selectedLeaveStatus = "";
+    selectedStartDateToShow = "";
+    selectedEndDateToShow = "";
+
+    selectedMultipleEmpIdList.clear();
+    removeFirstBracket = "";
+    removeSecondBracket = "";
     update();
   }
+
   ///leave edit list
   void callLeaveEditList() async {
     leaveEditList.clear();
     updateLoader(true);
     try {
-      LeaveEditModel? response = (await repository.getLeaveEditList(selectedLeaveId));
+      LeaveEditModel? response =
+          (await repository.getLeaveEditList(selectedLeaveId));
 
       if (response.success!) {
         if (response.leaveEditDetails!.isEmpty) {
-        }
-        else{
+        } else {
           leaveEditList.addAll(response.leaveEditDetails!);
           selectedLeaveTypeId = leaveEditList[0].leaveType!;
 
@@ -538,14 +669,21 @@ class LeaveController extends GetxController {
       update();
     }
   }
+
   ///leave update
   void callLeaveUpdate() async {
     updateLoader(true);
     try {
       ApiResponse? response = (await repository.getUpdateLeave(
-          selectedLeaveTypeId, days.toString(), selectedStartDateToSend, selectedEndDateToSend,
-          leaveReason.text, nameOfLeaveFor,noOfAttempt.text.isEmpty?"":noOfAttempt.text,
-          nameOfLeaveForExam??"",selectedLeaveId??""));
+          selectedLeaveTypeId,
+          days.toString(),
+          selectedStartDateToSend,
+          selectedEndDateToSend,
+          leaveReason.text,
+          nameOfLeaveFor,
+          noOfAttempt.text.isEmpty ? "" : noOfAttempt.text,
+          nameOfLeaveForExam ?? "",
+          selectedLeaveId ?? ""));
 
       if (response.success!) {
         clearForm();
@@ -571,22 +709,26 @@ class LeaveController extends GetxController {
       update();
     }
   }
+
   ///update selected status
-  updateStatus(String action,String leaveId){
-    if(action == "Cancel" && remark.text.isEmpty){
-      Utils.showErrorSnackBar("Please add remark!");update();
-    }
-    else{
+  updateStatus(String action, String leaveId) {
+    if (action == "Cancel" && remark.text.isEmpty) {
+      Utils.showErrorSnackBar("Please add remark!");
+      update();
+    } else {
       idForStatusUpdate = leaveId;
       statusAction = action;
-      callLeaveUpdateStatus(); update();
+      callLeaveUpdateStatus();
+      update();
     }
   }
+
   /// update status
   void callLeaveUpdateStatus() async {
     updateLoader(true);
     try {
-      ApiResponse? response = (await repository.getLeaveUpdateStatus(idForStatusUpdate,statusAction,remark.text));
+      ApiResponse? response = (await repository.getLeaveUpdateStatus(
+          idForStatusUpdate, statusAction, remark.text));
 
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
@@ -609,7 +751,8 @@ class LeaveController extends GetxController {
       update();
     }
   }
-  callLogout(){
+
+  callLogout() {
     Utils.showLoadingDialog();
     GetStorage().remove("userId");
     GetStorage().remove("userName");

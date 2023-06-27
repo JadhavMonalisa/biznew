@@ -43,17 +43,17 @@ class ClientDashboardList {
 
   ClientDashboardList(
       {this.client,
-        this.client_code,
-        this.totalCnt,
-        this.triggeredCnt,
-        this.pastdueCnt,
-        this.probableCnt,
-        this.highCnt,
-        this.mediumCnt,
-        this.lowCnt,
-        this.docsInHand,
-        this.billedCnt,
-        this.unbilledCnt});
+      this.client_code,
+      this.totalCnt,
+      this.triggeredCnt,
+      this.pastdueCnt,
+      this.probableCnt,
+      this.highCnt,
+      this.mediumCnt,
+      this.lowCnt,
+      this.docsInHand,
+      this.billedCnt,
+      this.unbilledCnt});
 
   ClientDashboardList.fromJson(Map<String, dynamic> json) {
     client = json['client'];

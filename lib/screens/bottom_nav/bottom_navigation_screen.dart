@@ -16,57 +16,64 @@ class BottomNavigationScreen extends StatefulWidget {
 }
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
-
   final _key = GlobalKey<ExpandableFabState>();
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<BottomNavController>(
-      builder: (cont) {
-        return WillPopScope(
-            onWillPop: () async{
-              return await cont.showExitDialog(context);
-            },
-        child:Scaffold(
-          body: SafeArea(
-            child: cont.buildWidget(),
-          ),
+    return GetBuilder<BottomNavController>(builder: (cont) {
+      return WillPopScope(
+          onWillPop: () async {
+            return await cont.showExitDialog(context);
+          },
+          child: Scaffold(
+            body: SafeArea(
+              child: cont.buildWidget(),
+            ),
             floatingActionButtonLocation: ExpandableFab.location,
             floatingActionButton: Padding(
-              padding : const EdgeInsets.only(bottom:10.0),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: ExpandableFab(
-                  key: _key,type: ExpandableFabType.up,
+                  key: _key,
+                  type: ExpandableFabType.up,
                   distance: 70.0,
-                  children : [
+                  children: [
                     SizedBox(
                       width: 130.0,
                       child: FloatingActionButton.extended(
                         heroTag: "btn1",
-                        onPressed: (){
-                          Get.toNamed(AppRoutes.leaveList,arguments: ["Leaves"]);
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.leaveList,
+                              arguments: ["Leaves"]);
                         },
                         icon: const Icon(Icons.calendar_today),
 
-                        backgroundColor: primaryColor, label: buildTextBoldWidget("Leaves", whiteColor, context, 12.0),
+                        backgroundColor: primaryColor,
+                        label: buildTextBoldWidget(
+                            "Leaves", whiteColor, context, 12.0),
 
                         //child:buildTextRegularWidget("Petty Task", whiteColor, context, 11.0)
                       ),
                     ),
                     SizedBox(
-                      width: 130.0,height: 45.0,
+                      width: 130.0,
+                      height: 45.0,
                       child: FloatingActionButton(
                         heroTag: "btn2",
-                        onPressed: (){
-                          Get.toNamed(AppRoutes.claimList,arguments: ["Claim"]);
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.claimList,
+                              arguments: ["Claim"]);
                         },
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0)),
                         backgroundColor: primaryColor,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            buildTextBoldWidget(Strings.rupees, whiteColor, context, 16.0),
-                            buildTextBoldWidget("Claims", whiteColor, context, 12.0),
+                            buildTextBoldWidget(
+                                Strings.rupees, whiteColor, context, 16.0),
+                            buildTextBoldWidget(
+                                "Claims", whiteColor, context, 12.0),
                           ],
                         ),
                         //label: buildRichTextWidget("${Strings.rupees}","Claim",
@@ -82,81 +89,106 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                       width: 130.0,
                       child: FloatingActionButton.extended(
                         heroTag: "btn3",
-                          onPressed: (){
-                            Get.toNamed(AppRoutes.pettyTaskFrom,arguments: ["Petty Task"]);
-                          },
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.pettyTaskFrom,
+                              arguments: ["Petty Task"]);
+                        },
                         icon: const Icon(Icons.task),
-                          backgroundColor: primaryColor, label: buildTextBoldWidget("Petty Task", whiteColor, context, 12.0),
-                          //child:buildTextRegularWidget("Petty Task", whiteColor, context, 11.0)
+                        backgroundColor: primaryColor,
+                        label: buildTextBoldWidget(
+                            "Petty Task", whiteColor, context, 12.0),
+                        //child:buildTextRegularWidget("Petty Task", whiteColor, context, 11.0)
                       ),
                     )
-                  ]
-              ),
+                  ]),
             ),
-          bottomNavigationBar: bottomNavigationBar(cont),
-        )
-        );
-      }
-    );
+            bottomNavigationBar: bottomNavigationBar(cont),
+          ));
+    });
   }
 
-  bottomNavigationBar(BottomNavController cont){
+  bottomNavigationBar(BottomNavController cont) {
     return Container(
       margin: EdgeInsets.zero,
-      decoration: BoxDecoration(color: grey.withOpacity(0.2),
-      borderRadius: const BorderRadius.only(topRight: Radius.circular(25.0),topLeft: Radius.circular(25.0))),
+      decoration: BoxDecoration(
+          color: grey.withOpacity(0.2),
+          borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(25.0), topLeft: Radius.circular(25.0))),
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
           currentIndex: cont.selectedTabIndex,
-          onTap: (int index){
-             cont.checkLoggedInUser(index);
+          onTap: (int index) {
+            cont.checkLoggedInUser(index);
           },
           type: BottomNavigationBarType.fixed,
           elevation: 0,
           items: <BottomNavigationBarItem>[
-            buildItem(Icons.dashboard, "Dashboard\n",0,cont),
-            buildItem(Icons.badge, "Employee\nDashboard",1,cont),
-            buildItem(Icons.person_pin_outlined, "Client\nDashboard",2,cont),
-            buildItem(Icons.timer, "Timesheet\n",3,cont),
+            buildItem(Icons.dashboard, "Dashboard\n", 0, cont),
+            buildItem(Icons.badge, "Employee\nDashboard", 1, cont),
+            buildItem(Icons.person_pin_outlined, "Client\nDashboard", 2, cont),
+            buildItem(Icons.timer, "Timesheet\n", 3, cont),
           ],
           selectedItemColor: primaryColor,
           unselectedItemColor: subTitleTextColor,
           selectedFontSize: 12,
           unselectedFontSize: 12,
-          selectedLabelStyle: GoogleFonts.rubik(textStyle: const TextStyle(fontWeight: FontWeight.w500)),
-          unselectedLabelStyle: GoogleFonts.rubik(textStyle: const TextStyle(fontWeight: FontWeight.w400),),
+          selectedLabelStyle: GoogleFonts.rubik(
+              textStyle: const TextStyle(fontWeight: FontWeight.w500)),
+          unselectedLabelStyle: GoogleFonts.rubik(
+            textStyle: const TextStyle(fontWeight: FontWeight.w400),
+          ),
         ),
       ),
     );
   }
 
-  buildItem(IconData image, String title,int index, BottomNavController cont,){
+  buildItem(
+    IconData image,
+    String title,
+    int index,
+    BottomNavController cont,
+  ) {
     return BottomNavigationBarItem(
       icon: Padding(
         padding: const EdgeInsets.only(bottom: 3.0),
         child: CircleAvatar(
             radius: 20.0,
             backgroundColor: whiteColor,
-            child:Center(child:Icon(image,color: cont.selectedTabIndex == index ? primaryColor : subTitleTextColor,))
-        ),
+            child: Center(
+                child: Icon(
+              image,
+              color: cont.selectedTabIndex == index
+                  ? primaryColor
+                  : subTitleTextColor,
+            ))),
       ),
       label: title,
     );
   }
 
-  buildClaimItem(String image, String title,int index, BottomNavController cont,){
+  buildClaimItem(
+    String image,
+    String title,
+    int index,
+    BottomNavController cont,
+  ) {
     return BottomNavigationBarItem(
       icon: Padding(
         padding: const EdgeInsets.only(bottom: 3.0),
         child: CircleAvatar(
             radius: 20.0,
             backgroundColor: whiteColor,
-            child:Center(child:buildTextBoldWidget(image,
-                cont.selectedTabIndex == index ? primaryColor : subTitleTextColor,
-                context, 22.0,align: TextAlign.center))
-        ),
+            child: Center(
+                child: buildTextBoldWidget(
+                    image,
+                    cont.selectedTabIndex == index
+                        ? primaryColor
+                        : subTitleTextColor,
+                    context,
+                    22.0,
+                    align: TextAlign.center))),
       ),
       label: title,
     );

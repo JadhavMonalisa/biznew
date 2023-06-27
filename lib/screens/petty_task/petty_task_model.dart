@@ -18,8 +18,8 @@ class BranchNameModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['Message'] = message??"";
-    data['Success'] = success??"";
+    data['Message'] = message ?? "";
+    data['Success'] = success ?? "";
     if (branchListDetails != null) {
       data['branchlist'] = branchListDetails!.map((v) => v.toJson()).toList();
     }
@@ -34,8 +34,8 @@ class Branchlist {
   Branchlist({this.id, this.name});
 
   Branchlist.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    name = json['name']??"";
+    id = json['id'] ?? "";
+    name = json['name'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -84,17 +84,17 @@ class Clientslist {
 
   Clientslist(
       {this.firmClientId,
-        this.firmClientClientCode,
-        this.firmClientStatus,
-        this.firmClientFirmName,
-        this.tradeName});
+      this.firmClientClientCode,
+      this.firmClientStatus,
+      this.firmClientFirmName,
+      this.tradeName});
 
   Clientslist.fromJson(Map<String, dynamic> json) {
-    firmClientId = json['firm_client_id']??"";
-    firmClientClientCode = json['firm_client_client_code']??"";
-    firmClientStatus = json['firm_client_status']??"";
-    firmClientFirmName = json['firm_client_firm_name']??"";
-    tradeName = json['trade_name']??"";
+    firmClientId = json['firm_client_id'] ?? "";
+    firmClientClientCode = json['firm_client_client_code'] ?? "";
+    firmClientStatus = json['firm_client_status'] ?? "";
+    firmClientFirmName = json['firm_client_firm_name'] ?? "";
+    tradeName = json['trade_name'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -144,8 +144,8 @@ class EmplyeeList {
   EmplyeeList({this.firmEmployeeName, this.mastId});
 
   EmplyeeList.fromJson(Map<String, dynamic> json) {
-    firmEmployeeName = json['firm_employee_name']??"";
-    mastId = json['mast_id']??"";
+    firmEmployeeName = json['firm_employee_name'] ?? "";
+    mastId = json['mast_id'] ?? "";
   }
 
   Map<String, dynamic> toJson() {

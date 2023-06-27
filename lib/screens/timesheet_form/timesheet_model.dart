@@ -8,8 +8,8 @@ class TimesheetClientListModel {
   TimesheetClientListModel({this.message, this.success, this.data});
 
   TimesheetClientListModel.fromJson(Map<String, dynamic> json) {
-    message = json['Message']??"";
-    success = json['Success']??"";
+    message = json['Message'] ?? "";
+    success = json['Success'] ?? "";
     if (json['Data'] != null) {
       data = <ClientListData>[];
       json['Data'].forEach((v) {
@@ -39,19 +39,19 @@ class ClientListData {
 
   ClientListData(
       {this.firmClientId,
-        this.firmClientStatus,
-        this.tradeName,
-        this.firmClientFirmName,
-        this.firmClientClientCode,
-        this.id});
+      this.firmClientStatus,
+      this.tradeName,
+      this.firmClientFirmName,
+      this.firmClientClientCode,
+      this.id});
 
   ClientListData.fromJson(Map<String, dynamic> json) {
-    firmClientId = json['firm_client_id']??'';
-    firmClientStatus = json['firm_client_status']??"";
-    tradeName = json['trade_name']??"";
-    firmClientFirmName = json['firm_client_firm_name']??"";
-    firmClientClientCode = json['firm_client_client_code']??"";
-    id = json['id']??"";
+    firmClientId = json['firm_client_id'] ?? '';
+    firmClientStatus = json['firm_client_status'] ?? "";
+    tradeName = json['trade_name'] ?? "";
+    firmClientFirmName = json['firm_client_firm_name'] ?? "";
+    firmClientClientCode = json['firm_client_client_code'] ?? "";
+    id = json['id'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -74,8 +74,8 @@ class TimesheetServiceListModel {
   TimesheetServiceListModel({this.message, this.success, this.data});
 
   TimesheetServiceListModel.fromJson(Map<String, dynamic> json) {
-    message = json['Message']??"";
-    success = json['Success']??"";
+    message = json['Message'] ?? "";
+    success = json['Success'] ?? "";
     if (json['Data'] != null) {
       data = <TimesheetServicesData>[];
       json['Data'].forEach((v) {
@@ -104,17 +104,17 @@ class TimesheetServicesData {
 
   TimesheetServicesData(
       {this.serviceDueDatePeriodicity,
-        this.serviceName,
-        this.period,
-        this.serviceId,
-        this.id});
+      this.serviceName,
+      this.period,
+      this.serviceId,
+      this.id});
 
   TimesheetServicesData.fromJson(Map<String, dynamic> json) {
-    serviceDueDatePeriodicity = json['service_due_date_periodicity']??"";
-    serviceName = json['service_name']??"";
-    period = json['period']??"";
-    serviceId = json['service_id']??"";
-    id = json['id']??"";
+    serviceDueDatePeriodicity = json['service_due_date_periodicity'] ?? "";
+    serviceName = json['service_name'] ?? "";
+    period = json['period'] ?? "";
+    serviceId = json['service_id'] ?? "";
+    id = json['id'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -136,8 +136,8 @@ class TimesheetTaskModel {
   TimesheetTaskModel({this.message, this.success, this.data});
 
   TimesheetTaskModel.fromJson(Map<String, dynamic> json) {
-    message = json['Message']??"";
-    success = json['Success']??"";
+    message = json['Message'] ?? "";
+    success = json['Success'] ?? "";
     if (json['Data'] != null) {
       data = <TimesheetTaskData>[];
       json['Data'].forEach((v) {
@@ -163,11 +163,15 @@ class TimesheetTaskData {
   String? selectedServiceId;
   List<String>? testTaskStatusList;
 
-  TimesheetTaskData({this.taskId, this.taskName,this.selectedServiceId,this.testTaskStatusList});
+  TimesheetTaskData(
+      {this.taskId,
+      this.taskName,
+      this.selectedServiceId,
+      this.testTaskStatusList});
 
   TimesheetTaskData.fromJson(Map<String, dynamic> json) {
-    taskId = json['task_id']??"";
-    taskName = json['task_name']??"";
+    taskId = json['task_id'] ?? "";
+    taskName = json['task_name'] ?? "";
     selectedServiceId = "";
     testTaskStatusList = [""];
   }
@@ -179,6 +183,7 @@ class TimesheetTaskData {
     return data;
   }
 }
+
 class TimesheetStatusModel {
   String? message;
   bool? success;
@@ -190,16 +195,16 @@ class TimesheetStatusModel {
       {this.message, this.success, this.list, this.status, this.start});
 
   TimesheetStatusModel.fromJson(Map<String, dynamic> json) {
-    message = json['Message']??"";
-    success = json['Success']??"";
+    message = json['Message'] ?? "";
+    success = json['Success'] ?? "";
     if (json['List'] != null) {
       list = <StatusList>[];
       json['List'].forEach((v) {
         list!.add(StatusList.fromJson(v));
       });
     }
-    status = json['Status']??"";
-    start = json['Start']??"";
+    status = json['Status'] ?? "";
+    start = json['Start'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -239,11 +244,11 @@ class StatusList {
   String? id;
   String? name;
 
-  StatusList({this.taskId,this.id, this.name});
+  StatusList({this.taskId, this.id, this.name});
 
   StatusList.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    name = json['name']??"";
+    id = json['id'] ?? "";
+    name = json['name'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -259,7 +264,7 @@ class DummyStatusListModel {
   String? taskName;
   List<StatusList>? dummyStatusList;
 
-  DummyStatusListModel({this.taskId, this.taskName,this.dummyStatusList});
+  DummyStatusListModel({this.taskId, this.taskName, this.dummyStatusList});
 }
 
 // class DummyStatusList{
@@ -268,7 +273,6 @@ class DummyStatusListModel {
 //
 //   DummyStatusList({this.statusId, this.statusName});
 // }
-
 
 class TypeOfWorkModel {
   String? message;
@@ -306,8 +310,8 @@ class TypeOfWorkList {
   TypeOfWorkList({this.id, this.name});
 
   TypeOfWorkList.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    name = json['name']??"";
+    id = json['id'] ?? "";
+    name = json['name'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -341,7 +345,8 @@ class TimesheetListModel {
     data['Message'] = message;
     data['Success'] = success;
     if (timesheetListDetails != null) {
-      data['TimesheetList'] = timesheetListDetails!.map((v) => v.toJson()).toList();
+      data['TimesheetList'] =
+          timesheetListDetails!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -370,46 +375,47 @@ class TimesheetListData {
 
   TimesheetListData(
       {this.firmEmployeeName,
-        this.id,
-        this.tfor,
-        this.tDate,
-        this.inTime,
-        this.outTime,
-        this.timeHours,
-        this.timeMins,
-        this.mastId,
-        this.firmId,
-        this.addedDate,
-        this.addedDateToShow,
-        this.addedBy,
-        this.modifyDate,
-        this.modifyBy,
-        this.workat,
-        this.day,
-        this.reportingHead,
-        this.status});
+      this.id,
+      this.tfor,
+      this.tDate,
+      this.inTime,
+      this.outTime,
+      this.timeHours,
+      this.timeMins,
+      this.mastId,
+      this.firmId,
+      this.addedDate,
+      this.addedDateToShow,
+      this.addedBy,
+      this.modifyDate,
+      this.modifyBy,
+      this.workat,
+      this.day,
+      this.reportingHead,
+      this.status});
 
   TimesheetListData.fromJson(Map<String, dynamic> json) {
-    firmEmployeeName = json['firm_employee_name']??"";
-    id = json['id']??"";
-    tfor = json['tfor']??"";
-    tDate = json['t_date']??"";
-    inTime = json['in_time']??"";
-    outTime = json['out_time']??"";
-    timeHours = json['time_hours']??"";
-    timeMins = json['time_mins']??"";
-    mastId = json['mast_id']??"";
-    firmId = json['firm_id']??"";
-    addedDate = json['added_date']??"";
-    addedDateToShow =  json['added_date'] == null || json['added_date'] == "" ? ""
+    firmEmployeeName = json['firm_employee_name'] ?? "";
+    id = json['id'] ?? "";
+    tfor = json['tfor'] ?? "";
+    tDate = json['t_date'] ?? "";
+    inTime = json['in_time'] ?? "";
+    outTime = json['out_time'] ?? "";
+    timeHours = json['time_hours'] ?? "";
+    timeMins = json['time_mins'] ?? "";
+    mastId = json['mast_id'] ?? "";
+    firmId = json['firm_id'] ?? "";
+    addedDate = json['added_date'] ?? "";
+    addedDateToShow = json['added_date'] == null || json['added_date'] == ""
+        ? ""
         : DateFormat("dd-MM-yyyy").format(DateTime.parse(json['added_date']));
-    addedBy = json['added_by']??"";
-    modifyDate = json['modify_date']??"";
-    modifyBy = json['modify_by']??"";
-    workat = json['workat']??"";
-    day = json['day']??"";
-    reportingHead = json['reporting_head']??"";
-    status = json['status']??"";
+    addedBy = json['added_by'] ?? "";
+    modifyDate = json['modify_date'] ?? "";
+    modifyBy = json['modify_by'] ?? "";
+    workat = json['workat'] ?? "";
+    day = json['day'] ?? "";
+    reportingHead = json['reporting_head'] ?? "";
+    status = json['status'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -446,10 +452,10 @@ class TimesheetEditData {
 
   TimesheetEditData(
       {this.message,
-        this.success,
-        this.timesheetData,
-        this.nonAllottedData,
-        this.officeRelatedData});
+      this.success,
+      this.timesheetData,
+      this.nonAllottedData,
+      this.officeRelatedData});
 
   TimesheetEditData.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -482,10 +488,12 @@ class TimesheetEditData {
       data['timesheet_data'] = timesheetData!.map((v) => v.toJson()).toList();
     }
     if (nonAllottedData != null) {
-      data['non_allotted_data'] = nonAllottedData!.map((v) => v.toJson()).toList();
+      data['non_allotted_data'] =
+          nonAllottedData!.map((v) => v.toJson()).toList();
     }
     if (officeRelatedData != null) {
-      data['office_related_data'] = officeRelatedData!.map((v) => v.toJson()).toList();
+      data['office_related_data'] =
+          officeRelatedData!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -511,39 +519,40 @@ class TimesheetData {
 
   TimesheetData(
       {this.id,
-        this.tDate,
-        this.inTime,
-        this.outTime,
-        this.timeHours,
-        this.timeMins,
-        this.mastId,
-        this.firmId,
-        this.addedDate,
-        this.addedBy,
-        this.modifyDate,
-        this.modifyBy,
-        this.workat,
-        this.randomno,
-        this.tfor,
-        this.formattedDate});
+      this.tDate,
+      this.inTime,
+      this.outTime,
+      this.timeHours,
+      this.timeMins,
+      this.mastId,
+      this.firmId,
+      this.addedDate,
+      this.addedBy,
+      this.modifyDate,
+      this.modifyBy,
+      this.workat,
+      this.randomno,
+      this.tfor,
+      this.formattedDate});
 
   TimesheetData.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    tDate = json['t_date']??"";
-    inTime = json['in_time']??"";
-    outTime = json['out_time']??"";
-    timeHours = json['time_hours']??"";
-    timeMins = json['time_mins']??"";
-    mastId = json['mast_id']??"";
-    firmId = json['firm_id']??"";
-    addedDate = json['added_date']??"";
-    addedBy = json['added_by']??"";
-    modifyDate = json['modify_date']??"";
-    modifyBy = json['modify_by']??"";
-    workat = json['workat']??"";
-    randomno = json['randomno']??"";
-    tfor = json['tfor']??"";
-    formattedDate = json['added_date'] == null || json['added_date'] == "" ? ""
+    id = json['id'] ?? "";
+    tDate = json['t_date'] ?? "";
+    inTime = json['in_time'] ?? "";
+    outTime = json['out_time'] ?? "";
+    timeHours = json['time_hours'] ?? "";
+    timeMins = json['time_mins'] ?? "";
+    mastId = json['mast_id'] ?? "";
+    firmId = json['firm_id'] ?? "";
+    addedDate = json['added_date'] ?? "";
+    addedBy = json['added_by'] ?? "";
+    modifyDate = json['modify_date'] ?? "";
+    modifyBy = json['modify_by'] ?? "";
+    workat = json['workat'] ?? "";
+    randomno = json['randomno'] ?? "";
+    tfor = json['tfor'] ?? "";
+    formattedDate = json['added_date'] == null || json['added_date'] == ""
+        ? ""
         : DateFormat("dd-MM-yyyy").format(DateTime.parse(json['added_date']));
   }
 
@@ -595,53 +604,53 @@ class NonAllottedData {
 
   NonAllottedData(
       {this.id,
-        this.tId,
-        this.client,
-        this.clientId,
-        this.serviceId,
-        this.taskId,
-        this.remark,
-        this.nohours,
-        this.claimId,
-        this.typeWork,
-        this.mastId,
-        this.firmId,
-        this.addedBy,
-        this.addedDate,
-        this.modifyDate,
-        this.modifyBy,
-        this.status,
-        this.clientApplicableService,
-        this.filledType,
-        this.serviceName,
-        this.serviceDueDatePeriodicity,
-        this.period,
-        this.taskName});
+      this.tId,
+      this.client,
+      this.clientId,
+      this.serviceId,
+      this.taskId,
+      this.remark,
+      this.nohours,
+      this.claimId,
+      this.typeWork,
+      this.mastId,
+      this.firmId,
+      this.addedBy,
+      this.addedDate,
+      this.modifyDate,
+      this.modifyBy,
+      this.status,
+      this.clientApplicableService,
+      this.filledType,
+      this.serviceName,
+      this.serviceDueDatePeriodicity,
+      this.period,
+      this.taskName});
 
   NonAllottedData.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    tId = json['t_id']??"";
-    client = json['client']??"";
-    clientId = json['client_id']??"";
-    serviceId = json['service_id']??"";
-    taskId = json['task_id']??"";
-    remark = json['remark']??"";
-    nohours = json['nohours']??"";
-    claimId = json['claim_id']??"";
-    typeWork = json['type_work']??"";
-    mastId = json['mast_id']??"";
-    firmId = json['firm_id']??"";
-    addedBy = json['added_by']??"";
-    addedDate = json['added_date']??"";
-    modifyDate = json['modify_date']??"";
-    modifyBy = json['modify_by']??"";
-    status = json['status']??"";
-    clientApplicableService = json['client_applicable_service']??"";
-    filledType = json['filled_type']??"";
-    serviceName = json['service_name']??"";
-    serviceDueDatePeriodicity = json['service_due_date_periodicity']??"";
-    period = json['period']??"";
-    taskName = json['task_name']??"";
+    id = json['id'] ?? "";
+    tId = json['t_id'] ?? "";
+    client = json['client'] ?? "";
+    clientId = json['client_id'] ?? "";
+    serviceId = json['service_id'] ?? "";
+    taskId = json['task_id'] ?? "";
+    remark = json['remark'] ?? "";
+    nohours = json['nohours'] ?? "";
+    claimId = json['claim_id'] ?? "";
+    typeWork = json['type_work'] ?? "";
+    mastId = json['mast_id'] ?? "";
+    firmId = json['firm_id'] ?? "";
+    addedBy = json['added_by'] ?? "";
+    addedDate = json['added_date'] ?? "";
+    modifyDate = json['modify_date'] ?? "";
+    modifyBy = json['modify_by'] ?? "";
+    status = json['status'] ?? "";
+    clientApplicableService = json['client_applicable_service'] ?? "";
+    filledType = json['filled_type'] ?? "";
+    serviceName = json['service_name'] ?? "";
+    serviceDueDatePeriodicity = json['service_due_date_periodicity'] ?? "";
+    period = json['period'] ?? "";
+    taskName = json['task_name'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -697,47 +706,47 @@ class OfficeRelatedData {
 
   OfficeRelatedData(
       {this.id,
-        this.tId,
-        this.client,
-        this.clientId,
-        this.serviceId,
-        this.taskId,
-        this.remark,
-        this.nohours,
-        this.claimId,
-        this.typeWork,
-        this.mastId,
-        this.firmId,
-        this.addedBy,
-        this.addedDate,
-        this.modifyDate,
-        this.modifyBy,
-        this.status,
-        this.clientApplicableService,
-        this.filledType,
-        this.name});
+      this.tId,
+      this.client,
+      this.clientId,
+      this.serviceId,
+      this.taskId,
+      this.remark,
+      this.nohours,
+      this.claimId,
+      this.typeWork,
+      this.mastId,
+      this.firmId,
+      this.addedBy,
+      this.addedDate,
+      this.modifyDate,
+      this.modifyBy,
+      this.status,
+      this.clientApplicableService,
+      this.filledType,
+      this.name});
 
   OfficeRelatedData.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    tId = json['t_id']??"";
-    client = json['client']??"";
-    clientId = json['client_id']??"";
-    serviceId = json['service_id']??"";
-    taskId = json['task_id']??"";
-    remark = json['remark']??"";
-    nohours = json['nohours']??"";
-    claimId = json['claim_id']??"";
-    typeWork = json['type_work']??"";
-    mastId = json['mast_id']??"";
-    firmId = json['firm_id']??"";
-    addedBy = json['added_by']??"";
-    addedDate = json['added_date']??"";
-    modifyDate = json['modify_date']??"";
-    modifyBy = json['modify_by']??"";
-    status = json['status']??"";
-    clientApplicableService = json['client_applicable_service']??"";
-    filledType = json['filled_type']??"";
-    name = json['name']??"";
+    id = json['id'] ?? "";
+    tId = json['t_id'] ?? "";
+    client = json['client'] ?? "";
+    clientId = json['client_id'] ?? "";
+    serviceId = json['service_id'] ?? "";
+    taskId = json['task_id'] ?? "";
+    remark = json['remark'] ?? "";
+    nohours = json['nohours'] ?? "";
+    claimId = json['claim_id'] ?? "";
+    typeWork = json['type_work'] ?? "";
+    mastId = json['mast_id'] ?? "";
+    firmId = json['firm_id'] ?? "";
+    addedBy = json['added_by'] ?? "";
+    addedDate = json['added_date'] ?? "";
+    modifyDate = json['modify_date'] ?? "";
+    modifyBy = json['modify_by'] ?? "";
+    status = json['status'] ?? "";
+    clientApplicableService = json['client_applicable_service'] ?? "";
+    filledType = json['filled_type'] ?? "";
+    name = json['name'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -765,6 +774,7 @@ class OfficeRelatedData {
     return data;
   }
 }
+
 class TimesheetLogModel {
   String? message;
   bool? success;
@@ -788,7 +798,8 @@ class TimesheetLogModel {
     data['Message'] = message;
     data['Success'] = success;
     if (timesheetLogDetails != null) {
-      data['TimesheetLog'] = timesheetLogDetails!.map((v) => v.toJson()).toList();
+      data['TimesheetLog'] =
+          timesheetLogDetails!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -811,33 +822,33 @@ class TimesheetLog {
 
   TimesheetLog(
       {this.id,
-        this.tdId,
-        this.statusId,
-        this.status,
-        this.statusDate,
-        this.remark,
-        this.addedBy,
-        this.addedDate,
-        this.mastId,
-        this.firmId,
-        this.tDate,
-        this.empId,
-        this.firmEmployeeName});
+      this.tdId,
+      this.statusId,
+      this.status,
+      this.statusDate,
+      this.remark,
+      this.addedBy,
+      this.addedDate,
+      this.mastId,
+      this.firmId,
+      this.tDate,
+      this.empId,
+      this.firmEmployeeName});
 
   TimesheetLog.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    tdId = json['td_id']??"";
-    statusId = json['status_id']??"";
-    status = json['status']??"";
-    statusDate = json['status_date']??"";
-    remark = json['remark']??"";
-    addedBy = json['added_by']??"";
-    addedDate = json['added_date']??"";
-    mastId = json['mast_id']??"";
-    firmId = json['firm_id']??"";
-    tDate = json['t_date']??"";
-    empId = json['emp_id']??"";
-    firmEmployeeName = json['firm_employee_name']??"";
+    id = json['id'] ?? "";
+    tdId = json['td_id'] ?? "";
+    statusId = json['status_id'] ?? "";
+    status = json['status'] ?? "";
+    statusDate = json['status_date'] ?? "";
+    remark = json['remark'] ?? "";
+    addedBy = json['added_by'] ?? "";
+    addedDate = json['added_date'] ?? "";
+    mastId = json['mast_id'] ?? "";
+    firmId = json['firm_id'] ?? "";
+    tDate = json['t_date'] ?? "";
+    empId = json['emp_id'] ?? "";
+    firmEmployeeName = json['firm_employee_name'] ?? "";
   }
 
   Map<String, dynamic> toJson() {

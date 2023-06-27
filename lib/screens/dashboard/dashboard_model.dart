@@ -23,8 +23,7 @@ class NotificationModel {
     data['Message'] = message;
     data['Success'] = success;
     if (notificationList != null) {
-      data['notifications'] =
-          notificationList!.map((v) => v.toJson()).toList();
+      data['notifications'] = notificationList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -46,31 +45,31 @@ class NotificationList {
 
   NotificationList(
       {this.id,
-        this.empId,
-        this.mtitle,
-        this.message,
-        this.link,
-        this.status,
-        this.firmId,
-        this.mastId,
-        this.type,
-        this.addedBy,
-        this.addedDate,
-        this.notifiAssign});
+      this.empId,
+      this.mtitle,
+      this.message,
+      this.link,
+      this.status,
+      this.firmId,
+      this.mastId,
+      this.type,
+      this.addedBy,
+      this.addedDate,
+      this.notifiAssign});
 
   NotificationList.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    empId = json['emp_id']??'';
-    mtitle = json['mtitle']??"";
-    message = json['message']??"";
-    link = json['link']??'';
-    status = json['status']??'';
-    firmId = json['firm_id']??'';
-    mastId = json['mast_id']??'';
-    type = json['type']??'';
-    addedBy = json['added_by']??'';
-    addedDate = json['added_date']??"";
-    notifiAssign = json['Notifi_assign']??"";
+    id = json['id'] ?? "";
+    empId = json['emp_id'] ?? '';
+    mtitle = json['mtitle'] ?? "";
+    message = json['message'] ?? "";
+    link = json['link'] ?? '';
+    status = json['status'] ?? '';
+    firmId = json['firm_id'] ?? '';
+    mastId = json['mast_id'] ?? '';
+    type = json['type'] ?? '';
+    addedBy = json['added_by'] ?? '';
+    addedDate = json['added_date'] ?? "";
+    notifiAssign = json['Notifi_assign'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -102,7 +101,7 @@ class OwnChartModel {
     message = json['Message'];
     success = json['Success'];
     ownChartData =
-    json['owndata'] != null ? OwnChartData.fromJson(json['owndata']) : null;
+        json['owndata'] != null ? OwnChartData.fromJson(json['owndata']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -121,12 +120,11 @@ class OwnChartData {
   List<int>? startedButNotCompleted;
   List<int>? completedButUdinPending;
 
-  OwnChartData(
-      {
-        //this.allottedButNotStarted,
-        this.startedButNotCompleted,
-        this.completedButUdinPending,
-      });
+  OwnChartData({
+    //this.allottedButNotStarted,
+    this.startedButNotCompleted,
+    this.completedButUdinPending,
+  });
 
   OwnChartData.fromJson(Map<String, dynamic> json) {
     //allottedButNotStarted = json['Allotted_but_not_started'].cast<int>();
@@ -148,12 +146,15 @@ class TriggerNotAllottedModel {
   bool? success;
   TriggeredNotAllottedData? triggeredNotAllottedData;
 
-  TriggerNotAllottedModel({this.message, this.success, this.triggeredNotAllottedData});
+  TriggerNotAllottedModel(
+      {this.message, this.success, this.triggeredNotAllottedData});
 
   TriggerNotAllottedModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
     success = json['Success'];
-    triggeredNotAllottedData = json['data'] != null ? TriggeredNotAllottedData.fromJson(json['data']) : null;
+    triggeredNotAllottedData = json['data'] != null
+        ? TriggeredNotAllottedData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -173,7 +174,8 @@ class TriggeredNotAllottedData {
   TriggeredNotAllottedData({this.serviceTriggeredButNotAllotted});
 
   TriggeredNotAllottedData.fromJson(Map<String, dynamic> json) {
-    serviceTriggeredButNotAllotted = json['service_triggered_but_not_allotted'].cast<int>();
+    serviceTriggeredButNotAllotted =
+        json['service_triggered_but_not_allotted'].cast<int>();
   }
 
   Map<String, dynamic> toJson() {
@@ -188,12 +190,15 @@ class AllottedNotStartedModel {
   bool? success;
   AllottedNotStartedData? allottedNotStartedData;
 
-  AllottedNotStartedModel({this.message, this.success, this.allottedNotStartedData});
+  AllottedNotStartedModel(
+      {this.message, this.success, this.allottedNotStartedData});
 
   AllottedNotStartedModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
     success = json['Success'];
-    allottedNotStartedData = json['data'] != null ? AllottedNotStartedData.fromJson(json['data']) : null;
+    allottedNotStartedData = json['data'] != null
+        ? AllottedNotStartedData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -213,7 +218,8 @@ class AllottedNotStartedData {
   List? own = [];
   List<String>? isReportingHead;
 
-  AllottedNotStartedData({this.allottedButNotStarted, this.team, this.own, this.isReportingHead});
+  AllottedNotStartedData(
+      {this.allottedButNotStarted, this.team, this.own, this.isReportingHead});
 
   AllottedNotStartedData.fromJson(Map<String, dynamic> json) {
     allottedButNotStarted = json['Allotted_but_not_started'].cast<int>();
@@ -237,12 +243,15 @@ class StartedNotCompletedModel {
   bool? success;
   StartedNotCompletedData? startedNotCompletedData;
 
-  StartedNotCompletedModel({this.message, this.success, this.startedNotCompletedData});
+  StartedNotCompletedModel(
+      {this.message, this.success, this.startedNotCompletedData});
 
   StartedNotCompletedModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
     success = json['Success'];
-    startedNotCompletedData = json['data'] != null ? StartedNotCompletedData.fromJson(json['data']) : null;
+    startedNotCompletedData = json['data'] != null
+        ? StartedNotCompletedData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -287,12 +296,15 @@ class CompletedUdinPendingModel {
   bool? success;
   CompletedUdinPendingData? completedUdinPendingData;
 
-  CompletedUdinPendingModel({this.message, this.success, this.completedUdinPendingData});
+  CompletedUdinPendingModel(
+      {this.message, this.success, this.completedUdinPendingData});
 
   CompletedUdinPendingModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
     success = json['Success'];
-    completedUdinPendingData = json['data'] != null ? CompletedUdinPendingData.fromJson(json['data']) : null;
+    completedUdinPendingData = json['data'] != null
+        ? CompletedUdinPendingData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -314,9 +326,9 @@ class CompletedUdinPendingData {
 
   CompletedUdinPendingData(
       {this.completedButUdinPending,
-        this.team,
-        this.own,
-        this.isReportingHead});
+      this.team,
+      this.own,
+      this.isReportingHead});
 
   CompletedUdinPendingData.fromJson(Map<String, dynamic> json) {
     completedButUdinPending = json['Completed_but_udin_pending'].cast<int>();
@@ -334,17 +346,21 @@ class CompletedUdinPendingData {
     return data;
   }
 }
+
 class CompletedNotBilledModel {
   String? message;
   bool? success;
   CompletedNotBilledData? completedNotBilledData;
 
-  CompletedNotBilledModel({this.message, this.success, this.completedNotBilledData});
+  CompletedNotBilledModel(
+      {this.message, this.success, this.completedNotBilledData});
 
   CompletedNotBilledModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
     success = json['Success'];
-    completedNotBilledData = json['data'] != null ? CompletedNotBilledData.fromJson(json['data']) : null;
+    completedNotBilledData = json['data'] != null
+        ? CompletedNotBilledData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -357,6 +373,7 @@ class CompletedNotBilledModel {
     return data;
   }
 }
+
 class CompletedNotBilledData {
   List<int>? completedButNotBilled;
 
@@ -383,7 +400,8 @@ class WorkOnHoldModel {
   WorkOnHoldModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
     success = json['Success'];
-    workOnHoldData = json['data'] != null ? WorkOnHoldData.fromJson(json['data']) : null;
+    workOnHoldData =
+        json['data'] != null ? WorkOnHoldData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -421,17 +439,21 @@ class WorkOnHoldData {
     return data;
   }
 }
+
 class SubmittedForCheckingModel {
   String? message;
   bool? success;
   SubmittedForCheckingData? submittedForCheckingData;
 
-  SubmittedForCheckingModel({this.message, this.success, this.submittedForCheckingData});
+  SubmittedForCheckingModel(
+      {this.message, this.success, this.submittedForCheckingData});
 
   SubmittedForCheckingModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
     success = json['Success'];
-    submittedForCheckingData = json['data'] != null ? SubmittedForCheckingData.fromJson(json['data']) : null;
+    submittedForCheckingData = json['data'] != null
+        ? SubmittedForCheckingData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -451,7 +473,8 @@ class SubmittedForCheckingData {
   List<int>? own;
   List<String>? isReportingHead;
 
-  SubmittedForCheckingData({this.submittedForChecking, this.team, this.own, this.isReportingHead});
+  SubmittedForCheckingData(
+      {this.submittedForChecking, this.team, this.own, this.isReportingHead});
 
   SubmittedForCheckingData.fromJson(Map<String, dynamic> json) {
     submittedForChecking = json['submitted_for_checking'].cast<int>();
@@ -475,12 +498,15 @@ class AllTaskCompletedModel {
   bool? success;
   AllTaskCompletedData? allTaskCompletedData;
 
-  AllTaskCompletedModel({this.message, this.success, this.allTaskCompletedData});
+  AllTaskCompletedModel(
+      {this.message, this.success, this.allTaskCompletedData});
 
   AllTaskCompletedModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
     success = json['Success'];
-    allTaskCompletedData = json['data'] != null ? AllTaskCompletedData.fromJson(json['data']) : null;
+    allTaskCompletedData = json['data'] != null
+        ? AllTaskCompletedData.fromJson(json['data'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -500,7 +526,8 @@ class AllTaskCompletedData {
   List<int>? own;
   List<String>? isReportingHead;
 
-  AllTaskCompletedData({this.alltasksCompleteChart, this.team, this.own, this.isReportingHead});
+  AllTaskCompletedData(
+      {this.alltasksCompleteChart, this.team, this.own, this.isReportingHead});
 
   AllTaskCompletedData.fromJson(Map<String, dynamic> json) {
     alltasksCompleteChart = json['alltasks_complete_chart'].cast<int>();
@@ -602,7 +629,8 @@ class AllottedNotStartedPastDueTeam {
   bool? success;
   List<AllottedNotStartedPastDueData>? allottedNotStartedPastDueData;
 
-  AllottedNotStartedPastDueTeam({this.message, this.success, this.allottedNotStartedPastDueData});
+  AllottedNotStartedPastDueTeam(
+      {this.message, this.success, this.allottedNotStartedPastDueData});
 
   AllottedNotStartedPastDueTeam.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -610,7 +638,8 @@ class AllottedNotStartedPastDueTeam {
     if (json['data'] != null) {
       allottedNotStartedPastDueData = <AllottedNotStartedPastDueData>[];
       json['data'].forEach((v) {
-        allottedNotStartedPastDueData!.add(AllottedNotStartedPastDueData.fromJson(v));
+        allottedNotStartedPastDueData!
+            .add(AllottedNotStartedPastDueData.fromJson(v));
       });
     }
   }
@@ -620,7 +649,8 @@ class AllottedNotStartedPastDueTeam {
     data['Message'] = message;
     data['Success'] = success;
     if (allottedNotStartedPastDueData != null) {
-      data['data'] = allottedNotStartedPastDueData!.map((v) => v.toJson()).toList();
+      data['data'] =
+          allottedNotStartedPastDueData!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -644,42 +674,50 @@ class AllottedNotStartedPastDueData {
   DateTime? targetDateTimeFormat;
   DateTime? staDateTimeFormat;
 
-  AllottedNotStartedPastDueData(
-      {this.id,
-        this.clientCode,
-        this.client,
-        this.servicename,
-        this.triggerDate,
-        this.targetDate,
-        this.satDate,
-        this.priority,
-        this.allottedTo,
-        this.targetDateToShow,
-        this.triggerDateToShow,
-        this.satDateToShow,
-        this.priorityToShow,
-        this.triggerDateTimeFormat,
-        this.targetDateTimeFormat,
-        this.staDateTimeFormat,
-      });
+  AllottedNotStartedPastDueData({
+    this.id,
+    this.clientCode,
+    this.client,
+    this.servicename,
+    this.triggerDate,
+    this.targetDate,
+    this.satDate,
+    this.priority,
+    this.allottedTo,
+    this.targetDateToShow,
+    this.triggerDateToShow,
+    this.satDateToShow,
+    this.priorityToShow,
+    this.triggerDateTimeFormat,
+    this.targetDateTimeFormat,
+    this.staDateTimeFormat,
+  });
 
   AllottedNotStartedPastDueData.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    clientCode = json['client_code']??"";
-    client = json['client']??"";
-    servicename = json['servicename']??"";
-    triggerDate = json['trigger_date']??"";
-    targetDate = json['target_date']??"";
-    satDate = json['sat_date']??"";
-    priority = json['priority']??"";
-    allottedTo = json['Allotted To']??"";
-    targetDateToShow = json['target_date'] ==null || json['target_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
-    triggerDateToShow = json['trigger_date'] ==null || json['trigger_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
-    satDateToShow = json['sat_date'] ==null || json['sat_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
-    priorityToShow = json['priority']=="1" ? "High" : json['priority'] == "2" ? "Medium": "Low";
+    id = json['id'] ?? "";
+    clientCode = json['client_code'] ?? "";
+    client = json['client'] ?? "";
+    servicename = json['servicename'] ?? "";
+    triggerDate = json['trigger_date'] ?? "";
+    targetDate = json['target_date'] ?? "";
+    satDate = json['sat_date'] ?? "";
+    priority = json['priority'] ?? "";
+    allottedTo = json['Allotted To'] ?? "";
+    targetDateToShow = json['target_date'] == null || json['target_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
+    triggerDateToShow = json['trigger_date'] == null ||
+            json['trigger_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
+    satDateToShow = json['sat_date'] == null || json['sat_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
+    priorityToShow = json['priority'] == "1"
+        ? "High"
+        : json['priority'] == "2"
+            ? "Medium"
+            : "Low";
     triggerDateTimeFormat = DateTime.parse(json['trigger_date']);
     targetDateTimeFormat = DateTime.parse(json['target_date']);
     staDateTimeFormat = DateTime.parse(json['sat_date']);
@@ -705,7 +743,8 @@ class StartedButCompletedPieModel {
   bool? success;
   List<StartedNotCompletedPieList>? startedNotCompletedList;
 
-  StartedButCompletedPieModel({this.message, this.success, this.startedNotCompletedList});
+  StartedButCompletedPieModel(
+      {this.message, this.success, this.startedNotCompletedList});
 
   StartedButCompletedPieModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -751,51 +790,62 @@ class StartedNotCompletedPieList {
   DateTime? targetDateTimeFormat;
   DateTime? staDateTimeFormat;
 
-
-  StartedNotCompletedPieList(
-      {this.id,
-        this.clientCode,
-        this.client,
-        this.servicename,
-        this.triggerDate,
-        this.targetDate,
-        this.satDate,
-        this.priority,
-        this.allottedTo,
-        this.tasks,
-        this.completionPercentage,
-        this.status,
-        this.targetDateToShow,
-        this.triggerDateToShow,
-        this.satDateToShow,
-        this.priorityToShow,
-        this.statusName,
-        this.triggerDateTimeFormat,
-        this.targetDateTimeFormat,
-        this.staDateTimeFormat,
-      });
+  StartedNotCompletedPieList({
+    this.id,
+    this.clientCode,
+    this.client,
+    this.servicename,
+    this.triggerDate,
+    this.targetDate,
+    this.satDate,
+    this.priority,
+    this.allottedTo,
+    this.tasks,
+    this.completionPercentage,
+    this.status,
+    this.targetDateToShow,
+    this.triggerDateToShow,
+    this.satDateToShow,
+    this.priorityToShow,
+    this.statusName,
+    this.triggerDateTimeFormat,
+    this.targetDateTimeFormat,
+    this.staDateTimeFormat,
+  });
 
   StartedNotCompletedPieList.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    clientCode = json['client_code']??"";
-    client = json['client']??"";
-    servicename = json['servicename']??"";
-    triggerDate = json['trigger_date']??"";
-    targetDate = json['target_date']??"";
-    satDate = json['sat_date']??"";
-    priority = json['priority']??"";
-    allottedTo = json['Allotted To']??"";
-    tasks = json['Tasks']??"";
-    completionPercentage = json['Completion_Percentage'].toString()??"";
-    status = json['Status']??"";
-    targetDateToShow = json['target_date'] ==null || json['target_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
-    triggerDateToShow = json['trigger_date'] ==null || json['trigger_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
-    satDateToShow = json['sat_date'] ==null || json['sat_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
-    priorityToShow = json['priority']=="1" ? "High" : json['priority'] == "2" ? "Medium": "Low";
-    statusName = json['Status']=="1" ? "Inprocess": json["Status"]=="2" ? "Hold": "Complete";
+    id = json['id'] ?? "";
+    clientCode = json['client_code'] ?? "";
+    client = json['client'] ?? "";
+    servicename = json['servicename'] ?? "";
+    triggerDate = json['trigger_date'] ?? "";
+    targetDate = json['target_date'] ?? "";
+    satDate = json['sat_date'] ?? "";
+    priority = json['priority'] ?? "";
+    allottedTo = json['Allotted To'] ?? "";
+    tasks = json['Tasks'] ?? "";
+    completionPercentage = json['Completion_Percentage'].toString() ?? "";
+    status = json['Status'] ?? "";
+    targetDateToShow = json['target_date'] == null || json['target_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
+    triggerDateToShow = json['trigger_date'] == null ||
+            json['trigger_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
+    satDateToShow = json['sat_date'] == null || json['sat_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
+    priorityToShow = json['priority'] == "1"
+        ? "High"
+        : json['priority'] == "2"
+            ? "Medium"
+            : "Low";
+    statusName = json['Status'] == "1"
+        ? "Inprocess"
+        : json["Status"] == "2"
+            ? "Hold"
+            : "Complete";
 
     triggerDateTimeFormat = DateTime.parse(json["trigger_date"]);
     targetDateTimeFormat = DateTime.parse(json["target_date"]);
@@ -825,7 +875,8 @@ class CompletedUdinPendingPieModel {
   bool? success;
   List<CompletedUdinPendingPieList>? completedUdinPendingPieList;
 
-  CompletedUdinPendingPieModel({this.message, this.success, this.completedUdinPendingPieList});
+  CompletedUdinPendingPieModel(
+      {this.message, this.success, this.completedUdinPendingPieList});
 
   CompletedUdinPendingPieModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -833,7 +884,8 @@ class CompletedUdinPendingPieModel {
     if (json['data'] != null) {
       completedUdinPendingPieList = <CompletedUdinPendingPieList>[];
       json['data'].forEach((v) {
-        completedUdinPendingPieList!.add(CompletedUdinPendingPieList.fromJson(v));
+        completedUdinPendingPieList!
+            .add(CompletedUdinPendingPieList.fromJson(v));
       });
     }
   }
@@ -843,7 +895,8 @@ class CompletedUdinPendingPieModel {
     data['Message'] = message;
     data['Success'] = success;
     if (completedUdinPendingPieList != null) {
-      data['data'] = completedUdinPendingPieList!.map((v) => v.toJson()).toList();
+      data['data'] =
+          completedUdinPendingPieList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -858,17 +911,17 @@ class CompletedUdinPendingPieList {
 
   CompletedUdinPendingPieList(
       {this.id,
-        this.clientCode,
-        this.client,
-        this.servicename,
-        this.allottedTo});
+      this.clientCode,
+      this.client,
+      this.servicename,
+      this.allottedTo});
 
   CompletedUdinPendingPieList.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    clientCode = json['client_code']??"";
-    client = json['client']??"";
-    servicename = json['servicename']??"";
-    allottedTo = json['Allotted To']??"";
+    id = json['id'] ?? "";
+    clientCode = json['client_code'] ?? "";
+    client = json['client'] ?? "";
+    servicename = json['servicename'] ?? "";
+    allottedTo = json['Allotted To'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -887,7 +940,8 @@ class CompletedNotBilledPieModel {
   bool? success;
   List<CompletedNotBilledPieList>? completedNotBilledPieList;
 
-  CompletedNotBilledPieModel({this.message, this.success, this.completedNotBilledPieList});
+  CompletedNotBilledPieModel(
+      {this.message, this.success, this.completedNotBilledPieList});
 
   CompletedNotBilledPieModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -921,19 +975,19 @@ class CompletedNotBilledPieList {
 
   CompletedNotBilledPieList(
       {this.id,
-        this.clientCode,
-        this.client,
-        this.servicename,
-        this.amountOfServicePeriod,
-        this.claimAmount});
+      this.clientCode,
+      this.client,
+      this.servicename,
+      this.amountOfServicePeriod,
+      this.claimAmount});
 
   CompletedNotBilledPieList.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    clientCode = json['client_code']??"";
-    client = json['client']??"";
-    servicename = json['servicename']??"";
-    amountOfServicePeriod = json['Amount of Service Period']??"";
-    claimAmount = json['Claim Amount']??"";
+    id = json['id'] ?? "";
+    clientCode = json['client_code'] ?? "";
+    client = json['client'] ?? "";
+    servicename = json['servicename'] ?? "";
+    amountOfServicePeriod = json['Amount of Service Period'] ?? "";
+    claimAmount = json['Claim Amount'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -953,7 +1007,8 @@ class SubmittedForCheckingPieModel {
   bool? success;
   List<SubmittedForCheckingPieList>? submittedForCheckingPieList;
 
-  SubmittedForCheckingPieModel({this.message, this.success, this.submittedForCheckingPieList});
+  SubmittedForCheckingPieModel(
+      {this.message, this.success, this.submittedForCheckingPieList});
 
   SubmittedForCheckingPieModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -961,7 +1016,8 @@ class SubmittedForCheckingPieModel {
     if (json['data'] != null) {
       submittedForCheckingPieList = <SubmittedForCheckingPieList>[];
       json['data'].forEach((v) {
-        submittedForCheckingPieList!.add(SubmittedForCheckingPieList.fromJson(v));
+        submittedForCheckingPieList!
+            .add(SubmittedForCheckingPieList.fromJson(v));
       });
     }
   }
@@ -971,7 +1027,8 @@ class SubmittedForCheckingPieModel {
     data['Message'] = message;
     data['Success'] = success;
     if (submittedForCheckingPieList != null) {
-      data['data'] = submittedForCheckingPieList!.map((v) => v.toJson()).toList();
+      data['data'] =
+          submittedForCheckingPieList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -998,27 +1055,27 @@ class SubmittedForCheckingPieList {
   DateTime? triggerDateTimeFormat;
   DateTime? targetDateTimeFormat;
 
-  SubmittedForCheckingPieList(
-      {this.id,
-        this.clientCode,
-        this.client,
-        this.servicename,
-        this.triggerDate,
-        this.targetDate,
-        this.satDate,
-        this.priority,
-        this.priorityToShow,
-        this.allottedTo,
-        this.tasks,
-        this.completionPercentage,
-        this.status,
-        this.statusName,
-        this.targetDateToShow,
-        this.triggerDateToShow,
-        this.satDateToShow,
-        this.triggerDateTimeFormat,
-        this.targetDateTimeFormat,
-      });
+  SubmittedForCheckingPieList({
+    this.id,
+    this.clientCode,
+    this.client,
+    this.servicename,
+    this.triggerDate,
+    this.targetDate,
+    this.satDate,
+    this.priority,
+    this.priorityToShow,
+    this.allottedTo,
+    this.tasks,
+    this.completionPercentage,
+    this.status,
+    this.statusName,
+    this.targetDateToShow,
+    this.triggerDateToShow,
+    this.satDateToShow,
+    this.triggerDateTimeFormat,
+    this.targetDateTimeFormat,
+  });
 
   SubmittedForCheckingPieList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1029,19 +1086,31 @@ class SubmittedForCheckingPieList {
     targetDate = json['target_date'];
     satDate = json['sat_date'];
     priority = json['priority'];
-    priorityToShow = json['priority']=="1" ? "High" : json['priority'] == "2" ? "Medium": "Low";
+    priorityToShow = json['priority'] == "1"
+        ? "High"
+        : json['priority'] == "2"
+            ? "Medium"
+            : "Low";
     allottedTo = json['Allotted To'];
     tasks = json['Tasks'];
     completionPercentage = json['Completion_Percentage'];
     status = json['Status'];
-    statusName = json['Status']=="1" ? "Inprocess" : json['Status']=="2" ? "Hold" : "Complete";
+    statusName = json['Status'] == "1"
+        ? "Inprocess"
+        : json['Status'] == "2"
+            ? "Hold"
+            : "Complete";
 
-    targetDateToShow = json['target_date'] ==null || json['target_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
-    triggerDateToShow = json['trigger_date'] ==null || json['trigger_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
-    satDateToShow = json['sat_date'] ==null || json['sat_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
+    targetDateToShow = json['target_date'] == null || json['target_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
+    triggerDateToShow = json['trigger_date'] == null ||
+            json['trigger_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
+    satDateToShow = json['sat_date'] == null || json['sat_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
 
     triggerDateTimeFormat = DateTime.parse(json["trigger_date"]);
     targetDateTimeFormat = DateTime.parse(json["target_date"]);
@@ -1110,22 +1179,22 @@ class WorkOnHoldPieList {
   DateTime? triggerDateTimeFormat;
   DateTime? targetDateTimeFormat;
 
-  WorkOnHoldPieList(
-      {this.id,
-        this.clientCode,
-        this.client,
-        this.servicename,
-        this.triggerDate,
-        this.targetDate,
-        this.satDate,
-        this.priority,
-        this.allottedTo,
-        this.tasks,
-        this.completionPercentage,
-        this.status,
-        this.triggerDateTimeFormat,
-        this.targetDateTimeFormat,
-      });
+  WorkOnHoldPieList({
+    this.id,
+    this.clientCode,
+    this.client,
+    this.servicename,
+    this.triggerDate,
+    this.targetDate,
+    this.satDate,
+    this.priority,
+    this.allottedTo,
+    this.tasks,
+    this.completionPercentage,
+    this.status,
+    this.triggerDateTimeFormat,
+    this.targetDateTimeFormat,
+  });
 
   WorkOnHoldPieList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1208,23 +1277,23 @@ class AllTasksPieList {
   DateTime? targetDateTimeFormat;
   DateTime? staDateTimeFormat;
 
-  AllTasksPieList(
-      {this.id,
-        this.clientCode,
-        this.client,
-        this.servicename,
-        this.triggerDate,
-        this.targetDate,
-        this.satDate,
-        this.priority,
-        this.allottedTo,
-        this.tasks,
-        this.completionPercentage,
-        this.status,
-        this.triggerDateTimeFormat,
-        this.targetDateTimeFormat,
-        this.staDateTimeFormat,
-      });
+  AllTasksPieList({
+    this.id,
+    this.clientCode,
+    this.client,
+    this.servicename,
+    this.triggerDate,
+    this.targetDate,
+    this.satDate,
+    this.priority,
+    this.allottedTo,
+    this.tasks,
+    this.completionPercentage,
+    this.status,
+    this.triggerDateTimeFormat,
+    this.targetDateTimeFormat,
+    this.staDateTimeFormat,
+  });
 
   AllTasksPieList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1308,33 +1377,33 @@ class LoadAllTaskData {
 
   LoadAllTaskData(
       {this.firmEmployeeName,
-        this.id,
-        this.targetDate,
-        this.taskId,
-        this.taskName,
-        this.taskEmp,
-        this.srno,
-        this.completion,
-        this.days,
-        this.hours,
-        this.mins,
-        this.start,
-        this.status});
+      this.id,
+      this.targetDate,
+      this.taskId,
+      this.taskName,
+      this.taskEmp,
+      this.srno,
+      this.completion,
+      this.days,
+      this.hours,
+      this.mins,
+      this.start,
+      this.status});
 
   LoadAllTaskData.fromJson(Map<String, dynamic> json) {
-    firmEmployeeName = json['firm_employee_name']??"";
-    id = json['id']??"";
-    targetDate = json['target_date']??"";
-    taskId = json['task_id']??"";
-    taskName = json['task_name']??"";
-    taskEmp = json['task_emp']??"";
-    srno = json['srno']??"";
-    completion = json['completion']??"";
-    days = json['days']??"";
-    hours = json['hours']??"";
-    mins = json['mins']??"";
-    start = json['start']??"";
-    status = json['status']??"";
+    firmEmployeeName = json['firm_employee_name'] ?? "";
+    id = json['id'] ?? "";
+    targetDate = json['target_date'] ?? "";
+    taskId = json['task_id'] ?? "";
+    taskName = json['task_name'] ?? "";
+    taskEmp = json['task_emp'] ?? "";
+    srno = json['srno'] ?? "";
+    completion = json['completion'] ?? "";
+    days = json['days'] ?? "";
+    hours = json['hours'] ?? "";
+    mins = json['mins'] ?? "";
+    start = json['start'] ?? "";
+    status = json['status'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -1361,7 +1430,8 @@ class TriggeredNotAllottedModel {
   bool? success;
   List<TriggeredNotAllottedPieChartList>? triggeredNotAllottedPieChartList;
 
-  TriggeredNotAllottedModel({this.message, this.success, this.triggeredNotAllottedPieChartList});
+  TriggeredNotAllottedModel(
+      {this.message, this.success, this.triggeredNotAllottedPieChartList});
 
   TriggeredNotAllottedModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -1369,7 +1439,8 @@ class TriggeredNotAllottedModel {
     if (json['data'] != null) {
       triggeredNotAllottedPieChartList = <TriggeredNotAllottedPieChartList>[];
       json['data'].forEach((v) {
-        triggeredNotAllottedPieChartList!.add(TriggeredNotAllottedPieChartList.fromJson(v));
+        triggeredNotAllottedPieChartList!
+            .add(TriggeredNotAllottedPieChartList.fromJson(v));
       });
     }
   }
@@ -1379,7 +1450,8 @@ class TriggeredNotAllottedModel {
     data['Message'] = message;
     data['Success'] = success;
     if (triggeredNotAllottedPieChartList != null) {
-      data['data'] = triggeredNotAllottedPieChartList!.map((v) => v.toJson()).toList();
+      data['data'] =
+          triggeredNotAllottedPieChartList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -1401,22 +1473,22 @@ class TriggeredNotAllottedPieChartList {
   DateTime? targetDateTimeFormat;
   DateTime? staDateTimeFormat;
 
-  TriggeredNotAllottedPieChartList(
-      {this.id,
-        this.clientCode,
-        this.client,
-        this.servicename,
-        this.triggerDate,
-        this.triggerDateToShow,
-        this.targetDate,
-        this.targetDateToShow,
-        this.satDate,
-        this.satDateToShow,
-        this.periodicity,
-        this.triggerDateTimeFormat,
-        this.targetDateTimeFormat,
-        this.staDateTimeFormat,
-      });
+  TriggeredNotAllottedPieChartList({
+    this.id,
+    this.clientCode,
+    this.client,
+    this.servicename,
+    this.triggerDate,
+    this.triggerDateToShow,
+    this.targetDate,
+    this.targetDateToShow,
+    this.satDate,
+    this.satDateToShow,
+    this.periodicity,
+    this.triggerDateTimeFormat,
+    this.targetDateTimeFormat,
+    this.staDateTimeFormat,
+  });
 
   TriggeredNotAllottedPieChartList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1425,16 +1497,20 @@ class TriggeredNotAllottedPieChartList {
     servicename = json['servicename'];
     triggerDate = json['trigger_date'];
 
-    triggerDateToShow = json['trigger_date'] ==null || json['trigger_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
+    triggerDateToShow = json['trigger_date'] == null ||
+            json['trigger_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["trigger_date"]));
 
     targetDate = json['target_date'];
-    targetDateToShow = json['target_date'] ==null || json['target_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
+    targetDateToShow = json['target_date'] == null || json['target_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["target_date"]));
 
     satDate = json['sat_date'];
-    satDateToShow = json['sat_date'] ==null || json['sat_date'] == "" ? "" :
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
+    satDateToShow = json['sat_date'] == null || json['sat_date'] == ""
+        ? ""
+        : DateFormat("dd-MM-yyyy").format(DateTime.parse(json["sat_date"]));
 
     periodicity = json['periodicity'];
 
@@ -1462,7 +1538,8 @@ class TriggeredNotAllottedLoadAllModel {
   bool? success;
   List<TriggeredNotAllottedLoadAllList>? triggeredNotAllottedLoadAllList;
 
-  TriggeredNotAllottedLoadAllModel({this.message, this.success, this.triggeredNotAllottedLoadAllList});
+  TriggeredNotAllottedLoadAllModel(
+      {this.message, this.success, this.triggeredNotAllottedLoadAllList});
 
   TriggeredNotAllottedLoadAllModel.fromJson(Map<String, dynamic> json) {
     message = json['Message'];
@@ -1470,7 +1547,8 @@ class TriggeredNotAllottedLoadAllModel {
     if (json['data'] != null) {
       triggeredNotAllottedLoadAllList = <TriggeredNotAllottedLoadAllList>[];
       json['data'].forEach((v) {
-        triggeredNotAllottedLoadAllList!.add(TriggeredNotAllottedLoadAllList.fromJson(v));
+        triggeredNotAllottedLoadAllList!
+            .add(TriggeredNotAllottedLoadAllList.fromJson(v));
       });
     }
   }
@@ -1480,7 +1558,8 @@ class TriggeredNotAllottedLoadAllModel {
     data['Message'] = message;
     data['Success'] = success;
     if (triggeredNotAllottedLoadAllList != null) {
-      data['data'] = triggeredNotAllottedLoadAllList!.map((v) => v.toJson()).toList();
+      data['data'] =
+          triggeredNotAllottedLoadAllList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -1505,23 +1584,24 @@ class TriggeredNotAllottedLoadAllList {
   String? modifiedOnDate;
   String? modifiedBy;
 
-  TriggeredNotAllottedLoadAllList({this.taskId,
-    this.sortno,
-    this.taskName,
-    this.taskServiceMainCategoryId,
-    this.taskServiceId,
-    this.completion,
-    this.taskOndate,
-    this.days,
-    this.hours,
-    this.minutes,
-    this.firmId,
-    this.mastId,
-    this.bizAdminId,
-    this.addOnDate,
-    this.addedBy,
-    this.modifiedOnDate,
-    this.modifiedBy});
+  TriggeredNotAllottedLoadAllList(
+      {this.taskId,
+      this.sortno,
+      this.taskName,
+      this.taskServiceMainCategoryId,
+      this.taskServiceId,
+      this.completion,
+      this.taskOndate,
+      this.days,
+      this.hours,
+      this.minutes,
+      this.firmId,
+      this.mastId,
+      this.bizAdminId,
+      this.addOnDate,
+      this.addedBy,
+      this.modifiedOnDate,
+      this.modifiedBy});
 
   TriggeredNotAllottedLoadAllList.fromJson(Map<String, dynamic> json) {
     taskId = json['task_id'];

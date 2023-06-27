@@ -6,6 +6,7 @@ import '../../constant/repository/api_repository.dart';
 class PettyTaskBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(PettyTaskController(repository: ApiRepository(apiClient: ApiClient())));
+    Get.put(
+        PettyTaskController(repository: ApiRepository(apiClient: ApiClient())));
   }
 }

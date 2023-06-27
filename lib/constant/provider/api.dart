@@ -94,7 +94,11 @@ class ApiClient {
     return null;
   }
 
-  Future<dynamic> putDio(String url, {Map<String, String>? headers, body,}) async {
+  Future<dynamic> putDio(
+    String url, {
+    Map<String, String>? headers,
+    body,
+  }) async {
     bool hasNet = await Utils.isConnectedToInternet();
     if (!hasNet) {
       throw CustomException(CustomException.errorConnection,

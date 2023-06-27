@@ -102,8 +102,9 @@ class Utils {
         colorText: whiteColor,
         margin: const EdgeInsets.only(bottom: 200, left: 10, right: 10));
   }
+
   static void showSnackBar(String? error, {bool instantInit = true}) {
-    Get.snackbar(error!,"",
+    Get.snackbar(error!, "",
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.black,
         instantInit: instantInit,
@@ -113,7 +114,8 @@ class Utils {
 
   static void showAlertSnackBar(String error, {bool instantInit = true}) {
     Get.snackbar(
-      "Alert", error,
+      "Alert",
+      error,
       colorText: Colors.black,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.yellow,
@@ -124,7 +126,8 @@ class Utils {
 
   static void showSuccessSnackBar(String? error) {
     Get.snackbar(
-      "Success", error!,
+      "Success",
+      error!,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.green,
       colorText: whiteColor,
@@ -140,8 +143,7 @@ class Utils {
 
   static DateTime convertDateTimeAndAddTime(
       DateTime dateTime, int hours, int minute) {
-    return DateTime(
-        dateTime.year, dateTime.month, dateTime.day, hours, minute);
+    return DateTime(dateTime.year, dateTime.month, dateTime.day, hours, minute);
   }
 
   static Widget getCircularProgressIndicator() {
@@ -153,7 +155,11 @@ class Utils {
 
   static Widget getNoDataWidget(BuildContext context) {
     return Center(
-        child: buildTextMediumWidget("No Data Found",Colors.black,context, 18,
+        child: buildTextMediumWidget(
+      "No Data Found",
+      Colors.black,
+      context,
+      18,
     ));
   }
 
@@ -257,8 +263,8 @@ class Utils {
   }
 
   static String convertDateIntoFormattedTime(DateTime date) {
-    DateTime tempDate = DateFormat("hh:mm")
-        .parse("${date.hour}:${date.minute}");
+    DateTime tempDate =
+        DateFormat("hh:mm").parse("${date.hour}:${date.minute}");
     var dateFormat = DateFormat("h:mm a");
 
     return dateFormat.format(tempDate);
@@ -384,7 +390,4 @@ class Utils {
   //     return null;
   //   }
   // }
-
 }
-
-
