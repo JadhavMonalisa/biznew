@@ -259,6 +259,5 @@ class ApiEndpoint {
       "$baseUrl/ApiController/get_manual_services";
   static const String taskListUrl =
       "$baseUrl/ServicesController/load_all_tasks_for_manual";
-  static const String manualAssignmentUrl =
-      "$baseUrl/ServicesController/manual_assignment";
+  static const String manualAssignmentUrl = "$baseUrl/ServicesController/manual_assignment";
 }

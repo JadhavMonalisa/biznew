@@ -536,14 +536,13 @@ class _ManualAssignmentScreenState extends State<ManualAssignmentScreen> {
                         ))),
 
                     ///fees/period
-                    buildTimeSheetTitle(context, "Fees"),
+                    buildTimeSheetTitle(context, "Fees/Period"),
                     Container(
                       height: 40.0,
                       decoration: BoxDecoration(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(5)),
-                        border: Border.all(
-                            color: cont.validateFees ? errorColor : grey),
+                        border: Border.all(color: grey),
                       ),
                       child: TextFormField(
                         controller: cont.feesController,
@@ -559,22 +558,22 @@ class _ManualAssignmentScreenState extends State<ManualAssignmentScreen> {
                           hintText: "Enter fees",
                           hintStyle: GoogleFonts.rubik(
                             textStyle: TextStyle(
-                              color: cont.validateFees ? blackColor : grey,
+                              color: blackColor,
                               fontSize: 15,
                             ),
                           ),
                           border: InputBorder.none,
                         ),
                         onChanged: (text) {
-                          cont.checkFeesValidation(context);
+                          //cont.checkFeesValidation(context);
                         },
                       ),
                     ),
-                    cont.validateFees == true
-                        ? ErrorText(
-                            errorMessage: "Please enter fees",
-                          )
-                        : const Opacity(opacity: 0.0),
+                    // cont.validateFees == true
+                    //     ? ErrorText(
+                    //         errorMessage: "Please enter fees",
+                    //       )
+                    //     : const Opacity(opacity: 0.0),
 
                     ///remark
                     buildTimeSheetTitle(context,

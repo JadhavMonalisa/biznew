@@ -127,8 +127,7 @@ class _ServiceDashboardNextDetailsState
                                                         .firmEmployeeName!),
                                                     onTap: () {
                                                       cont.updateEmployeeFromAllotted(
-                                                          value
-                                                              .firmEmployeeName!,
+                                                          value.firmEmployeeName!,
                                                           value.mastId!);
                                                     },
                                                   );
@@ -298,8 +297,7 @@ class _ServiceDashboardNextDetailsState
                                                                     index,
                                                                     value
                                                                         .firmEmployeeName!,
-                                                                    value
-                                                                        .firmEmployeeId!,
+                                                                    value.mastId!,
                                                                     item.taskId!);
                                                               },
                                                             );
@@ -941,6 +939,8 @@ class _ServiceDashboardNextDetailsState
                             ],
                           ),
                         ),
+                        // Text(cont.allottedTaskNameSecondBracketRemove.replaceAll(", ", ",")),
+                        // Text(cont.allottedTaskEmpSecondBracketRemove.replaceAll(", ", ",")),
                       ],
                     )),
           ));

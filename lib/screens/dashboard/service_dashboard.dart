@@ -54,6 +54,7 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                 GestureDetector(
                   onTap: () {
                     //Utils.showAlertSnackBar("Coming Soon!");
+                    cont.callNotificationList();
                     Get.toNamed(AppRoutes.notificationScreen);
                   },
                   child: const Padding(

@@ -99,6 +99,7 @@ class TimesheetTaskListData {
   bool? success;
   String? serviceId;
   String? serviceName;
+  String? servicePeriod;
   String? clientId;
   String? clientName;
   List<TimesheetTaskDetailsData>? timesheetTaskDetailsData;
@@ -108,6 +109,7 @@ class TimesheetTaskListData {
     this.success,
     this.serviceId,
     this.serviceName,
+    this.servicePeriod,
     this.clientId,
     this.clientName,
     this.timesheetTaskDetailsData,
@@ -118,6 +120,7 @@ class TimesheetTaskListData {
     success = json['Success'];
     serviceId = "";
     serviceName = "";
+    servicePeriod = "";
     clientId = "";
     clientName = "";
     if (json['Data'] != null) {
@@ -164,6 +167,7 @@ class TimesheetTaskDetailsData {
     return data;
   }
 }
+
 
 class TestTextEditingController {
   TextEditingController? textEditingController;

@@ -4430,6 +4430,15 @@ class DashboardController extends GetxController {
   ///reassign services
   void callReassignServices() async {
     updateLoader(true);
+    print( allottedTaskNameSecondBracketRemove.replaceAll(", ", ","));
+    print( allottedSelectedReassignId);
+    print( allottedCompletionSecondBracketRemove.replaceAll(", ", ","));
+    print( allottedDaysSecondBracketRemove.replaceAll(", ", ","));
+    print( allottedHoursSecondBracketRemove.replaceAll(", ", ","));
+    print( allottedMinuteSecondBracketRemove.replaceAll(", ", ","));
+    print( allottedTaskEmpSecondBracketRemove.replaceAll(", ", ","));
+    print( allottedTaskIdSecondBracketRemove.replaceAll(", ", ","));
+    print( allottedSrNoSecondBracketRemove.replaceAll(", ", ","));
     try {
       ApiResponse? response = (await repository.getReassignServices(
           allottedTaskNameSecondBracketRemove.replaceAll(", ", ","),

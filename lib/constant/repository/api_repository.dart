@@ -638,6 +638,8 @@ class ApiRepository {
     final FormData formData = FormData.fromMap(
       {"mast_id": userId, "client_id": clientId},
     );
+    print("formDAta.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetGetNonAllottedServicesUrl,
       body: formData,
@@ -1919,7 +1921,9 @@ class ApiRepository {
         "remark": remark
       },
     );
-    final response = await apiClient.post(ApiEndpoint.taskListUrl,
+    print("manual assignment formData.fields");
+    print(formData.fields);
+    final response = await apiClient.post(ApiEndpoint.manualAssignmentUrl,
         body: formData, headers: headers);
     return ApiResponse.fromJson(response);
   }

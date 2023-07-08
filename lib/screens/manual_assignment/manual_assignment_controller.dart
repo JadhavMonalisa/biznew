@@ -123,8 +123,8 @@ class ManualAssignmentController extends GetxController {
 
   updateSelectedClientId(String valId, String id) {
     if (clientNameList.isNotEmpty) {
-      clientFirmId = id;
-      selectedClientId = valId;
+      clientFirmId = valId;
+      selectedClientId = id;
       update();
     }
   }
@@ -172,7 +172,7 @@ class ManualAssignmentController extends GetxController {
     serviceList.clear();
     try {
       ClaimServiceResponse? response =
-          (await repository.getClaimServicesList(clientFirmId, selectedYearId));
+          (await repository.getClaimServicesList(selectedClientId, selectedYearId));
       if (response.success!) {
         if (response.serviceList!.isEmpty) {
         } else {
@@ -377,13 +377,13 @@ class ManualAssignmentController extends GetxController {
         formattedDay = selectedDate.day.toString();
       }
 
-      selectedTriggerDate =
-          "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
-      selectedTriggerDateToSend =
-          "${selectedDate.year}-$formattedMonth-$formattedDay";
+      selectedTriggerDate = "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+      selectedTriggerDateToSend = "${selectedDate.year}-$formattedMonth-$formattedDay";
       selectedTriggerDate == ""
           ? validateTriggerDate = true
           : validateTriggerDate = false;
+
+      print(selectedTriggerDateToSend);
       update();
     } else if (dateFor == "targetDate") {
       ///format month
@@ -400,14 +400,14 @@ class ManualAssignmentController extends GetxController {
         formattedDay = selectedDate.day.toString();
       }
 
-      selectedTargetDate =
-          "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
-      selectedTargetDateToSend =
-          "${selectedDate.year}-$formattedMonth-$formattedDay";
+      selectedTargetDate = "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}";
+      selectedTargetDateToSend = "${selectedDate.year}-$formattedMonth-$formattedDay";
       selectedTargetDate == ""
           ? validateTargetDate = true
           : validateTargetDate = false;
       update();
+
+      print(selectedTargetDateToSend);
     }
     update();
   }
@@ -415,7 +415,7 @@ class ManualAssignmentController extends GetxController {
   navigateToHomeScreen() {
     selectedYear = "";
     selectedYearId = "";
-    Get.toNamed(AppRoutes.bottomNav);
+    Get.offNamed(AppRoutes.bottomNav);
     update();
   }
 
@@ -440,19 +440,19 @@ class ManualAssignmentController extends GetxController {
   }
 
   TextEditingController feesController = TextEditingController();
-  bool validateFees = false;
+  //bool validateFees = false;
   TextEditingController remarkController = TextEditingController();
 
-  ///fees
-  checkFeesValidation(BuildContext context) {
-    if (feesController.text.isEmpty) {
-      validateFees = true;
-      update();
-    } else {
-      validateFees = false;
-      update();
-    }
-  }
+  // ///fees
+  // checkFeesValidation(BuildContext context) {
+  //   if (feesController.text.isEmpty) {
+  //     validateFees = true;
+  //     update();
+  //   } else {
+  //     validateFees = false;
+  //     update();
+  //   }
+  // }
 
   List<TextEditingController> taskNameList = [];
   List<TextEditingController> taskCompletionList = [];
@@ -848,7 +848,7 @@ class ManualAssignmentController extends GetxController {
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);
-        Get.toNamed(AppRoutes.bottomNav);
+        Get.offNamed(AppRoutes.bottomNav);
         update();
       } else {
         Utils.showErrorSnackBar(response.message);
