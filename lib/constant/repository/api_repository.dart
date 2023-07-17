@@ -604,7 +604,7 @@ class ApiRepository {
     return CheckTimesheetTimeResponse.fromJson(response);
   }
 
-  ///timesheet client
+  ///timesheet client allotted
   Future<TimesheetClientListModel> getTimesheetClientNameList() async {
     final FormData formData = FormData.fromMap(
       {
@@ -618,6 +618,7 @@ class ApiRepository {
     );
     return TimesheetClientListModel.fromJson(response);
   }
+  ///timesheet client non allotted
   Future<TimesheetClientListModel> getTimesheetClientNameNonAllottedList() async {
     final FormData formData = FormData.fromMap(
       {

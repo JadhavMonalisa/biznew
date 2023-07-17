@@ -130,11 +130,9 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                             Flexible(
                                               child: GestureDetector(
                                                   onTap: () {
-                                                    cont.checkValidationForAllotted(
-                                                        context);
+                                                    cont.checkValidationForAllotted(context);
                                                   },
-                                                  child: buildButtonWidget(
-                                                      context, "Save")),
+                                                  child: buildButtonWidget(context, "Save")),
                                             ),
                                             const SizedBox(
                                               width: 10.0,
@@ -962,6 +960,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                 cont.taskIdList.clear();
                                 cont.timesheetTaskListData.clear();
                                 cont.allottedTimesheetSelectedServiceList.clear();
+
                                 cont.addAllottedServiceNameAndId(value.serviceId!,
                                     //"${value.serviceName!} (${value.period})",
                                     serviceNamePeriod,
@@ -1139,6 +1138,8 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                     decoration: BoxDecoration(
                                                                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                                                                       border: Border.all(color: grey),
+                                                                      color: cont.checkStatusList[taskDetailsIndex] == "1" && cont.checkStartList[taskDetailsIndex] == "0"
+                                                                         ? grey.withOpacity(0.2) : whiteColor
                                                                     ),
                                                                     child:TextEditingForAllotted(controller: cont.timesheetTaskListData[
                                                                     taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].testTaskDetails,
@@ -1249,13 +1250,10 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                   height: 40.0,
                                                                   width: MediaQuery.of(context).size.width,
                                                                   decoration: BoxDecoration(
-                                                                    borderRadius: const BorderRadius
-                                                                            .all(
-                                                                        Radius.circular(
-                                                                            5)),
-                                                                    border: Border.all(
-                                                                        color:
-                                                                            grey),
+                                                                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                                    border: Border.all(color: grey),
+                                                                    color:cont.checkStatusList[taskDetailsIndex] == "1" && cont.checkStartList[taskDetailsIndex] == "0"
+                                                                        ? grey.withOpacity(0.2) : whiteColor
                                                                   ),
                                                                   child: Align(
                                                                       alignment: Alignment.centerLeft,

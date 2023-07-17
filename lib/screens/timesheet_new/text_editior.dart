@@ -43,35 +43,12 @@ class _TextEditingForAllottedState extends State<TextEditingForAllotted> {
           border: InputBorder.none,
         ),
         onChanged: (value) {
-          print("value");
-          print(value);
-          // cont.timesheetTaskListData[widget.indexForService!]
-          //     .timesheetTaskDetailsData!.removeWhere((element) {
-          //   element.
-          // });
-          //
-          //
-          // cont.timesheetTaskListData[widget.indexForService!]
-          //     .timesheetTaskDetailsData!.insert(widget.indexForTask!,TimesheetTaskDetailsData(
-          //   testTaskDetails: TextEditingController(text: value)
-          // ));
-
-          //cont.dataList.removeAt(widget.indexForTask!);
-          //
-          // cont.dataList.add(value);
-          // print("cont.dataList");
-          // print(cont.dataList);
-
-          if (cont.dataList.asMap().containsKey(widget.indexForTask!)) {
+         if (cont.dataList.asMap().containsKey(widget.indexForTask!)) {
             cont.dataList.removeAt(widget.indexForTask!);
             cont.dataList.insert(widget.indexForTask!, value);
           } else {
             cont.dataList.add(value);
           }
-              print("cont.dataList");
-              print(cont.dataList);
-          // cont.timesheetTaskListData[widget.indexForService!]
-          //     .timesheetTaskDetailsData![widget.indexForTask!].testTaskDetails!.text = value;
         },
       );
     });
