@@ -9,7 +9,8 @@ class TextEditingForAllotted extends StatefulWidget {
   TextEditingController? controller;
   int? indexForService;
   int? indexForTask;
-  TextEditingForAllotted({Key? key,this.controller,this.indexForService,this.indexForTask}) : super(key: key);
+  bool? enabled;
+  TextEditingForAllotted({Key? key,this.controller,this.indexForService,this.indexForTask,this.enabled}) : super(key: key);
 
   @override
   State<TextEditingForAllotted> createState() => _TextEditingForAllottedState();
@@ -23,40 +24,25 @@ class _TextEditingForAllottedState extends State<TextEditingForAllotted> {
       return TextFormField(
         //controller: cont.detailsControllerList[taskDetailsIndex],
         controller: widget.controller,
-        keyboardType:
-        TextInputType.text,
-        textAlign:
-        TextAlign.left,
-        textAlignVertical:
-        TextAlignVertical.center,
-        textInputAction:
-        TextInputAction.done,
-        onTap:
-            () {},
-        enabled:
-        true,
-        style: const TextStyle(
-            fontSize:
-            15.0),
-        decoration:
-        InputDecoration(
-          contentPadding:
-          const EdgeInsets.all(10),
-          hintText:
-          "Details",
-          hintStyle:
-          GoogleFonts.rubik(
-            textStyle:
-            const TextStyle(
-              color: blackColor,
+        keyboardType: TextInputType.text,
+        textAlign: TextAlign.left,
+        textAlignVertical: TextAlignVertical.center,
+        textInputAction: TextInputAction.done,
+        onTap: () {},
+        enabled: widget.enabled,
+        style: const TextStyle(fontSize: 15.0),
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(10),
+          hintText: "Details",
+          hintStyle: GoogleFonts.rubik(
+            textStyle: TextStyle(
+              color: widget.enabled == true ? blackColor : grey,
               fontSize: 15,
             ),
           ),
-          border:
-          InputBorder.none,
+          border: InputBorder.none,
         ),
-        onChanged:
-            (value) {
+        onChanged: (value) {
           print("value");
           print(value);
           // cont.timesheetTaskListData[widget.indexForService!]

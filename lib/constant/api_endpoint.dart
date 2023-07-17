@@ -60,8 +60,9 @@ class ApiEndpoint {
   ///stepper 2
   static const String timesheetTotalTimeUrl =
       "$baseUrl/TimesheetController/getTimesheetTotalHrs";
-  static const String timesheetClientListUrl =
-      "$baseUrl/TimesheetController/getAllottedServicesClients";
+  static const String timesheetClientListUrl = "$baseUrl/TimesheetController/getAllottedServicesClients";
+  static const String timesheetClientListNonAllottedUrl = "$baseUrl/TimesheetController/getNonAllottedServicesClients";
+
   static const String timesheetServicesListUrl =
       "$baseUrl/TimesheetController/getAllottedServices";
   static const String timesheetTaskListUrl =

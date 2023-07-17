@@ -618,6 +618,19 @@ class ApiRepository {
     );
     return TimesheetClientListModel.fromJson(response);
   }
+  Future<TimesheetClientListModel> getTimesheetClientNameNonAllottedList() async {
+    final FormData formData = FormData.fromMap(
+      {
+        "mast_id": userId,
+      },
+    );
+    final response = await apiClient.post(
+      ApiEndpoint.timesheetClientListNonAllottedUrl,
+      body: formData,
+      headers: headers,
+    );
+    return TimesheetClientListModel.fromJson(response);
+  }
 
   ///timesheet services
   Future<TimesheetServiceListModel> getTimesheetServicesList(

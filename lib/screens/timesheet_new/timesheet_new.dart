@@ -114,7 +114,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                     onTap: () {
                                       //cont.continued();
                                       // cont.isLoadingForStepper1 = true;
-                                       cont.checkValidationForStepper1();
+                                      cont.checkValidationForStepper1();
                                     },
                                     child: cont.isLoadingForStepper1 ? const Opacity(opacity: 0.0):
                                     buildButtonWidget(context, "Next")),
@@ -844,6 +844,9 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                             cont.allottedServiceList.clear();
                             cont.allottedTimesheetSelectedServiceList.clear();
                             cont.allottedSelectedServiceName = "";
+                            cont.checkStartList.clear();
+                            cont.checkStatusList.clear();
+
                             cont.addAllottedClientNameAndId(
                                 value.firmClientId!,
                                 "${value.firmClientFirmName!} (${value.firmClientClientCode})");
@@ -1020,6 +1023,9 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                       child: buildButtonWidget(context, "Fill Timesheet")),
                 ),
 
+                // Text(cont.toShowServiceId),
+                // Text(cont.toShowClientServiceId),
+
                 cont.isFillTimesheetSelected
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1129,22 +1135,18 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                           5.0),
                                                                   child:
                                                                       Container(
-                                                                    height:
-                                                                        40.0,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      borderRadius:
-                                                                          const BorderRadius.all(Radius.circular(5)),
-                                                                      border: Border.all(
-                                                                          color:
-                                                                              grey),
+                                                                    height: 40.0,
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                                                      border: Border.all(color: grey),
                                                                     ),
-                                                                    child:TextEditingForAllotted(controller: cont
-                                                                        .timesheetTaskListData[
-                                                                    taskListIndex]
-                                                                        .timesheetTaskDetailsData![taskDetailsIndex].testTaskDetails,
+                                                                    child:TextEditingForAllotted(controller: cont.timesheetTaskListData[
+                                                                    taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].testTaskDetails,
                                                                       indexForService:taskListIndex,
-                                                                      indexForTask: taskDetailsIndex,)
+                                                                      indexForTask: taskDetailsIndex,
+                                                                    enabled: cont.checkStatusList[taskDetailsIndex] == "1" && cont.checkStartList[taskDetailsIndex] == "0"
+                                                                      ? false:true,
+                                                                    )
 
                                                                     // child: TextFormField(
                                                                     //   //controller: cont.detailsControllerList[taskDetailsIndex],
@@ -1229,7 +1231,10 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                               )),
                                                           GestureDetector(
                                                             onTap: () {
-                                                              cont.selectTimeForTask(
+                                                              cont.checkStatusList[taskDetailsIndex] == "1" &&
+                                                                  cont.checkStartList[taskDetailsIndex] == "0"
+                                                              ? null
+                                                              : cont.selectTimeForTask(
                                                                   context,
                                                                   taskListIndex,
                                                                   taskDetailsIndex);
@@ -1356,162 +1361,315 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                     right:
                                                                         5.0),
                                                             child:
-                                                cont.checkStartList.isEmpty ? Text(""):
+                                                // cont.checkStartList.isEmpty ? Text(""):
+                                                //
+                                                // cont.checkStatusList[taskDetailsIndex] == "1" && cont.checkStartList[taskDetailsIndex] == "0"
+                                                // ? SizedBox(
+                                                //     height:
+                                                //     40.0,
+                                                //     width: MediaQuery.of(
+                                                //         context)
+                                                //         .size
+                                                //         .width,
+                                                //     child:Center(
+                                                //         child:buildTextRegularWidget("Yet to start", blackColor, context, 14.0,align: TextAlign.center)
+                                                //     ))
+                                                //
+                                                // :cont.checkStartList[taskDetailsIndex] == "0"
+                                                //                 ? GestureDetector(
+                                                //                     onTap:
+                                                //                         () {
+                                                //                       cont.callTimesheetStart(
+                                                //                           context,
+                                                //                           //cont.allottedTimesheetSelectedServiceList[taskDetailsIndex].id!,
+                                                //                           taskDetailsIndex,
+                                                //                           cont.clientAppServiceId,
+                                                //                           cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskId!);
+                                                //                     },
+                                                //                     child: buildButtonWidget(
+                                                //                         context,
+                                                //                         "Start",
+                                                //                         height:
+                                                //                             40.0),
+                                                //                   )
+                                                //                 : Container(
+                                                //                     height:
+                                                //                         40.0,
+                                                //                     width: MediaQuery.of(
+                                                //                             context)
+                                                //                         .size
+                                                //                         .width,
+                                                //                     decoration:
+                                                //                         BoxDecoration(
+                                                //                       borderRadius:
+                                                //                           const BorderRadius.all(Radius.circular(5)),
+                                                //                       border: Border.all(
+                                                //                           color:
+                                                //                               grey),
+                                                //                     ),
+                                                //
+                                                //                     child: Center(
+                                                //                         child: Padding(
+                                                //                           padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                //                           child: DropdownButton<String>(
+                                                //                             // hint: buildTextRegularWidget(cont.selectedClient==""?"Select Client":cont.selectedClient,
+                                                //                             //     cont.selectedClient==""?grey:blackColor, context, 15.0),
+                                                //                             hint: buildTextRegularWidget(
+                                                //                                 cont.addedAllottedStatus.contains(taskDetailsIndex)
+                                                //                                     ? cont.selectedAllottedStatus
+                                                //                                     : cont.allottedStartedStatusList[0],
+                                                //                                 blackColor, context, 15.0,align: TextAlign.left),
+                                                //                             isExpanded: true,
+                                                //                             underline: Container(),
+                                                //                             //iconEnabledColor: cont.selectedClient==""?grey:blackColor,
+                                                //                             items:
+                                                //                             cont.allottedStartedStatusList.isEmpty
+                                                //                                 ?
+                                                //                             cont.noDataList.map((value) {
+                                                //                               return DropdownMenuItem<String>(
+                                                //                                 value: value,
+                                                //                                 child: Text(value),
+                                                //                               );
+                                                //                             }).toList()
+                                                //                                 :
+                                                //                             cont.allottedStartedStatusList.map((value) {
+                                                //                               return DropdownMenuItem<String>(
+                                                //                                 value: value,
+                                                //                                 child: Text(value),
+                                                //                                 onTap: (){
+                                                //                                   //cont.updateSelectedAllottedStatus(context,value,taskDetailsIndex);
+                                                //                                 },
+                                                //                               );
+                                                //                             }).toList(),
+                                                //                             onChanged: (val) {
+                                                //                               cont.updateSelectedAllottedStatus(context,val!,taskDetailsIndex);
+                                                //                               },
+                                                //                           ),
+                                                //                         )
+                                                //                     )
+                                                //
+                                                //                     // child: Center(
+                                                //                     //     child: Padding(
+                                                //                     //   padding: const EdgeInsets.only(
+                                                //                     //       left:
+                                                //                     //           15.0,
+                                                //                     //       right:
+                                                //                     //           15.0),
+                                                //                     //   child: DropdownButton<
+                                                //                     //       String>(
+                                                //                     //     hint: buildTextRegularWidget(
+                                                //                     //         cont.addedAllottedStatusNameList.isEmpty ? "" : cont.addedAllottedStatusNameList[taskDetailsIndex],
+                                                //                     //         blackColor,
+                                                //                     //         context,
+                                                //                     //         15.0,
+                                                //                     //         align: TextAlign.left),
+                                                //                     //     isExpanded:
+                                                //                     //         true,
+                                                //                     //     underline:
+                                                //                     //         Container(),
+                                                //                     //     //iconEnabledColor: cont.selectedClient==""?grey:blackColor,
+                                                //                     //     items: cont.statusList.isEmpty
+                                                //                     //         ? cont.noDataList.map((value) {
+                                                //                     //             return DropdownMenuItem<String>(
+                                                //                     //               value: value,
+                                                //                     //               child: Text(value),
+                                                //                     //             );
+                                                //                     //           }).toList()
+                                                //                     //         : cont.statusList.map((StatusList value) {
+                                                //                     //             return DropdownMenuItem<String>(
+                                                //                     //               value: value.name,
+                                                //                     //               child: cont.taskIdList[taskListIndex] == value.taskId ? Text("${value.name!} ") : Text(""),
+                                                //                     //               // child:  Text(cont.taskIdList[taskDetailsIndex] == value.taskId
+                                                //                     //               //     ? value.name! : value.name.toString().trim()),
+                                                //                     //               onTap: () {
+                                                //                     //                 //cont.updateSelectedAllottedStatus(context,value,taskDetailsIndex);
+                                                //                     //               },
+                                                //                     //             );
+                                                //                     //           }).toList(),
+                                                //                     //     onChanged:
+                                                //                     //         (val) {
+                                                //                     //       cont.updateSelectedAllottedStatus(
+                                                //                     //           context,
+                                                //                     //           val!,
+                                                //                     //           taskDetailsIndex);
+                                                //                     //     },
+                                                //                     //   ),
+                                                //                     //   // child: PopupMenuButton<String>(
+                                                //                     //   //   itemBuilder: (context) {
+                                                //                     //   //     return cont.statusList.map((StatusList str) {
+                                                //                     //   //       return PopupMenuItem(
+                                                //                     //   //         value: str.name,
+                                                //                     //   //         child:Text(cont.taskIdList[taskDetailsIndex] == str.taskId?str.name!:"")
+                                                //                     //   //       );
+                                                //                     //   //     }).toList();
+                                                //                     //   //   },
+                                                //                     //   //   child: Row(
+                                                //                     //   //     mainAxisSize: MainAxisSize.min,
+                                                //                     //   //     children: <Widget>[
+                                                //                     //   //       Text(cont.addedAllottedStatusNameList[taskDetailsIndex]),
+                                                //                     //   //       Icon(Icons.arrow_drop_down),
+                                                //                     //   //     ],
+                                                //                     //   //   ),
+                                                //                     //   //   onSelected: (v) {
+                                                //                     //   //     setState(() {
+                                                //                     //   //       cont.updateSelectedAllottedStatus(context,v,taskDetailsIndex);
+                                                //                     //   //     });
+                                                //                     //   //   },
+                                                //                     //   // )
+                                                //                     // ))
+                                                //             ),
 
-                                                cont.checkStatusList[taskDetailsIndex] == "1" && cont.checkStartList[taskDetailsIndex] == "0"
-                                                ? SizedBox(
-                                                    height:
-                                                    40.0,
-                                                    width: MediaQuery.of(
-                                                        context)
-                                                        .size
-                                                        .width,
-                                                    child:Center(
-                                                        child:buildTextRegularWidget("Yet to start", blackColor, context, 14.0,align: TextAlign.center)
-                                                    ))
+                                                            cont.checkStartList.isEmpty ? const Text(""):
 
-                                                :cont.checkStartList[taskDetailsIndex] == "0"
+                                                            cont.checkStatusList[taskDetailsIndex] == "1" && cont.checkStartList[taskDetailsIndex] == "0"
                                                                 ? GestureDetector(
-                                                                    onTap:
-                                                                        () {
-                                                                      cont.callTimesheetStart(
-                                                                          context,
-                                                                          //cont.allottedTimesheetSelectedServiceList[taskDetailsIndex].id!,
-                                                                          taskDetailsIndex,
-                                                                          cont.clientAppServiceId,
-                                                                          cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskId!);
-                                                                    },
-                                                                    child: buildButtonWidget(
-                                                                        context,
-                                                                        "Start",
-                                                                        height:
-                                                                            40.0),
-                                                                  )
+                                                              onTap:
+                                                                  () {
+                                                                cont.callTimesheetStart(
+                                                                    context,
+                                                                    //cont.allottedTimesheetSelectedServiceList[taskDetailsIndex].id!,
+                                                                    taskDetailsIndex,
+                                                                    cont.clientAppServiceId,
+                                                                    cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskId!);
+                                                              },
+                                                              child: buildButtonWidget(
+                                                                  context,
+                                                                  "Start",
+                                                                  height:
+                                                                  40.0),
+                                                            )
                                                                 : Container(
-                                                                    height:
-                                                                        40.0,
-                                                                    width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      borderRadius:
-                                                                          const BorderRadius.all(Radius.circular(5)),
-                                                                      border: Border.all(
-                                                                          color:
-                                                                              grey),
-                                                                    ),
+                                                                height:
+                                                                40.0,
+                                                                width: MediaQuery.of(
+                                                                    context)
+                                                                    .size
+                                                                    .width,
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  borderRadius:
+                                                                  const BorderRadius.all(Radius.circular(5)),
+                                                                  border: Border.all(
+                                                                      color:
+                                                                      grey),
+                                                                ),
 
-                                                                    child: Center(
-                                                                        child: Padding(
-                                                                          padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                                                                          child: DropdownButton<String>(
-                                                                            // hint: buildTextRegularWidget(cont.selectedClient==""?"Select Client":cont.selectedClient,
-                                                                            //     cont.selectedClient==""?grey:blackColor, context, 15.0),
-                                                                            hint: buildTextRegularWidget(
-                                                                                cont.addedAllottedStatus.contains(taskDetailsIndex)
-                                                                                    ? cont.selectedAllottedStatus
-                                                                                    : cont.allottedStartedStatusList[0],
-                                                                                blackColor, context, 15.0,align: TextAlign.left),
-                                                                            isExpanded: true,
-                                                                            underline: Container(),
-                                                                            //iconEnabledColor: cont.selectedClient==""?grey:blackColor,
-                                                                            items:
-                                                                            cont.allottedStartedStatusList.isEmpty
-                                                                                ?
-                                                                            cont.noDataList.map((value) {
-                                                                              return DropdownMenuItem<String>(
-                                                                                value: value,
-                                                                                child: Text(value),
-                                                                              );
-                                                                            }).toList()
-                                                                                :
-                                                                            cont.allottedStartedStatusList.map((value) {
-                                                                              return DropdownMenuItem<String>(
-                                                                                value: value,
-                                                                                child: Text(value),
-                                                                                onTap: (){
-                                                                                  //cont.updateSelectedAllottedStatus(context,value,taskDetailsIndex);
-                                                                                },
-                                                                              );
-                                                                            }).toList(),
-                                                                            onChanged: (val) {
-                                                                              cont.updateSelectedAllottedStatus(context,val!,taskDetailsIndex);
-                                                                              },
-                                                                          ),
-                                                                        )
+                                                                child: Center(
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                                                      child: DropdownButton<String>(
+                                                                        // hint: buildTextRegularWidget(cont.selectedClient==""?"Select Client":cont.selectedClient,
+                                                                        //     cont.selectedClient==""?grey:blackColor, context, 15.0),
+                                                                        hint: buildTextRegularWidget(
+
+                                                                        cont.checkStatusList[taskDetailsIndex] == "1" ? "Inprocess" :
+                                                                        cont.checkStatusList[taskDetailsIndex] == "2" ? "Awaiting for Client Input" :
+                                                                        cont.checkStatusList[taskDetailsIndex] == "3" ? "Submitted for Checking" :
+                                                                        cont.checkStatusList[taskDetailsIndex] == "4" ? "Put on Hold" :
+                                                                        cont.checkStatusList[taskDetailsIndex] == "5" ? "Completed" :
+
+                                                                            cont.addedAllottedStatus.contains(taskDetailsIndex)
+                                                                                ? cont.selectedAllottedStatus
+                                                                                : cont.allottedStartedStatusList[0],
+                                                                            blackColor, context, 15.0,align: TextAlign.left),
+                                                                        isExpanded: true,
+                                                                        underline: Container(),
+                                                                        //iconEnabledColor: cont.selectedClient==""?grey:blackColor,
+                                                                        items:
+                                                                        cont.allottedStartedStatusList.isEmpty
+                                                                            ?
+                                                                        cont.noDataList.map((value) {
+                                                                          return DropdownMenuItem<String>(
+                                                                            value: value,
+                                                                            child: Text(value),
+                                                                          );
+                                                                        }).toList()
+                                                                            :
+                                                                        cont.allottedStartedStatusList.map((value) {
+                                                                          return DropdownMenuItem<String>(
+                                                                            value: value,
+                                                                            child: Text(value),
+                                                                            onTap: (){
+                                                                              //cont.updateSelectedAllottedStatus(context,value,taskDetailsIndex);
+                                                                            },
+                                                                          );
+                                                                        }).toList(),
+                                                                        onChanged: (val) {
+                                                                          cont.updateSelectedAllottedStatus(context,val!,taskDetailsIndex);
+                                                                        },
+                                                                      ),
                                                                     )
+                                                                )
 
-                                                                    // child: Center(
-                                                                    //     child: Padding(
-                                                                    //   padding: const EdgeInsets.only(
-                                                                    //       left:
-                                                                    //           15.0,
-                                                                    //       right:
-                                                                    //           15.0),
-                                                                    //   child: DropdownButton<
-                                                                    //       String>(
-                                                                    //     hint: buildTextRegularWidget(
-                                                                    //         cont.addedAllottedStatusNameList.isEmpty ? "" : cont.addedAllottedStatusNameList[taskDetailsIndex],
-                                                                    //         blackColor,
-                                                                    //         context,
-                                                                    //         15.0,
-                                                                    //         align: TextAlign.left),
-                                                                    //     isExpanded:
-                                                                    //         true,
-                                                                    //     underline:
-                                                                    //         Container(),
-                                                                    //     //iconEnabledColor: cont.selectedClient==""?grey:blackColor,
-                                                                    //     items: cont.statusList.isEmpty
-                                                                    //         ? cont.noDataList.map((value) {
-                                                                    //             return DropdownMenuItem<String>(
-                                                                    //               value: value,
-                                                                    //               child: Text(value),
-                                                                    //             );
-                                                                    //           }).toList()
-                                                                    //         : cont.statusList.map((StatusList value) {
-                                                                    //             return DropdownMenuItem<String>(
-                                                                    //               value: value.name,
-                                                                    //               child: cont.taskIdList[taskListIndex] == value.taskId ? Text("${value.name!} ") : Text(""),
-                                                                    //               // child:  Text(cont.taskIdList[taskDetailsIndex] == value.taskId
-                                                                    //               //     ? value.name! : value.name.toString().trim()),
-                                                                    //               onTap: () {
-                                                                    //                 //cont.updateSelectedAllottedStatus(context,value,taskDetailsIndex);
-                                                                    //               },
-                                                                    //             );
-                                                                    //           }).toList(),
-                                                                    //     onChanged:
-                                                                    //         (val) {
-                                                                    //       cont.updateSelectedAllottedStatus(
-                                                                    //           context,
-                                                                    //           val!,
-                                                                    //           taskDetailsIndex);
-                                                                    //     },
-                                                                    //   ),
-                                                                    //   // child: PopupMenuButton<String>(
-                                                                    //   //   itemBuilder: (context) {
-                                                                    //   //     return cont.statusList.map((StatusList str) {
-                                                                    //   //       return PopupMenuItem(
-                                                                    //   //         value: str.name,
-                                                                    //   //         child:Text(cont.taskIdList[taskDetailsIndex] == str.taskId?str.name!:"")
-                                                                    //   //       );
-                                                                    //   //     }).toList();
-                                                                    //   //   },
-                                                                    //   //   child: Row(
-                                                                    //   //     mainAxisSize: MainAxisSize.min,
-                                                                    //   //     children: <Widget>[
-                                                                    //   //       Text(cont.addedAllottedStatusNameList[taskDetailsIndex]),
-                                                                    //   //       Icon(Icons.arrow_drop_down),
-                                                                    //   //     ],
-                                                                    //   //   ),
-                                                                    //   //   onSelected: (v) {
-                                                                    //   //     setState(() {
-                                                                    //   //       cont.updateSelectedAllottedStatus(context,v,taskDetailsIndex);
-                                                                    //   //     });
-                                                                    //   //   },
-                                                                    //   // )
-                                                                    // ))
+                                                              // child: Center(
+                                                              //     child: Padding(
+                                                              //   padding: const EdgeInsets.only(
+                                                              //       left:
+                                                              //           15.0,
+                                                              //       right:
+                                                              //           15.0),
+                                                              //   child: DropdownButton<
+                                                              //       String>(
+                                                              //     hint: buildTextRegularWidget(
+                                                              //         cont.addedAllottedStatusNameList.isEmpty ? "" : cont.addedAllottedStatusNameList[taskDetailsIndex],
+                                                              //         blackColor,
+                                                              //         context,
+                                                              //         15.0,
+                                                              //         align: TextAlign.left),
+                                                              //     isExpanded:
+                                                              //         true,
+                                                              //     underline:
+                                                              //         Container(),
+                                                              //     //iconEnabledColor: cont.selectedClient==""?grey:blackColor,
+                                                              //     items: cont.statusList.isEmpty
+                                                              //         ? cont.noDataList.map((value) {
+                                                              //             return DropdownMenuItem<String>(
+                                                              //               value: value,
+                                                              //               child: Text(value),
+                                                              //             );
+                                                              //           }).toList()
+                                                              //         : cont.statusList.map((StatusList value) {
+                                                              //             return DropdownMenuItem<String>(
+                                                              //               value: value.name,
+                                                              //               child: cont.taskIdList[taskListIndex] == value.taskId ? Text("${value.name!} ") : Text(""),
+                                                              //               // child:  Text(cont.taskIdList[taskDetailsIndex] == value.taskId
+                                                              //               //     ? value.name! : value.name.toString().trim()),
+                                                              //               onTap: () {
+                                                              //                 //cont.updateSelectedAllottedStatus(context,value,taskDetailsIndex);
+                                                              //               },
+                                                              //             );
+                                                              //           }).toList(),
+                                                              //     onChanged:
+                                                              //         (val) {
+                                                              //       cont.updateSelectedAllottedStatus(
+                                                              //           context,
+                                                              //           val!,
+                                                              //           taskDetailsIndex);
+                                                              //     },
+                                                              //   ),
+                                                              //   // child: PopupMenuButton<String>(
+                                                              //   //   itemBuilder: (context) {
+                                                              //   //     return cont.statusList.map((StatusList str) {
+                                                              //   //       return PopupMenuItem(
+                                                              //   //         value: str.name,
+                                                              //   //         child:Text(cont.taskIdList[taskDetailsIndex] == str.taskId?str.name!:"")
+                                                              //   //       );
+                                                              //   //     }).toList();
+                                                              //   //   },
+                                                              //   //   child: Row(
+                                                              //   //     mainAxisSize: MainAxisSize.min,
+                                                              //   //     children: <Widget>[
+                                                              //   //       Text(cont.addedAllottedStatusNameList[taskDetailsIndex]),
+                                                              //   //       Icon(Icons.arrow_drop_down),
+                                                              //   //     ],
+                                                              //   //   ),
+                                                              //   //   onSelected: (v) {
+                                                              //   //     setState(() {
+                                                              //   //       cont.updateSelectedAllottedStatus(context,v,taskDetailsIndex);
+                                                              //   //     });
+                                                              //   //   },
+                                                              //   // )
+                                                              // ))
                                                             ),
                                                           )
                                                         ]),

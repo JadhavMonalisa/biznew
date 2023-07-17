@@ -317,9 +317,13 @@ class TimesheetNewFormController extends GetxController {
     allottedEmployeeList.clear();
     updateLoader(true);
     try {
-      TimesheetClientListModel? response =
-          (await repository.getTimesheetClientNameList());
+      TimesheetClientListModel? response = currentService == "allotted"
+          ? (await repository.getTimesheetClientNameList())
+          : (await repository.getTimesheetClientNameNonAllottedList());
 
+
+      print("currentService");
+      print(currentService);
       if (response.success!) {
         if (response.data!.isEmpty) {
         } else {
@@ -477,6 +481,9 @@ class TimesheetNewFormController extends GetxController {
   List<TimesheetTaskDetailsData> timesheetTaskDetailsListData = [];
   int totalTaskLength = 0;
 
+  String toShowServiceId = "";
+  String toShowClientServiceId = "";
+
   void callTaskListForAllotted(
       String selectedServiceId,
       String clientApplicableServiceId,
@@ -488,7 +495,8 @@ class TimesheetNewFormController extends GetxController {
       TimesheetTaskListData? response =
       (await repository.getTimesheetNewTaskList(
           selectedServiceId, clientApplicableServiceId));
-
+      toShowServiceId = selectedServiceId;
+      toShowClientServiceId = clientApplicableServiceId;
       if (response.success!) {
         if (response.timesheetTaskDetailsData!.isEmpty) {} else {
           timesheetTaskListData.add(TimesheetTaskListData(
