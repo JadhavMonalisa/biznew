@@ -574,9 +574,9 @@ class LeaveController extends GetxController {
           selectedStartDateToSend,
           selectedEndDateToSend,
           leaveReason.text,
-          nameOfLeaveFor ?? "",
-          noOfAttempt.text ?? "",
-          nameOfLeaveForExam ?? ""));
+          nameOfLeaveFor.isEmpty || nameOfLeaveFor == "" ? "" : nameOfLeaveFor,
+          noOfAttempt.text.isEmpty || noOfAttempt.text == "" ? "" : noOfAttempt.text,
+          nameOfLeaveForExam.isEmpty || nameOfLeaveForExam == "" ? "" : nameOfLeaveForExam));
 
       if (response.success!) {
         clearForm();
@@ -682,8 +682,8 @@ class LeaveController extends GetxController {
           leaveReason.text,
           nameOfLeaveFor,
           noOfAttempt.text.isEmpty ? "" : noOfAttempt.text,
-          nameOfLeaveForExam ?? "",
-          selectedLeaveId ?? ""));
+          nameOfLeaveForExam.isEmpty || nameOfLeaveForExam =="" ? "" : nameOfLeaveForExam,
+          selectedLeaveId.isEmpty || selectedLeaveId =="" ? "" : selectedLeaveId));
 
       if (response.success!) {
         clearForm();

@@ -107,7 +107,7 @@ class DashboardController extends GetxController {
     const Color(0xFFffc000),
     const Color(0xff0000FF),
     const Color(0xffFF0000),
-    Color(0xffF57C00),
+    const Color(0xffF57C00),
     const Color(0xff008000)
   ];
   List<AllottedNotStartedPastDueData> allottedNotStartedPastDueList = [];
@@ -134,7 +134,7 @@ class DashboardController extends GetxController {
   final startedNotCompletedColors = <pie_chart_color.Color>[
     //const Color(0xFFffc000),
     const Color(0xFFffc000),
-    const Color(0xff0000FF), const Color(0xffFF0000), Color(0xffF57C00),
+    const Color(0xff0000FF), const Color(0xffFF0000), const Color(0xffF57C00),
     const Color(0xff008000)
   ];
   List<StartedNotCompletedPieList> startedNotCompletedPastDueList = [];
@@ -4430,15 +4430,6 @@ class DashboardController extends GetxController {
   ///reassign services
   void callReassignServices() async {
     updateLoader(true);
-    print( allottedTaskNameSecondBracketRemove.replaceAll(", ", ","));
-    print( allottedSelectedReassignId);
-    print( allottedCompletionSecondBracketRemove.replaceAll(", ", ","));
-    print( allottedDaysSecondBracketRemove.replaceAll(", ", ","));
-    print( allottedHoursSecondBracketRemove.replaceAll(", ", ","));
-    print( allottedMinuteSecondBracketRemove.replaceAll(", ", ","));
-    print( allottedTaskEmpSecondBracketRemove.replaceAll(", ", ","));
-    print( allottedTaskIdSecondBracketRemove.replaceAll(", ", ","));
-    print( allottedSrNoSecondBracketRemove.replaceAll(", ", ","));
     try {
       ApiResponse? response = (await repository.getReassignServices(
           allottedTaskNameSecondBracketRemove.replaceAll(", ", ","),
@@ -4593,8 +4584,9 @@ class DashboardController extends GetxController {
         updateLoader(false);
         if (context.mounted) Navigator.of(context).pop();
         hideReasonContent = false;
-        if (context.mounted)
+        if (context.mounted) {
           showCheckPasswordOrReasonDialog("Reason for cancel", context);
+        }
         callAllottedNotStarted();
         callStartedNotCompleted();
         update();
@@ -4829,7 +4821,7 @@ class DashboardController extends GetxController {
                   ? "2"
                   : "4",
           selectedServiceStatus,
-          remarkController.text ?? ""));
+          remarkController.text.isEmpty || remarkController.text == "" ? "" : remarkController.text));
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);
         updateLoader(false);

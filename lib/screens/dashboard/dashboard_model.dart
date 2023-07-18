@@ -824,7 +824,9 @@ class StartedNotCompletedPieList {
     priority = json['priority'] ?? "";
     allottedTo = json['Allotted To'] ?? "";
     tasks = json['Tasks'] ?? "";
-    completionPercentage = json['Completion_Percentage'].toString() ?? "";
+    completionPercentage = json['Completion_Percentage']==null || json['Completion_Percentage'].toString()==""
+        ? ""
+        : json['Completion_Percentage'].toString();
     status = json['Status'] ?? "";
     targetDateToShow = json['target_date'] == null || json['target_date'] == ""
         ? ""

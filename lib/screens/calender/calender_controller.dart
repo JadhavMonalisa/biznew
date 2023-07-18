@@ -70,8 +70,6 @@ class CalenderViewController extends GetxController {
     selectedYear = todayDate.year.toString();
     callCalender();
 
-    print("selectedYear in init");
-    print(selectedYear);
     update();
   }
 
@@ -149,8 +147,6 @@ class CalenderViewController extends GetxController {
     AppointmentDataSource(appointments).appointments!.clear();
     isLoading = true;
     update();
-    print("selectedYear");
-    print(selectedYear);
     try {
       CalenderModel? response = (await repository.getCalender(selectedYear));
 

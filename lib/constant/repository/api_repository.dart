@@ -99,8 +99,6 @@ class ApiRepository {
         "mast_id": userId,
       },
     );
-    print("formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.employeeDashboardUrl,
       body: formData,
@@ -457,7 +455,7 @@ class ApiRepository {
         "mast_id": userId,
         "flag": flag,
         "status": status,
-        "emp": idList ?? ""
+        "emp": idList.isEmpty ? "" : idList
       },
     );
     final response = await apiClient.post(ApiEndpoint.leaveListUrl,
@@ -556,8 +554,6 @@ class ApiRepository {
         "timesheet_date": date,
       },
     );
-    print("timesheet check");
-    print(formData.fields);
     final response = await apiClient.post(ApiEndpoint.timesheetCheckUrl,
         body: formData, headers: headers);
     return CheckTimesheetApiResponse.fromJson(response);
@@ -577,8 +573,6 @@ class ApiRepository {
         "workat": workAt
       },
     );
-    print("get timesheet add formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetAddUrl,
       body: formData,
@@ -652,8 +646,6 @@ class ApiRepository {
     final FormData formData = FormData.fromMap(
       {"mast_id": userId, "client_id": clientId},
     );
-    print("formDAta.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetGetNonAllottedServicesUrl,
       body: formData,
@@ -672,8 +664,6 @@ class ApiRepository {
         "client_applicable_service_id": clientApplicableServiceId
       },
     );
-    print("formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetTaskListUrl,
       body: formData,
@@ -691,8 +681,6 @@ class ApiRepository {
         "client_applicable_service_id": clientApplicableServiceId
       },
     );
-    print("formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetTaskListUrl,
       body: formData,
@@ -711,8 +699,6 @@ class ApiRepository {
         "client_applicable_service_id": clientApplicableServiceId
       },
     );
-    print("formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetGetNonAllottedTaskUrl,
       body: formData,
@@ -730,8 +716,6 @@ class ApiRepository {
         "client_applicable_service_id": clientApplicableServiceId
       },
     );
-    print("non allotted task formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetGetNonAllottedTaskUrl,
       body: formData,
@@ -751,8 +735,6 @@ class ApiRepository {
         "task_id": taskId
       },
     );
-    print("status formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetStatusListUrl,
       body: formData,
@@ -823,8 +805,6 @@ class ApiRepository {
         "nohours": noOfHours,
       },
     );
-    print("allotted or non allotted formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetAddAllottedUrl,
       body: formData,
@@ -1935,8 +1915,6 @@ class ApiRepository {
         "remark": remark
       },
     );
-    print("manual assignment formData.fields");
-    print(formData.fields);
     final response = await apiClient.post(ApiEndpoint.manualAssignmentUrl,
         body: formData, headers: headers);
     return ApiResponse.fromJson(response);

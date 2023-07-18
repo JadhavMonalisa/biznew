@@ -2,22 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import 'dart:collection';
-import 'dart:math';
 
 import 'package:biznew/common_widget/widget.dart';
-import 'package:biznew/constant/api_endpoint.dart';
-import 'package:biznew/constant/provider/custom_exception.dart';
 import 'package:biznew/constant/repository/api_repository.dart';
 import 'package:biznew/screens/calender/calender_controller.dart';
 import 'package:biznew/screens/calender/calender_model.dart';
 import 'package:biznew/screens/calender/event_model.dart';
 import 'package:biznew/theme/app_text_theme.dart';
-import 'package:dio/dio.dart' as dioFormData;
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 
 import '../../theme/app_colors.dart';
@@ -364,8 +358,6 @@ class TableEventsExampleState extends State<TableEventsExample> {
                             selectedDate = "${selection1.year}-"
                                 "${selection1.month.toString().length == 1 ? "0${selection1.month.toString()}" : selection1.month.toString()}-"
                                 "${selection1.day.toString().length == 1 ? "0${selection1.day.toString()}" : selection1.day.toString()}";
-                            print("selectedDate");
-                            print(selectedDate);
                             cont.isLoading = false;
                           });
                         },
@@ -379,8 +371,6 @@ class TableEventsExampleState extends State<TableEventsExample> {
                         },
                         onPageChanged: (focusedDay) {
                           _focusedDay = focusedDay;
-                          print("focusedDay.year");
-                          print(focusedDay.year);
                           if (cont.selectedYear.toString() ==
                               focusedDay.year.toString()) {
                           } else {

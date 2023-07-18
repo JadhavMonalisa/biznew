@@ -722,29 +722,29 @@ class ClaimFormController extends GetxController {
       Utils.showLoadingDialog();
 
       var response = (await repository.getAddClaimForm(
-        taskName: selectedTask ?? "",
-        claimDate: todayDateToShowToSend ?? "",
+        taskName: selectedTask.isEmpty ?"": selectedTask,
+        claimDate: todayDateToShowToSend.isEmpty || todayDateToShowToSend == "" ? "" :  todayDateToShowToSend,
         claimType: selectedClaimType == 0 ? "1" : "0",
-        natureOfClaim: natureOfClaimId ?? "",
-        particulars: claimParticular.text ?? "",
-        clientName: selectedClientId ?? "",
-        year: selectedClaimYearId ?? "",
-        service: selectedServiceId ?? "",
-        task: selectedTaskId ?? "",
+        natureOfClaim: natureOfClaimId.isEmpty || natureOfClaimId == "" ? "" : natureOfClaimId,
+        particulars: claimParticular.text.isEmpty || claimParticular.text == "" ? "" : claimParticular.text,
+        clientName: selectedClientId.isEmpty || selectedClientId == "" ? "" : selectedClientId,
+        year: selectedClaimYearId.isEmpty || selectedClaimYearId == "" ? "" : selectedClaimYearId,
+        service: selectedServiceId.isEmpty || selectedServiceId == "" ? "" : selectedServiceId,
+        task: selectedTaskId.isEmpty || selectedTaskId == "" ? "" : selectedTaskId,
         date: selectedClaimDateToSend == ""
             ? todayDateToShowToSend
             : selectedClaimDateToSend,
-        amount: claimAmount.text ?? "",
-        claimSubmittedBy: claimSubmittedById ?? "",
+        amount: claimAmount.text.isEmpty || claimAmount.text =="" ? "" : claimAmount.text,
+        claimSubmittedBy: claimSubmittedById.isEmpty || claimSubmittedById =="" ? "" : claimSubmittedById,
         claimImage:
             selectedClaimImage.path == "" ? "" : selectedClaimImage.path,
         billable: selectedBillable == 0 ? "Yes" : "No",
-        travelFrom: claimTravelFrom.text ?? "",
-        travelTo: claimTravelTo.text ?? "",
-        kms: claimKms.text ?? "",
-        challanNo: claimChallanNo.text ?? "",
+        travelFrom: claimTravelFrom.text.isEmpty || claimTravelFrom.text == "" ? "" : claimTravelFrom.text,
+        travelTo: claimTravelTo.text.isEmpty || claimTravelTo.text==""? "": claimTravelTo.text,
+        kms: claimKms.text.isEmpty || claimKms.text=="" ? "" : claimKms.text,
+        challanNo: claimChallanNo.text.isEmpty || claimChallanNo.text =="" ? "": claimChallanNo.text,
         clientServiceId: clientServiceId,
-        billNo: claimBillNo.text ?? "",
+        billNo: claimBillNo.text.isEmpty || claimBillNo.text=="" ? "" : claimBillNo.text,
       ));
       Utils.dismissLoadingDialog();
       response.listen((value) {

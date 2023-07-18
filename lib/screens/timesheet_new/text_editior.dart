@@ -1,5 +1,4 @@
 import 'package:biznew/screens/timesheet_new/timesheet_new_controller.dart';
-import 'package:biznew/screens/timesheet_new/timesheet_new_model.dart';
 import 'package:biznew/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,7 +21,6 @@ class _TextEditingForAllottedState extends State<TextEditingForAllotted> {
     return GetBuilder<TimesheetNewFormController>(builder: (cont)
     {
       return TextFormField(
-        //controller: cont.detailsControllerList[taskDetailsIndex],
         controller: widget.controller,
         keyboardType: TextInputType.text,
         textAlign: TextAlign.left,
@@ -46,9 +44,19 @@ class _TextEditingForAllottedState extends State<TextEditingForAllotted> {
          if (cont.dataList.asMap().containsKey(widget.indexForTask!)) {
             cont.dataList.removeAt(widget.indexForTask!);
             cont.dataList.insert(widget.indexForTask!, value);
+            cont.isDetailsAdd = true;
           } else {
             cont.dataList.add(value);
+            //cont.isDetailsAdd = true;
+            cont.isDetailsAdd = true;
           }
+
+         if(cont.hrList.isEmpty || cont.hrList[widget.indexForTask!].toString().contains("")){
+           cont.isTimeSpentAdd = false;
+         }
+         else{
+           cont.isTimeSpentAdd = true;
+         }
         },
       );
     });

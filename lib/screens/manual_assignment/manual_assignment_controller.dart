@@ -383,7 +383,6 @@ class ManualAssignmentController extends GetxController {
           ? validateTriggerDate = true
           : validateTriggerDate = false;
 
-      print(selectedTriggerDateToSend);
       update();
     } else if (dateFor == "targetDate") {
       ///format month
@@ -407,7 +406,6 @@ class ManualAssignmentController extends GetxController {
           : validateTargetDate = false;
       update();
 
-      print(selectedTargetDateToSend);
     }
     update();
   }

@@ -875,9 +875,6 @@ class TimesheetFormController extends GetxController {
   void callTaskList() async {
     taskList.clear();
     statusList.clear();
-    print("In task api");
-    print(selectedServiceId);
-    print(clientApplicableServiceId);
     try {
       TimesheetTaskModel? response = (await repository.getTimesheetTaskList(
           selectedServiceId, clientApplicableServiceId));
@@ -1177,7 +1174,7 @@ class TimesheetFormController extends GetxController {
           selectedServiceId,
           clientApplicableServiceId,
           selectedTaskId,
-          remark.text ?? "",
+          remark.text.isEmpty || remark.text =="" ? "" : remark.text,
           totalTimeToShow));
       if (response.success!) {
         Utils.showSuccessSnackBar(response.message);

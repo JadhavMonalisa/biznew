@@ -557,7 +557,7 @@ class _ManualAssignmentScreenState extends State<ManualAssignmentScreen> {
                           contentPadding: const EdgeInsets.all(10),
                           hintText: "Enter fees",
                           hintStyle: GoogleFonts.rubik(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               color: blackColor,
                               fontSize: 15,
                             ),

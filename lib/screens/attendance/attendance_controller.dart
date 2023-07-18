@@ -70,8 +70,6 @@ class AttendanceController extends GetxController {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       currentPosition = position;
-      print(
-          "lat : ${currentPosition!.latitude}, long : ${currentPosition!.longitude},");
       update();
       getAddressFromLatLng(currentPosition!);
     }).catchError((e) {
@@ -88,30 +86,6 @@ class AttendanceController extends GetxController {
       currentAddress = '${place.street}, ${place.subLocality}, '
           '${place.subAdministrativeArea}, ${place.postalCode}';
 
-      print("place");
-      print(place);
-      print("place.name");
-      print(place.name);
-      print("place.administrativeArea");
-      print(place.administrativeArea);
-      print("place.country");
-      print(place.country);
-      print("place.isoCountryCode");
-      print(place.isoCountryCode);
-      print("place.locality");
-      print(place.locality);
-      print("place.postalCode");
-      print(place.postalCode);
-      print("place.street");
-      print(place.street);
-      print("place.subAdministrativeArea");
-      print(place.subAdministrativeArea);
-      print("place.subLocality");
-      print(place.subLocality);
-      print("place.subThoroughfare");
-      print(place.subThoroughfare);
-      print("place.thoroughfare");
-      print(place.thoroughfare);
 
       isLoading = false;
 
