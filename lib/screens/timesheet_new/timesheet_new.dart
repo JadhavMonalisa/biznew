@@ -112,6 +112,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                 padding: const EdgeInsets.only(top: 30.0),
                                 child: GestureDetector(
                                     onTap: () {
+                                      //cont.continued();
                                       cont.checkValidationForStepper1();
                                     },
                                     child: cont.isLoadingForStepper1 ? const Opacity(opacity: 0.0):
@@ -156,6 +157,8 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                             const EdgeInsets.only(top: 30.0),
                                         child: GestureDetector(
                                             onTap: () {
+
+                                              print(cont.currentService);
                                              cont.currentService == "office"
                                                   ? cont
                                                       .checkValidationForOffice(
@@ -810,6 +813,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                 const SizedBox(
                   height: 15.0,
                 ),
+                cont.loaderAllottedForSerice ? buildCircularIndicator() :
                 Container(
                   height: 40.0,
                   width: MediaQuery.of(context).size.width,
@@ -901,6 +905,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                   ],
                 ),
 
+                cont.loader ? const Opacity(opacity: 0.0) :
                 Padding(
                   padding: const EdgeInsets.only(top: 30.0),
                   child: GestureDetector(
@@ -913,6 +918,8 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
 
                 // Text(cont.toShowServiceId),
                 // Text(cont.toShowClientServiceId),
+
+                cont.loader ? buildCircularIndicator() :
 
                 cont.isFillTimesheetSelected
                     ? Column(
@@ -1028,10 +1035,57 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                     child:TextEditingForAllotted(controller: cont.timesheetTaskListData[
                                                                     taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].testTaskDetails,
                                                                       indexForService:taskListIndex,
+                                                                      //indexForTask: taskDetailsIndex==0 ? 0 : taskDetailsIndex-1,
                                                                       indexForTask: taskDetailsIndex,
                                                                     enabled: cont.checkStatusList[taskDetailsIndex] == "1" && cont.checkStartList[taskDetailsIndex] == "0"
                                                                       ? false:true,
+                                                                      taskId: cont.timesheetTaskListData[
+                                                                      taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskId,
                                                                     )
+                                                                        // child:TextFormField(
+                                                                        //   controller: cont.detailsAddController,
+                                                                        //   keyboardType: TextInputType.text,
+                                                                        //   textAlign: TextAlign.left,
+                                                                        //   textAlignVertical: TextAlignVertical.center,
+                                                                        //   textInputAction: TextInputAction.done,
+                                                                        //   onTap: () {},
+                                                                        //   //enabled: widget.enabled,
+                                                                        //   style: const TextStyle(fontSize: 15.0),
+                                                                        //   decoration: InputDecoration(
+                                                                        //     contentPadding: const EdgeInsets.all(10),
+                                                                        //     hintText: "Details",
+                                                                        //     hintStyle: GoogleFonts.rubik(
+                                                                        //       textStyle: TextStyle(
+                                                                        //         color: grey,
+                                                                        //         fontSize: 15,
+                                                                        //       ),
+                                                                        //     ),
+                                                                        //     border: InputBorder.none,
+                                                                        //   ),
+                                                                        //   onChanged: (value) {
+                                                                        //     print("value");
+                                                                        //     print(value);
+                                                                        //     cont.detailsAddController.text = value;
+                                                                        //
+                                                                        //
+                                                                        //     if (cont.dataList.asMap().containsKey(taskDetailsIndex)) {
+                                                                        //       print('Exists');
+                                                                        //       cont.dataList.removeAt(taskDetailsIndex);
+                                                                        //       print("after remove index cont.dataList");
+                                                                        //       print(cont.dataList);
+                                                                        //       cont.dataList.insert(taskDetailsIndex,cont.detailsAddController.text);
+                                                                        //       print("after insert cont.dataList");
+                                                                        //       print(cont.dataList);
+                                                                        //     } else {
+                                                                        //       print('Doesn\'t exist');
+                                                                        //       cont.dataList.clear();
+                                                                        //       cont.dataList.add(cont.detailsAddController.text);
+                                                                        //       print("after add cont.dataList");
+                                                                        //       print(cont.dataList);
+                                                                        //     }
+                                                                        //
+                                                                        //   },
+                                                                        // )
                                                                   ),
                                                                 ),
                                                         ]),
@@ -1065,7 +1119,10 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                               : cont.selectTimeForTask(
                                                                   context,
                                                                   taskListIndex,
-                                                                  taskDetailsIndex);
+                                                                  taskDetailsIndex,
+                                                                  cont.timesheetTaskListData[taskListIndex]
+                                                                      .timesheetTaskDetailsData![taskDetailsIndex].taskId!
+                                                              );
                                                             },
                                                             child: Padding(
                                                               padding:
@@ -1375,6 +1432,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                     const SizedBox(
                       height: 10.0,
                     ),
+                    cont.loaderNonAllottedService ? buildCircularIndicator() :
                     Container(
                         height: 40.0,
                         width: MediaQuery.of(context).size.width,
@@ -1430,6 +1488,8 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                     const SizedBox(
                       height: 10.0,
                     ),
+
+                    cont.loaderNonAllottedForTask ? buildCircularIndicator() :
                     Container(
                         height: 40.0,
                         width: MediaQuery.of(context).size.width,
@@ -1691,7 +1751,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
           GestureDetector(
             onTap: () {
               cont.diff.inHours == 0 && cont.diff.inMinutes == 0
-               ? cont.callApiToSaveAll() : null;
+               ? cont.callApiToSaveAll("save") : null;
             },
             child: buildButtonWidget(context, "Save",
                 buttonColor: editColor, width: 100.0),
@@ -1703,7 +1763,13 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
           GestureDetector(
             onTap: () {
               cont.diff.inHours == 0 && cont.diff.inMinutes == 0
-                  ? cont.callApiToSaveAll() : null;
+                  ? cont.callApiToSaveAll("approve") : null;
+
+              print(cont.selectedDateToSend);
+              print(cont.removeSecondOfficeWorkIdListBracket);
+              print(cont.removeSecondOfficeDetailsListBracket);
+              print(cont.removeSecondOfficeAddedTimeListBracket);
+              print(cont.officeAction);
             },
             child: buildButtonWidget(context, "Submit for Approval",
                 buttonColor: editColor, width: 250.0),

@@ -805,6 +805,9 @@ class ApiRepository {
         "nohours": noOfHours,
       },
     );
+
+    print("allotted save");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetAddAllottedUrl,
       body: formData,
@@ -872,6 +875,9 @@ class ApiRepository {
         "action": action
       },
     );
+
+    print("office formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetAddOfficeRelatedUrl,
       body: formData,
