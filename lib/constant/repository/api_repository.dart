@@ -1170,10 +1170,9 @@ class ApiRepository {
   }
 
   ///allotted not started past due own
-  Future<AllottedNotStartedPastDueTeam>
-      getAllottedNotStartedPastDueOwn() async {
+  Future<AllottedNotStartedPastDueTeam> getAllottedNotStartedPastDueOwn(String search) async {
     final FormData formData = FormData.fromMap(
-      {"firm_id": firmId, "mast_id": userId},
+      {"firm_id": firmId, "mast_id": userId, "search" : search},
     );
     final response = await apiClient.post(
       ApiEndpoint.allottedNotStartedPastDueOwnUrl,

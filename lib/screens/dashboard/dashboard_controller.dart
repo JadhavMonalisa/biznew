@@ -961,50 +961,16 @@ class DashboardController extends GetxController {
     selectedType = type;
     selectedCount = count;
     selectedMainType = "AllottedNotStarted";
+
     if (title == "Past Due") {
-      // if(selectedMainType == "AllottedNotStarted")
-      //   {
-      //    type == "Own" ? callAllottedNotStartedPastDueOwn() : callAllottedNotStartedPastDueTeam();
-      //   }
-      // else{
-      //     type == "Own" ? callStartedNotCompletedPastOwn() : callStartedNotCompletedPastTeam();
-      // }
       onPasDueSelected();
     } else if (title == "Probable Overdue") {
-      // if(selectedMainType == "AllottedNotStarted")
-      // {
-      //  type == "Own" ?  callAllottedNotStartedProbableOwn() :  callAllottedNotStartedPortableDueTeam();
-      // }
-      // else{
-      //   type == "Own" ? callStartedNotCompletedProbableOwn() : callStartedNotCompletedProbableTeam();
-      // }
       onPortableOverdueSelected();
     } else if (title == "High") {
-      // if(selectedMainType == "AllottedNotStarted")
-      // {
-      //  type == "Own" ?  callAllottedNotStartedHighOwn() :  callAllottedNotStartedHighDueTeam();
-      // }
-      // else{
-      //   type == "Own" ? callStartedNotCompletedHighOwn() : callStartedNotCompletedHighTeam();
-      // }
       onHighSelected();
     } else if (title == "Medium") {
-      // if(selectedMainType == "AllottedNotStarted")
-      // {
-      //  type == "Own" ?  callAllottedNotStartedMediumOwn() :  callAllottedNotStartedMediumDueTeam();
-      // }
-      // else{
-      //   type == "Own" ? callStartedNotCompletedMediumOwn() : callStartedNotCompletedMediumTeam();
-      // }
       onHMediumSelected();
     } else if (title == "Low") {
-      // if(selectedMainType == "AllottedNotStarted")
-      // {
-      //  type == "Own" ?  callAllottedNotStartedLowOwn() :  callAllottedNotStartedLowDueTeam();
-      // }
-      // else{
-      //   type == "Own" ? callStartedNotCompletedLowOwn() : callStartedNotCompletedLowTeam();
-      // }
       onLowSelected();
     }
     update();
@@ -1679,11 +1645,13 @@ class DashboardController extends GetxController {
     update();
   }
 
+  int selectedTabIndex = 0;
   onTabIndexSelect(int index) {
     addedIndex.clear();
     isExpanded = false;
     addedDateListForAll.clear();
     selectedDateToShowForCurrent = "";
+    selectedTabIndex = index;
     if (index == 0) {
       onPasDueSelected();
     } else if (index == 1) {
@@ -1862,7 +1830,7 @@ class DashboardController extends GetxController {
     try {
       AllottedNotStartedPastDueTeam? response =
           selectedPieChartTitle == "Past Due"
-              ? (await repository.getAllottedNotStartedPastDueOwn())
+              ? (await repository.getAllottedNotStartedPastDueOwn(""))
               : selectedPieChartTitle == "Probable Overdue"
                   ? (await repository.getAllottedNotStartedProbableOwn())
                   : selectedPieChartTitle == "High"
@@ -1908,11 +1876,191 @@ class DashboardController extends GetxController {
     Get.toNamed(AppRoutes.serviceDashboardNext);
   }
 
-  void callAllottedNotStartedPastDueOwn() async {
+  callApiWhenSearchIsEmpty(){
+    if(selectedMainType == "AllottedNotStarted"){
+      callDueDataApi(selectedPieChartTitle, selectedType, selectedCount.toString());
+    }
+    else if(selectedMainType == "StartedNotCompleted"){
+      callDueDataForStartedNotCompletedApi(selectedPieChartTitle, selectedType, selectedCount.toString());
+    }
+    else if(selectedMainType == "CompletedUdinPending"){
+      callDueDataForCompletedUdinPendingApi(selectedPieChartTitle, selectedType, selectedCount.toString());
+    }
+    else if(selectedMainType == "CompletedNotBilled"){
+      callDueDataForCompletedNotBilled(selectedPieChartTitle, selectedCount.toString());
+    }
+    else if(selectedMainType == "WorkOnHold"){
+      callDueDataForWorkOnHold(selectedPieChartTitle, selectedType, selectedCount.toString());
+    }
+    else if(selectedMainType == "SubmittedForChecking"){
+      callDueDataForSubmittedForChecking(selectedPieChartTitle, selectedType, selectedCount.toString());
+    }
+    else {
+      callDueDataForAllTasks(selectedPieChartTitle, selectedType, selectedCount.toString());
+    }
+  }
+
+  void filterSearchResults(String query) {
+
+    if(selectedMainType == "AllottedNotStarted"){
+      var newList = allottedNotStartedPastDueList.where(
+              (t) => t.client!.toLowerCase().contains(query.toLowerCase()) ||
+              t.client!.toUpperCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toLowerCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toUpperCase().contains(query.toLowerCase())
+      ).toList();
+
+      if(newList.isEmpty){
+        allottedNotStartedPastDueList.clear();
+        update();
+      }
+      else{
+        allottedNotStartedPastDueList.clear();
+        allottedNotStartedPastDueList = newList;
+        update();
+      }
+      update();
+    }
+    else if(selectedMainType == "StartedNotCompleted"){
+      var newList = startedNotCompletedPastDueList.where(
+              (t) => t.client!.toLowerCase().contains(query.toLowerCase()) ||
+              t.client!.toUpperCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toLowerCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toUpperCase().contains(query.toLowerCase())
+      ).toList();
+
+      if(newList.isEmpty){
+        startedNotCompletedPastDueList.clear();
+        update();
+      }
+      else{
+        startedNotCompletedPastDueList.clear();
+        startedNotCompletedPastDueList = newList;
+        update();
+      }
+      update();
+    }
+    else if(selectedMainType == "CompletedUdinPending"){
+      var newList = completedUdinPendingDataList.where(
+              (t) => t.client!.toLowerCase().contains(query.toLowerCase()) ||
+              t.client!.toUpperCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toLowerCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toUpperCase().contains(query.toLowerCase())
+      ).toList();
+
+      if(newList.isEmpty){
+        completedUdinPendingDataList.clear();
+        update();
+      }
+      else{
+        completedUdinPendingDataList.clear();
+        completedUdinPendingDataList = newList;
+        update();
+      }
+      update();
+    }
+    else if(selectedMainType == "CompletedNotBilled"){
+      var newList = completedNotBilledDataList.where(
+              (t) => t.client!.toLowerCase().contains(query.toLowerCase()) ||
+              t.client!.toUpperCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toLowerCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toUpperCase().contains(query.toLowerCase())
+      ).toList();
+
+      if(newList.isEmpty){
+        completedNotBilledDataList.clear();
+        update();
+      }
+      else{
+        completedNotBilledDataList.clear();
+        completedNotBilledDataList = newList;
+        update();
+      }
+      update();
+    }
+    else if(selectedMainType == "WorkOnHold"){
+      var newList = workOnHoldPieDataList.where(
+              (t) => t.client!.toLowerCase().contains(query.toLowerCase()) ||
+              t.client!.toUpperCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toLowerCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toUpperCase().contains(query.toLowerCase())
+      ).toList();
+
+      if(newList.isEmpty){
+        workOnHoldPieDataList.clear();
+        update();
+      }
+      else{
+        workOnHoldPieDataList.clear();
+        workOnHoldPieDataList = newList;
+        update();
+      }
+      update();
+    }
+    else if(selectedMainType == "SubmittedForChecking"){
+      var newList = submittedForCheckingPieDataList.where(
+              (t) => t.client!.toLowerCase().contains(query.toLowerCase()) ||
+              t.client!.toUpperCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toLowerCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toUpperCase().contains(query.toLowerCase())
+      ).toList();
+
+      if(newList.isEmpty){
+        submittedForCheckingPieDataList.clear();
+        update();
+      }
+      else{
+        submittedForCheckingPieDataList.clear();
+        submittedForCheckingPieDataList = newList;
+        update();
+      }
+      update();
+    }
+    else{
+      var newList = allTasksDataList.where(
+              (t) => t.client!.toLowerCase().contains(query.toLowerCase()) ||
+              t.client!.toUpperCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toLowerCase().contains(query.toLowerCase()) ||
+                  t.servicename!.toUpperCase().contains(query.toLowerCase())
+      ).toList();
+
+      if(newList.isEmpty){
+        allTasksDataList.clear();
+        update();
+      }
+      else{
+        allTasksDataList.clear();
+        allTasksDataList = newList;
+        update();
+      }
+      update();
+    }
+  }
+
+  void filterSearchResultsForTrigger(String query) {
+    var newList = triggeredNotAllottedPieChartDetails.where(
+            (t) => t.client!.toLowerCase().contains(query.toLowerCase()) ||
+            t.client!.toUpperCase().contains(query.toLowerCase()) ||
+                t.servicename!.toLowerCase().contains(query.toLowerCase()) ||
+                t.servicename!.toUpperCase().contains(query.toLowerCase())
+    ).toList();
+
+    if(newList.isEmpty){
+      triggeredNotAllottedPieChartDetails.clear();
+      update();
+    }
+    else{
+      triggeredNotAllottedPieChartDetails.clear();
+      triggeredNotAllottedPieChartDetails = newList;
+      update();
+    }
+    update();
+  }
+
+  void callAllottedNotStartedPastDueOwn({String search = ""}) async {
     allottedNotStartedPastDueList.clear();
     try {
-      AllottedNotStartedPastDueTeam? response =
-          await repository.getAllottedNotStartedPastDueOwn();
+      AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedPastDueOwn(search);
 
       if (response.success!) {
         allottedNotStartedPastDueList

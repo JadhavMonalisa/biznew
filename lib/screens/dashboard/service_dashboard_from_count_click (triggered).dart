@@ -79,37 +79,36 @@ class _TriggeredNotAllottedPieChartListState
                                             child: Padding(
                                           padding:
                                               const EdgeInsets.only(left: 5.0),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              showInprocessDialog(context);
-                                            },
-                                            child: TextFormField(
-                                              controller: cont.searchController,
-                                              keyboardType: TextInputType.text,
-                                              textAlign: TextAlign.left,
-                                              textAlignVertical:
-                                                  TextAlignVertical.center,
-                                              textInputAction:
-                                                  TextInputAction.done,
-                                              textCapitalization:
-                                                  TextCapitalization.sentences,
-                                              enabled: false,
-                                              onTap: () {},
-                                              style: const TextStyle(
-                                                  fontSize: 15.0),
-                                              decoration: InputDecoration(
-                                                hintText:
-                                                    "Search by client name or service name",
-                                                hintStyle: GoogleFonts.rubik(
-                                                  textStyle: const TextStyle(
-                                                    color: blackColor,
-                                                    fontSize: 15,
-                                                  ),
+                                          child: TextFormField(
+                                            controller: cont.searchController,
+                                            keyboardType: TextInputType.text,
+                                            textAlign: TextAlign.left,
+                                            textAlignVertical:
+                                                TextAlignVertical.center,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            textCapitalization:
+                                                TextCapitalization.sentences,
+                                            enabled: true,
+                                            onTap: () {},
+                                            style: const TextStyle(
+                                                fontSize: 15.0),
+                                            decoration: InputDecoration(
+                                              hintText: "Search by client name or service name",
+                                              hintStyle: GoogleFonts.rubik(
+                                                textStyle: const TextStyle(
+                                                  color: blackColor,
+                                                  fontSize: 15,
                                                 ),
-                                                border: InputBorder.none,
                                               ),
-                                              onChanged: (text) {},
+                                              border: InputBorder.none,
                                             ),
+                                            onChanged: (text) {
+                                              text.isEmpty ?
+                                              cont.navigateToTriggeredNotAllottedNext(cont.selectedType,cont.selectedCount)
+                                              ///while searching
+                                                  : cont.filterSearchResultsForTrigger(text);
+                                            },
                                           ),
                                         )),
                                       )),

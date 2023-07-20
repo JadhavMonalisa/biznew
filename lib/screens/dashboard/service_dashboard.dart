@@ -1036,7 +1036,6 @@ class _ServiceDashboardScreenState extends State<ServiceDashboardScreen> {
                                                                           return GestureDetector(
                                                                             onTap:
                                                                                 () {
-                                                                              //showInprocessDialog(context);
                                                                               cont.navigateToTriggeredNotAllottedNext(cont.chartDetails[index], cont.triggeredNotAllotted[index].toString());
                                                                             },
                                                                             child: Padding(
