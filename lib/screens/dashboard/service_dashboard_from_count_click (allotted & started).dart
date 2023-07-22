@@ -154,6 +154,7 @@ class _ServiceDashboardNextScreenState
                                                     border: InputBorder.none,
                                                   ),
                                                   onChanged: (text) {
+                                                    cont.loader =true;
                                                     text.isEmpty ?
                                                     cont.callApiWhenSearchIsEmpty()
                                                     ///while searching
@@ -162,13 +163,19 @@ class _ServiceDashboardNextScreenState
                                                 ),
                                               )),
                                             )),
-                                            const Center(
+                                             Center(
                                               child: Padding(
-                                                padding: EdgeInsets.only(
+                                                padding: const EdgeInsets.only(
                                                     left: 5.0, right: 5.0),
-                                                child: Icon(
-                                                  Icons.search,
-                                                  color: primaryColor,
+                                                child: GestureDetector(
+                                                  onTap: (){
+                                                    cont.loader = true;
+                                                    cont.filterSearchResults(cont.searchController.text);
+                                                  },
+                                                  child: const Icon(
+                                                    Icons.search,
+                                                    color: primaryColor,
+                                                  ),
                                                 ),
                                               ),
                                             )

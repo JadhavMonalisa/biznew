@@ -129,6 +129,8 @@ class _TextEditingForAllottedState extends State<TextEditingForAllotted> {
             cont.taskIdList.add(widget.taskId!);
           }
 
+          print("taskIdList in text edit");
+          print(cont.taskIdList);
         if(cont.dataList.isEmpty){
           cont.dataList.add(value);
         }
@@ -177,13 +179,13 @@ class _TextEditingForAllottedState extends State<TextEditingForAllotted> {
           //   addedTextIndex.add(widget.indexForTask!);
           // }
 
-         if(cont.hrList.isEmpty || cont.hrList[widget.indexForTask!].toString().contains("")
-         || cont.hrList[widget.indexForTask!].toString() == ""){
-           cont.isTimeSpentAdd = false;
-         }
-         else{
-           cont.isTimeSpentAdd = true;
-         }
+         // if(cont.hrList.isEmpty || cont.hrList[widget.indexForTask!].toString().contains("")
+         // || cont.hrList[widget.indexForTask!].toString() == ""){
+         //   cont.isTimeSpentAdd = false;
+         // }
+         // else{
+         //   cont.isTimeSpentAdd = true;
+         // }
          print("widget.indexForTask");
          print(widget.indexForTask);
          //cont.onDetailsTextChange(value,widget.taskId!,widget.indexForTask!);

@@ -1784,6 +1784,7 @@ class DashboardController extends GetxController {
     isExpanded = false;
     selectedServiceStatus = "";
     selectedCurrentPriority = "";
+    searchController.clear();
     //updateSlider(1);
 
     //carouselController.jumpToPage(1);
@@ -1900,25 +1901,40 @@ class DashboardController extends GetxController {
     }
   }
 
+  List<AllottedNotStartedPastDueData> searchList = [];
+
   void filterSearchResults(String query) {
 
-    if(selectedMainType == "AllottedNotStarted"){
-      var newList = allottedNotStartedPastDueList.where(
-              (t) => t.client!.toLowerCase().contains(query.toLowerCase()) ||
-              t.client!.toUpperCase().contains(query.toLowerCase()) ||
-                  t.servicename!.toLowerCase().contains(query.toLowerCase()) ||
-                  t.servicename!.toUpperCase().contains(query.toLowerCase())
-      ).toList();
+    //searchList = allottedNotStartedPastDueList;
 
-      if(newList.isEmpty){
-        allottedNotStartedPastDueList.clear();
-        update();
-      }
-      else{
-        allottedNotStartedPastDueList.clear();
-        allottedNotStartedPastDueList = newList;
-        update();
-      }
+    if(selectedMainType == "AllottedNotStarted"){
+
+      // print("query");
+      // print(query);
+      // var newList = allottedNotStartedPastDueList.where(
+      //         (t) => t.client!.toLowerCase().contains(query.toLowerCase()) ||
+      //         t.client!.toUpperCase().contains(query.toUpperCase()) ||
+      //         t.client!.contains(query.toLowerCase()) ||
+      //         t.client!.contains(query.toUpperCase()) ||
+      //             t.servicename!.toLowerCase().contains(query.toLowerCase()) ||
+      //             t.servicename!.toUpperCase().contains(query.toLowerCase())
+      // ).toList();
+      //
+      // update();
+      // if(newList.isEmpty){
+      //   allottedNotStartedPastDueList.clear();
+      //   update();
+      // }
+      // else{
+      //   allottedNotStartedPastDueList.clear();
+      //   allottedNotStartedPastDueList = newList;
+      //   update();
+      // }
+      // print("newList.length");
+      // print(newList.length);
+      allottedNotStartedPastDueList.clear();
+      callAllottedNotStartedPastDueOwn(search: query);
+      print(query);
       update();
     }
     else if(selectedMainType == "StartedNotCompleted"){
@@ -2035,6 +2051,7 @@ class DashboardController extends GetxController {
       }
       update();
     }
+    update();
   }
 
   void filterSearchResultsForTrigger(String query) {
@@ -2063,8 +2080,7 @@ class DashboardController extends GetxController {
       AllottedNotStartedPastDueTeam? response = await repository.getAllottedNotStartedPastDueOwn(search);
 
       if (response.success!) {
-        allottedNotStartedPastDueList
-            .addAll(response.allottedNotStartedPastDueData!);
+        allottedNotStartedPastDueList.addAll(response.allottedNotStartedPastDueData!);
         updateLoader(false);
         Utils.dismissLoadingDialog();
         update();
@@ -2073,6 +2089,8 @@ class DashboardController extends GetxController {
         updateLoader(false);
         update();
       }
+      print("allottedNotStartedPastDueList.length");
+      print(allottedNotStartedPastDueList.length);
       update();
     } on CustomException {
       Utils.dismissLoadingDialog();

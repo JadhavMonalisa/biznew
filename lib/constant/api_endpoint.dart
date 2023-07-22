@@ -6,100 +6,69 @@ class ApiEndpoint {
   ///Basic User
   //static const String loginUrl = "https://dev.bizalys.com/api/login.php";
   static const String loginUrl = "$baseUrl/apiController/login";
-  static const String forgotPasswordUrl =
-      "$baseUrl/apiController/forgotpassword";
-  static const String accessRightUrl =
-      "$baseUrl/apiController/get_access_rights";
+  static const String forgotPasswordUrl = "$baseUrl/apiController/forgotpassword";
+  static const String accessRightUrl = "$baseUrl/apiController/get_access_rights";
   static const String notificationUrl = "$baseUrl/ApiController/notification";
-  static const String notificationMarkAllReadUrl =
-      "$baseUrl/ApiController/notification_mark_all_read";
-  static const String notificationMarkSelectedReadUrl =
-      "$baseUrl/ApiController/notification_mark_read";
-  static const String clientDashboardUrl =
-      "$baseUrl/DashboardController/client_dashboard";
-  static const String employeeDashboardUrl =
-      "$baseUrl/DashboardController/employee_dashboard";
+  static const String notificationMarkAllReadUrl = "$baseUrl/ApiController/notification_mark_all_read";
+  static const String notificationMarkSelectedReadUrl = "$baseUrl/ApiController/notification_mark_read";
+  static const String clientDashboardUrl = "$baseUrl/DashboardController/client_dashboard";
+  static const String employeeDashboardUrl = "$baseUrl/DashboardController/employee_dashboard";
 
   ///Claim
   static const String claimTypeListUrl = "$baseUrl/ClaimController/claimtype";
   static const String clientNameListUrl = "$baseUrl/apiController/clientlist";
   static const String claimYearListUrl = "$baseUrl/apiController/yearlist";
-  static const String claimSubmittedByListUrl =
-      "$baseUrl/ApiController/employee_list";
+  static const String claimSubmittedByListUrl = "$baseUrl/ApiController/employee_list";
   static const String claimServicesListUrl = "$baseUrl/ApiController/services";
   static const String claimTaskListUrl = "$baseUrl/ApiController/tasks";
   static const String claimAddUrl = "$baseUrl/ClaimController/claimsave";
   static const String claimListUrl = "$baseUrl/ClaimController/claimlist";
   static const String claimEditUrl = "$baseUrl/ClaimController/claimedit";
   static const String claimUpdateUrl = "$baseUrl/ClaimController/claimupdate";
-  static const String claimUpdateStatusUrl =
-      "$baseUrl/ClaimController/claim_status_update";
+  static const String claimUpdateStatusUrl = "$baseUrl/ClaimController/claim_status_update";
 
   ///Leave
-  static const String leaveCountUrl =
-      "$baseUrl/LeaveController/leavetotalcount";
+  static const String leaveCountUrl = "$baseUrl/LeaveController/leavetotalcount";
   static const String leaveTypeUrl = "$baseUrl/LeaveController/leavetype";
   static const String leaveAddUrl = "$baseUrl/LeaveController/leavesave";
   static const String leaveListUrl = "$baseUrl/LeaveController/leavelist";
   static const String leaveEditListUrl = "$baseUrl/LeaveController/leaveedit";
-  static const String leaveUpdateListUrl =
-      "$baseUrl/LeaveController/leaveupdate";
-  static const String leaveUpdateStatusUrl =
-      "$baseUrl/LeaveController/leave_status_update";
+  static const String leaveUpdateListUrl = "$baseUrl/LeaveController/leaveupdate";
+  static const String leaveUpdateStatusUrl = "$baseUrl/LeaveController/leave_status_update";
 
   ///Timesheet
-  static const String timesheetActionUrl =
-      "$baseUrl/TimesheetController/timesheet_status_update";
+  static const String timesheetActionUrl = "$baseUrl/TimesheetController/timesheet_status_update";
 
   ///stepper 1
-  static const String timesheetCheckUrl =
-      "$baseUrl/TimesheetController/check_timesheet_add";
-  static const String timesheetAddUrl =
-      "$baseUrl/TimesheetController/timesheet_add";
+  static const String timesheetBackDateAllowedUrl = "$baseUrl/ApiController/backdated_allowed_days";
+  static const String timesheetCheckUrl = "$baseUrl/TimesheetController/check_timesheet_add";
+  static const String timesheetAddUrl = "$baseUrl/TimesheetController/timesheet_add";
 
   ///stepper 2
-  static const String timesheetTotalTimeUrl =
-      "$baseUrl/TimesheetController/getTimesheetTotalHrs";
+  static const String timesheetTotalTimeUrl = "$baseUrl/TimesheetController/getTimesheetTotalHrs";
   static const String timesheetClientListUrl = "$baseUrl/TimesheetController/getAllottedServicesClients";
   static const String timesheetClientListNonAllottedUrl = "$baseUrl/TimesheetController/getNonAllottedServicesClients";
 
-  static const String timesheetServicesListUrl =
-      "$baseUrl/TimesheetController/getAllottedServices";
-  static const String timesheetTaskListUrl =
-      "$baseUrl/TimesheetController/getAllottedServicesTasks";
-  static const String timesheetStatusListUrl =
-      "$baseUrl/TimesheetController/timesheet_services_status";
-  static const String timesheetStartStatusUrl =
-      "$baseUrl/TimesheetController/service_status_start";
-  static const String timesheetStatusUpdateUrl =
-      "$baseUrl/TimesheetController/service_status_update";
-  static const String timesheetAddAllottedUrl =
-      "$baseUrl/TimesheetController/timesheet_add_allotted";
-  static const String timesheetGetNonAllottedServicesUrl =
-      "$baseUrl/TimesheetController/getNonAllottedServices";
-  static const String timesheetGetNonAllottedTaskUrl =
-      "$baseUrl/TimesheetController/getNonAllottedServicesTasks";
+  static const String timesheetServicesListUrl = "$baseUrl/TimesheetController/getAllottedServices";
+  static const String timesheetTaskListUrl = "$baseUrl/TimesheetController/getAllottedServicesTasks";
+  static const String timesheetStatusListUrl = "$baseUrl/TimesheetController/timesheet_services_status";
+  static const String timesheetStartStatusUrl = "$baseUrl/TimesheetController/service_status_start";
+  static const String timesheetStatusUpdateUrl = "$baseUrl/TimesheetController/service_status_update";
+  static const String timesheetAddAllottedUrl = "$baseUrl/TimesheetController/timesheet_add_allotted";
+  static const String timesheetGetNonAllottedServicesUrl = "$baseUrl/TimesheetController/getNonAllottedServices";
+  static const String timesheetGetNonAllottedTaskUrl = "$baseUrl/TimesheetController/getNonAllottedServicesTasks";
   static const String timesheetAddNonAllottedUrl = "$baseUrl/";
-  static const String timesheetTypeOfWorkUrl =
-      "$baseUrl/TimesheetController/get_type_of_work";
-  static const String timesheetAddOfficeRelatedUrl =
-      "$baseUrl/TimesheetController/timesheet_add_officerealted";
-  static const String timesheetListUrl =
-      "$baseUrl/TimesheetController/timesheetlist";
-  static const String timesheetEditUrl =
-      "$baseUrl/TimesheetController/timesheet_edit";
-  static const String timesheetLogUrl =
-      "$baseUrl/TimesheetController/timesheet_log";
+  static const String timesheetTypeOfWorkUrl = "$baseUrl/TimesheetController/get_type_of_work";
+  static const String timesheetAddOfficeRelatedUrl = "$baseUrl/TimesheetController/timesheet_add_officerealted";
+  static const String timesheetListUrl = "$baseUrl/TimesheetController/timesheetlist";
+  static const String timesheetEditUrl = "$baseUrl/TimesheetController/timesheet_edit";
+  static const String timesheetLogUrl = "$baseUrl/TimesheetController/timesheet_log";
 
   ///branch
-  static const String branchNameListUrl =
-      "$baseUrl/ApiController/firmbrachlist";
-  static const String branchClientListUrl =
-      "$baseUrl/ApiController/branchwiseclientlist";
-  static const String branchEmpListUrl =
-      "$baseUrl/ApiController/employee_list_branchwise";
-  static const String addPettyTaskUrl =
-      "$baseUrl/ApiController/save_petty_task";
+  static const String branchNameListUrl = "$baseUrl/ApiController/firmbrachlist";
+  static const String branchClientListUrl = "$baseUrl/ApiController/branchwiseclientlist";
+  static const String branchEmpListUrl = "$baseUrl/ApiController/employee_list_branchwise";
+  static const String addPettyTaskUrl = "$baseUrl/ApiController/save_petty_task";
 
   ///chart
   static const String ownPieChartUrl =

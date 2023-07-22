@@ -140,6 +140,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                               child: GestureDetector(
                                                   onTap: () {
                                                     if(cont.cbNonAllotted){
+                                                      cont.callEmployeeList();
                                                       cont.currentService = "nonAllotted";
                                                     }
                                                     else if(cont.cbOffice){
@@ -254,7 +255,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                     ),
                     buildTextRegularWidget(
                         cont.selectedDateToShow == ""
-                            ? "Select Date"
+                            ? "Timesheet Date"
                             : cont.selectedDateToShow,
                         cont.selectedDateToShow == "" ? grey : blackColor,
                         context,
@@ -454,6 +455,9 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                   children: [
                     GestureDetector(
                         onTap: () {
+                          cont.isLoadingForStepper1=false;
+                          cont.loaderAllottedForSerice=false;
+                          cont.loader=false;
                           cont.goToPreviousFromOffice();
                         },
                         child: SizedBox(
@@ -541,6 +545,8 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                             value: value.name,
                             child: Text(value.name!),
                             onTap: () {
+                              cont.officeWorkIdList.clear();
+                              cont.officeWorkNameList.clear();
                               cont.addOfficeWorkNameAndId(
                                   value.id!, value.name!);
                             },
@@ -669,6 +675,8 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                   children: [
                     GestureDetector(
                         onTap: () {
+                          cont.loaderNonAllottedService=false;
+                          cont.loaderForNonAllottedStatus=false;
                           cont.goToPreviousFromAllotted();
                           //cont.cancel();
                         },
@@ -697,6 +705,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                           cont.saveCurrentAllottedList();
                         }
                         else {
+                          cont.isLoadingForStepper3 = false;
                           cont.continued();
                         }
                       },
@@ -726,6 +735,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                           cont.saveCurrentAllottedList();
                         }
                         else {
+                          cont.isLoadingForStepper3 = false;
                           cont.continued();
                         }
                       },
@@ -790,13 +800,16 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                           value: clientNameWithCode,
                           child: Text(clientNameWithCode),
                           onTap: () {
+                            cont.isFillTimesheetSelected=false;
                             cont.taskList.clear();
+                            //cont.taskIdList.clear();
                             cont.timesheetTaskListData.clear();
                             cont.allottedServiceList.clear();
                             cont.allottedTimesheetSelectedServiceList.clear();
                             cont.allottedSelectedServiceName = "";
                             cont.checkStartList.clear();
                             cont.checkStatusList.clear();
+                            cont.dataList.clear();
 
                             cont.addAllottedClientNameAndId(
                                 value.firmClientId!,
@@ -840,20 +853,37 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                           items: cont.allottedServiceList
                               .map((TimesheetServicesListData value) {
                               String serviceNamePeriod = "";
-                                if(value.period == null || value.period == ""){
-                                  serviceNamePeriod = value.serviceName!;
+                              String serviceDueDatePeriodicity = "";
+
+                                // if(value.period == null || value.period == ""){
+                                //   serviceNamePeriod = value.serviceName! ;
+                                // }
+                                // else{
+                                //   serviceNamePeriod = "${value.serviceName} | ${value.period!}";
+                                // }
+
+                                if(value.serviceDueDatePeriodicity == null || value.serviceDueDatePeriodicity == ""){
+                                  if(value.period == null || value.period == ""){
+                                    serviceNamePeriod = value.serviceName! ;
+                                  }
+                                  else{
+                                    serviceNamePeriod = "${value.serviceName} | ${value.period!}";
+                                  }
                                 }
                                 else{
-                                  serviceNamePeriod = "${value.serviceName!}(${value.period!})";
+                                  serviceNamePeriod = "${value.serviceName} | ${value.serviceDueDatePeriodicity} | ${value.period!}";
                                 }
+
                             return DropdownMenuItem<String>(
                               value: serviceNamePeriod,
                               child: Text(serviceNamePeriod),
                               onTap: () {
                                 cont.taskList.clear();
-                                cont.taskIdList.clear();
+                                //cont.taskIdList.clear();
                                 cont.timesheetTaskListData.clear();
                                 cont.allottedTimesheetSelectedServiceList.clear();
+                                cont.checkStartList.clear();
+                                cont.checkStatusList.clear();
 
                                 cont.addAllottedServiceNameAndId(value.serviceId!,
                                     serviceNamePeriod,
@@ -1035,57 +1065,12 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                     child:TextEditingForAllotted(controller: cont.timesheetTaskListData[
                                                                     taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].testTaskDetails,
                                                                       indexForService:taskListIndex,
-                                                                      //indexForTask: taskDetailsIndex==0 ? 0 : taskDetailsIndex-1,
                                                                       indexForTask: taskDetailsIndex,
                                                                     enabled: cont.checkStatusList[taskDetailsIndex] == "1" && cont.checkStartList[taskDetailsIndex] == "0"
                                                                       ? false:true,
                                                                       taskId: cont.timesheetTaskListData[
                                                                       taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskId,
                                                                     )
-                                                                        // child:TextFormField(
-                                                                        //   controller: cont.detailsAddController,
-                                                                        //   keyboardType: TextInputType.text,
-                                                                        //   textAlign: TextAlign.left,
-                                                                        //   textAlignVertical: TextAlignVertical.center,
-                                                                        //   textInputAction: TextInputAction.done,
-                                                                        //   onTap: () {},
-                                                                        //   //enabled: widget.enabled,
-                                                                        //   style: const TextStyle(fontSize: 15.0),
-                                                                        //   decoration: InputDecoration(
-                                                                        //     contentPadding: const EdgeInsets.all(10),
-                                                                        //     hintText: "Details",
-                                                                        //     hintStyle: GoogleFonts.rubik(
-                                                                        //       textStyle: TextStyle(
-                                                                        //         color: grey,
-                                                                        //         fontSize: 15,
-                                                                        //       ),
-                                                                        //     ),
-                                                                        //     border: InputBorder.none,
-                                                                        //   ),
-                                                                        //   onChanged: (value) {
-                                                                        //     print("value");
-                                                                        //     print(value);
-                                                                        //     cont.detailsAddController.text = value;
-                                                                        //
-                                                                        //
-                                                                        //     if (cont.dataList.asMap().containsKey(taskDetailsIndex)) {
-                                                                        //       print('Exists');
-                                                                        //       cont.dataList.removeAt(taskDetailsIndex);
-                                                                        //       print("after remove index cont.dataList");
-                                                                        //       print(cont.dataList);
-                                                                        //       cont.dataList.insert(taskDetailsIndex,cont.detailsAddController.text);
-                                                                        //       print("after insert cont.dataList");
-                                                                        //       print(cont.dataList);
-                                                                        //     } else {
-                                                                        //       print('Doesn\'t exist');
-                                                                        //       cont.dataList.clear();
-                                                                        //       cont.dataList.add(cont.detailsAddController.text);
-                                                                        //       print("after add cont.dataList");
-                                                                        //       print(cont.dataList);
-                                                                        //     }
-                                                                        //
-                                                                        //   },
-                                                                        // )
                                                                   ),
                                                                 ),
                                                         ]),
@@ -1236,7 +1221,8 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                             cont.checkStatusList[taskDetailsIndex] == "2" ? "Awaiting for Client Input" :
                                                                             cont.checkStatusList[taskDetailsIndex] == "3" ? "Submitted for Checking" :
                                                                             cont.checkStatusList[taskDetailsIndex] == "4" ? "Put on Hold" :
-                                                                            cont.checkStatusList[taskDetailsIndex] == "5" ? "Completed" : cont.selectedAllottedStatus[0],
+                                                                            cont.checkStatusList[taskDetailsIndex] == "5" ? "Completed" :
+                                                                            cont.allottedStartedStatusList[0],
                                                                             blackColor, context, 15.0,align: TextAlign.left),
                                                                         isExpanded: true,
                                                                         underline: Container(),
@@ -1320,6 +1306,9 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                       children: [
                         GestureDetector(
                             onTap: () {
+                              cont.isLoadingForStepper1=false;
+                              cont.loaderAllottedForSerice=false;
+                              cont.loader=false;
                               cont.goToPreviousFromNonAllotted();
                               //cont.cancel();
                             },
@@ -1417,7 +1406,12 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                 child: Text(clientNameWithCode),
                                 onTap: () {
                                   cont.allottedServiceList.clear();
+                                  cont.nonAllottedTaskList.clear();
+                                  cont.selectedNonAllottedClientNameList.clear();
+                                  cont.selectedNonAllottedClientIdList.clear();
                                   cont.nonAllottedSelectedServiceName = "";
+                                  cont.nonAllottedSelectedTaskName = "";
+                                  cont.selectedNonAllottedTaskId = "";
                                   cont.addNonAllottedClientNameAndId(
                                       value.firmClientId!,
                                       "${value.firmClientFirmName} (${value.firmClientClientCode})");
@@ -1460,16 +1454,33 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                             items: cont.allottedServiceList
                                 .map((TimesheetServicesListData value) {
                               String serviceNamePeriod = "";
-                              if(value.period == null || value.period == ""){
-                                serviceNamePeriod = value.serviceName!;
+                              // if(value.period == null || value.period == ""){
+                              //   serviceNamePeriod = value.serviceName!;
+                              // }
+                              // else{
+                              //   serviceNamePeriod = "${value.serviceName!}(${value.period!})";
+                              // }
+
+                              if(value.serviceDueDatePeriodicity == null || value.serviceDueDatePeriodicity == ""){
+                                if(value.period == null || value.period == ""){
+                                  serviceNamePeriod = value.serviceName! ;
+                                }
+                                else{
+                                  serviceNamePeriod = "${value.serviceName} | ${value.period!}";
+                                }
                               }
                               else{
-                                serviceNamePeriod = "${value.serviceName!}(${value.period!})";
+                                serviceNamePeriod = "${value.serviceName} | ${value.serviceDueDatePeriodicity} | ${value.period!}";
                               }
                               return DropdownMenuItem<String>(
                                 value: serviceNamePeriod,
                                 child: Text(serviceNamePeriod),
                                 onTap: () {
+                                  cont.nonAllottedTaskList.clear();
+                                  cont.selectedNonAllottedServiceNameList.clear();
+                                  cont.selectedNonAllottedServiceIdList.clear();
+                                  cont.selectedNonAllottedClientIdServiceIdList.clear();
+                                  cont.selectedNonAllottedTaskId = "";
                                   cont.addNonAllottedServiceNameAndId(
                                       value.serviceId!,
                                       //"${value.serviceName!} (${value.period})",
@@ -1520,6 +1531,8 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                 value: value.taskName,
                                 child: Text(value.taskName!),
                                 onTap: () {
+                                  cont.selectedNonAllottedTaskNameList.clear();
+                                  cont.selectedNonAllottedTaskIdList.clear();
                                   cont.addNonAllottedTaskNameAndId(
                                       value.taskId!, value.taskName!);
                                 },
@@ -1533,6 +1546,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                     const SizedBox(
                       height: 10.0,
                     ),
+
                     Table(
                       children: [
                         TableRow(children: [
@@ -1549,6 +1563,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5)),
                               border: Border.all(color: grey),
+                                color: cont.nonAllottedStatus == "1" && cont.nonAllottedStart == "0" ? grey.withOpacity(0.2):whiteColor
                             ),
                             child: TextFormField(
                               controller: cont.nonAllottedDetailsController,
@@ -1557,14 +1572,14 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                               textAlignVertical: TextAlignVertical.center,
                               textInputAction: TextInputAction.done,
                               onTap: () {},
-                              enabled: true,
+                              enabled: cont.nonAllottedStatus == "1" && cont.nonAllottedStart == "0"?false:true,
                               style: const TextStyle(fontSize: 15.0),
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(10),
                                 hintText: "Details",
                                 hintStyle: GoogleFonts.rubik(
-                                  textStyle: const TextStyle(
-                                    color: blackColor,
+                                  textStyle: TextStyle(
+                                    color: cont.nonAllottedStatus == "1" && cont.nonAllottedStart == "0"?grey:blackColor,
                                     fontSize: 15,
                                   ),
                                 ),
@@ -1592,6 +1607,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                               )),
                           GestureDetector(
                             onTap: () {
+                              cont.nonAllottedStatus == "1" && cont.nonAllottedStart == "0"?null:
                               cont.selectTime(context, "nonAllotted");
                               //cont.selectTimeForTask(context,cont.hrList.length);
                             },
@@ -1602,6 +1618,8 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(5)),
                                   border: Border.all(color: grey),
+                                    color: cont.nonAllottedStatus == "1" && cont.nonAllottedStart == "0" ? grey.withOpacity(0.2):whiteColor
+
                                 ),
                                 child: Align(
                                     alignment: Alignment.centerLeft,
@@ -1612,11 +1630,124 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                           cont.selectedNonAllottedTime == ""
                                               ? "Time Spent"
                                               : cont.selectedNonAllottedTime,
-                                          blackColor,
+                                          cont.nonAllottedStatus == "1" && cont.nonAllottedStart == "0"?grey:blackColor,
                                           context,
                                           15.0),
                                     ))),
                           ),
+                        ]),
+                        const TableRow(children: [
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                        ]),
+                        TableRow(children: [
+                          SizedBox(
+                              height: 40.0,
+                              child: Align(
+                                alignment:
+                                Alignment
+                                    .centerLeft,
+                                child: buildTextRegularWidget(
+                                    "Status",
+                                    blackColor,
+                                    context,
+                                    14.0),
+                              )),
+                          Padding(
+                            padding:
+                            const EdgeInsets
+                                .only(
+                                right:
+                                5.0),
+                            child:
+                            cont.selectedNonAllottedTaskId==""?const Opacity(opacity: 0.0):
+                                cont.loaderForNonAllottedStatus ? buildCircularIndicator():
+
+
+                                cont.nonAllottedStatus == "1" && cont.nonAllottedStart == "0"
+                                    ? GestureDetector(
+                                  onTap:
+                                      () {
+                                        cont.callTimesheetStartForNonAllotted(context);
+                                      },
+                                  child: buildButtonWidget(
+                                      context,
+                                      "Start",
+                                      height:
+                                      40.0),
+                                ) :
+
+
+                                cont.nonAllottedStatus == "5" ?
+                                SizedBox(
+                                    height: 40.0,
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: buildTextRegularWidget(
+                                          "Completed", blackColor, context, 15.0),
+                                    ))
+                                    :
+                            Container(
+                                height:
+                                40.0,
+                                width: MediaQuery.of(
+                                    context)
+                                    .size
+                                    .width,
+                                decoration:
+                                BoxDecoration(
+                                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                                  border: Border.all(color: grey),
+                                ),
+
+                                child: Center(
+                                    child:
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                      child:
+                                      DropdownButton<String>(
+                                        hint: buildTextRegularWidget(
+                                            cont.selectedNonAllottedStatus==""?
+                                            cont.nonAllottedStatus == "1" ? "Inprocess" :
+                                            cont.nonAllottedStatus == "2" ? "Awaiting for Client Input" :
+                                            cont.nonAllottedStatus == "3" ? "Submitted for Checking" :
+                                            cont.nonAllottedStatus == "4" ? "Put on Hold" :
+                                            cont.nonAllottedStatus == "5" ? "Completed" :
+                                            "Inprocess" : cont.selectedNonAllottedStatus,
+                                            blackColor, context, 15.0,align: TextAlign.left),
+                                        isExpanded: true,
+                                        underline: Container(),
+                                        items:
+                                        cont.nonAllottedStartedStatusList.isEmpty
+                                            ?
+                                        cont.noDataList.map((value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList()
+                                            :
+                                        cont.nonAllottedStartedStatusList.map((value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                            onTap: (){
+                                            },
+                                          );
+                                        }).toList(),
+                                        onChanged: (val) {
+                                          cont.updateSelectedNonAllottedStatus(context,val!, cont.selectedNonAllottedClientApplicableService,
+                                          );
+                                        },
+                                      ),
+                                    )
+                                )
+                            )
+                          )
                         ]),
                       ],
                     ),
@@ -1643,7 +1774,9 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
   buildStepperThree(TimesheetNewFormController cont) {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-      child: Column(
+      child:
+      cont.isLoadingForStepper3 ?buildCircularIndicator():
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -1764,12 +1897,30 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
             onTap: () {
               cont.diff.inHours == 0 && cont.diff.inMinutes == 0
                   ? cont.callApiToSaveAll("approve") : null;
-
-              print(cont.selectedDateToSend);
-              print(cont.removeSecondOfficeWorkIdListBracket);
-              print(cont.removeSecondOfficeDetailsListBracket);
-              print(cont.removeSecondOfficeAddedTimeListBracket);
-              print(cont.officeAction);
+              //cont.callApiToSaveAll("approve");
+              // print("allotted data");
+              // print(cont.selectedDateToSend);
+              // print(cont.removeSecondBracket);
+              // print(cont.removeSecondBracketForService);
+              // print(cont.removeSecondBracketForClientApplicableService);
+              // print(cont.removeSecondTaskIdListBracket);
+              // print(cont.removeSecondDetailsBracket);
+              // print(cont.removeSecondTimeSpentBracket);
+              // print("non allotted data");
+              // print("${cont.removeSecondBracket.replaceAll(", ", ",")},${cont.removeSecondNonAllottedClientIdListBracket.replaceAll(", ", ",")}");
+              // print("${cont.removeSecondBracketForService.replaceAll(", ", ",")},${cont.removeSecondNonAllottedServiceIdListBracket.replaceAll(", ", ",")}");
+              // print("${cont.removeSecondBracketForClientApplicableService.replaceAll(", ", ",")},${cont.removeSecondNonAllottedClientServiceIdListBracket.replaceAll(", ", ",")}");
+              // print("${cont.removeSecondTaskIdListBracket.replaceAll(", ", ",")},${cont.removeSecondNonAllottedTaskIdBracket.replaceAll(", ", ",")}");
+              // print("${cont.removeSecondTimeSpentBracket.replaceAll(", ", ",")},${cont.removeSecondNonAllottedTimeListBracket.replaceAll(", ", ",")}");
+              // print("final");
+              // print(cont.finalDetails);
+              // print(cont.finalClientId);
+              // print("office data");
+              // print(cont.selectedDateToSend);
+              // print(cont.removeSecondOfficeWorkIdListBracket);
+              // print(cont.removeSecondOfficeDetailsListBracket);
+              // print(cont.removeSecondOfficeAddedTimeListBracket);
+              // print(cont.officeAction);
             },
             child: buildButtonWidget(context, "Submit for Approval",
                 buttonColor: editColor, width: 250.0),

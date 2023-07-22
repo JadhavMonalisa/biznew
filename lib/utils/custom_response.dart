@@ -83,6 +83,51 @@ class CheckTimesheetTimeResponse {
   }
 }
 
+class TimesheetDateCountResponse {
+  String? message;
+  bool? success;
+  List<TimesheetDateCountList>? data;
+
+  TimesheetDateCountResponse({this.message, this.success, this.data});
+
+  TimesheetDateCountResponse.fromJson(Map<String, dynamic> json) {
+    message = json['Message'];
+    success = json['Success'];
+    if (json['data'] != null) {
+      data = <TimesheetDateCountList>[];
+      json['data'].forEach((v) {
+        data!.add(TimesheetDateCountList.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Message'] = message;
+    data['Success'] = success;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class TimesheetDateCountList {
+  String? taskno;
+
+  TimesheetDateCountList({this.taskno});
+
+  TimesheetDateCountList.fromJson(Map<String, dynamic> json) {
+    taskno = json['taskno'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['taskno'] = taskno;
+    return data;
+  }
+}
+
 class TotalLeaveCountResponse {
   bool? success;
   String? message;
