@@ -630,6 +630,8 @@ class ApiRepository {
         "mast_id": userId,
       },
     );
+    print("formData.fields client");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetClientListNonAllottedUrl,
       body: formData,
@@ -769,6 +771,8 @@ class ApiRepository {
         "sid": sid
       },
     );
+    print("formData.fields");
+    print(formData.fields);
     final response = await apiClient.post(
       ApiEndpoint.timesheetStatusUpdateUrl,
       body: formData,

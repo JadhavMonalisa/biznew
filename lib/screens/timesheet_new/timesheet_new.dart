@@ -158,8 +158,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                             const EdgeInsets.only(top: 30.0),
                                         child: GestureDetector(
                                             onTap: () {
-
-                                              print(cont.currentService);
+                                             print(cont.currentService);
                                              cont.currentService == "office"
                                                   ? cont
                                                       .checkValidationForOffice(
@@ -985,9 +984,14 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                             child: buildRichTextWidget(
                                               "${cont.timesheetTaskListData[taskListIndex].clientName} -> ",
                                               "${cont.timesheetTaskListData[taskListIndex].serviceName}"
+
+                                                  // "${cont.timesheetTaskListData[taskListIndex].servicePeriodicity == null ||
+                                                  // cont.timesheetTaskListData[taskListIndex].servicePeriodicity == ""
+                                                  // ? "":"|${cont.timesheetTaskListData[taskListIndex].servicePeriodicity}|"}"
+
                                               "${cont.timesheetTaskListData[taskListIndex].servicePeriod == null ||
                                                   cont.timesheetTaskListData[taskListIndex].servicePeriod == ""
-                                                  ? "":"(${cont.timesheetTaskListData[taskListIndex].servicePeriod})"}",
+                                                  ? "":"${cont.timesheetTaskListData[taskListIndex].servicePeriod}"}",
                                               title1Color: primaryColor,
                                               title2Color: blackColor,
                                             ),
@@ -1131,7 +1135,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                             const EdgeInsets.only(left: 10.0),
                                                                         //child: buildTextRegularWidget(cont.timeSpentList[taskDetailsIndex], blackColor, context, 15.0),
                                                                         child: buildTextRegularWidget(
-                                                                            cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].timeSpent ?? "",
+                                                                            cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].timeSpent ?? "HH:MM",
                                                                             blackColor,
                                                                             context,
                                                                             15.0),
@@ -1194,7 +1198,10 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                 child: Align(
                                                                   alignment: Alignment.centerLeft,
                                                                   child: buildTextRegularWidget("Completed", blackColor, context, 14.0),))
-                                                                : Container(
+                                                                :
+
+                                                            cont.isChangeStatusLoading ? buildCircularIndicator() :
+                                                            Container(
                                                                 height:
                                                                 40.0,
                                                                 width: MediaQuery.of(
@@ -1210,19 +1217,23 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                       grey),
                                                                 ),
 
-                                                                child: Center(
+                                                                child:
+                                                                Center(
                                                                     child: Padding(
                                                                       padding: const EdgeInsets.only(left: 15.0,right: 15.0),
                                                                       child: DropdownButton<String>(
                                                                         hint: buildTextRegularWidget(
                                                                             cont.addedAllottedStatus.contains(taskDetailsIndex)
                                                                                 ? cont.selectedAllottedStatus
-                                                                            :  cont.checkStatusList[taskDetailsIndex] == "1" ? "Inprocess" :
+                                                                            : cont.checkStatusList[taskDetailsIndex] == "1" ? "Inprocess" :
                                                                             cont.checkStatusList[taskDetailsIndex] == "2" ? "Awaiting for Client Input" :
                                                                             cont.checkStatusList[taskDetailsIndex] == "3" ? "Submitted for Checking" :
                                                                             cont.checkStatusList[taskDetailsIndex] == "4" ? "Put on Hold" :
                                                                             cont.checkStatusList[taskDetailsIndex] == "5" ? "Completed" :
-                                                                            cont.allottedStartedStatusList[0],
+                                                                            "Select",
+                                                                            //cont.checkStatusList[taskDetailsIndex] == "4" ? "Put on Hold"
+                                                                            // cont.checkStatusList[taskDetailsIndex] == "5" ? "Completed" :
+                                                                            // cont.selectedAllottedStatus,
                                                                             blackColor, context, 15.0,align: TextAlign.left),
                                                                         isExpanded: true,
                                                                         underline: Container(),
@@ -1245,6 +1256,8 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
                                                                           );
                                                                         }).toList(),
                                                                         onChanged: (val) {
+                                                                          print("val");
+                                                                          print(val);
                                                                           cont.updateSelectedAllottedStatus(context,val!,taskDetailsIndex,
                                                                               cont.timesheetTaskListData[taskListIndex].timesheetTaskDetailsData![taskDetailsIndex].taskId!,
                                                                               cont.clientAppServiceId,taskDetailsIndex
@@ -1775,7 +1788,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 10.0),
       child:
-      cont.isLoadingForStepper3 ?buildCircularIndicator():
+      cont.isLoadingForStepper3 ? buildCircularIndicator():
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -1883,8 +1896,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
           ),
           GestureDetector(
             onTap: () {
-              cont.diff.inHours == 0 && cont.diff.inMinutes == 0
-               ? cont.callApiToSaveAll("save") : null;
+              cont.callApiToSaveAll("save");
             },
             child: buildButtonWidget(context, "Save",
                 buttonColor: editColor, width: 100.0),
@@ -1897,7 +1909,7 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
             onTap: () {
               cont.diff.inHours == 0 && cont.diff.inMinutes == 0
                   ? cont.callApiToSaveAll("approve") : null;
-              //cont.callApiToSaveAll("approve");
+                //cont.callApiToSaveAll("approve");
               // print("allotted data");
               // print(cont.selectedDateToSend);
               // print(cont.removeSecondBracket);
@@ -1915,15 +1927,15 @@ class _TimesheetNewFormState extends State<TimesheetNewForm> {
               // print("final");
               // print(cont.finalDetails);
               // print(cont.finalClientId);
-              // print("office data");
-              // print(cont.selectedDateToSend);
-              // print(cont.removeSecondOfficeWorkIdListBracket);
-              // print(cont.removeSecondOfficeDetailsListBracket);
-              // print(cont.removeSecondOfficeAddedTimeListBracket);
-              // print(cont.officeAction);
+              print("office data");
+              print(cont.selectedDateToSend);
+              print(cont.removeSecondOfficeWorkIdListBracket);
+              print(cont.removeSecondOfficeDetailsListBracket);
+              print(cont.removeSecondOfficeAddedTimeListBracket);
+              print(cont.officeAction);
             },
             child: buildButtonWidget(context, "Submit for Approval",
-                buttonColor: editColor, width: 250.0),
+                buttonColor: cont.diff.inHours == 0 && cont.diff.inMinutes == 0?editColor:grey, width: 250.0),
           ),
         ],
       ),

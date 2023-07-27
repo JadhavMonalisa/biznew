@@ -36,6 +36,7 @@ class TimesheetNewFormController extends GetxController {
   List<ClientListData> allottedTimesheetSelectedEmpList = [];
   List<TimesheetServicesListData> allottedTimesheetSelectedServiceList = [];
   List<String> allottedTimesheetSelectedMultipleEmpIdList = [];
+  List<String> allottedTimesheetSelectedTimeList = [];
   List<String> allottedTimesheetSelectedMultipleServiceIdList = [];
   List<MultiSelectItem<ClientListData>> items = [];
   List<MultiSelectItem<TimesheetServicesListData>> serviceItems = [];
@@ -151,16 +152,13 @@ class TimesheetNewFormController extends GetxController {
 
   Future<void> selectDate(BuildContext context) async {
     isLoadingForStepper1=true;
-    print("date in cal");
-    print(selectedDate.subtract(Duration(days: totalBackDateCount)));
 
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate:selectedDate,
         firstDate : DateTime(selectedDate.year, selectedDate.month, selectedDate.day - totalBackDateCount),
-        //firstDate: DateTime(1700, 1),
-        //lastDate: DateTime(2100, 1));
-        lastDate: selectedDate);
+        lastDate: selectedDate,
+    );
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
       selectedDateToShow = "${selectedDate.day.toString().length==1 ? "0${selectedDate.day}" :selectedDate.day}/"
@@ -284,7 +282,6 @@ class TimesheetNewFormController extends GetxController {
       Utils.dismissKeyboard();
       update();
     } else if (timeFor == "nonAllotted") {
-
 
       selectedNonAllottedTime = "${selectedTime.hour}:${selectedTime.minute}";
 
@@ -523,6 +520,7 @@ class TimesheetNewFormController extends GetxController {
   String toShowServiceId = "";
   String toShowClientServiceId = "";
   List<String> clientIdInTask = [];
+  List<String> timeInTask = [];
   List<String> serviceIdInTask = [];
   List<String> clientServiceIdInTask = [];
   List<String> taskIdInTask = [];
@@ -552,6 +550,7 @@ class TimesheetNewFormController extends GetxController {
             serviceId: selectedServiceId,
             message: response.message,
             success: response.success,
+            //servicePeriodicity: response.servicePeriodicity
           ));
         }
 
@@ -632,14 +631,17 @@ class TimesheetNewFormController extends GetxController {
   List<int> addedAllottedStatus = [];
   TextEditingController allottedStatusRemarkText = TextEditingController();
 
+  String statusToCheck = "";
   updateSelectedAllottedStatus(BuildContext context, String val, int index,
       String selectedTaskIdToStart,String clientApplicableId,int taskDetailsIndex) {
-    selectedAllottedStatus = val;
-    selectedTaskId = taskIdList[index]; //to pass for remark
 
-    if (selectedAllottedStatus == "Inprocess" ||
-        selectedAllottedStatus == "Completed" ||
-        selectedAllottedStatus == "Sent for rework") {
+    //selectedTaskId = taskIdList[index]; //to pass for remark
+    selectedTaskId = selectedTaskIdToStart; //to pass for remark
+    statusToCheck = val;
+    if (statusToCheck == "Inprocess" ||
+        statusToCheck == "Completed" ||
+        statusToCheck == "Sent for rework") {
+      //selectedAllottedStatus = val;
       if (addedAllottedStatus.contains(index)) {
         addedAllottedStatus.remove(index);
         update();
@@ -656,7 +658,7 @@ class TimesheetNewFormController extends GetxController {
         addedAllottedStatusNameList.add(val);
         update();
       }
-      callTimesheetUpdate(context,selectedTaskIdToStart,clientApplicableId, taskDetailsIndex);
+      callTimesheetUpdateWithoutPopup(context,selectedTaskIdToStart,clientApplicableId, taskDetailsIndex,val);
       update();
     } else {
       showStatusRemarkDialog(context, index, val,selectedTaskIdToStart,clientApplicableId,taskDetailsIndex);
@@ -804,7 +806,9 @@ class TimesheetNewFormController extends GetxController {
                                 update();
                               }
 
-                              callTimesheetUpdate(context,selectedTaskIdToStart,clientApplicableId,taskDetailsIndex);
+                              print("selectedTaskIdToStart in dialog");
+                              print(selectedTaskIdToStart);
+                              callTimesheetUpdateWithPopup(context,selectedTaskIdToStart,clientApplicableId,taskDetailsIndex,val);
                             },
                             child: buildButtonWidget(context, "Save"),
                           ),
@@ -947,40 +951,104 @@ class TimesheetNewFormController extends GetxController {
 
   String clientAppServiceId = "";
   String selectedTaskId = "";
+  bool isChangeStatusLoading = false;
 
-  void callTimesheetUpdate(BuildContext context,String selectedTaskIdToStart,
-      String clientApplicableIdToStart,int taskDetailsIndex) async {
+  void callTimesheetUpdateWithoutPopup(BuildContext context,String selectedTaskIdToStart,
+      String clientApplicableIdToStart,int taskDetailsIndex,String statusName) async {
+    isChangeStatusLoading = true;
     try {
       ApiResponse? response = (await repository.getTimesheetStatusUpdate(
           clientAppServiceId,
           selectedTaskId,
+          //selectedTaskIdToStart,
           allottedStatusRemarkText.text,
-          selectedAllottedStatus == "Inprocess" ? "1" :
-          selectedAllottedStatus == "Awaiting for Client Input" ? "2" :
-          selectedAllottedStatus == "Submitted for Checking" ? "3" :
-          selectedAllottedStatus == "Put on Hold" ? "4" :
-          selectedAllottedStatus == "Completed" ? "5" :
-          selectedAllottedStatus == "Cancel" ? "6" :
-          selectedAllottedStatus == "Sent for rework" ? "7" : ""
-          //"statusStart"
+          statusName == "Inprocess" ? "1" :
+          statusName == "Awaiting for Client Input" ? "2" :
+          statusName == "Submitted for Checking" ? "3" :
+          statusName == "Put on Hold" ? "4" :
+          statusName == "Completed" ? "5" :
+          statusName == "Cancel" ? "6" :
+          statusName == "Sent for rework" ? "7" : ""
+        //"statusStart"
       ));
       if (response.success!) {
-        if (context.mounted) Navigator.pop(context);
+        addedAllottedStatus.clear();
         Utils.showSuccessSnackBar(response.message);
+        selectedAllottedStatus = statusName;
         callStatusList(selectedTaskIdToStart, clientApplicableIdToStart,taskDetailsIndex,isEdit: true);
-        updateLoader(false);
+        allottedStatusRemarkText.clear();
+        isChangeStatusLoading=false;
         update();
       } else {
+        addedAllottedStatus.clear();isChangeStatusLoading=false;
         Utils.showErrorSnackBar(response.message);
         updateLoader(false);
         update();
       }
       update();
     } on CustomException catch (e) {
+      addedAllottedStatus.clear();isChangeStatusLoading=false;
       Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);
       update();
     } catch (error) {
+      addedAllottedStatus.clear();isChangeStatusLoading=false;
+      Utils.showErrorSnackBar(error.toString());
+      updateLoader(false);
+      update();
+    }
+  }
+
+  void callTimesheetUpdateWithPopup(BuildContext context,String selectedTaskIdToStart,
+      String clientApplicableIdToStart,int taskDetailsIndex,String statusName) async {
+    isChangeStatusLoading = true;
+    try {
+      ApiResponse? response = (await repository.getTimesheetStatusUpdate(
+          clientAppServiceId,
+          selectedTaskId,
+          //selectedTaskIdToStart,
+          allottedStatusRemarkText.text,
+          statusName == "Inprocess" ? "1" :
+          statusName == "Awaiting for Client Input" ? "2" :
+          statusName == "Submitted for Checking" ? "3" :
+          statusName == "Put on Hold" ? "4" :
+          statusName == "Completed" ? "5" :
+          statusName == "Cancel" ? "6" :
+          statusName == "Sent for rework" ? "7" : ""
+          //"statusStart"
+      ));
+      if (response.success!) {
+        selectedAllottedStatus = statusName;
+        if (context.mounted)  Navigator.pop(context) ;
+        print("addedAllottedStatus");
+        print(addedAllottedStatus);
+        //addedAllottedStatus.clear();
+
+        update();
+        print("selectedAllottedStatus after edit");
+        print(selectedAllottedStatus);
+        callStatusList(selectedTaskIdToStart, clientApplicableIdToStart,taskDetailsIndex,isEdit: true);
+        allottedStatusRemarkText.clear();
+        isChangeStatusLoading=false;
+        Utils.showSuccessSnackBar(response.message);
+        update();
+      } else {
+        if (context.mounted)  Navigator.pop(context);
+        addedAllottedStatus.clear();isChangeStatusLoading=false;
+        Utils.showErrorSnackBar(response.message);
+        updateLoader(false);
+        update();
+      }
+      update();
+    } on CustomException catch (e) {
+      if (context.mounted) Navigator.pop(context);
+      addedAllottedStatus.clear();isChangeStatusLoading=false;
+      Utils.showErrorSnackBar(e.getMsg());
+      updateLoader(false);
+      update();
+    } catch (error) {
+      if (context.mounted) Navigator.pop(context);
+      addedAllottedStatus.clear();isChangeStatusLoading=false;
       Utils.showErrorSnackBar(error.toString());
       updateLoader(false);
       update();
@@ -1290,13 +1358,20 @@ class TimesheetNewFormController extends GetxController {
 
       timesheetTaskListData[listIndex].timesheetTaskDetailsData![index].timeSpent = selectedStartTimeToShow;
 
-      if(taskIdList.contains(taskId)){}
+      if(taskIdList.contains(taskId)){
+      }
       else{
         taskIdList.add(taskId);
       }
 
       print("taskIdList on time selection");
       print(taskIdList);
+      print("time spent");
+      print(timesheetTaskListData[listIndex].timesheetTaskDetailsData![index].timeSpent);
+      print("selectedStartTimeToShow");
+      print(selectedStartTimeToShow);
+      print("timeInTask");
+      print(timeInTask);
 
       if (isAddingMoreAllotted = true) {
         index = hrList.length + index;
@@ -1371,6 +1446,12 @@ class TimesheetNewFormController extends GetxController {
     totalHrSpent = hrSum + hrNonAllottedSum + hrOfficeSum;
     totalMinuteSpent = minSum + minNonAllottedSum + minOfficeSum;
 
+    print("hrSum");
+    print(hrSum);
+    print("hrNonAllottedSum");
+    print(hrNonAllottedSum);
+    print("hrOfficeSum");
+    print(hrOfficeSum);
     if(totalMinuteSpent >= 60) {
       remainingFromTotalSpentMin = totalMinuteSpent ~/ 60;
       totalMinuteSpent = totalMinuteSpent % 60;
@@ -1385,6 +1466,8 @@ class TimesheetNewFormController extends GetxController {
     var two = format.parse(timesheetTotalTime.text.toString());
     diff = two.difference(one);
 
+    print("diff");
+    print(diff);
     update();
   }
 
@@ -1536,15 +1619,23 @@ class TimesheetNewFormController extends GetxController {
       }
     }
 
-    print("taskIdList in save allo");
-    print(taskIdList);
-    print(taskIdListToCallApi);
     print(allottedLocalStoreTimeSpentList);
 
+    allottedLocalStoreTimeSpentList.isEmpty ? null :
+    allottedTimesheetSelectedTimeList.add(allottedLocalStoreTimeSpentList.toString());
+
+    print("allottedTimesheetSelectedTimeList");
+    print(allottedTimesheetSelectedTimeList);
     for(int i =0;i < allottedLocalStoreTimeSpentList.length;i++){
+      serviceIdInTask.isEmpty ? null :
       allottedTimesheetSelectedMultipleServiceIdList.add(serviceIdInTask[i]);
+
+      clientServiceIdInTask.isEmpty ? null :
       allottedClientApplicableServiceIdList.add(clientServiceIdInTask[i]);
+
+      clientIdInTask.isEmpty ? null :
       allottedTimesheetSelectedMultipleEmpIdList.add(clientIdInTask[i]);
+
       //allottedLocalTaskIdList.add(taskIdList.toString());
       //taskIdList.add(taskIdList[i]);
     }
@@ -1562,7 +1653,8 @@ class TimesheetNewFormController extends GetxController {
     removeFirstDetailsBracket = allottedLocalStoreDetailsList.toString().replaceAll("[", "");
     removeSecondDetailsBracket = removeFirstDetailsBracket.replaceAll("]", "");
 
-    removeFirstTimeSpentBracket = allottedLocalStoreTimeSpentList.toString().replaceAll("[", "");
+    //removeFirstTimeSpentBracket = allottedLocalStoreTimeSpentList.toString().replaceAll("[", "");
+    removeFirstTimeSpentBracket = allottedTimesheetSelectedTimeList.toString().replaceAll("[", "");
     removeSecondTimeSpentBracket = removeFirstTimeSpentBracket.replaceAll("]", "");
 
     removeFirstTaskIdListBracket = allottedLocalTaskIdList.toString().replaceAll("[", "");
@@ -1579,6 +1671,13 @@ class TimesheetNewFormController extends GetxController {
 
     // removeFirstBracket = allottedTimesheetSelectedMultipleEmpIdList.toString().replaceAll("[", "");
     // removeSecondBracket = removeFirstBracket.replaceAll("]", "");
+
+    finalDetails = removeSecondDetailsBracket;
+    finalClientId = removeSecondBracket;
+    finalService = removeSecondBracketForService;
+    finalClientApplicableService = removeSecondBracketForClientApplicableService;
+    finalTaskId = removeSecondTaskIdListBracket;
+    finalTimeSpent = removeSecondTimeSpentBracket;
 
     clearAllotted();
     update();
@@ -1688,30 +1787,36 @@ class TimesheetNewFormController extends GetxController {
         validateStartDate = false;
         updateLoader(false);
         isLoadingForStepper1 = false;
-        if(response.flag==""){}
+        if(response.flag==""){
+          selectedDate = DateTime.now();update();
+        }
         else{
           selectedDateToShow = "";
           selectedDateToSend = "";
+          selectedDate = DateTime.now();
           Utils.showErrorSnackBar(response.flag);
         }
         update();
       } else {
+        selectedDate = DateTime.now();
         Utils.showErrorSnackBar(response.message);
         updateLoader(false);isLoadingForStepper1 = false;
         update();
       }
       update();
     } on CustomException catch (e) {
+      selectedDate = DateTime.now();
       Utils.showErrorSnackBar(e.getMsg());
       updateLoader(false);isLoadingForStepper1 = false;
       update();
     } catch (error) {
+      selectedDate = DateTime.now();
       Utils.showErrorSnackBar(error.toString());
       updateLoader(false);isLoadingForStepper1 = false;
       update();
     }
   }
-  ///
+
   int totalBackDateCount = 0;
   void callTimesheetBackDateCount() async {
     try {
@@ -1870,7 +1975,6 @@ class TimesheetNewFormController extends GetxController {
     print(finalTaskId);
     print(finalDetails);
     print(finalTimeSpent);
-   // callSaveAllotted();
     if(finalDetails=="" || finalClientId=="" || finalService=="" || finalClientApplicableService==""||
         finalTaskId==""|| finalTimeSpent==""){
       print("call office");
@@ -2627,21 +2731,31 @@ class TimesheetNewFormController extends GetxController {
         Utils.showSuccessSnackBar("Office ${response.message}");
         updateLoader(false);
         isLoadingForStepper3 =false;
+
+        finalDetails="";finalClientId="";finalService="";
+        finalClientApplicableService="";finalTaskId=""; finalTimeSpent="";
+
         update();
         Get.offAllNamed(AppRoutes.bottomNav);
       } else {
         Utils.showErrorSnackBar(response.message);
         isLoadingForStepper3 =false;
+        finalDetails="";finalClientId="";finalService="";
+        finalClientApplicableService="";finalTaskId=""; finalTimeSpent="";
         updateLoader(false);
         update();
       }
       updateLoader(false);
       update();
     } on CustomException catch (e) {
+      finalDetails="";finalClientId="";finalService="";
+      finalClientApplicableService="";finalTaskId=""; finalTimeSpent="";
       Utils.showErrorSnackBar(e.getMsg());isLoadingForStepper3 =false;
       updateLoader(false);
       update();
     } catch (error) {
+      finalDetails="";finalClientId="";finalService="";
+      finalClientApplicableService="";finalTaskId=""; finalTimeSpent="";
       Utils.showErrorSnackBar(error.toString());isLoadingForStepper3 =false;
       updateLoader(false);
       update();
@@ -2738,7 +2852,8 @@ class TimesheetNewFormController extends GetxController {
 
   continued({bool nextFromOffice = false}) {
     currentStep < 2 ? currentStep += 1 : null;
-    currentStep == 2 ? nextFromOffice == true ? calculateTimeDifference() : null : null;
+    //currentStep == 2 ? nextFromOffice == true ? calculateTimeDifference() : null : null;
+    calculateTimeDifference();
     update();
   }
 

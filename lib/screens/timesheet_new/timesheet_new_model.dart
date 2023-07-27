@@ -101,6 +101,7 @@ class TimesheetTaskListData {
   String? servicePeriod;
   String? clientId;
   String? clientName;
+  //String? servicePeriodicity;
   List<TimesheetTaskDetailsData>? timesheetTaskDetailsData;
 
   TimesheetTaskListData({
@@ -111,6 +112,7 @@ class TimesheetTaskListData {
     this.servicePeriod,
     this.clientId,
     this.clientName,
+    //this.servicePeriodicity,
     this.timesheetTaskDetailsData,
   });
 
@@ -122,6 +124,7 @@ class TimesheetTaskListData {
     servicePeriod = "";
     clientId = "";
     clientName = "";
+    //servicePeriodicity = "";
     if (json['Data'] != null) {
       timesheetTaskDetailsData = <TimesheetTaskDetailsData>[];
       json['Data'].forEach((v) {
